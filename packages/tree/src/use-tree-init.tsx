@@ -239,6 +239,13 @@ export default (props: TreePropTypes) => {
     afterSelectEvents.push(event);
   };
 
+  /**
+   * 模块提供的事件注册器
+   * 用于在不同生命周期或者数据加载阶段，可以顺利执行后续事件
+   * @param key 事件名称
+   * @param event 事件执行函数
+   * @param reset 是否重置之前的所有状态
+   */
   const registerNextLoop = (key: string, event: any, reset = true) => {
     if (reset && nextLoopEvents.has(key)) {
       nextLoopEvents.delete(key);

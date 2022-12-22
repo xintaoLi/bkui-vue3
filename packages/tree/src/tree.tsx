@@ -144,6 +144,8 @@ export default defineComponent({
     };
 
     return () => (
+      // VirtualRender 是组件内实现的一个虚拟渲染器，用于大数据的渲染
+      // 此树渲染数据会很大，不做处理会导致页面卡死
       <VirtualRender class={resolveClassName('tree')}
         style={getTreeStyle(null, props)}
         list={renderData.value}

@@ -114,9 +114,6 @@ export default (props: TreePropTypes, ctx, root?, flatData?) => {
   const isNodeSortable = (sourceId: string, targetId: string) => {
     const sourcePath: string = getNodePath({ [NODE_ATTRIBUTES.UUID]: sourceId });
     const targetPath: string = getNodePath({ [NODE_ATTRIBUTES.UUID]: targetId });
-    // if (!sourcePath || targetPath) {
-    //   return false;
-    // }
     const sourceParentNodeId = getNodeParentIdById(sourceId);
     const targetParentNode = getNodeParentIdById(targetId);
 

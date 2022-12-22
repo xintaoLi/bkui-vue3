@@ -159,6 +159,11 @@ export default (props: TreePropTypes, ctx, flatData, _renderData, schemaValues, 
     return null;
   };
 
+  /**
+   * 点击勾选时，更新父级节点的勾选状态
+   * @param item 当前节点
+   * @param isChecked 是否勾选中
+   */
   const updateParentChecked = (item: any, isChecked) => {
     const parent = getParentNode(item);
     if (parent) {
@@ -169,6 +174,12 @@ export default (props: TreePropTypes, ctx, flatData, _renderData, schemaValues, 
     }
   };
 
+  /**
+ * 深度更新所有的子节点指定的状态
+ * @param node 当前节点
+ * @param attr 待更新状态key
+ * @param value 待更新状态值
+ */
   const deepUpdateChildNode = (node: any, attr: string, value: any) => {
     getChildNodes(node).forEach((id: string) => {
       setNodeAttr({ [NODE_ATTRIBUTES.UUID]: id }, attr, value);
@@ -176,6 +187,11 @@ export default (props: TreePropTypes, ctx, flatData, _renderData, schemaValues, 
     });
   };
 
+  /**
+   * 节点勾选改变事件
+   * @param item 当前节点
+   * @param value 勾选状态
+   */
   const handleNodeItemCheckboxChange = (item: any, value: boolean) => {
     setNodeAttr(item, NODE_ATTRIBUTES.IS_CHECKED, !!value);
     deepUpdateChildNode(item,  NODE_ATTRIBUTES.IS_CHECKED, !!value);
@@ -184,6 +200,12 @@ export default (props: TreePropTypes, ctx, flatData, _renderData, schemaValues, 
       .map((n: any) => n[NODE_ATTRIBUTES.UUID]));
   };
 
+  /**
+   * 判定当前节点是否为半选状态
+   * 根据节点path进行判定
+   * @param item 当前节点
+   * @returns true | false
+   */
   const isIndeterminate = (item: any) => isNodeChecked(item)  && !schemaValues.value
     .filter(node => getNodePath(node)?.startsWith(getNodePath(item)))
     .every(filterNode => isNodeChecked(filterNode));
@@ -363,7 +385,12 @@ export default (props: TreePropTypes, ctx, flatData, _renderData, schemaValues, 
     }
   };
 
-  const resolveNodeAction = (node: any) => {
+  /**
+   * 解析指定节点的当前操作
+   * @param node 带解析节点
+   * @returns 当前可操作状态列表 string[]
+   */
+  const resolveNodeAction = (node: any): string[] => {
     if (typeof props.nodeContentAction === 'function') {
       return Reflect.apply(props.nodeContentAction, this, [{ node }]);
     }
@@ -381,6 +408,8 @@ export default (props: TreePropTypes, ctx, flatData, _renderData, schemaValues, 
 
   /**
    * 点击节点事件
+   * 点击节点事件已经通过props设置为可配置
+   * 只有配位为可操作这里才会触发相关事件
    * @param item
    */
   const handleNodeContentClick = (item: any, e: MouseEvent) => {

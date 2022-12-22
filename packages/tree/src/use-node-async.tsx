@@ -51,6 +51,12 @@ export default (props, flatData) => {
     return Promise.resolve(resp);
   };
 
+  /**
+   * 如果节点设置了异步请求数据
+   * 这里需要进行异步处理
+   * @param item 节点
+   * @returns
+   */
   const asyncNodeClick = (item: any) => {
     const { callback = null, cache = true } = props.async || {};
     /** 如果是异步请求加载 */
@@ -85,6 +91,10 @@ export default (props, flatData) => {
     return Promise.resolve(true);
   };
 
+  /**
+   * 设置了异步加载数据的节点，如果设置了节点默认展开
+   * 这里需要遍历相关节点，待数据请求返回成功后进行展开操作
+   */
   const deepAutoOpen = () => {
     /** 过滤节点为异步加载 & 默认为展开 & 没有初始化过的节点 */
     const autoOpenNodes = flatData.data.filter((item: any) => getNodeAttr(item, NODE_ATTRIBUTES.IS_ASYNC)
