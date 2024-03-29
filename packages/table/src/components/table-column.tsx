@@ -125,15 +125,19 @@ export default defineComponent({
       const fn = () => {
         // @ts-ignore
         const selfVnode = (this as any)._;
-        const getTableNode = () => {
-          const parentVnode = selfVnode.parent;
+        const getTableNode = root => {
+          if (root === document.body || !root) {
+            return null;
+          }
+
+          const parentVnode = root.parent;
           if (parentVnode.type?.name === 'Table') {
             return parentVnode.vnode;
           }
-          return getTableNode();
+          return getTableNode(parentVnode);
         };
 
-        const tableNode = getTableNode();
+        const tableNode = getTableNode(selfVnode);
         if (!tableNode) {
           return;
         }
