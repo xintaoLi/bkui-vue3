@@ -43,7 +43,7 @@ import {
 import { usePrefix } from '@bkui-vue/config-provider';
 import { clickoutside } from '@bkui-vue/directives';
 import { Close } from '@bkui-vue/icon';
-import { useFormItem } from '@bkui-vue/shared';
+import { getFullscreenRoot, useFormItem } from '@bkui-vue/shared';
 
 import PickerDropdown from './base/picker-dropdown';
 import { dateIcon, timeIcon } from './common';
@@ -660,7 +660,7 @@ export default defineComponent({
     );
 
     const shortcutsSlot = this.hasShortcuts ? { shortcuts: () => this.$slots.shortcuts?.() || null } : {};
-
+    const teleportTo = computed(() => getFullscreenRoot());
     return (
       <div
         class={[this.resolveClassName('date-picker'), this.type === 'datetimerange' ? 'long' : '', this.longWidthCls]}
@@ -675,7 +675,7 @@ export default defineComponent({
           {this.$slots.trigger?.(this.displayValue) ?? defaultTrigger}
         </div>
         <Teleport
-          to='body'
+          to={teleportTo.value}
           disabled={!this.appendToBody}
         >
           <Transition name='bk-fade-down-transition'>
