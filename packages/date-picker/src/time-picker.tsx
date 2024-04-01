@@ -76,6 +76,7 @@ export default defineComponent({
   }>,
   setup(props, { slots, emit }) {
     const { resolveClassName } = usePrefix();
+    const teleportTo = ref(getFullscreenRoot());
     const formItem = useFormItem();
     const isRange = props.type.includes('range');
     const emptyArray = isRange ? [null, null] : [null];
@@ -404,6 +405,7 @@ export default defineComponent({
       if (props.readonly) {
         return;
       }
+      teleportTo.value = getFullscreenRoot();
       state.isFocused = true;
       if (e && e.type === 'focus') {
         return;
@@ -601,7 +603,7 @@ export default defineComponent({
       inputRef,
       triggerRef,
       pickerPanelRef,
-
+      teleportTo,
       handleClose,
       handleIconClick,
       handleInputMouseenter,
@@ -660,7 +662,7 @@ export default defineComponent({
     );
 
     const shortcutsSlot = this.hasShortcuts ? { shortcuts: () => this.$slots.shortcuts?.() || null } : {};
-    const teleportTo = computed(() => getFullscreenRoot());
+
     return (
       <div
         class={[this.resolveClassName('date-picker'), this.type === 'datetimerange' ? 'long' : '', this.longWidthCls]}
@@ -675,7 +677,7 @@ export default defineComponent({
           {this.$slots.trigger?.(this.displayValue) ?? defaultTrigger}
         </div>
         <Teleport
-          to={teleportTo.value}
+          to={this.teleportTo}
           disabled={!this.appendToBody}
         >
           <Transition name='bk-fade-down-transition'>

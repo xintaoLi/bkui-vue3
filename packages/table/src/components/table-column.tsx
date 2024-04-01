@@ -121,7 +121,23 @@ export default defineComponent({
         return Object.assign(result, { [target]: props[key] });
       }, {});
     },
+    rsolveIndexedColumn() {
+      // 如果是设置了Index，则先添加Index列，不做自动递归读取Column
+      if (/\d+\.?\d*/.test(`${this.$props.index}`)) {
+        const resolveProp: any = Object.assign({}, this.copyProps(this.$props), {
+          field: this.$props.prop || this.$props.field,
+          render: this.$slots.default,
+        });
+        this.initColumns(resolveProp);
+        return false;
+      }
+
+      return true;
+    },
     updateColumnDefineByParent() {
+      if (!this.rsolveIndexedColumn()) {
+        return;
+      }
       const fn = () => {
         // @ts-ignore
         const selfVnode = (this as any)._;

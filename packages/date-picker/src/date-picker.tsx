@@ -81,6 +81,8 @@ export default defineComponent({
   setup(props, { slots, emit }) {
     const formItem = useFormItem();
     const isRange = props.type.includes('range');
+    const teleportTo = ref(getFullscreenRoot());
+
     const emptyArray = isRange ? [null, null] : [null];
     const initialArr = isRange ? ((props.value || props.modelValue) as any[]) : [props.value || props.modelValue];
     let initialValue = isAllEmptyArr(initialArr)
@@ -412,6 +414,8 @@ export default defineComponent({
       if (props.readonly) {
         return;
       }
+
+      teleportTo.value = getFullscreenRoot();
       state.isFocused = true;
       if (e && e.type === 'focus') {
         return;
@@ -606,7 +610,7 @@ export default defineComponent({
       localReadonly,
       allowCrossDayProp,
       ownPickerProps,
-
+      teleportTo,
       pickerDropdownRef,
       inputRef,
       triggerRef,
@@ -680,8 +684,6 @@ export default defineComponent({
 
     const slots = { ...shortcutsSlot, ...confirmSlot };
 
-    const teleportTo = computed(() => getFullscreenRoot());
-
     return (
       <div
         class={[this.resolveClassName('date-picker'), this.type === 'datetimerange' ? 'long' : '', this.longWidthCls]}
@@ -696,7 +698,7 @@ export default defineComponent({
           {this.$slots.trigger?.(this.displayValue) ?? defaultTrigger}
         </div>
         <Teleport
-          to={teleportTo.value}
+          to={this.teleportTo}
           disabled={!this.appendToBody}
         >
           <Transition name={this.resolveClassName('fade-down-transition')}>

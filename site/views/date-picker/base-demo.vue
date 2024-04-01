@@ -2,6 +2,7 @@
   <bk-date-picker
     v-model="dateValue"
     clearable
+    append-to-body
     :disable-date="disableDate"
   />
 </template>
