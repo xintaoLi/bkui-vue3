@@ -77,6 +77,7 @@ export const propsMixin = {
   multiInstance: PropTypes.bool.def(true),
   // info-box
   infoType: PropTypes.theme(),
+  bodyClass: PropTypes.string || PropTypes.array,
   left: PropTypes.string,
   top: PropTypes.string,
 };

@@ -219,7 +219,13 @@ export default defineComponent({
         )}
 
         <div
-          class={[resolveClassName('modal-wrapper'), this.extCls ?? '', this.size, this.fullscreen ? 'fullscreen' : '']}
+          class={[
+            resolveClassName('modal-wrapper'),
+            this.extCls ?? '',
+            this.bodyClass ?? '',
+            this.size,
+            this.fullscreen ? 'fullscreen' : '',
+          ]}
           style={[this.compStyle, this.fullscreen ? this.fullscreenStyle : '']}
         >
           <Transition name={this.animateType}>
