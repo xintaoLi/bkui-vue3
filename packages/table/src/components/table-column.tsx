@@ -176,11 +176,11 @@ export default defineComponent({
             return null;
           }
 
-          if (Array.isArray(node.children)) {
+          if (Array.isArray(node?.children)) {
             return node.children;
           }
 
-          if (isVNode(node) && typeof node.children === 'object') {
+          if (isVNode(node) && typeof node?.children === 'object') {
             return Object.keys(node.children).map(key => node.children[key]);
           }
 
