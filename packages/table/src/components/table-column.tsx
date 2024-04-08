@@ -180,7 +180,7 @@ export default defineComponent({
             return node.children;
           }
 
-          if (isVNode(node) && typeof node?.children === 'object') {
+          if (isVNode(node) && node?.children && typeof node?.children === 'object') {
             return Object.keys(node.children).map(key => node.children[key]);
           }
 
