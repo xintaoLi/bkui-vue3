@@ -23,6 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+// @ts-ignore
 import { defineComponent, ExtractPropTypes, inject, isVNode, reactive, ref, ssrUtils, unref } from 'vue';
 
 import { PropTypes } from '@bkui-vue/shared';
