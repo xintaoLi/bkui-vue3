@@ -24,7 +24,7 @@
  * IN THE SOFTWARE.
  */
 import { v4 as uuidv4 } from 'uuid';
-import { defineComponent, ExtractPropTypes, inject, isProxy, isVNode, reactive, ref, unref } from 'vue';
+import { defineComponent, ExtractPropTypes, inject, isVNode, reactive, ref, unref } from 'vue';
 
 import { PropTypes } from '@bkui-vue/shared';
 
@@ -131,7 +131,7 @@ export default defineComponent({
         const resolveProp: any = Object.assign({}, this.copyProps(props), {
           field: props.prop || props.field,
           render: props.render ?? this.$slots.default,
-          uniqueId: this.getNodeUid(props),
+          uniqueId: this.getNodeUid((this.$ as any).ctx),
         });
         this.initColumns(resolveProp);
         return false;
@@ -140,17 +140,17 @@ export default defineComponent({
       return true;
     },
     setNodeUid() {
-      const { props } = this.$.vnode;
-      if (props.uniqueId && !props.uniqueId.val) {
-        props.uniqueId.val = uuidv4();
+      const { ctx } = this.$ as any;
+      if (ctx.uniqueId && !ctx.uniqueId.val) {
+        ctx.uniqueId.val = uuidv4();
       }
 
-      if (!props.uniqueId && !isProxy(props)) {
-        Object.assign(props, { uniqueId: { val: uuidv4() } });
+      if (!ctx.uniqueId) {
+        Object.assign(ctx, { uniqueId: { val: uuidv4() } });
       }
     },
-    getNodeUid(props) {
-      return props.uniqueId?.val;
+    getNodeUid(ctx) {
+      return ctx.uniqueId?.val;
     },
     updateColumnDefineByParent() {
       if (!this.rsolveIndexedColumn()) {
@@ -172,7 +172,7 @@ export default defineComponent({
         };
 
         const getNodeUid = node => {
-          return this.getNodeUid(node.props);
+          return this.getNodeUid(node.ctx);
         };
 
         const tableNode = getTableNode(selfVnode);
@@ -192,7 +192,7 @@ export default defineComponent({
             const resolveProp = Object.assign({ index }, this.copyProps(node.props), {
               field: node.props.prop || node.props.field,
               render: node.props.render ?? node.children?.default,
-              uniqueId: getNodeUid(node),
+              uniqueId: getNodeUid(node.ctx),
             });
             sortColumns.push(unref(resolveProp));
             index = index + 1;
@@ -239,7 +239,7 @@ export default defineComponent({
       const resolveProp = Object.assign({}, this.copyProps(this.$props), {
         field: props.prop || props.field,
         render: props.render ?? this.$slots.default,
-        uniqueId: this.getNodeUid(props),
+        uniqueId: this.getNodeUid((this.$ as any).ctx),
       });
       this.initColumns(resolveProp as any, true);
     },
