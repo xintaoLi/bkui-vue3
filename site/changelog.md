@@ -5,6 +5,7 @@
 
 * **[feat]**:
     - bugfix(dialog): 样式修复
+    - fix: 修复Dialog在shadowDom下表现异常
 
 
 ### 1.0.3-beta.41
