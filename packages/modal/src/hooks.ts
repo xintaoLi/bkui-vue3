@@ -24,7 +24,7 @@
  * IN THE SOFTWARE.
  */
 import throttle from 'lodash/throttle';
-import { nextTick, type Ref, ref, watch } from 'vue';
+import { type Ref, ref, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 
