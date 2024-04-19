@@ -24,7 +24,16 @@
  * IN THE SOFTWARE.
  */
 
-import { computed, defineComponent, type ExtractPropTypes, nextTick, ref, Transition, watch } from 'vue';
+import {
+  computed,
+  defineComponent,
+  type ExtractPropTypes,
+  nextTick,
+  onBeforeUnmount,
+  ref,
+  Transition,
+  watch,
+} from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { bkZIndexManager, getFullscreenRoot, isElement, isPromise, mask } from '@bkui-vue/shared';
@@ -104,6 +113,23 @@ export default defineComponent({
       }
     };
 
+    const close = () => {
+      if (visible.value) {
+        visible.value = false;
+        mask.hideMask({
+          el: refRoot.value,
+          mask: refMask.value,
+          showMask: props.showMask,
+          backgroundColor: backgroundColor.value,
+        });
+
+        ctx.emit('hidden');
+        if (enableTeleport.value) {
+          refRoot.value?.remove();
+        }
+      }
+    };
+
     const closeModal = () => {
       mask.hideMask({
         el: refRoot.value,
@@ -118,7 +144,7 @@ export default defineComponent({
         if (enableTeleport.value) {
           refRoot.value?.remove();
         }
-      }, 250);
+      }, props.hiddenDelay);
     };
 
     watch(
@@ -183,6 +209,10 @@ export default defineComponent({
       }
     };
 
+    onBeforeUnmount(() => {
+      close();
+    });
+
     return {
       zIndex,
       visible,
@@ -193,6 +223,7 @@ export default defineComponent({
       refRoot,
       refMask,
       resolveClassName,
+      close,
     };
   },
   render() {
