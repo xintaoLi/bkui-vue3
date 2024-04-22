@@ -209,14 +209,12 @@ export default defineComponent({
       return pagination.scrollTop + props.scrollOffsetTop;
     };
 
+    const getTransform = () => {
+      return `translate3d(-${pagination.translateX}px,${getOffsetTop() - pagination.translateY}px, 0)`;
+    };
+
     /** 展示列表内容区域样式 */
-    const innerContentStyle = computed(() =>
-      props.scrollPosition === 'content'
-        ? {
-            transform: `translate3d(-${pagination.translateX}px,${getOffsetTop() - pagination.translateY}px, 0)`,
-          }
-        : {},
-    );
+    const innerContentStyle = computed(() => (props.scrollPosition === 'content' ? { transform: getTransform() } : {}));
 
     /** 虚拟渲染外层容器样式 */
     const wrapperStyle = computed(() => {
