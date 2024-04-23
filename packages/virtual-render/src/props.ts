@@ -25,11 +25,17 @@
  */
 
 import { ExtractPropTypes } from 'vue';
+import { toType } from 'vue-types';
 
 import { PropTypes, resolveClassName } from '@bkui-vue/shared';
 
 const EventProps = {
   onContentScroll: Function,
+};
+
+export type IScrollbarOption = {
+  enabled: boolean;
+  keepStruct: boolean;
 };
 
 export const virtualRenderProps = {
@@ -145,6 +151,16 @@ export const virtualRenderProps = {
    * 保持滚动条位置、当前渲染区间
    */
   keepAlive: PropTypes.bool.def(false),
+
+  /**
+   * 是否允许滚动条改变原有DOM结构
+   */
+  scrollbar: toType<IScrollbarOption>('IScrollbarOption', {
+    default: {
+      enabled: false,
+      keepStruct: true,
+    },
+  }),
 
   /**
    * 数据监听改变时，是否自动重置位置到[0, 0]

@@ -10,6 +10,7 @@
       <bk-button @click="handleFixToTop">
         fixToTop: index = {{ Math.ceil(randomRows.length / 2) }}
       </bk-button>
+
       <span style="padding: 0 30px">当前行数：{{ randomRows.length }}</span>
     </div>
     <bk-virtual-render
@@ -82,7 +83,7 @@
           },
         ],
         scrollbar: {
-          enabled: false,
+          enabled: true,
           keepStruct: false,
         },
       };

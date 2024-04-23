@@ -4426,6 +4426,14 @@ binary-extensions@^2.0.0:
   resolved "https://mirrors.tencent.com/npm/binary-extensions/-/binary-extensions-2.3.0.tgz#f6e14a97858d327252200242d4ccfe522c445522"
   integrity sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==
 
+bk-smooth-scrollbar@0.0.5:
+  version "0.0.5"
+  resolved "https://mirrors.tencent.com/npm/bk-smooth-scrollbar/-/bk-smooth-scrollbar-0.0.5.tgz#7dd64116e5098742243954ec1d9c1e2f76832fa5"
+  integrity sha512-u9XsXi6lMZJaICnycH1TouaR2kaSqjBToXpA0FYpAKPc+KNnfomQW4Isux+NyLNja3DeKOBrT2RG2NAPN65+TQ==
+  dependencies:
+    core-js "^3.6.4"
+    tslib "^2.6.2"
+
 bkui-vue@latest:
   version "1.0.3-beta.33"
   resolved "https://registry.yarnpkg.com/bkui-vue/-/bkui-vue-1.0.3-beta.33.tgz#c889e4c93017c3a76bd16869d4201b99a9a09943"
@@ -5232,6 +5240,11 @@ core-js-compat@^3.31.0, core-js-compat@^3.33.1:
   integrity sha512-iV9Pd/PsgjNWBXeq8XRtWVSgz2tKAfhfvBs7qxYty+RlRd+OCksaWmOnc4JKrTc1cToXL1N0s3l/vwlxPtdElw==
   dependencies:
     browserslist "^4.22.3"
+
+core-js@^3.6.4:
+  version "3.37.0"
+  resolved "https://mirrors.tencent.com/npm/core-js/-/core-js-3.37.0.tgz#d8dde58e91d156b2547c19d8a4efd5c7f6c426bb"
+  integrity sha512-fu5vHevQ8ZG4og+LXug8ulUtVxjOcEYvifJr7L5Bfq9GOztVqsKd9/59hUk2ZSbCrS3BqUr3EpaYGIYzq7g3Ug==
 
 core-util-is@1.0.2:
   version "1.0.2"
