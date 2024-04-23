@@ -237,7 +237,7 @@ const propsJson: IPropsTableItem[] = [
     name: 'popoverOptions',
     type: 'object',
     default: '',
-    desc: '下拉框popover配置，参考Popover组件',
+    desc: '下拉框popover配置，参考Popover组件（如果在Popover里面使用select，建议配置成为：{ boundary: "parent" }）',
     optional: [],
   },
   {

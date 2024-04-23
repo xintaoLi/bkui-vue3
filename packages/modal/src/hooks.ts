@@ -24,7 +24,7 @@
  * IN THE SOFTWARE.
  */
 import throttle from 'lodash/throttle';
-import { type Ref, ref, useSlots, watch } from 'vue';
+import { type Ref, ref, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 
@@ -32,7 +32,6 @@ import type { ModalProps } from './modal';
 
 export const useContentResize = (root: Ref<HTMLElement>, props: ModalProps) => {
   const { resolveClassName } = usePrefix();
-  const slots = useSlots();
 
   const isContentScroll = ref(false);
   const contentStyles = ref({});
@@ -40,10 +39,6 @@ export const useContentResize = (root: Ref<HTMLElement>, props: ModalProps) => {
   let observer;
 
   const handleContentBoxChange = () => {
-    if (!slots.footer) {
-      return;
-    }
-
     const calcContentScroll = throttle(() => {
       const { height: headerHeight } = root.value
         .querySelector(`.${resolveClassName('modal-header')}`)
