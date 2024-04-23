@@ -40,6 +40,7 @@ export const useContentResize = (root: Ref<HTMLElement>, props: ModalProps) => {
 
   const handleContentBoxChange = () => {
     const calcContentScroll = throttle(() => {
+      console.log('from model content size change');
       const { height: headerHeight } = root.value
         .querySelector(`.${resolveClassName('modal-header')}`)
         .getBoundingClientRect();
