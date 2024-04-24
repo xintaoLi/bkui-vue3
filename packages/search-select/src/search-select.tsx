@@ -214,6 +214,7 @@ export default defineComponent({
       onEditBlur,
       onValidate,
       editKey,
+      searchData: computed(() => props.data),
     });
     function onEditClick(item: SelectedItem, index: number) {
       editKey.value = `${item.id}_${index}`;
@@ -266,7 +267,7 @@ export default defineComponent({
     }
     function handleWrapClick() {
       if (!editKey.value) {
-        inputRef.value.handleInputFocus();
+        inputRef.value.inputFocusForWrapper();
       }
     }
     function handleClearAll() {
