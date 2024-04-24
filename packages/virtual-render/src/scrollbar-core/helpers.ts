@@ -23,51 +23,60 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { usePrefix } from 'bkui-vue';
-import { Ref } from 'vue';
+import type { SimpleBarOptions } from '.';
 
-import BkSimpleBar from './bk-scrollbar';
-import { VirtualRenderProps } from './props';
+export function getElementWindow(element: Element) {
+  return element?.ownerDocument?.defaultView ?? window;
+}
 
-export default (target: Ref<HTMLElement>, props: VirtualRenderProps) => {
-  let instance: BkSimpleBar = null;
-  const { resolveClassName } = usePrefix();
-  const classNames = {
-    contentEl: resolveClassName('scroll-content-el'),
-    wrapper: resolveClassName('scroll-wrapper'),
-    scrollbar: resolveClassName('scrollbar'),
-    track: resolveClassName('scrollbar-track'),
-    visible: resolveClassName('scrollbar-visible'),
-    horizontal: resolveClassName('scrollbar-horizontal'),
-    vertical: resolveClassName('scrollbar-vertical'),
-    hover: resolveClassName('scrollbar-hover'),
-    dragging: resolveClassName('scrollbar-dragging'),
-    scrolling: resolveClassName('scrollbar-scrolling'),
-    scrollable: resolveClassName('scrollbar-scrollable'),
-    mouseEntered: resolveClassName('scrollbar-mouse-entered'),
-  };
+export function getElementDocument(element: Element) {
+  return element?.ownerDocument ?? document;
+}
 
-  const init = (_scrollFn?) => {
-    instance = new BkSimpleBar(target.value, {
-      classNames,
-      wrapperNode: target.value,
-    });
-    // instance.getScrollElement().addEventListener('scroll', scrollFn);
-  };
+// Helper function to retrieve options from element attributes
+export const getOptions = function (obj: any) {
+  const initialObj: SimpleBarOptions = {};
 
-  const scrollTo = (x, y) => {
-    if (props.scrollbar?.enabled) {
-      // instance.s.scrollTo(x, y, 100, { keepStruct: props.scrollbar?.keepStruct ?? false });
-      return;
-    }
+  const options = Array.prototype.reduce.call(
+    obj,
+    (acc: any, attribute) => {
+      const option = attribute.name.match(/data-simplebar-(.+)/);
+      if (option) {
+        const key: keyof SimpleBarOptions = option[1].replace(/\W+(.)/g, (_: any, chr: string) => chr.toUpperCase());
 
-    target.value.scrollTo(x, y);
-  };
-
-  return {
-    init,
-    instance,
-    scrollTo,
-    classNames,
-  };
+        switch (attribute.value) {
+          case 'true':
+            acc[key] = true;
+            break;
+          case 'false':
+            acc[key] = false;
+            break;
+          case undefined:
+            acc[key] = true;
+            break;
+          default:
+            acc[key] = attribute.value;
+        }
+      }
+      return acc;
+    },
+    initialObj,
+  );
+  return options as SimpleBarOptions;
 };
+
+export function addClasses(el: HTMLElement | null, classes: string) {
+  if (!el) return;
+  el.classList.add(...classes.split(' '));
+}
+
+export function removeClasses(el: HTMLElement | null, classes: string) {
+  if (!el) return;
+  classes.split(' ').forEach(className => {
+    el.classList.remove(className);
+  });
+}
+
+export function classNamesToQuery(classNames: string) {
+  return `.${classNames.split(' ').join('.')}`;
+}

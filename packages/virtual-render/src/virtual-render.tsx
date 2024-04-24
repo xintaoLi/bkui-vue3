@@ -93,7 +93,7 @@ export default defineComponent({
     }));
 
     const refRoot = ref(null);
-    const { init, scrollTo } = useScrollbar(refRoot, props);
+    const { init, scrollTo, classNames } = useScrollbar(refRoot, props);
 
     const refVirtualSection = ref(null);
     let instance = null;
@@ -210,7 +210,7 @@ export default defineComponent({
     };
 
     const getTransform = () => {
-      return `translate3d(-${pagination.translateX}px,${getOffsetTop() - pagination.translateY}px, 0)`;
+      return `translate(-${pagination.translateX}px,${getOffsetTop() - pagination.translateY}px)`;
     };
 
     /** 展示列表内容区域样式 */
@@ -292,7 +292,7 @@ export default defineComponent({
         renderAs || 'div',
         {
           ref: refRoot,
-          class: wrapperClass.value,
+          class: [...wrapperClass.value, classNames.wrapper],
           style: wrapperStyle.value,
         },
         [
@@ -300,7 +300,7 @@ export default defineComponent({
           h(
             contentAs || 'div',
             {
-              class: innerClass.value,
+              class: [...innerClass.value, classNames.contentEl],
               style: {
                 ...innerContentStyle.value,
                 ...props.contentStyle,

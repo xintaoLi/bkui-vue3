@@ -23,51 +23,40 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { usePrefix } from 'bkui-vue';
-import { Ref } from 'vue';
+import canUseDOM from './can-use-dom';
 
-import BkSimpleBar from './bk-scrollbar';
-import { VirtualRenderProps } from './props';
+let cachedScrollbarWidth: number | null = null;
+let cachedDevicePixelRatio: number | null = null;
 
-export default (target: Ref<HTMLElement>, props: VirtualRenderProps) => {
-  let instance: BkSimpleBar = null;
-  const { resolveClassName } = usePrefix();
-  const classNames = {
-    contentEl: resolveClassName('scroll-content-el'),
-    wrapper: resolveClassName('scroll-wrapper'),
-    scrollbar: resolveClassName('scrollbar'),
-    track: resolveClassName('scrollbar-track'),
-    visible: resolveClassName('scrollbar-visible'),
-    horizontal: resolveClassName('scrollbar-horizontal'),
-    vertical: resolveClassName('scrollbar-vertical'),
-    hover: resolveClassName('scrollbar-hover'),
-    dragging: resolveClassName('scrollbar-dragging'),
-    scrolling: resolveClassName('scrollbar-scrolling'),
-    scrollable: resolveClassName('scrollbar-scrollable'),
-    mouseEntered: resolveClassName('scrollbar-mouse-entered'),
-  };
+if (canUseDOM()) {
+  window.addEventListener('resize', () => {
+    if (cachedDevicePixelRatio !== window.devicePixelRatio) {
+      cachedDevicePixelRatio = window.devicePixelRatio;
+      cachedScrollbarWidth = null;
+    }
+  });
+}
 
-  const init = (_scrollFn?) => {
-    instance = new BkSimpleBar(target.value, {
-      classNames,
-      wrapperNode: target.value,
-    });
-    // instance.getScrollElement().addEventListener('scroll', scrollFn);
-  };
-
-  const scrollTo = (x, y) => {
-    if (props.scrollbar?.enabled) {
-      // instance.s.scrollTo(x, y, 100, { keepStruct: props.scrollbar?.keepStruct ?? false });
-      return;
+export default function scrollbarWidth() {
+  if (cachedScrollbarWidth === null) {
+    if (typeof document === 'undefined') {
+      cachedScrollbarWidth = 0;
+      return cachedScrollbarWidth;
     }
 
-    target.value.scrollTo(x, y);
-  };
+    const { body } = document;
+    const box = document.createElement('div');
 
-  return {
-    init,
-    instance,
-    scrollTo,
-    classNames,
-  };
-};
+    box.classList.add('simplebar-hide-scrollbar');
+
+    body.appendChild(box);
+
+    const width = box.getBoundingClientRect().right;
+
+    body.removeChild(box);
+
+    cachedScrollbarWidth = width;
+  }
+
+  return cachedScrollbarWidth;
+}

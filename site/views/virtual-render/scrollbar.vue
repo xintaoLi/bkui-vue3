@@ -19,6 +19,7 @@
       :list="randomRows"
       :line-height="30"
       :height="300"
+      :enabled="false"
     >
       <template #default="{data}">
         <div
@@ -98,7 +99,7 @@
           padding: '2px 10px',
           height: `${lineHeight}px`,
           lineHeight: `${lineHeight}px`,
-          display: 'inline-block',
+          display: 'block',
           width: '200px',
         };
       },
@@ -109,6 +110,7 @@
           height: `${lineHeight}px`,
           lineHeight: `${lineHeight}px`,
           borderBottom: 'solid 1px #ddd',
+          display: 'inline-flex',
         };
       },
       handleRandomRows() {

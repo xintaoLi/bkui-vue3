@@ -23,51 +23,60 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { usePrefix } from 'bkui-vue';
-import { Ref } from 'vue';
-
-import BkSimpleBar from './bk-scrollbar';
-import { VirtualRenderProps } from './props';
-
-export default (target: Ref<HTMLElement>, props: VirtualRenderProps) => {
-  let instance: BkSimpleBar = null;
-  const { resolveClassName } = usePrefix();
-  const classNames = {
-    contentEl: resolveClassName('scroll-content-el'),
-    wrapper: resolveClassName('scroll-wrapper'),
-    scrollbar: resolveClassName('scrollbar'),
-    track: resolveClassName('scrollbar-track'),
-    visible: resolveClassName('scrollbar-visible'),
-    horizontal: resolveClassName('scrollbar-horizontal'),
-    vertical: resolveClassName('scrollbar-vertical'),
-    hover: resolveClassName('scrollbar-hover'),
-    dragging: resolveClassName('scrollbar-dragging'),
-    scrolling: resolveClassName('scrollbar-scrolling'),
-    scrollable: resolveClassName('scrollbar-scrollable'),
-    mouseEntered: resolveClassName('scrollbar-mouse-entered'),
+export default fn => {
+  const DELTA_SCALE = {
+    STANDARD: 1,
+    OTHERS: -3,
   };
 
-  const init = (_scrollFn?) => {
-    instance = new BkSimpleBar(target.value, {
-      classNames,
-      wrapperNode: target.value,
-    });
-    // instance.getScrollElement().addEventListener('scroll', scrollFn);
-  };
+  const DELTA_MODE = [1.0, 28.0, 500.0];
 
-  const scrollTo = (x, y) => {
-    if (props.scrollbar?.enabled) {
-      // instance.s.scrollTo(x, y, 100, { keepStruct: props.scrollbar?.keepStruct ?? false });
-      return;
+  const getDeltaMode = mode => DELTA_MODE[mode] || DELTA_MODE[0];
+
+  const normalizeDelta = (evt: any) => {
+    if ('deltaX' in evt) {
+      const mode = getDeltaMode(evt.deltaMode);
+
+      return {
+        x: (evt.deltaX / DELTA_SCALE.STANDARD) * mode,
+        y: (evt.deltaY / DELTA_SCALE.STANDARD) * mode,
+        evt,
+      };
     }
 
-    target.value.scrollTo(x, y);
+    if ('wheelDeltaX' in evt) {
+      return {
+        x: evt.wheelDeltaX / DELTA_SCALE.OTHERS,
+        y: evt.wheelDeltaY / DELTA_SCALE.OTHERS,
+        evt,
+      };
+    }
+
+    // ie with touchpad
+    return {
+      x: 0,
+      y: evt.wheelDelta / DELTA_SCALE.OTHERS,
+      evt,
+    };
+  };
+
+  const eventName =
+    'onwheel' in window || document.implementation.hasFeature('Events.wheel', '3.0') ? 'wheel' : 'mousewheel';
+
+  const resolveEventResponse = (e: Event) => {
+    fn(normalizeDelta(e));
+  };
+
+  const addWheelEvent = (target: HTMLElement) => {
+    target.addEventListener(eventName, resolveEventResponse);
+  };
+
+  const removeWheelEvent = (target: HTMLElement) => {
+    target.removeEventListener(eventName, resolveEventResponse);
   };
 
   return {
-    init,
-    instance,
-    scrollTo,
-    classNames,
+    addWheelEvent,
+    removeWheelEvent,
   };
 };
