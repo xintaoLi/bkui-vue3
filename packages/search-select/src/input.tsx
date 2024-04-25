@@ -176,7 +176,7 @@ export default defineComponent({
     function handleClickOutside(e: MouseEvent) {
       if (!popoverRef.value?.contains(e.target as Node) && props.clickOutside?.(e.target, popoverRef.value)) {
         if (props.mode === SearchInputMode.EDIT || usingItem.value) {
-          usingItem.value && handleKeyEnter();
+          usingItem.value && handleKeyEnter().then(v => v && clearInput());
           if (!usingItem.value) {
             emit('focus', false);
           }
@@ -547,6 +547,7 @@ export default defineComponent({
     }
     function clearInput() {
       if (!inputRef.value) return;
+      keyword.value = '';
       inputRef.value.innerText = '';
     }
     function handleLogicalChange(logical: SearchLogical) {
@@ -576,11 +577,18 @@ export default defineComponent({
     function inputEnterForWrapper() {
       handleKeyEnter().then(v => v && clearInput());
     }
-
+    function inputClearForWrapper() {
+      keyword.value = '';
+      showNoSelectValueError.value = false;
+      showPopover.value = false;
+      usingItem.value = null;
+      nextTick(clearInput);
+    }
     // expose
     expose({
       inputFocusForWrapper,
       inputEnterForWrapper,
+      inputClearForWrapper,
       handleInputFocus,
       isFocus,
     });
@@ -611,6 +619,7 @@ export default defineComponent({
       resolveClassName,
       inputFocusForWrapper,
       inputEnterForWrapper,
+      inputClearForWrapper,
       t,
     };
   },

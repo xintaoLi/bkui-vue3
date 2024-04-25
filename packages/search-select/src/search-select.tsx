@@ -274,6 +274,7 @@ export default defineComponent({
     function handleClearAll() {
       selectedList.value = [];
       overflowIndex.value = -1;
+      inputRef.value.inputClearForWrapper();
       emit('update:modelValue', []);
     }
     function handleInputOutside(target: Node) {
