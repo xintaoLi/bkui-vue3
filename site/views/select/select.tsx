@@ -311,6 +311,13 @@ const propsJson: IPropsTableItem[] = [
     optional: ['true', 'false'],
   },
   {
+    name: 'disableFocusBehavior',
+    type: 'boolean',
+    default: 'false',
+    desc: '是否禁用自动聚焦行为（每次点击options或者展示select会自动聚焦到搜索框，可关闭此属性禁用聚焦）',
+    optional: ['true', 'false'],
+  },
+  {
     name: 'keepSearchValue',
     type: 'boolean',
     default: 'false',
