@@ -1,5 +1,34 @@
 ## 更新日志
 
+### 1.0.3-beta.56
+
+* **[feat]**:
+    - feat(search-select): 新版search select组件
+
+
+### 1.0.3-beta.55
+
+* **[feat]**:
+    - feat(search-select): 优化search select组件交互
+
+
+### 1.0.3-beta.54
+
+* **[feat]**:
+    - bugfix(dialog): 样式修复
+
+
+### 1.0.3-beta.53
+
+* **[feat]**:
+    - bugfix(dialog): 样式修复
+
+
+### 1.0.3-beta.52
+
+* **[feat]**:
+    - fix(datepicker): datepicker monthrange 支持 disabled-date
+
 
 ### 1.0.3-beta.51
 
