@@ -124,7 +124,7 @@ export default defineComponent({
     });
 
     // refs
-    const inputRef = ref<typeof SearchSelectInput>(null);
+    const inputRef = ref<InstanceType<typeof SearchSelectInput>>(null);
     const wrapRef = ref<HTMLDivElement>(null);
 
     // vars
@@ -215,6 +215,7 @@ export default defineComponent({
       onValidate,
       editKey,
       searchData: computed(() => props.data),
+      isClickOutside: handleInputOutside,
     });
     function onEditClick(item: SelectedItem, index: number) {
       editKey.value = `${item.id}_${index}`;
@@ -304,6 +305,7 @@ export default defineComponent({
       isFocus.value = v;
     }
     function handleClickSearch(e: MouseEvent) {
+      inputRef.value.inputEnterForWrapper();
       emit('search', e);
     }
     return {

@@ -188,6 +188,7 @@ export default defineComponent({
       }
     }
     function handleInputFocus() {
+      showNoSelectValueError.value = false;
       if (props.mode === SearchInputMode.EDIT && usingItem.value && !isFocus.value) {
         const range = document.createRange();
         const selection = window.getSelection();
@@ -309,7 +310,7 @@ export default defineComponent({
         return true;
       }
       if (!usingItem.value?.isSpecialType() && usingItem.value?.values?.length < 1) {
-        showNoSelectValueError.value = true;
+        showNoSelectValueError.value = !showNoSelectValueError.value;
         return false;
       }
       const res = await validateUsingItemValues();
@@ -572,10 +573,14 @@ export default defineComponent({
     function inputFocusForWrapper() {
       inputRef.value?.focus();
     }
+    function inputEnterForWrapper() {
+      handleKeyEnter().then(v => v && clearInput());
+    }
 
     // expose
     expose({
       inputFocusForWrapper,
+      inputEnterForWrapper,
       handleInputFocus,
       isFocus,
     });
@@ -604,6 +609,8 @@ export default defineComponent({
       handleSelectCondtionItem,
       handleMenuFooterClick,
       resolveClassName,
+      inputFocusForWrapper,
+      inputEnterForWrapper,
       t,
     };
   },

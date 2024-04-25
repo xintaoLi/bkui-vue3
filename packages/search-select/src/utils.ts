@@ -53,6 +53,7 @@ export interface ISearchSelectProvider {
   onValidate: (str: string) => void;
   editKey: Ref<String>;
   searchData: ComputedRef<ISearchItem[]>;
+  isClickOutside: (target: Node) => boolean;
 }
 export const SEARCH_SLECT_PROVIDER_KEY: InjectionKey<ISearchSelectProvider> = Symbol('SEARCH_SLECT_PROVIDER_KEY');
 export const useSearchSelectProvider = (data: ISearchSelectProvider) => {
