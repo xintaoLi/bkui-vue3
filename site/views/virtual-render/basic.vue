@@ -18,7 +18,6 @@
       :list="randomRows"
       :line-height="30"
       :height="300"
-      :enabled="false"
     >
       <template #default="{data}">
         <div
@@ -83,8 +82,7 @@
           },
         ],
         scrollbar: {
-          enabled: false,
-          keepStruct: false,
+          enabled: true,
         },
       };
     },

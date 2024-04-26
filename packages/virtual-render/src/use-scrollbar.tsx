@@ -33,8 +33,8 @@ export default (target: Ref<HTMLElement>, props: VirtualRenderProps) => {
   let instance: BkSimpleBar = null;
   const { resolveClassName } = usePrefix();
   const classNames = {
-    contentEl: resolveClassName('scroll-content-el'),
-    wrapper: resolveClassName('scroll-wrapper'),
+    contentEl: resolveClassName('scrollbar-content-el'),
+    wrapper: resolveClassName('scrollbar-wrapper'),
     scrollbar: resolveClassName('scrollbar'),
     track: resolveClassName('scrollbar-track'),
     visible: resolveClassName('scrollbar-visible'),
@@ -47,10 +47,15 @@ export default (target: Ref<HTMLElement>, props: VirtualRenderProps) => {
     mouseEntered: resolveClassName('scrollbar-mouse-entered'),
   };
 
-  const init = (_scrollFn?) => {
+  const init = (scrollFn?, delegateXContent?, delegateYContent?) => {
     instance = new BkSimpleBar(target.value, {
       classNames,
       wrapperNode: target.value,
+      useSystemScrollYBehavior: !props.enabled,
+      useSystemScrollXBehavior: true,
+      delegateXContent,
+      delegateYContent,
+      onScrollCallback: scrollFn,
     });
     // instance.getScrollElement().addEventListener('scroll', scrollFn);
   };

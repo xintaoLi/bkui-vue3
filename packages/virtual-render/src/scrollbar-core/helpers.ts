@@ -23,8 +23,6 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import type { SimpleBarOptions } from '.';
-
 export function getElementWindow(element: Element) {
   return element?.ownerDocument?.defaultView ?? window;
 }
@@ -32,38 +30,6 @@ export function getElementWindow(element: Element) {
 export function getElementDocument(element: Element) {
   return element?.ownerDocument ?? document;
 }
-
-// Helper function to retrieve options from element attributes
-export const getOptions = function (obj: any) {
-  const initialObj: SimpleBarOptions = {};
-
-  const options = Array.prototype.reduce.call(
-    obj,
-    (acc: any, attribute) => {
-      const option = attribute.name.match(/data-simplebar-(.+)/);
-      if (option) {
-        const key: keyof SimpleBarOptions = option[1].replace(/\W+(.)/g, (_: any, chr: string) => chr.toUpperCase());
-
-        switch (attribute.value) {
-          case 'true':
-            acc[key] = true;
-            break;
-          case 'false':
-            acc[key] = false;
-            break;
-          case undefined:
-            acc[key] = true;
-            break;
-          default:
-            acc[key] = attribute.value;
-        }
-      }
-      return acc;
-    },
-    initialObj,
-  );
-  return options as SimpleBarOptions;
-};
 
 export function addClasses(el: HTMLElement | null, classes: string) {
   if (!el) return;

@@ -25,91 +25,15 @@
  */
 import SimpleBarCore from './scrollbar-core';
 
-const { getOptions, addClasses, classNamesToQuery } = SimpleBarCore.helpers;
-
-const canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+const { addClasses, classNamesToQuery } = SimpleBarCore.helpers;
 
 export default class BkSimpleBar extends SimpleBarCore {
   static globalObserver: MutationObserver;
 
   static instances = new WeakMap();
 
-  static initDOMLoadedElements() {
-    document.removeEventListener('DOMContentLoaded', this.initDOMLoadedElements);
-    window.removeEventListener('load', this.initDOMLoadedElements);
-
-    Array.prototype.forEach.call(document.querySelectorAll('[data-simplebar]'), el => {
-      if (el.getAttribute('data-simplebar') !== 'init' && !BkSimpleBar.instances.has(el))
-        new BkSimpleBar(el, getOptions(el.attributes));
-    });
-  }
-
   static removeObserver() {
     BkSimpleBar.globalObserver?.disconnect();
-  }
-
-  static initHtmlApi() {
-    this.initDOMLoadedElements = this.initDOMLoadedElements.bind(this);
-
-    // MutationObserver is IE11+
-    if (typeof MutationObserver !== 'undefined') {
-      // Mutation observer to observe dynamically added elements
-      this.globalObserver = new MutationObserver(BkSimpleBar.handleMutations);
-
-      this.globalObserver.observe(document, { childList: true, subtree: true });
-    }
-
-    // Taken from jQuery `ready` function
-    // Instantiate elements already present on the page
-    if (
-      document.readyState === 'complete' || // @ts-ignore: IE specific
-      (document.readyState !== 'loading' && !document.documentElement.doScroll)
-    ) {
-      // Handle it asynchronously to allow scripts the opportunity to delay init
-      window.setTimeout(this.initDOMLoadedElements);
-    } else {
-      document.addEventListener('DOMContentLoaded', this.initDOMLoadedElements);
-      window.addEventListener('load', this.initDOMLoadedElements);
-    }
-  }
-
-  static handleMutations(mutations: MutationRecord[]) {
-    mutations.forEach(mutation => {
-      mutation.addedNodes.forEach(addedNode => {
-        if (addedNode.nodeType === 1) {
-          if ((addedNode as Element).hasAttribute('data-simplebar')) {
-            !BkSimpleBar.instances.has(addedNode) &&
-              document.documentElement.contains(addedNode) &&
-              new BkSimpleBar(addedNode as HTMLElement, getOptions((addedNode as Element).attributes));
-          } else {
-            (addedNode as Element).querySelectorAll('[data-simplebar]').forEach(el => {
-              if (
-                el.getAttribute('data-simplebar') !== 'init' &&
-                !BkSimpleBar.instances.has(el) &&
-                document.documentElement.contains(el)
-              )
-                new BkSimpleBar(el as HTMLElement, getOptions(el.attributes));
-            });
-          }
-        }
-      });
-
-      mutation.removedNodes.forEach(removedNode => {
-        if (removedNode.nodeType === 1) {
-          if ((removedNode as Element).getAttribute('data-simplebar') === 'init') {
-            BkSimpleBar.instances.has(removedNode) &&
-              !document.documentElement.contains(removedNode) &&
-              BkSimpleBar.instances.get(removedNode).unMount();
-          } else {
-            Array.prototype.forEach.call((removedNode as Element).querySelectorAll('[data-simplebar="init"]'), el => {
-              BkSimpleBar.instances.has(el) &&
-                !document.documentElement.contains(el) &&
-                BkSimpleBar.instances.get(el).unMount();
-            });
-          }
-        }
-      });
-    });
   }
 
   constructor(...args: ConstructorParameters<typeof SimpleBarCore>) {
@@ -120,14 +44,10 @@ export default class BkSimpleBar extends SimpleBarCore {
   }
 
   initDOM() {
-    // make sure this element doesn't have the elements yet
-    if (
-      !Array.prototype.filter.call(this.el.children, child => child.classList.contains(this.classNames.wrapper)).length
-    ) {
-      // Prepare DOM
-      this.wrapperEl = this.options.wrapperNode ?? this.createScrollElement(this.classNames.wrapper);
-      this.contentEl = this.options.contentNode ?? this.createScrollElement(this.classNames.contentEl);
-    }
+    this.wrapperEl = this.options.wrapperNode ?? this.createScrollElement(this.classNames.wrapper);
+    this.contentEl = this.options.contentNode ?? this.createScrollElement(this.classNames.contentEl);
+    this.delegateXContent = this.options.delegateXContent;
+    this.delegateYContent = this.options.delegateYContent;
 
     if (!this.axis.x.track.el || !this.axis.y.track.el) {
       const track = document.createElement('div');
@@ -149,8 +69,6 @@ export default class BkSimpleBar extends SimpleBarCore {
     }
 
     SimpleBarCore.prototype.initDOM.call(this);
-
-    this.el.setAttribute('data-simplebar', 'init');
   }
 
   unMount() {
@@ -169,12 +87,4 @@ export default class BkSimpleBar extends SimpleBarCore {
 
     return (origin ?? createEl()) as HTMLElement;
   }
-}
-
-/**
- * HTML API
- * Called only in a browser env.
- */
-if (canUseDOM) {
-  BkSimpleBar.initHtmlApi();
 }

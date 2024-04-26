@@ -41,9 +41,13 @@ interface Options {
   ariaLabel: string;
   scrollableNode: HTMLElement | null;
   contentNode: HTMLElement | null;
+  delegateYContent: HTMLElement | null;
+  delegateXContent: HTMLElement | null;
   wrapperNode: HTMLElement | null;
   autoHide: boolean;
-  useSystemScrollBehavior?: boolean;
+  useSystemScrollXBehavior?: boolean;
+  useSystemScrollYBehavior?: boolean;
+  onScrollCallback?: (args: { x: number; y: number }) => void;
 }
 
 export type SimpleBarOptions = Partial<Options>;
@@ -104,7 +108,7 @@ type MouseWheelInstance = {
   removeWheelEvent: (target: HTMLElement) => void;
 };
 
-const { getElementWindow, getElementDocument, getOptions, addClasses, removeClasses, classNamesToQuery } = helpers;
+const { getElementWindow, getElementDocument, addClasses, removeClasses, classNamesToQuery } = helpers;
 
 export default class SimpleBarCore {
   static rtlHelpers: RtlHelpers = null;
@@ -132,22 +136,27 @@ export default class SimpleBarCore {
     scrollableNode: null,
     contentNode: null,
     wrapperNode: null,
+    /**
+     * 如果是自定义虚拟滚动，content可能是position absolute，此时需要一个实际支撑的元素
+     */
+    delegateXContent: null,
+    delegateYContent: null,
     autoHide: true,
-    useSystemScrollBehavior: true,
+    useSystemScrollXBehavior: true,
+    useSystemScrollYBehavior: true,
+    onScrollCallback: null,
   };
 
   /**
    * Static functions
    */
 
-  static getOptions = getOptions;
   static helpers = helpers;
 
   /**
    * Helper to fix browsers inconsistency on RTL:
    *  - Firefox inverts the scrollbar initial position
    *  - IE11 inverts both scrollbar position and scrolling offset
-   * Directly inspired by @KingSora's OverlayScrollbars https://github.com/KingSora/OverlayScrollbars/blob/master/js/OverlayScrollbars.js#L1634
    */
   static getRtlHelpers() {
     if (SimpleBarCore.rtlHelpers) {
@@ -213,6 +222,9 @@ export default class SimpleBarCore {
   scrollYTicking = false;
   wrapperEl: HTMLElement | null = null;
   contentEl: HTMLElement | null = null;
+  delegateXContent: HTMLElement | null = null;
+  delegateYContent: HTMLElement | null = null;
+
   rtlHelpers: RtlHelpers = null;
   scrollbarWidth = 0;
   resizeObserver: ResizeObserver | null = null;
@@ -223,6 +235,19 @@ export default class SimpleBarCore {
   mouseY = 0;
   mouseWheelInstance: MouseWheelInstance = null;
   wheelOffset = 0;
+  mouseWeelTimer;
+  /**
+   * 最外层滚动容器滚动实际位置缓存器
+   */
+  wrapperScrollValue = {
+    scrollTop: 0,
+    scrollLeft: 0,
+  };
+
+  /**
+   * 模拟滚动条内部缩略滚动器滚动位置缓存器
+   */
+  wrapperScrollMap = {};
 
   onMouseMove: DebouncedFunc<any> | (() => void) = () => {};
   onWindowResize: DebouncedFunc<any> | (() => void) = () => {};
@@ -275,8 +300,7 @@ export default class SimpleBarCore {
     this.onWindowResize = debounce(this._onWindowResize, 64, { leading: true });
     this.onStopScrolling = debounce(this._onStopScrolling, this.stopScrollDelay);
     this.onMouseEntered = debounce(this._onMouseEntered, this.stopScrollDelay);
-    this.onMouseWheel = throttle(this._onMouseWheel, 0);
-    this.mouseWheelInstance = resolveWheelEvent(this.onMouseWheel);
+    this.mouseWheelInstance = resolveWheelEvent(this._onMouseWheel);
 
     this.init();
   }
@@ -369,6 +393,13 @@ export default class SimpleBarCore {
 
       this.resizeObserver.observe(this.el);
       this.resizeObserver.observe(this.contentEl);
+      if (this.delegateXContent) {
+        this.resizeObserver.observe(this.delegateXContent);
+      }
+
+      if (this.delegateYContent) {
+        this.resizeObserver.observe(this.delegateYContent);
+      }
 
       elWindow.requestAnimationFrame(() => {
         resizeObserverStarted = true;
@@ -438,7 +469,15 @@ export default class SimpleBarCore {
       return 0;
     }
 
-    const contentSize = this.contentEl[this.axis[axis].scrollSizeAttr];
+    const getContentTarget = () => {
+      if (axis === 'x') {
+        return this.options.delegateXContent ?? this.contentEl;
+      }
+
+      return this.options.delegateYContent ?? this.contentEl;
+    };
+
+    const contentSize = getContentTarget()[this.axis[axis].scrollSizeAttr];
     const trackSize = this.axis[axis].track.el?.[this.axis[axis].offsetSizeAttr] ?? 0;
     const scrollbarRatio = trackSize / contentSize;
 
@@ -465,7 +504,7 @@ export default class SimpleBarCore {
     const trackSize = this.axis[axis].track.el?.[this.axis[axis].offsetSizeAttr] || 0;
     const hostSize = parseInt(this.elStyles[this.axis[axis].sizeAttr], 10);
 
-    let scrollOffset = this.wrapperEl[this.axis[axis].scrollOffsetAttr];
+    let scrollOffset = this.wrapperScrollValue[this.axis[axis].scrollOffsetAttr];
 
     scrollOffset =
       axis === 'x' && this.isRtl && SimpleBarCore.getRtlHelpers()?.isScrollOriginAtZero ? -scrollOffset : scrollOffset;
@@ -478,6 +517,9 @@ export default class SimpleBarCore {
 
     let handleOffset = ~~((trackSize - scrollbar.size) * scrollPourcent);
     handleOffset = axis === 'x' && this.isRtl ? -handleOffset + (trackSize - scrollbar.size) : handleOffset;
+
+    const scrollAttr = this.axis[axis].scrollOffsetAttr;
+    Object.assign(this.wrapperScrollMap, { [scrollAttr]: handleOffset });
 
     scrollbar.el.style.transform =
       axis === 'x' ? `translate3d(${handleOffset}px, 0, 0)` : `translate3d(0, ${handleOffset}px, 0)`;
@@ -565,11 +607,22 @@ export default class SimpleBarCore {
   };
 
   _onMouseWheel = args => {
-    this.wheelOffset = this.wheelOffset + args.y;
-    if (this.scrollTo(this.wheelOffset, 'y')) {
+    const nextPostiion = this.wheelOffset + args.y;
+    if (this.scrollToAxisPosition(nextPostiion, 'y')) {
       args.evt.stopPropagation();
       args.evt.preventDefault();
       args.evt.stopImmediatePropagation();
+
+      this.showScrollbar('y');
+
+      if (this.mouseWeelTimer) {
+        clearTimeout(this.mouseWeelTimer);
+        this.mouseWeelTimer = null;
+      }
+
+      this.mouseWeelTimer = setTimeout(() => {
+        this.hideScrollbar('y');
+      }, 200);
     }
   };
 
@@ -583,6 +636,7 @@ export default class SimpleBarCore {
   };
 
   onMouseEnter = () => {
+    this.mouseWeelTimer && clearTimeout(this.mouseWeelTimer);
     if (!this.isMouseEntering) {
       addClasses(this.el, this.classNames.mouseEntered);
       this.showScrollbar('x');
@@ -628,10 +682,14 @@ export default class SimpleBarCore {
       if (this.isWithinBounds(currentAxis.scrollbar.rect)) {
         addClasses(currentAxis.scrollbar.el, this.classNames.hover);
       } else {
-        removeClasses(currentAxis.scrollbar.el, this.classNames.hover);
+        if (!this.isDragging) {
+          removeClasses(currentAxis.scrollbar.el, this.classNames.hover);
+        }
       }
     } else {
-      removeClasses(currentAxis.track.el, this.classNames.hover);
+      if (!this.isDragging) {
+        removeClasses(currentAxis.track.el, this.classNames.hover);
+      }
       if (this.options.autoHide) {
         this.hideScrollbar(axis);
       }
@@ -654,6 +712,9 @@ export default class SimpleBarCore {
   };
 
   onMouseLeaveForAxis(axis: Axis = 'y') {
+    if (this.isDragging) {
+      return;
+    }
     removeClasses(this.axis[axis].track.el, this.classNames.hover);
     removeClasses(this.axis[axis].scrollbar.el, this.classNames.hover);
     if (this.options.autoHide) {
@@ -748,10 +809,7 @@ export default class SimpleBarCore {
 
     let eventOffset;
     const { track } = this.axis[this.draggedAxis];
-    const trackSize = track.rect?.[this.axis[this.draggedAxis].sizeAttr] ?? 0;
     const { scrollbar } = this.axis[this.draggedAxis];
-    const contentSize = this.wrapperEl?.[this.axis[this.draggedAxis].scrollSizeAttr] ?? 0;
-    const hostSize = parseInt(this.elStyles?.[this.axis[this.draggedAxis].sizeAttr] ?? '0px', 10);
 
     e.preventDefault();
     e.stopPropagation();
@@ -771,6 +829,18 @@ export default class SimpleBarCore {
       this.draggedAxis === 'x' && this.isRtl
         ? (track.rect?.[this.axis[this.draggedAxis].sizeAttr] ?? 0) - scrollbar.size - dragPos
         : dragPos;
+
+    const scrollPos = this.getPointerPosition(dragPos, this.draggedAxis);
+    this.scrollToAxisPosition(scrollPos, this.draggedAxis);
+  };
+
+  getPointerPosition = (dragPos: number, axis: Axis) => {
+    const { track } = this.axis[axis];
+    const trackSize = track.rect?.[this.axis[axis].sizeAttr] ?? 0;
+    const { scrollbar } = this.axis[axis];
+    const contentSize = this.wrapperEl?.[this.axis[axis].scrollSizeAttr] ?? 0;
+    const hostSize = parseInt(this.elStyles?.[this.axis[axis].sizeAttr] ?? '0px', 10);
+
     // Convert the mouse position into a percentage of the scrollbar height/width.
     const dragPerc = dragPos / (trackSize - scrollbar.size);
 
@@ -778,22 +848,40 @@ export default class SimpleBarCore {
     let scrollPos = dragPerc * (contentSize - hostSize);
 
     // Fix browsers inconsistency on RTL
-    if (this.draggedAxis === 'x' && this.isRtl) {
+    if (axis === 'x' && this.isRtl) {
       scrollPos = SimpleBarCore.getRtlHelpers()?.isScrollingToNegative ? -scrollPos : scrollPos;
     }
 
-    this.scrollTo(scrollPos, this.draggedAxis);
+    return scrollPos;
   };
 
-  scrollTo = (scrollPos: number, axisValue?: Axis) => {
-    const isAvailablePosRange = () => {
-      if (axisValue === 'y') {
-        return scrollPos < this.wrapperEl.scrollHeight - this.wrapperEl.offsetHeight;
+  scrollToAxisPosition = (scrollPos: number, axisValue: Axis) => {
+    const getFormatPosition = () => {
+      if (scrollPos < 0) {
+        return 0;
       }
 
-      return scrollPos < this.wrapperEl.scrollWidth - this.wrapperEl.offsetWidth;
+      if (axisValue === 'y') {
+        const diffHeight = this.wrapperEl.scrollHeight - this.wrapperEl.offsetHeight;
+        return scrollPos >= diffHeight ? diffHeight : scrollPos;
+      }
+
+      const diffWidth = this.wrapperEl.scrollWidth - this.wrapperEl.offsetWidth;
+      return scrollPos >= diffWidth ? diffWidth : scrollPos;
     };
 
+    const scrollAttr = this.axis[axisValue].scrollOffsetAttr;
+    const resolvedValue = getFormatPosition();
+    const scrollValue = this.wrapperScrollValue[scrollAttr] ?? 0;
+
+    if (scrollValue !== resolvedValue) {
+      this.fixedScrollTo(axisValue, resolvedValue);
+      return true;
+    }
+
+    return false;
+  };
+  fixedScrollTo = (axisValue: Axis, resolvedValue: number) => {
     const getStyleValue = (key: string) => {
       const xValue = this.axis[key].track.el.style.getPropertyValue('--scroll-offset-x');
       const yValye = this.axis[key].track.el.style.getPropertyValue('--scroll-offset-y');
@@ -801,10 +889,13 @@ export default class SimpleBarCore {
       return [xValue ? xValue : '0px', yValye ? yValye : '0px'];
     };
 
-    if (scrollPos >= 0 && isAvailablePosRange()) {
-      if (this.options.useSystemScrollBehavior) {
-        this.wrapperEl[this.axis[axisValue].scrollOffsetAttr] = scrollPos;
-      }
+    const scrollAttr = this.axis[axisValue].scrollOffsetAttr;
+    Object.assign(this.wrapperScrollValue, { [scrollAttr]: resolvedValue });
+    if (
+      (this.options.useSystemScrollXBehavior && axisValue === 'x') ||
+      (this.options.useSystemScrollYBehavior && axisValue === 'y')
+    ) {
+      this.wrapperEl[scrollAttr] = resolvedValue;
 
       const [verticalX, verticalY] = getStyleValue('y');
       const [horiX, horiY] = getStyleValue('x');
@@ -820,16 +911,22 @@ export default class SimpleBarCore {
       };
 
       ['x', 'y'].forEach(key => {
-        old[key][axisValue] = `${scrollPos}px`;
+        old[key][axisValue] = `${resolvedValue}px`;
         this.axis[key].track.el.style.setProperty('--scroll-offset-x', old[key].x);
         this.axis[key].track.el.style.setProperty('--scroll-offset-y', old[key].y);
       });
-
-      this.positionScrollbar(axisValue);
-      return true;
     }
 
-    return false;
+    if (axisValue === 'y') {
+      this.wheelOffset = resolvedValue;
+    }
+
+    this.options?.onScrollCallback?.({
+      x: this.wrapperScrollValue.scrollLeft,
+      y: this.wrapperScrollValue.scrollTop,
+    });
+
+    this.positionScrollbar(axisValue);
   };
 
   /**
@@ -853,6 +950,7 @@ export default class SimpleBarCore {
       elDocument.removeEventListener('click', this.preventClick, true);
       elDocument.removeEventListener('dblclick', this.preventClick, true);
       this.removePreventClickId = null;
+      removeClasses(this.axis[this.draggedAxis].track.el, this.classNames.hover);
     });
   };
 
@@ -875,27 +973,33 @@ export default class SimpleBarCore {
     this.axis[axis].scrollbar.rect = currentAxis.scrollbar.el.getBoundingClientRect();
     const { scrollbar } = this.axis[axis];
     const scrollbarOffset = scrollbar.rect?.[this.axis[axis].offsetAttr] ?? 0;
-    const hostSize = parseInt(this.elStyles?.[this.axis[axis].sizeAttr] ?? '0px', 10);
-    let scrolled = this.wrapperEl[this.axis[axis].scrollOffsetAttr];
+
+    const rect = this.wrapperEl.getBoundingClientRect();
+
+    // 获取鼠标相对于视口的位置
+    const x = e.clientX;
+    const y = e.clientY;
+
+    // 计算鼠标相对于目标元素的相对位置
+    const relativeX = x - rect.left;
+    const relativeY = y - rect.top;
+
+    const hostSize = axis === 'y' ? relativeY : relativeX;
+
+    let scrolled = this.wrapperScrollMap[this.axis[axis].scrollOffsetAttr] ?? 0;
     const t = axis === 'y' ? this.mouseY - scrollbarOffset : this.mouseX - scrollbarOffset;
     const dir = t < 0 ? -1 : 1;
-    const scrollSize = dir === -1 ? scrolled - hostSize : scrolled + hostSize;
-    const speed = 40;
+    let scrollSize = dir === -1 ? scrolled - hostSize : hostSize - scrolled;
+    const speed = scrollSize > 40 ? 40 : scrollSize;
 
     const scrollTo = () => {
       if (!this.wrapperEl) return;
-      if (dir === -1) {
-        if (scrolled > scrollSize) {
-          scrolled -= speed;
-          this.wrapperEl[this.axis[axis].scrollOffsetAttr] = scrolled;
-          elWindow.requestAnimationFrame(scrollTo);
-        }
-      } else {
-        if (scrolled < scrollSize) {
-          scrolled += speed;
-          this.wrapperEl[this.axis[axis].scrollOffsetAttr] = scrolled;
-          elWindow.requestAnimationFrame(scrollTo);
-        }
+      if (scrollSize > 0) {
+        scrolled = scrolled + dir * speed;
+        scrollSize -= speed;
+        const resolvedValue = this.getPointerPosition(scrolled, axis);
+        this.scrollToAxisPosition(resolvedValue, axis);
+        elWindow.requestAnimationFrame(scrollTo);
       }
     };
 

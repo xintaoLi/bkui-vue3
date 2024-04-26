@@ -25,8 +25,6 @@
  */
 import { computed, h, onMounted, onUnmounted, reactive, ref } from 'vue';
 
-import { usePrefix } from '@bkui-vue/config-provider';
-
 import { VirtualRenderProps } from './props';
 import useFixTop from './use-fix-top';
 import useScrollbar from './use-scrollbar';
@@ -93,10 +91,9 @@ export default (props: VirtualRenderProps, ctx) => {
     renderInstance?.uninstall();
   });
 
-  const { resolveClassName } = usePrefix();
   const wrapperClassNames = computed(() => {
     if (props.scrollbar.enabled) {
-      return [resolveClassName('scrollbar-wrapper'), props.className, classNames.wrapper];
+      return [props.className, classNames.wrapper];
     }
 
     return [props.className];
@@ -104,7 +101,7 @@ export default (props: VirtualRenderProps, ctx) => {
 
   const contentClassNames = computed(() => {
     if (props.scrollbar.enabled) {
-      return [resolveClassName('scrollbar-content'), props.contentClassName, classNames.contentEl];
+      return [props.contentClassName, classNames.contentEl];
     }
 
     return [props.contentClassName];

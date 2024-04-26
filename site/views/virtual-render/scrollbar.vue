@@ -85,7 +85,6 @@
         ],
         scrollbar: {
           enabled: true,
-          keepStruct: false,
         },
       };
     },
