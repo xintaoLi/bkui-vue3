@@ -60,7 +60,6 @@ export default (
   props: TablePropTypes,
   context: SetupContext<any>,
   tableResp: ITableResponse,
-  styleRef,
   head,
   root,
   resetTableHeight,
