@@ -160,8 +160,6 @@
     "json-formatter-js": "~2.3.4",
     "lodash": "~4.17.21",
     "npm": "~10.5.2",
-    "simplebar": "~6.2.5",
-    "simplebar-core": "~1.2.4",
     "tinycolor2": "~1.6.0",
     "vue-types": "~4.1.1"
   }
