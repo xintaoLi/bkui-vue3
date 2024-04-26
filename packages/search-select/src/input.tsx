@@ -409,6 +409,7 @@ export default defineComponent({
         typeof props.getMenuList === 'function' &&
         ((!props.data?.length && !usingItem.value) ||
           (usingItem.value &&
+            usingItem.value.type !== 'condition' &&
             (usingItem.value.searchItem?.async === undefined || usingItem.value.searchItem.async === true)))
       ) {
         loading.value = true;
