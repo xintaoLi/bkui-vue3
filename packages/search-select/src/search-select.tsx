@@ -45,7 +45,7 @@ import { debounce } from '@bkui-vue/shared';
 import SearchSelectInput from './input';
 import SearchSelected from './selected';
 import {
-  DeleteBehavior,
+  // DeleteBehavior,
   GetMenuListFunc,
   ICommonItem,
   ISearchItem,
