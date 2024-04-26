@@ -45,6 +45,7 @@ import { debounce } from '@bkui-vue/shared';
 import SearchSelectInput from './input';
 import SearchSelected from './selected';
 import {
+  DeleteBehavior,
   GetMenuListFunc,
   ICommonItem,
   ISearchItem,
@@ -102,6 +103,13 @@ export const SearchSelectProps = {
       return [ValueBehavior.ALL, ValueBehavior.NEEDKEY].includes(v);
     },
   },
+  // deleteBehavior: {
+  //   type: String as PropType<`${DeleteBehavior}`>,
+  //   default: DeleteBehavior.CHAR,
+  //   validator(v: DeleteBehavior) {
+  //     return [DeleteBehavior.CHAR, DeleteBehavior.VALUE].includes(v);
+  //   },
+  // },
 };
 export default defineComponent({
   name: 'SearchSelect',

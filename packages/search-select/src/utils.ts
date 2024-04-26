@@ -37,6 +37,10 @@ export enum ValueBehavior {
   ALL = 'all',
   NEEDKEY = 'need-key',
 }
+export enum DeleteBehavior {
+  CHAR = 'delete-char',
+  VALUE = 'delete-value',
+}
 export type GetMenuListFunc = (item: ISearchItem, keyword: string) => Promise<ISearchItem[]>;
 export type ValidateValuesFunc = (item: ISearchItem, values: ICommonItem[]) => Promise<string | true>;
 export type MenuSlotParams = {
@@ -79,6 +83,8 @@ export interface ISearchValue extends Omit<ICommonItem, 'disabled' | 'value'> {
   type?: SearchItemType;
   values?: Omit<ICommonItem, 'disabled' | 'logical'>[];
 }
+export const ValueSplitRegex = /(\||,|、|\/|\r\n|\n)/gm;
+export const ValueSplitTestRegex = /^(\||,|、|\/|\r\n|\n)$/;
 
 export interface ISearchItem {
   id: string;
@@ -189,7 +195,7 @@ export class SelectedItem {
     if (!list?.length) return [];
     const findChildByName = (name: string) => this.children.find(item => item.name === name);
     if (!this.multiple) {
-      const val = list.join(this.logical).trim();
+      const val = list.join(` ${this.logical} `).trim();
       const item = findChildByName(val);
       return [
         {
@@ -212,15 +218,11 @@ export class SelectedItem {
     });
   }
   addValues(str: string, mergeValues = true) {
-    const list = this.str2Values(
-      str
-        .split(/(\s|\||,|、|\/|\n\r|\n)/gm)
-        .filter(v => !!v.trim())
-        .concat(this.values.map(item => (mergeValues ? item.name : '')))
-        .filter(v => !!v.trim())
-        .join(this.logical),
-    );
-    this.values = list;
+    const valuesFromStr = str.split(ValueSplitRegex).filter(v => v.trim() && !ValueSplitTestRegex.test(v));
+    const currentValues = mergeValues ? this.values.map(item => item.name) : [];
+    const combinedValues = [...valuesFromStr, ...currentValues];
+    const logicalString = combinedValues.filter(v => v.trim()).join(this.logical);
+    this.values = this.str2Values(logicalString);
   }
   getValue(str: string) {
     return this.values.find(item => item.id === str) || this.values.find(item => item.name === str);
