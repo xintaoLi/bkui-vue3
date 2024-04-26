@@ -1,5 +1,16 @@
 ## 更新日志
 
+### 1.0.3-beta.47.scrollbar.1
+
+* **[feat]**:
+    feat: 增加scrollbar配置
+
+
+### 1.0.3-beta.43
+
+* **[feat]**:
+    - feat(table & modal): table row-key计算逻辑调整 & modal unmounted处理逻辑调整 & modal hidden delay设置 & table column node context获取逻辑判定
+
 
 ### 1.0.3-beta.42
 
