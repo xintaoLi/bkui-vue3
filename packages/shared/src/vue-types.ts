@@ -295,7 +295,7 @@ export class PropTypes extends propTypesNS {
   static timelineNodeType() {
     const types = ['template', 'vnode'] as const;
     return toType<`${TimelineNodeTypeEnum}`>('TimelineNodeType', {
-      validator:(val: `${TimelineNodeTypeEnum}`) => {
+      validator: (val: `${TimelineNodeTypeEnum}`) => {
         if (!val || types.includes(val)) {
           return true;
         }
