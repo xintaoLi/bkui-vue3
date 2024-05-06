@@ -242,7 +242,7 @@ export default class BkScrollbarCore {
   };
   draggedAxis?: Axis;
   removePreventClickId: null | number = null;
-  minScrollbarWidth = 12;
+  minScrollbarWidth = 8;
   stopScrollDelay = 175;
   isScrolling = false;
   isMouseEntering = false;

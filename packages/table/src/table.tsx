@@ -84,11 +84,9 @@ export default defineComponent({
       wrapperStyle,
       contentStyle,
       headStyle,
-      // hasScrollYRef,
       hasFooter,
       footerStyle,
       tableBodyClass,
-      // fixedBottomBorder,
       resizeColumnClass,
       tableBodyContentClass,
       loadingRowClass,
@@ -108,10 +106,6 @@ export default defineComponent({
 
     const { resolveClassName } = usePrefix();
 
-    // const styleRef = computed(() => ({
-    //   hasScrollY: hasScrollYRef.value,
-    // }));
-
     useObserverResize(root, () => {
       nextTick(() => {
         resolveFixedColumns(tableOffsetRight.value);
@@ -122,7 +116,6 @@ export default defineComponent({
       props,
       ctx as SetupContext<any>,
       tableSchema,
-      // styleRef,
       head,
       root,
       resetTableHeight,
@@ -149,14 +142,13 @@ export default defineComponent({
       tableSchema.formatColumns(columns as Column[]);
       resolveFixedColumns(tableOffsetRight.value);
       tableSchema.setIndexData().then(() => {
-        // tableSchema.formatDataSchema(props.data);
         tableSchema.resetStartEndIndex();
 
         if (isFirstLoad.value) {
           tableSchema.resolveByDefColumns();
           isFirstLoad.value = false;
         } else {
-          tableSchema.resolvePageData();
+          tableSchema.resolvePageData(tableSchema.getFilterFnList());
         }
 
         registerResizeEvent();
@@ -293,7 +285,6 @@ export default defineComponent({
             beforeContent: () => renderPrepend(),
             default: (scope: any) => renderTableBodySchema(scope.data),
             afterSection: () => [
-              // <div class={fixedBottomBorder.value}></div>,
               <div
                 class={resizeColumnClass}
                 style={resizeColumnStyle.value}

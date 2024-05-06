@@ -24,7 +24,7 @@
  * IN THE SOFTWARE.
  */
 import { v4 as uuidv4 } from 'uuid';
-import { reactive } from 'vue';
+import { reactive, watch } from 'vue';
 
 import { useLocale } from '@bkui-vue/config-provider';
 
@@ -97,6 +97,8 @@ const tableSchemaResponse = (props: TablePropTypes) => {
     localPagination,
     resolvePageData,
     resolvePageDataBySortList,
+    handlePaginationChange,
+    getCurrentPageData,
     multiFilter,
     sort,
     resetStartEndIndex,
@@ -224,12 +226,14 @@ const tableSchemaResponse = (props: TablePropTypes) => {
 
   const getColumnFilterFn = (col: Column) => getColumnAttribute(col, COLUMN_ATTRIBUTE.COL_FILTER_FN);
 
-  const filter = () => {
-    const filterFnList = formatData.columns
+  const getFilterFnList = () => {
+    return formatData.columns
       .filter(col => !isHiddenColumn(col) && typeof getColumnFilterFn(col) === 'function')
       .map(col => getColumnFilterFn(col));
+  };
 
-    multiFilter(filterFnList);
+  const filter = () => {
+    multiFilter(getFilterFnList(), getCurrentPageData());
   };
 
   /**
@@ -724,6 +728,16 @@ const tableSchemaResponse = (props: TablePropTypes) => {
     return resolveIndexData();
   };
 
+  watch(
+    () => [props.pagination],
+    () => {
+      handlePaginationChange(getFilterFnList());
+    },
+    {
+      deep: true,
+    },
+  );
+
   return {
     formatColumns,
     formatDataSchema,
@@ -762,6 +776,7 @@ const tableSchemaResponse = (props: TablePropTypes) => {
     localPagination,
     formatData,
     setIndexData,
+    getFilterFnList,
   };
 };
 
