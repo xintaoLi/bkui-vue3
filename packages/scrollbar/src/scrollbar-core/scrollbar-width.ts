@@ -44,18 +44,7 @@ export default function scrollbarWidth() {
       return cachedScrollbarWidth;
     }
 
-    // const { body } = document;
-    // const box = document.createElement('div');
-
-    // box.classList.add('simplebar-hide-scrollbar');
-
-    // body.appendChild(box);
-
-    // const width = box.getBoundingClientRect().right;
-
-    // body.removeChild(box);
-
-    cachedScrollbarWidth = 12;
+    cachedScrollbarWidth = 8;
   }
 
   return cachedScrollbarWidth;

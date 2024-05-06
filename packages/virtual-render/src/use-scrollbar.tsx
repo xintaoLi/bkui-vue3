@@ -27,12 +27,12 @@
 import { Ref } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
+import BkScrollbar from '@bkui-vue/scrollbar';
 
-import BkSimpleBar from './bk-scrollbar';
 import { VirtualRenderProps } from './props';
 
 export default (target: Ref<HTMLElement>, props: VirtualRenderProps) => {
-  let instance: BkSimpleBar = null;
+  let instance: BkScrollbar = null;
   const { resolveClassName } = usePrefix();
   const classNames = {
     contentEl: resolveClassName('scrollbar-content-el'),
@@ -50,7 +50,7 @@ export default (target: Ref<HTMLElement>, props: VirtualRenderProps) => {
   };
 
   const init = (scrollFn?, delegateXContent?, delegateYContent?) => {
-    instance = new BkSimpleBar(target.value, {
+    instance = new BkScrollbar(target.value, {
       classNames,
       wrapperNode: target.value,
       useSystemScrollYBehavior: !props.enabled,
@@ -59,12 +59,11 @@ export default (target: Ref<HTMLElement>, props: VirtualRenderProps) => {
       delegateYContent,
       onScrollCallback: scrollFn,
     });
-    // instance.getScrollElement().addEventListener('scroll', scrollFn);
   };
 
   const scrollTo = (x, y) => {
     if (props.scrollbar?.enabled) {
-      // instance.s.scrollTo(x, y, 100, { keepStruct: props.scrollbar?.keepStruct ?? false });
+      instance.scrollTo({ left: x, top: y });
       return;
     }
 

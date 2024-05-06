@@ -156,7 +156,7 @@ export const virtualRenderProps = {
    */
   scrollbar: toType<IScrollbarOption>('IScrollbarOption', {
     default: {
-      enabled: false,
+      enabled: true,
     },
   }),
 

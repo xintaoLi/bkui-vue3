@@ -23,24 +23,24 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import SimpleBarCore from './scrollbar-core';
+import BkScrollbarCore from './scrollbar-core';
 
-const { addClasses, classNamesToQuery } = SimpleBarCore.helpers;
+const { addClasses, classNamesToQuery } = BkScrollbarCore.helpers;
 
-export default class BkSimpleBar extends SimpleBarCore {
+export default class BkScrollBar extends BkScrollbarCore {
   static globalObserver: MutationObserver;
 
   static instances = new WeakMap();
 
   static removeObserver() {
-    BkSimpleBar.globalObserver?.disconnect();
+    BkScrollBar.globalObserver?.disconnect();
   }
 
-  constructor(...args: ConstructorParameters<typeof SimpleBarCore>) {
+  constructor(...args: ConstructorParameters<typeof BkScrollbarCore>) {
     super(...args);
 
     // // Save a reference to the instance, so we know this DOM node has already been instancied
-    BkSimpleBar.instances.set(args[0], this);
+    BkScrollBar.instances.set(args[0], this);
   }
 
   initDOM() {
@@ -68,12 +68,17 @@ export default class BkSimpleBar extends SimpleBarCore {
       this.el.appendChild(this.axis.y.track.el);
     }
 
-    SimpleBarCore.prototype.initDOM.call(this);
+    BkScrollbarCore.prototype.initDOM.call(this);
   }
 
   unMount() {
-    SimpleBarCore.prototype.unMount.call(this);
-    BkSimpleBar.instances.delete(this.el);
+    BkScrollbarCore.prototype.unMount.call(this);
+    BkScrollBar.instances.delete(this.el);
+  }
+
+  scrollTo({ left = 0, top = 0 }) {
+    this.scrollToAxisPosition(left, 'x');
+    this.scrollToAxisPosition(top, 'y');
   }
 
   private createScrollElement(className: string): HTMLElement {

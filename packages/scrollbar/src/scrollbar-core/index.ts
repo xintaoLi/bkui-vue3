@@ -127,7 +127,7 @@ type RtlHelpers = {
   // determines if the origin scrollbar position is inverted or not (positioned on left or right)
   isScrollingToNegative: boolean;
 } | null;
-type DefaultOptions = Options & typeof SimpleBarCore.defaultOptions;
+type DefaultOptions = Options & typeof BkScrollbarCore.defaultOptions;
 
 type MouseWheelInstance = {
   addWheelEvent: (target: HTMLElement) => void;
@@ -136,7 +136,7 @@ type MouseWheelInstance = {
 
 const { getElementWindow, getElementDocument, addClasses, removeClasses, classNamesToQuery } = helpers;
 
-export default class SimpleBarCore {
+export default class BkScrollbarCore {
   static rtlHelpers: RtlHelpers = null;
 
   static defaultOptions: Options = {
@@ -146,18 +146,18 @@ export default class SimpleBarCore {
     scrollbarMaxSize: 0,
     ariaLabel: 'scrollable content',
     classNames: {
-      contentEl: 'simplebar-content',
-      wrapper: 'simplebar-wrapper',
-      scrollbar: 'simplebar-scrollbar',
-      track: 'simplebar-track',
-      visible: 'simplebar-visible',
-      horizontal: 'simplebar-horizontal',
-      vertical: 'simplebar-vertical',
-      hover: 'simplebar-hover',
-      dragging: 'simplebar-dragging',
-      scrolling: 'simplebar-scrolling',
-      scrollable: 'simplebar-scrollable',
-      mouseEntered: 'simplebar-mouse-entered',
+      contentEl: 'bk-content',
+      wrapper: 'bk-wrapper',
+      scrollbar: 'bk-scrollbar',
+      track: 'bk-track',
+      visible: 'bk-visible',
+      horizontal: 'bk-horizontal',
+      vertical: 'bk-vertical',
+      hover: 'bk-hover',
+      dragging: 'bk-dragging',
+      scrolling: 'bk-scrolling',
+      scrollable: 'bk-scrollable',
+      mouseEntered: 'bk-mouse-entered',
     },
     scrollableNode: null,
     contentNode: null,
@@ -168,6 +168,9 @@ export default class SimpleBarCore {
     delegateXContent: null,
     delegateYContent: null,
     autoHide: true,
+    /**
+     * X轴或者Y轴是否启用默认的滚动条功能
+     */
     useSystemScrollXBehavior: true,
     useSystemScrollYBehavior: true,
     onScrollCallback: null,
@@ -185,12 +188,12 @@ export default class SimpleBarCore {
    *  - IE11 inverts both scrollbar position and scrolling offset
    */
   static getRtlHelpers() {
-    if (SimpleBarCore.rtlHelpers) {
-      return SimpleBarCore.rtlHelpers;
+    if (BkScrollbarCore.rtlHelpers) {
+      return BkScrollbarCore.rtlHelpers;
     }
 
     const dummyDiv = document.createElement('div');
-    dummyDiv.innerHTML = '<div class="simplebar-dummy-scrollbar-size"><div></div></div>';
+    dummyDiv.innerHTML = '<div class="bk-dummy-scrollbar-size"><div></div></div>';
 
     const scrollbarDummyEl = dummyDiv.firstElementChild;
     const dummyChild = scrollbarDummyEl?.firstElementChild;
@@ -201,22 +204,22 @@ export default class SimpleBarCore {
 
     scrollbarDummyEl.scrollLeft = 0;
 
-    const dummyContainerOffset = SimpleBarCore.getOffset(scrollbarDummyEl);
-    const dummyChildOffset = SimpleBarCore.getOffset(dummyChild);
+    const dummyContainerOffset = BkScrollbarCore.getOffset(scrollbarDummyEl);
+    const dummyChildOffset = BkScrollbarCore.getOffset(dummyChild);
 
     scrollbarDummyEl.scrollLeft = -999;
-    const dummyChildOffsetAfterScroll = SimpleBarCore.getOffset(dummyChild);
+    const dummyChildOffsetAfterScroll = BkScrollbarCore.getOffset(dummyChild);
 
     document.body.removeChild(scrollbarDummyEl);
 
-    SimpleBarCore.rtlHelpers = {
+    BkScrollbarCore.rtlHelpers = {
       // determines if the scrolling is responding with negative values
       isScrollOriginAtZero: dummyContainerOffset.left !== dummyChildOffset.left,
       // determines if the origin scrollbar position is inverted or not (positioned on left or right)
       isScrollingToNegative: dummyChildOffset.left !== dummyChildOffsetAfterScroll.left,
     };
 
-    return SimpleBarCore.rtlHelpers;
+    return BkScrollbarCore.rtlHelpers;
   }
 
   static getOffset(el: Element) {
@@ -284,9 +287,9 @@ export default class SimpleBarCore {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   constructor(element: HTMLElement, options: Partial<Options> = {}) {
     this.el = element;
-    this.options = { ...SimpleBarCore.defaultOptions, ...options };
+    this.options = { ...BkScrollbarCore.defaultOptions, ...options };
     this.classNames = {
-      ...SimpleBarCore.defaultOptions.classNames,
+      ...BkScrollbarCore.defaultOptions.classNames,
       ...options.classNames,
     } as ClassNames;
     this.axis = {
@@ -353,7 +356,7 @@ export default class SimpleBarCore {
     if (canUseDOM) {
       this.initDOM();
 
-      this.rtlHelpers = SimpleBarCore.getRtlHelpers();
+      this.rtlHelpers = BkScrollbarCore.getRtlHelpers();
       this.scrollbarWidth = this.getScrollbarWidth();
 
       this.recalculate();
@@ -533,10 +536,12 @@ export default class SimpleBarCore {
     let scrollOffset = this.wrapperScrollValue[this.axis[axis].scrollOffsetAttr];
 
     scrollOffset =
-      axis === 'x' && this.isRtl && SimpleBarCore.getRtlHelpers()?.isScrollOriginAtZero ? -scrollOffset : scrollOffset;
+      axis === 'x' && this.isRtl && BkScrollbarCore.getRtlHelpers()?.isScrollOriginAtZero
+        ? -scrollOffset
+        : scrollOffset;
 
     if (axis === 'x' && this.isRtl) {
-      scrollOffset = SimpleBarCore.getRtlHelpers()?.isScrollingToNegative ? scrollOffset : -scrollOffset;
+      scrollOffset = BkScrollbarCore.getRtlHelpers()?.isScrollingToNegative ? scrollOffset : -scrollOffset;
     }
 
     const scrollPourcent = scrollOffset / (contentSize - hostSize);
@@ -819,7 +824,7 @@ export default class SimpleBarCore {
 
     // Fix browsers inconsistency on RTL
     if (axis === 'x' && this.isRtl) {
-      scrollPos = SimpleBarCore.getRtlHelpers()?.isScrollingToNegative ? -scrollPos : scrollPos;
+      scrollPos = BkScrollbarCore.getRtlHelpers()?.isScrollingToNegative ? -scrollPos : scrollPos;
     }
 
     return scrollPos;

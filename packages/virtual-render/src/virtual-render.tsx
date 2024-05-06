@@ -94,9 +94,11 @@ export default defineComponent({
     }));
 
     const refRoot = ref(null);
+    const refVirtualSection = ref(null);
+    const refContent = ref(null);
+
     const { init, scrollTo, classNames } = useScrollbar(refRoot, props);
 
-    const refVirtualSection = ref(null);
     let instance = null;
     const pagination = reactive({
       startIndex: 0,
@@ -120,10 +122,9 @@ export default defineComponent({
       let end = (pagination.endIndex + props.preloadItemCount) * props.groupItemCount;
       const total = localList.value.length;
       if (total < end) {
-        const contentLength = end - start;
         calcList.value = localList.value.slice(start, total);
-        end = total + 1;
-        start = end - contentLength;
+        end = total;
+        start = end - Math.ceil(refContent.value.offsetHeight / props.lineHeight);
         start = start < 0 ? 0 : start;
       }
       const value = localList.value.slice(start, end + 10);
@@ -288,6 +289,7 @@ export default defineComponent({
           h(
             contentAs || 'div',
             {
+              ref: refContent,
               class: [...innerClass.value, classNames.contentEl],
               style: {
                 ...innerContentStyle.value,
