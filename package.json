@@ -1,6 +1,6 @@
 {
   "name": "bkui-vue",
-  "version": "1.0.3-beta.60.scrollbar.2",
+  "version": "1.0.3-beta.60.scrollbar.5",
   "private": true,
   "workspaces": {
     "packages": [
@@ -155,7 +155,6 @@
     "@floating-ui/dom": "~1.5.0",
     "@popperjs/core": "~2.11.8",
     "date-fns": "~2.30.0",
-    "install": "~0.13.0",
     "js-calendar": "~1.2.3",
     "json-formatter-js": "~2.3.4",
     "lodash": "~4.17.21",
