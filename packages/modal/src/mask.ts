@@ -23,54 +23,47 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-type IMaskOption = {
-  el: HTMLElement;
-  mask?: HTMLElement;
-  backgroundColor?: string;
-  showMask?: boolean;
-};
+const maskEleLink = new WeakMap<HTMLElement, HTMLElement>();
 
-type IInstanceStore = IMaskOption & {
-  referenceParent?: HTMLElement;
-};
+let lastestMaskEle: HTMLElement;
 
-const instanceStore = new WeakMap<object, IInstanceStore>();
-let activeModal;
+let maskInstanceCount = 0;
 
-const loopSetMaskStyle = (modal: HTMLElement, show: boolean) => {
-  if (!modal) {
+const showMask = (maskEle: HTMLElement) => {
+  if (maskEle === lastestMaskEle) {
+    lastestMaskEle = maskEle;
     return;
   }
+  maskInstanceCount += 1;
+  if (lastestMaskEle) {
+    lastestMaskEle.style.opacity = '0';
+    maskEle.style.transitionProperty = '';
+    // 缓存遮罩出现的顺序
+    maskEleLink.set(maskEle, lastestMaskEle);
+  }
 
-  if (instanceStore.has(modal)) {
-    const { mask, backgroundColor } = instanceStore.get(modal);
-    mask?.style.setProperty('background-color', show ? 'transparent' : backgroundColor);
+  lastestMaskEle = maskEle;
+};
+
+const hideMask = (maskEle: HTMLElement) => {
+  if (maskEleLink.has(maskEle)) {
+    lastestMaskEle = maskEleLink.get(maskEle);
+    lastestMaskEle.style.opacity = '1';
+    maskEle.style.visibility = 'hidden';
+    maskEleLink.delete(maskEle);
+    maskInstanceCount -= 1;
+    setTimeout(() => {
+      maskEle.style.visibility = '';
+    }, 300);
   }
 };
 
-const showMask = (options: IMaskOption) => {
-  if (!options.el) {
-    return;
-  }
-  if (!instanceStore.has(options.el)) {
-    instanceStore.set(options.el, {
-      ...options,
-      referenceParent: activeModal,
-    });
-  }
-
-  const { mask, backgroundColor } = options;
-  mask?.style.setProperty('background-color', backgroundColor);
-  loopSetMaskStyle(activeModal, options.showMask);
-  activeModal = options.el;
-};
-
-const hideMask = (options: IMaskOption) => {
-  if (options.el && instanceStore.has(options.el)) {
-    const { referenceParent } = instanceStore.get(options.el);
-    activeModal = referenceParent;
-    loopSetMaskStyle(referenceParent, false);
+const destroyMask = (maskEle: HTMLElement) => {
+  if (maskEleLink.has(maskEle)) {
+    maskEleLink.delete(maskEle);
   }
 };
 
-export const mask = { showMask, hideMask };
+const getMaskCount = () => maskInstanceCount;
+
+export const mask = { showMask, hideMask, destroyMask, getMaskCount };

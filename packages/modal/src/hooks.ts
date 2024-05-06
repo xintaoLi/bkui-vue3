@@ -58,6 +58,8 @@ export const useContentResize = (root: Ref<HTMLElement>, resizeTarget: Ref<HTMLE
       if (isContentScroll.value || props.fullscreen) {
         contentStyles.value = {
           height: `${windowInnerHeight - headerHeight - footerHeight}px`,
+          overflow: 'auto',
+          'scrollbar-gutter': 'stable',
         };
         // fullscreen 时默认为 true
         isContentScroll.value = true;
@@ -81,7 +83,7 @@ export const useContentResize = (root: Ref<HTMLElement>, resizeTarget: Ref<HTMLE
       if (props.isShow) {
         setTimeout(() => {
           handleContentBoxChange();
-        }, 100);
+        });
       } else {
         if (observer) {
           observer.disconnect();

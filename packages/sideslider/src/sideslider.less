@@ -1,25 +1,24 @@
 @import '@bkui-vue/styles/themes/themes.less';
 
 .@{bk-prefix}-sideslider {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  .@{bk-prefix}-modal-wrapper {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: auto;
-    transform: initial;
-
-    &.scroll-able {
-      .@{bk-prefix}-modal-content {
-        overflow: auto;
-      }
+  &.is-position-right {
+    .@{bk-prefix}-modal-wrapper {
+      right: 0;
     }
   }
+
+  &.is-position-left {
+    .@{bk-prefix}-modal-wrapper {
+      left: 0;
+    }
+  }
+
+  .@{bk-prefix}-modal-wrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+  }
+
   .@{bk-prefix}-modal-footer {
     &.is-fixed {
       .@{bk-prefix}-sideslider-footer {
@@ -98,9 +97,6 @@
   }
 }
 
-// .@{bk-prefix}-sideslider-content {
-// }
-
 .@{bk-prefix}-sideslider-footer {
   display: flex;
   width: 100%;
@@ -109,45 +105,4 @@
   margin-top: 24px;
   background: #fff;
   align-items: center;
-}
-
-/* fade-center */
-
-/* slide过渡动画 */
-.slide-enter-active,
-.slide-leave-active,
-.@{bk-prefix}-modal-body {
-  transform: translateX(0);
-  transition: transform 0.25s;
-}
-
-.slide-enter-active {
-  animation: slider-fade-in 0.25s;
-}
-
-.slide-leave-active {
-  animation: slider-fade-in 0.25s reverse;
-}
-
-.slide-enter-from,
-.slide-leave-to {
-  &.left {
-    transform: translateX(-100%);
-    transition: transform 0.25s;
-  }
-
-  &.right {
-    transform: translateX(100%);
-    transition: transform 0.25s;
-  }
-}
-
-@keyframes slider-fade-in {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
 }
