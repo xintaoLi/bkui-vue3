@@ -24,36 +24,56 @@
  * IN THE SOFTWARE.
  */
 
+import { Ref } from 'vue';
+
+import { usePrefix } from '@bkui-vue/config-provider';
+import BkScrollbar from '@bkui-vue/scrollbar';
+
 import { VirtualRenderProps } from './props';
-type IFixToTopParams = { index?: number; id?: string; item?: { [key: string]: any }; position: number[] };
 
-export default (props: VirtualRenderProps, scrollTo: (x, y) => void) => {
-  /**
-   * 指定元素滚动到顶部
-   * @param param0
-   */
-  const fixToTop = (params: IFixToTopParams) => {
-    const { id, index, item } = params;
-    let targetIndex: any = typeof index === 'number' ? index - 1 : 0;
+export default (target: Ref<HTMLElement>, props: VirtualRenderProps) => {
+  let instance: BkScrollbar = null;
+  const { resolveClassName } = usePrefix();
+  const classNames = {
+    contentEl: resolveClassName('scrollbar-content-el'),
+    wrapper: resolveClassName('scrollbar-wrapper'),
+    scrollbar: resolveClassName('scrollbar'),
+    track: resolveClassName('scrollbar-track'),
+    visible: resolveClassName('scrollbar-visible'),
+    horizontal: resolveClassName('scrollbar-horizontal'),
+    vertical: resolveClassName('scrollbar-vertical'),
+    hover: resolveClassName('scrollbar-hover'),
+    dragging: resolveClassName('scrollbar-dragging'),
+    scrolling: resolveClassName('scrollbar-scrolling'),
+    scrollable: resolveClassName('scrollbar-scrollable'),
+    mouseEntered: resolveClassName('scrollbar-mouse-entered'),
+  };
 
-    if (id !== undefined) {
-      targetIndex = props.list.findIndex(row => row[props.rowKey] === id) ?? targetIndex;
+  const init = (scrollFn?, delegateXContent?, delegateYContent?) => {
+    instance = new BkScrollbar(target.value, {
+      classNames,
+      wrapperNode: target.value,
+      useSystemScrollYBehavior: !props.enabled,
+      useSystemScrollXBehavior: true,
+      delegateXContent,
+      delegateYContent,
+      onScrollCallback: scrollFn,
+    });
+  };
+
+  const scrollTo = (x, y) => {
+    if (props.scrollbar?.enabled) {
+      instance.scrollTo({ left: x, top: y });
+      return;
     }
 
-    if (item !== undefined) {
-      targetIndex = props.list.findIndex(row => item[props.rowKey] === row[props.rowKey]) ?? targetIndex;
-    }
-
-    if (typeof targetIndex === 'number') {
-      const resolvedIndex = targetIndex >= 0 ? targetIndex : 0;
-      const offsetY = resolvedIndex * props.lineHeight;
-      scrollTo(0, offsetY);
-    }
-
-    return null;
+    target.value.scrollTo(x, y);
   };
 
   return {
-    fixToTop,
+    init,
+    instance,
+    scrollTo,
+    classNames,
   };
 };

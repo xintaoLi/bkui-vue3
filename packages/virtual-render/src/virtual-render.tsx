@@ -123,7 +123,7 @@ export default defineComponent({
       const total = localList.value.length;
       if (total < end) {
         calcList.value = localList.value.slice(start, total);
-        end = total;
+        end = total + 1;
         start = end - Math.ceil(refContent.value.offsetHeight / props.lineHeight);
         start = start < 0 ? 0 : start;
       }
