@@ -239,7 +239,7 @@ export default class SimpleBarCore {
   };
   draggedAxis?: Axis;
   removePreventClickId: null | number = null;
-  minScrollbarWidth = 20;
+  minScrollbarWidth = 12;
   stopScrollDelay = 175;
   isScrolling = false;
   isMouseEntering = false;
