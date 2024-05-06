@@ -34,10 +34,9 @@ import { resolvePropsToDesData } from '../utils/index';
 
 import basic from './basic.vue';
 import customLineHeight from './custom-line-height.vue';
-import scrollbar from './scrollbar.vue';
 
 export default defineComponent({
-  components: { basic, customLineHeight, scrollbar },
+  components: { basic, customLineHeight },
   render() {
     const propsJson = resolvePropsToDesData(virtualRenderProps);
 
@@ -51,16 +50,6 @@ export default defineComponent({
           demoName: 'basic',
         },
         component: () => <basic></basic>,
-      },
-      {
-        attrs: {
-          title: '基础用法-启用Scrollbar功能',
-          subtitle: '通过自定义scrollbar替换系统默认Scrollbar',
-          desc: 'props: --',
-          componentName: 'virtual-render',
-          demoName: 'scrollbar',
-        },
-        component: () => <scrollbar></scrollbar>,
       },
       {
         attrs: {
@@ -79,6 +68,7 @@ export default defineComponent({
         <DemoTitle
           name='virtual-render'
           desc='virtual-render 为页面和功能提供列表。'
+          link='https://www.google.com.hk/'
         />
         {configs.map(cfg => (
           <DemoBox {...cfg.attrs}>{cfg.component()}</DemoBox>

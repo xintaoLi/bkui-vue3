@@ -100,6 +100,7 @@ export default defineComponent({
     enableVirtualRender: PropTypes.bool.def(false), // 是否开启虚拟滚动（List模式下才会生效）
     allowEmptyValues: PropTypes.array.def([]), // 允许的空值作为options选项
     autoFocus: PropTypes.bool.def(false), // 挂载的时候是否自动聚焦输入框
+    disableFocusBehavior: PropTypes.bool.def(false), // 禁用自动聚焦行为
     keepSearchValue: PropTypes.bool.def(false), // 隐藏popover时是否保留搜索内容,
     prefix: PropTypes.string,
     selectedStyle: SelectedType(),
@@ -155,6 +156,7 @@ export default defineComponent({
       filterOption,
       searchWithPinyin,
       highlightKeyword,
+      disableFocusBehavior,
     } = toRefs(props);
 
     const localNoDataText = computed(() => {
@@ -536,6 +538,7 @@ export default defineComponent({
     };
     // 聚焦输入框
     const focusInput = () => {
+      if (disableFocusBehavior.value) return;
       setTimeout(() => {
         if (!inputSearch.value && !allowCreate.value) {
           searchRef.value?.focus();

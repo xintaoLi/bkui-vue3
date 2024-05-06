@@ -121,7 +121,7 @@ const timelineProps: IPropsTableItem[] = [
     type: 'String',
     default: 'primary',
     desc: '时间轴节点渲染类型，缺省值为 template 默认使用 v-html ，填写 vnode 则支持 JSX 渲染',
-    optional: ['template', 'vnode',],
+    optional: ['template', 'vnode'],
   },
 ];
 const timelineEvents: IPropsTableItem[] = [
