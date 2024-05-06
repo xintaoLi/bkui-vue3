@@ -48,6 +48,7 @@ import { usePrefix } from '@bkui-vue/config-provider';
 
 import { type VirtualRenderProps, virtualRenderProps } from './props';
 import useFixTop from './use-fix-top';
+import useScrollbar from './use-scrollbar';
 import useTagRender from './use-tag-render';
 import virtualRender, { computedVirtualIndex, VisibleRender } from './v-virtual-render';
 
@@ -89,9 +90,15 @@ export default defineComponent({
       handleScrollCallback,
       pagination,
       throttleDelay: props.throttleDelay,
+      scrollbar: props.scrollbar,
     }));
 
     const refRoot = ref(null);
+    const refVirtualSection = ref(null);
+    const refContent = ref(null);
+
+    const { init, scrollTo, classNames } = useScrollbar(refRoot, props);
+
     let instance = null;
     const pagination = reactive({
       startIndex: 0,
@@ -115,10 +122,9 @@ export default defineComponent({
       let end = (pagination.endIndex + props.preloadItemCount) * props.groupItemCount;
       const total = localList.value.length;
       if (total < end) {
-        const contentLength = end - start;
         calcList.value = localList.value.slice(start, total);
         end = total + 1;
-        start = end - contentLength;
+        start = end - Math.ceil(refContent.value.offsetHeight / props.lineHeight);
         start = start < 0 ? 0 : start;
       }
       const value = localList.value.slice(start, end + 10);
@@ -130,6 +136,13 @@ export default defineComponent({
 
     onMounted(() => {
       instance = new VisibleRender(binding, refRoot.value);
+
+      if (props.scrollbar?.enabled) {
+        init(instance.executeThrottledRender.bind(instance), null, refVirtualSection.value);
+        instance.executeThrottledRender.call(instance, { offset: { x: 0, y: 0 } });
+        return;
+      }
+
       instance.install();
     });
 
@@ -191,14 +204,7 @@ export default defineComponent({
     });
 
     /** 展示列表内容区域样式 */
-    const innerContentStyle = computed(() =>
-      props.scrollPosition === 'content'
-        ? {
-            top: `${pagination.scrollTop + props.scrollOffsetTop}px`,
-            transform: `translateY(-${pagination.translateY}px)`,
-          }
-        : {},
-    );
+    const innerContentStyle = computed(() => (props.scrollPosition === 'content' ? {} : {}));
 
     /** 虚拟渲染外层容器样式 */
     const wrapperStyle = computed(() => {
@@ -227,8 +233,7 @@ export default defineComponent({
     /** 外层样式列表 */
     const wrapperClass = computed(() => [
       resolveClassName('virtual-render'),
-      props.scrollXName,
-      props.scrollYName,
+
       ...resolvePropClassName(props.className),
       props.scrollPosition === 'container' ? resolveClassName('virtual-content') : '',
     ]);
@@ -246,9 +251,10 @@ export default defineComponent({
     const reset = () => {
       handleChangeListConfig();
       afterListDataReset();
+      instance?.executeThrottledRender.call(instance, { offset: { x: 0, y: 0 } });
     };
 
-    const { scrollTo, fixToTop } = useFixTop(props, refRoot);
+    const { fixToTop } = useFixTop(props, scrollTo);
 
     watch(
       () => [props.lineHeight, props.height, props.list, props.maxHeight],
@@ -257,6 +263,7 @@ export default defineComponent({
         handleChangeListConfig();
         nextTick(() => {
           afterListDataReset();
+          instance?.executeThrottledRender.call(instance, { offset: { x: 0, y: 0 } });
         });
       },
       { deep: true, immediate: true },
@@ -274,7 +281,7 @@ export default defineComponent({
         renderAs || 'div',
         {
           ref: refRoot,
-          class: wrapperClass.value,
+          class: [...wrapperClass.value, classNames.wrapper],
           style: wrapperStyle.value,
         },
         [
@@ -282,7 +289,8 @@ export default defineComponent({
           h(
             contentAs || 'div',
             {
-              class: innerClass.value,
+              ref: refContent,
+              class: [...innerClass.value, classNames.contentEl],
               style: {
                 ...innerContentStyle.value,
                 ...props.contentStyle,
@@ -296,6 +304,7 @@ export default defineComponent({
           ),
           ctx.slots.afterContent?.() ?? '',
           h('div', {
+            ref: refVirtualSection,
             class: [resolveClassName('virtual-section')],
             style: innerStyle.value,
           }),
