@@ -24,13 +24,39 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import type { DebouncedFunc } from 'lodash-es';
-import { debounce, throttle } from 'lodash-es';
+import { debounce, throttle } from 'lodash';
 
 import canUseDOM from './can-use-dom';
 import * as helpers from './helpers';
 import resolveWheelEvent from './mouse-wheel';
 import scrollbarWidth from './scrollbar-width';
+
+interface DebouncedFunc<T extends (...args: any[]) => any> {
+  /**
+   * Call the original function, but applying the debounce rules.
+   *
+   * If the debounced function can be run immediately, this calls it and returns its return
+   * value.
+   *
+   * Otherwise, it returns the return value of the last invocation, or undefined if the debounced
+   * function was not invoked yet.
+   */
+  (...args: Parameters<T>): ReturnType<T> | undefined;
+
+  /**
+   * Throw away any pending invocation of the debounced function.
+   */
+  cancel(): void;
+
+  /**
+   * If there is a pending invocation of the debounced function, invoke it immediately and return
+   * its return value.
+   *
+   * Otherwise, return the value from the last invocation, or undefined if the debounced function
+   * was never invoked.
+   */
+  flush(): ReturnType<T> | undefined;
+}
 
 interface Options {
   forceVisible: boolean | Axis;
@@ -296,11 +322,11 @@ export default class SimpleBarCore {
       throw new Error(`Argument passed to SimpleBar must be an HTML element instead of ${this.el}`);
     }
 
-    this.onMouseMove = throttle(this._onMouseMove, 64);
-    this.onWindowResize = debounce(this._onWindowResize, 64, { leading: true });
-    this.onStopScrolling = debounce(this._onStopScrolling, this.stopScrollDelay);
-    this.onMouseEntered = debounce(this._onMouseEntered, this.stopScrollDelay);
-    this.mouseWheelInstance = resolveWheelEvent(this._onMouseWheel);
+    this.onMouseMove = throttle(this.mOnMouseMove, 64);
+    this.onWindowResize = debounce(this.mOnWindowResize, 64, { leading: true });
+    this.onStopScrolling = debounce(this.mOnStopScrolling, this.stopScrollDelay);
+    this.onMouseEntered = debounce(this.mOnMouseEntered, this.stopScrollDelay);
+    this.mouseWheelInstance = resolveWheelEvent(this.mOnMouseWheel);
 
     this.init();
   }
@@ -606,35 +632,6 @@ export default class SimpleBarCore {
     this.scrollYTicking = false;
   };
 
-  _onMouseWheel = args => {
-    const nextPostiion = this.wheelOffset + args.y;
-    if (this.scrollToAxisPosition(nextPostiion, 'y')) {
-      args.evt.stopPropagation();
-      args.evt.preventDefault();
-      args.evt.stopImmediatePropagation();
-
-      this.showScrollbar('y');
-
-      if (this.mouseWeelTimer) {
-        clearTimeout(this.mouseWeelTimer);
-        this.mouseWeelTimer = null;
-      }
-
-      this.mouseWeelTimer = setTimeout(() => {
-        this.hideScrollbar('y');
-      }, 200);
-    }
-  };
-
-  _onStopScrolling = () => {
-    removeClasses(this.el, this.classNames.scrolling);
-    if (this.options.autoHide) {
-      this.hideScrollbar('x');
-      this.hideScrollbar('y');
-    }
-    this.isScrolling = false;
-  };
-
   onMouseEnter = () => {
     this.mouseWeelTimer && clearTimeout(this.mouseWeelTimer);
     if (!this.isMouseEntering) {
@@ -644,28 +641,6 @@ export default class SimpleBarCore {
       this.isMouseEntering = true;
     }
     this.onMouseEntered();
-  };
-
-  _onMouseEntered = () => {
-    removeClasses(this.el, this.classNames.mouseEntered);
-    if (this.options.autoHide) {
-      this.hideScrollbar('x');
-      this.hideScrollbar('y');
-    }
-    this.isMouseEntering = false;
-  };
-
-  _onMouseMove = (e: any) => {
-    this.mouseX = e.clientX;
-    this.mouseY = e.clientY;
-
-    if (this.axis.x.isOverflowing || this.axis.x.forceVisible) {
-      this.onMouseMoveForAxis('x');
-    }
-
-    if (this.axis.y.isOverflowing || this.axis.y.forceVisible) {
-      this.onMouseMoveForAxis('y');
-    }
   };
 
   onMouseMoveForAxis(axis: Axis = 'y') {
@@ -721,11 +696,6 @@ export default class SimpleBarCore {
       this.hideScrollbar(axis);
     }
   }
-
-  _onWindowResize = () => {
-    // Recalculate scrollbarWidth in case it's a zoom
-    this.scrollbarWidth = this.getScrollbarWidth();
-  };
 
   onPointerEvent = (e: any) => {
     if (!this.axis.x.track.el || !this.axis.y.track.el || !this.axis.x.scrollbar.el || !this.axis.y.scrollbar.el)
@@ -1080,4 +1050,60 @@ export default class SimpleBarCore {
     const matches = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
     return Array.prototype.filter.call(el.children, child => matches.call(child, query))[0];
   }
+
+  private mOnMouseWheel = args => {
+    const nextPostiion = this.wheelOffset + args.y;
+    if (this.scrollToAxisPosition(nextPostiion, 'y')) {
+      args.evt.stopPropagation();
+      args.evt.preventDefault();
+      args.evt.stopImmediatePropagation();
+
+      this.showScrollbar('y');
+
+      if (this.mouseWeelTimer) {
+        clearTimeout(this.mouseWeelTimer);
+        this.mouseWeelTimer = null;
+      }
+
+      this.mouseWeelTimer = setTimeout(() => {
+        this.hideScrollbar('y');
+      }, 200);
+    }
+  };
+
+  private mOnStopScrolling = () => {
+    removeClasses(this.el, this.classNames.scrolling);
+    if (this.options.autoHide) {
+      this.hideScrollbar('x');
+      this.hideScrollbar('y');
+    }
+    this.isScrolling = false;
+  };
+
+  private mOnMouseEntered = () => {
+    removeClasses(this.el, this.classNames.mouseEntered);
+    if (this.options.autoHide) {
+      this.hideScrollbar('x');
+      this.hideScrollbar('y');
+    }
+    this.isMouseEntering = false;
+  };
+
+  private mOnMouseMove = (e: any) => {
+    this.mouseX = e.clientX;
+    this.mouseY = e.clientY;
+
+    if (this.axis.x.isOverflowing || this.axis.x.forceVisible) {
+      this.onMouseMoveForAxis('x');
+    }
+
+    if (this.axis.y.isOverflowing || this.axis.y.forceVisible) {
+      this.onMouseMoveForAxis('y');
+    }
+  };
+
+  private mOnWindowResize = () => {
+    // Recalculate scrollbarWidth in case it's a zoom
+    this.scrollbarWidth = this.getScrollbarWidth();
+  };
 }
