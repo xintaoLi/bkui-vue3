@@ -624,4 +624,9 @@ export const tableProps = {
    * 是否支持行拖拽排序
    */
   rowDraggable: PropTypes.oneOfType([PropTypes.func, PropTypes.bool, PropTypes.object]).def(false),
+
+  /**
+   * 是否支持shift键多行选择
+   */
+  shiftMultiChecked: PropTypes.bool.def(false),
 };

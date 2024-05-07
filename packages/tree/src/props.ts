@@ -252,6 +252,11 @@ export const treeProps = {
    * attributes 为节点内置属性，包含节点是否展开，是否选中，是否有子节点等等
    */
   keepSlotData: PropTypes.bool.def(false),
+
+  /**
+   * 在显示复选框的情况下，是否严格的遵循父子互相关联的做法
+   */
+  checkStrictly: PropTypes.bool.def(true),
 };
 
 type AsyncOption = {
