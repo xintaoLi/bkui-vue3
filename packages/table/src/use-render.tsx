@@ -42,6 +42,7 @@ import Settings from './plugins/settings';
 import useDraggable from './plugins/use-draggable';
 import useFixedColumn from './plugins/use-fixed-column';
 import useHeadCell from './plugins/use-head-cell';
+import useShiftKey from './plugins/use-shift-key';
 import { Column, Settings as ISettings, TablePropTypes } from './props';
 import { ITableResponse } from './use-attributes';
 import {
@@ -73,6 +74,9 @@ export default (
   const columns = computed(() => formatData.value.columns);
 
   const settings = computed(() => formatData.value.settings);
+
+  const { isShiftKeyDown, getStore, setStore } = useShiftKey(props);
+
   // const activeSortIndex = ref(null);
 
   /**
@@ -509,6 +513,33 @@ export default (
       context.emit(EMIT_EVENTS.ROW_SELECT_CHANGE, { row, index, checked: value, data: props.data });
     };
 
+    const beforeRowChange = () => {
+      if (isShiftKeyDown.value && !isAll) {
+        const result = setStore(row, index);
+        if (result) {
+          const { start, end } = getStore();
+          const startIndex = start.index < end.index ? start.index : end.index;
+          const endIndex = start.index < end.index ? end.index : start.index;
+          (tableResp.pageData.slice(startIndex, endIndex + 1) ?? []).forEach(item => {
+            tableResp.setRowSelection(item, true);
+          });
+        }
+
+        context.emit(EMIT_EVENTS.ROW_SELECT, { row, index, checked: true, data: props.data, isShiftKeyDown: true });
+        context.emit(EMIT_EVENTS.ROW_SELECT_CHANGE, {
+          row,
+          index,
+          checked: true,
+          data: props.data,
+          isShiftKeyDown: true,
+        });
+
+        return Promise.resolve(!result);
+      }
+
+      return Promise.resolve(true);
+    };
+
     const indeterminate = tableResp.getRowAttribute(row, TABLE_ROW_ATTRIBUTE.ROW_SELECTION_INDETERMINATE);
     const isChecked = tableResp.getRowAttribute(row, TABLE_ROW_ATTRIBUTE.ROW_SELECTION);
     const isEnable = isRowSelectEnable(props, { row, index, isCheckAll: isAll });
@@ -519,6 +550,7 @@ export default (
         disabled={!isEnable}
         modelValue={isChecked}
         indeterminate={indeterminate as boolean}
+        beforeChange={beforeRowChange}
       />
     );
   };
