@@ -1,5 +1,11 @@
 ## 更新日志
 
+### 1.0.3-beta.65.dialog.1
+
+* **[feat]**:
+    - fix: 修复scrollbar keepalive保持组件滚动状态
+
+
 ### 1.0.3-beta.62.dialog.2
 
 * **[feat]**:
