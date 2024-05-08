@@ -41,7 +41,7 @@ import {
   ref,
   type SetupContext,
   SlotsType,
-  watch,
+  watchEffect,
 } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
@@ -257,20 +257,16 @@ export default defineComponent({
 
     const { fixToTop } = useFixTop(props, scrollTo);
 
-    watch(
-      () => [props.lineHeight, props.height, props.list, props.maxHeight],
-      () => {
-        instance?.setBinding(binding);
-        handleChangeListConfig();
-        nextTick(() => {
-          afterListDataReset();
-          instance?.executeThrottledRender.call(instance, {
-            offset: { x: pagination.scrollLeft, y: pagination.scrollTop },
-          });
+    watchEffect(() => {
+      instance?.setBinding(binding);
+      handleChangeListConfig();
+      nextTick(() => {
+        afterListDataReset();
+        instance?.executeThrottledRender.call(instance, {
+          offset: { x: pagination.scrollLeft, y: pagination.scrollTop },
         });
-      },
-      { deep: true, immediate: true },
-    );
+      });
+    });
 
     ctx.expose({
       reset,
