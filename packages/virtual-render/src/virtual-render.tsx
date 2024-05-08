@@ -123,11 +123,12 @@ export default defineComponent({
       const total = localList.value.length;
       if (total < end) {
         calcList.value = localList.value.slice(start, total);
-        end = total + 1;
-        start = end - Math.ceil(refContent.value.offsetHeight / props.lineHeight);
+        end = total;
+        start = end - Math.floor(refContent.value.offsetHeight / props.lineHeight);
         start = start < 0 ? 0 : start;
       }
-      const value = localList.value.slice(start, end + 10);
+
+      const value = localList.value.slice(start, end);
       calcList.value = value;
       if (event) {
         ctx.emit('content-scroll', [event, pagination]);
@@ -196,7 +197,7 @@ export default defineComponent({
 
     /** 映射传入的数组为新的数组，增加 $index属性，用来处理唯一Index */
     const localList = computed(() => {
-      if (props.rowKey !== undefined) {
+      if (props.rowKey !== undefined || !props.autoIndex) {
         return props.list;
       }
 
@@ -263,7 +264,9 @@ export default defineComponent({
         handleChangeListConfig();
         nextTick(() => {
           afterListDataReset();
-          instance?.executeThrottledRender.call(instance, { offset: { x: 0, y: 0 } });
+          instance?.executeThrottledRender.call(instance, {
+            offset: { x: pagination.scrollLeft, y: pagination.scrollTop },
+          });
         });
       },
       { deep: true, immediate: true },

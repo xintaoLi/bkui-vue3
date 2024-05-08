@@ -280,6 +280,7 @@ export default defineComponent({
           scrollbar={{ enabled: true }}
           enabled={props.virtualEnabled}
           keepAlive={true}
+          autoIndex={false}
         >
           {{
             beforeContent: () => renderPrepend(),

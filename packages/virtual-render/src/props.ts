@@ -167,6 +167,12 @@ export const virtualRenderProps = {
 
   wrapperStyle: PropTypes.any.def({}),
 
+  /**
+   * 传入数据如果没有设置rowKey，是否自动生成$index作为唯一ID
+   * $index的值默认为index
+   */
+  autoIndex: PropTypes.bool.def(true),
+
   ...EventProps,
 };
 

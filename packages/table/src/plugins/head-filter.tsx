@@ -216,10 +216,12 @@ export default defineComponent({
     const renderFilterList = scope => {
       if (scope.data.length) {
         return scope.data.map((item: any) => (
-          <div class='list-item'>
+          <div
+            class='list-item'
+            key={item.value}
+          >
             <Checkbox
               label={item.value}
-              key={item.$index}
               immediateEmitChange={false}
               checked={state.checked.includes(item.value)}
               modelValue={state.checked.includes(item.value)}

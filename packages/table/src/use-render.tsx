@@ -329,7 +329,6 @@ export default (
           // @ts-ignore
           style={rowStyle}
           class={rowClass}
-          data-row-id={rowId}
           key={rowId}
           data-row-index={rowIndex}
           onClick={e => handleRowClick(e, row, rowIndex, rows)}
@@ -385,16 +384,20 @@ export default (
                 context.emit(type, args);
               };
 
+              const columnKey = `${rowId}_${index}`;
+              const cellKey = `${rowId}_${index}_cell`;
               return (
                 <td
                   class={cellClass}
                   style={cellStyle}
                   colspan={colspan}
                   rowspan={rowspan}
+                  key={columnKey}
                   onClick={event => handleEmit(event, EMIT_EVENTS.CELL_CLICK)}
                   onDblclick={event => handleEmit(event, EMIT_EVENTS.CELL_DBL_CLICK)}
                 >
                   <TableCell
+                    key={cellKey}
                     class={tdCtxClass}
                     column={column}
                     row={row}
@@ -520,6 +523,7 @@ export default (
           const { start, end } = getStore();
           const startIndex = start.index < end.index ? start.index : end.index;
           const endIndex = start.index < end.index ? end.index : start.index;
+
           (tableResp.pageData.slice(startIndex, endIndex + 1) ?? []).forEach(item => {
             tableResp.setRowSelection(item, true);
           });
