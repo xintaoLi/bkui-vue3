@@ -1,5 +1,12 @@
 ## 更新日志
 
+### 1.0.3-beta.62.dialog.2
+
+* **[feat]**:
+    - feat(table|tree): table支持shift多选 & tree增加checkStrictly
+    - feat: 修复构建icon问题
+
+
 ### 1.0.3-beta.62.dialog.1
 
 * **[feat]**:
