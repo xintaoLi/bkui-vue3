@@ -42,7 +42,6 @@ export default (props: TablePropTypes) => {
 
     resolvedColumns.length = 0;
     resolvedColumns.push(...resolveColumns(instance));
-    console.log('111');
   });
 
   /**
