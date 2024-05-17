@@ -1,0 +1,11 @@
+.git
+.github
+.vscode
+vue2
+vue3
+node_modules
+.history
+.codecc
+.eslintcache
+.prettierignore
+pnpm-lock.yaml

@@ -75,31 +75,31 @@ export default defineComponent({
     return (
       <div style='height: 400px;'>
         <BkSteps
+          style={{ marginBottom: '40px' }}
+          controllable={true}
           cur-step={this.state.curStep}
           status='error'
-          controllable={true}
           theme='success'
-          style={{ marginBottom: '40px' }}
         ></BkSteps>
         <BkSteps
+          style={{ marginBottom: '40px' }}
           cur-step={2}
           theme='danger'
-          style={{ marginBottom: '40px' }}
         ></BkSteps>
         <BkSteps
+          style={{ marginBottom: '40px' }}
           cur-step={2}
-          theme='warning'
-          style={{ marginBottom: '40px' }}
           size='small'
+          theme='warning'
         ></BkSteps>
         <BkSteps
-          controllable={true}
-          onClick={this.stepChanged}
           beforeChange={this.beforeChangeFunc}
-          direction='vertical'
+          controllable={true}
           cur-step={this.state.curStep}
-          steps={this.state.objectSteps}
+          direction='vertical'
           size='small'
+          steps={this.state.objectSteps}
+          onClick={this.stepChanged}
         ></BkSteps>
       </div>
     );

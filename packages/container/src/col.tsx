@@ -24,7 +24,7 @@
  * IN THE SOFTWARE.
  */
 
-import { computed, defineComponent, inject, provide } from 'vue';
+import { computed, defineComponent, inject, provide, type ComputedRef } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { PropTypes } from '@bkui-vue/shared';
@@ -43,14 +43,13 @@ const colProps = {
 };
 
 export default defineComponent({
-  // eslint-disable-next-line vue/no-reserved-component-names
   name: 'Col',
   props: colProps,
   emits: [],
   setup(props, ctx) {
     const { col, gutter, flex } = inject(containerKey);
     const { span, offset, pull, push } = props;
-    const realSpan: any = computed(() => span || col);
+    const realSpan: ComputedRef<number> = computed(() => span || col);
 
     provide('containerProps', {
       col: realSpan.value,
@@ -62,7 +61,14 @@ export default defineComponent({
       return `${Number((val * 100).toFixed(3))}%`;
     };
 
-    const style: any = computed(() => ({
+    const style: ComputedRef<{
+      width: string;
+      'padding-right': string;
+      'padding-left': string;
+      'margin-left': null | string;
+      right: null | string;
+      left: null | string;
+    }> = computed(() => ({
       width: formatPercentage(realSpan.value / col),
       'padding-right': `${gutter / 2}px`,
       'padding-left': `${gutter / 2}px`,
@@ -75,8 +81,8 @@ export default defineComponent({
 
     return () => (
       <div
-        class={`${resolveClassName('grid-col')}`}
         style={style.value}
+        class={`${resolveClassName('grid-col')}`}
       >
         {ctx.slots.default?.()}
       </div>

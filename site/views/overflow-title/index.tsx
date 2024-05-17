@@ -29,7 +29,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import Directive from './directive.vue';
 
@@ -38,7 +37,7 @@ const overflowComponent: IPropsTableItem[] = [
     name: 'content',
     type: 'String',
     default: '',
-    desc: '文本内容。没有的话去default slot',
+    desc: '文本内容。该值没有的时候则默认取default slot',
     optional: [],
   },
   {
@@ -47,13 +46,6 @@ const overflowComponent: IPropsTableItem[] = [
     default: 'title',
     desc: '默认给文本加上title，如果tips，则鼠标悬浮添加添加tooltips，但是如果不是纯文本',
     optional: ['tips', 'title'],
-  },
-  {
-    name: 'cal-type',
-    type: 'String',
-    default: 'dom',
-    desc: '计算文本宽度方式，默认通过dom计算机文本宽度，canvas则通过measureText计算',
-    optional: ['dom', 'canvas'],
   },
   {
     name: 'resizeable',
@@ -85,12 +77,22 @@ const overflowComponent: IPropsTableItem[] = [
   },
 ];
 
+const overflowComponentSlots: IPropsTableItem[] = [
+  {
+    name: 'default',
+    type: 'Slot',
+    default: '-',
+    desc: '默认插槽',
+    optional: [],
+  }
+];
+
 const overflowDirective: IPropsTableItem[] = [
   {
     name: 'content',
     type: 'String',
     default: '',
-    desc: '文本内容。没有的话去default slot',
+    desc: '文本内容。该值没有的时候则默认取default slot',
     optional: [],
   },
   {
@@ -107,33 +109,39 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='overflowTitle 文件溢出处理'
           desc='overflowTitle 文本溢出，通过title 或者tooltips展示全部内容.'
           link='#/overflowTitle'
+          name='overflowTitle 文件溢出处理'
         />
 
         <DemoBox
-          title='组件用法'
-          desc='组件用法'
           componentName='overflow-title'
           demoName='base-demo'
+          desc='组件用法'
+          title='组件用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
         <DemoBox
-          title='指令用法'
-          desc='指令用法'
           componentName='overflow-title'
           demoName='directive'
+          desc='指令用法'
+          title='指令用法'
         >
           <Directive></Directive>
         </DemoBox>
 
         <PropsBox
-          title='overflowTitle 组件属性'
-          subtitle=''
           propsData={overflowComponent}
+          subtitle=''
+          title='overflowTitle 组件属性'
         />
+        <PropsBox
+          title='overflowTitle 插槽'
+          subtitle=''
+          propsData={overflowComponentSlots}
+        />
+        
         <PropsBox
           title='overflowTitle 指令属性(计算父元素宽度)'
           subtitle=''

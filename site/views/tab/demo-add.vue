@@ -9,10 +9,10 @@
       @remove="removePanel"
     >
       <bk-tab-panel
-        v-for="(item,index) in panels"
+        v-for="(item, index) in panels"
         :key="item.name"
-        :name="item.name"
         :label="item.label"
+        :name="item.name"
       >
         {{ item.label }}-{{ index }}
       </bk-tab-panel>
@@ -36,8 +36,7 @@
     },
     methods: {
       addPanel() {
-        const name = Math.random().toString(16)
-          .substring(4, 10);
+        const name = Math.random().toString(16).substring(4, 10);
         this.panels.push({
           name,
           label: `新标签页-${name.substring(0, 4)}`,

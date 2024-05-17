@@ -2,8 +2,8 @@
   <bk-cascader
     v-model="area"
     :list="list"
-    is-remote
     :remote-method="remoteMethod"
+    is-remote
   />
 </template>
 <script setup>
@@ -15,10 +15,12 @@
     {
       id: 'hunan',
       name: '湖南',
-    }, {
+    },
+    {
       id: 'guangxi',
       name: '广西',
-    }, {
+    },
+    {
       id: 'yunnan',
       name: '云南',
     },
@@ -39,5 +41,4 @@
       resolve(nodes);
     }, 1000);
   };
-
 </script>

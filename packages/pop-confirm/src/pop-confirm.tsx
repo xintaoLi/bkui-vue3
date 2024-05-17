@@ -35,7 +35,7 @@ export default defineComponent({
   name: 'PopConfirm',
   props,
   emits: ['confirm', 'cancel'],
-  setup(props, { emit, slots }) {
+  setup(_props, { emit }) {
     const visible = ref(false);
     const t = useLocale('popConfirm');
 
@@ -51,14 +51,14 @@ export default defineComponent({
       e.stopPropagation();
     }
 
-    function renderIcon() {
-      if (typeof slots.icon === 'function') {
-        return slots.icon();
-      }
-      return props.icon;
-    }
+    // function renderIcon() {
+    //   if (typeof slots.icon === 'function') {
+    //     return slots.icon();
+    //   }
+    //   return props.icon;
+    // }
 
-    const icon = renderIcon();
+    // const icon = renderIcon();
 
     const { resolveClassName } = usePrefix();
 
@@ -68,7 +68,7 @@ export default defineComponent({
       popoverRef,
       visible,
       t,
-      icon,
+      // icon,
       resolveClassName,
       ensure,
       cancel,
@@ -76,23 +76,28 @@ export default defineComponent({
   },
 
   render() {
-    const titleRender = () => this.title ? (
-      <div class={`${this.resolveClassName('pop-confirm-title')}`}>
-        {this.icon ? <span class={`${this.resolveClassName('pop-confirm-icon')}`}>{this.icon}</span> : ''}
-        <span>{this.title}</span>
-      </div>
-    ) : (
-      ''
-    );
+    const titleRender = () =>
+      this.title ? (
+        <div class={`${this.resolveClassName('pop-confirm-title')}`}>
+          {/* {this.icon ? <span class={`${this.resolveClassName('pop-confirm-icon')}`}>{this.icon}</span> : ''} */}
+          {typeof this.$slots.icon === 'function' ? (
+            <span class={`${this.resolveClassName('pop-confirm-icon')}`}>{this.$slots.icon()}</span>
+          ) : null}
+          <span>{this.title}</span>
+        </div>
+      ) : (
+        ''
+      );
     return (
       <Popover
         ref='popoverRef'
-        isShow={this.visible}
-        trigger={this.trigger}
-        theme={this.theme}
         width={this.width}
-        onAfterShow={() => (this.visible = true)}
         extCls={`${this.resolveClassName('pop-confirm-box')}`}
+        isShow={this.visible}
+        placement={this.placement}
+        theme={this.theme}
+        trigger={this.trigger}
+        onAfterShow={() => (this.visible = true)}
       >
         {{
           default: () => this.$slots.default(),
@@ -100,29 +105,29 @@ export default defineComponent({
             <div class={`${this.resolveClassName('pop-confirm')}`}>
               {typeof this.$slots.content === 'function' ? (
                 <>
-                {titleRender()}
-                {this.$slots.content()}
+                  {titleRender()}
+                  {this.$slots.content()}
                 </>
               ) : (
                 <>
                   {titleRender()}
                   <div class={`${this.resolveClassName('pop-confirm-content')}`}>
-                    {!this.title ? this.icon : ''}
+                    {/* {!this.title ? this.icon : ''} */}
                     {this.content}
                   </div>
                 </>
               )}
               <div class={`${this.resolveClassName('pop-confirm-footer')}`}>
                 <Button
-                  onClick={this.ensure}
                   size='small'
                   theme='primary'
+                  onClick={this.ensure}
                 >
                   {this.confirmText || this.t.ok}
                 </Button>
                 <Button
-                  onClick={this.cancel}
                   size='small'
+                  onClick={this.cancel}
                 >
                   {this.cancelText || this.t.cancel}
                 </Button>

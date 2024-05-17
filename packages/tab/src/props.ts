@@ -29,11 +29,11 @@ import { toType } from 'vue-types';
 import { PropTypes, renderDirectiveType } from '@bkui-vue/shared';
 
 export enum TabTypeEnum {
-  CARD = 'card',
   BORDER_CARD = 'border-card',
-  UNBORDER_CARD = 'unborder-card',
-  CARD_TAB = 'card-tab',
+  CARD = 'card',
   CARD_GRID = 'card-grid',
+  CARD_TAB = 'card-tab',
+  UNBORDER_CARD = 'unborder-card',
 }
 
 export enum PositionEnum {
@@ -45,8 +45,8 @@ export enum PositionEnum {
 export const TabPositionType = toType<`${PositionEnum}`>('position', {}).def(PositionEnum.TOP);
 
 export enum SortTypeEnum {
-  REPLACE = 'replace',
   INSERT = 'insert',
+  REPLACE = 'replace',
 }
 
 export const SortTypeUnion = toType<`${SortTypeEnum}`>('sortType', {}).def(SortTypeEnum.REPLACE);
@@ -122,12 +122,8 @@ export const tabProps = {
   sortable: Boolean,
   sortType: SortTypeUnion,
   labelHeight: PropTypes.number.def(50),
-  scrollStep: PropTypes.number.def(200),
   extCls: PropTypes.string.def(''),
   validateActive: PropTypes.bool.def(true),
-  showHeader: PropTypes.bool.def(true),
-  changeOnHover: PropTypes.bool.def(false),
-  changeOnHoverDelay: PropTypes.number.def(1000),
   activeBarSize: PropTypes.number.def(2),
   activeBarColor: PropTypes.string.def('#3a84ff'),
 };
@@ -147,9 +143,6 @@ export const tabNavProps = {
   sortable: Boolean,
   sortType: SortTypeUnion,
   labelHeight: PropTypes.number.def(50),
-  scrollStep: PropTypes.number.def(200),
   validateActive: PropTypes.bool.def(true),
-  changeOnHover: PropTypes.bool.def(false),
-  changeOnHoverDelay: PropTypes.number.def(1000),
   ...tabNavEventProps,
 };

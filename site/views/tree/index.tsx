@@ -30,7 +30,6 @@ import { defineComponent } from 'vue';
 import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
-
 // import { resolvePropsToDesData } from '../utils/index';
 import async from './async.vue';
 import autoConfig from './auto-config.vue';
@@ -226,9 +225,9 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Tree'
           desc='Tree组件， 为页面和功能提供列表。'
           designLink='https://bkdesign.bk.tencent.com/design/111'
+          name='Tree'
         />
         {configs.map(cfg => (
           <DemoBox
@@ -242,16 +241,16 @@ export default defineComponent({
           <div>
             {cfg.type === 'events' ? (
               <PropsBox
-                title={cfg.title}
                 columnMap={eventColumnMap}
-                subtitle={cfg.subTile}
                 propsData={cfg.config}
+                subtitle={cfg.subTile}
+                title={cfg.title}
               />
             ) : (
               <PropsBox
-                title={cfg.title}
-                subtitle={cfg.subTile}
                 propsData={cfg.config}
+                subtitle={cfg.subTile}
+                title={cfg.title}
               />
             )}
           </div>

@@ -48,8 +48,8 @@ export const switcherType = {
 };
 
 export const enum EVENTS {
-  UPDATE = 'update:modelValue',
   CHANGE = 'change',
+  UPDATE = 'update:modelValue',
 }
 
 export type SwitcherType = ExtractPropTypes<typeof switcherType>;
@@ -166,8 +166,8 @@ export default defineComponent({
     return () => (
       <div
         class={classObject.value}
-        onClick={handleChange}
         tabindex='0'
+        onClick={handleChange}
         onKeydown={handleKeydown}
       >
         {isLoading.value ? <SwitcherLoading class={`${resolveClassName('switcher-loading')}`}></SwitcherLoading> : ''}

@@ -1,34 +1,25 @@
 {
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "html",
-    "vue"
-  ],
-  "eslint.enable": true,
-  "eslint.alwaysShowStatus": true,
+  
+  "eslint.format.enable": true,
+  "stylelint.validate": ["css", "less", "postcss", "scss", "vue"],
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit"
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
   },
-  "editor.detectIndentation": false,
-  "editor.tabSize": 2,
-  "css.validate": false,
-  "eslint.codeAction.showDocumentation": {
-    "enable": true
-  },
-  "editor.rulers": [
-    120
-  ],
-  "editor.selectionHighlight": true,
-  "stylelint.validate": [
-    "css",
-    "less",
-    "postcss",
-    "vue",
-    "scss",
-    "sass"
-  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.arrowParens": "avoid",
+  "prettier.bracketSameLine": false,
+  "prettier.jsxSingleQuote": true,
+  "prettier.printWidth": 120,
+  "prettier.quoteProps": "as-needed",
+  "prettier.semi": true,
+  "prettier.singleAttributePerLine": true,
+  "prettier.singleQuote": true,
+  "prettier.tabWidth": 2,
+  "prettier.trailingComma": "all",
+  "prettier.useTabs": false,
+  "prettier.vueIndentScriptAndStyle": true,
   "preCI.localCodeCheck.filter.whitePath": "",
   "preCI.localCodeCheck.filter.skipPath": ".*/\\.codecc/.*",
   "preCI.localCodeCheck.preCommit": "none",

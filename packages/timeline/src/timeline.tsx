@@ -133,11 +133,11 @@ export default defineComponent({
           <li class={[`${this.resolveClassName('timeline-dot')}`, makeClass(item)]}>
             {isIcon(item) && (
               <div
-                class={`${this.resolveClassName('timeline-icon')}`}
                 style={{
                   border: item.border ? `2px solid ${item.color}` : '0px',
                   borderRadius: item.border ? '50%' : '0',
                 }}
+                class={`${this.resolveClassName('timeline-icon')}`}
               >
                 <span class={`${this.resolveClassName('timeline-icon-inner')}`}>
                   {typeof item.icon === 'function' ? <item.icon /> : item.icon}

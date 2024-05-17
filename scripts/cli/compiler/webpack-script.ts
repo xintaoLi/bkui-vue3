@@ -28,7 +28,6 @@ import webpack, { Stats } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 import { ILibTaskOption, ITaskItem } from '../typings/task';
-
 import bkuiBabelPlugin from './babel-plugin';
 import { LIB_URL } from './helpers';
 // import IgnorePlugin from './ignore-not-found';

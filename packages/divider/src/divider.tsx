@@ -55,8 +55,8 @@ export default defineComponent({
 
     return (
       <div
-        class={[resolveClassName('divider'), resolveClassName(`divider-${this.direction}`)]}
         style={styles()}
+        class={[resolveClassName('divider'), resolveClassName(`divider-${this.direction}`)]}
       >
         {slots}
       </div>

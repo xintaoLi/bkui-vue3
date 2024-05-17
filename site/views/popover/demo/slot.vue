@@ -1,11 +1,11 @@
 <template>
   <bk-popover
-    disable-outside-click
+    width="490"
     :component-event-delay="300"
     :offset="16"
     placement="top"
     theme="light"
-    width="490"
+    disable-outside-click
   >
     超长
     <template #content>

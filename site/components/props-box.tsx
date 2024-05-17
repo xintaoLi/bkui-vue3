@@ -26,7 +26,6 @@
 import { defineComponent } from 'vue';
 
 import { IPropsTableItem } from '../typings';
-
 import CommonBox from './common-box';
 
 import './props-box.less';
@@ -71,8 +70,8 @@ export default defineComponent({
                 {val.length
                   ? val.map(v => (
                       <span
-                        class='cell-item'
                         key={v}
+                        class='cell-item'
                       >
                         {v}
                       </span>
@@ -87,7 +86,7 @@ export default defineComponent({
           return <td key={key}>{val}</td>;
       }
     };
-    const getPropsRow = (item: IPropsTableItem | IColumnMap) => (
+    const getPropsRow = (item: IColumnMap | IPropsTableItem) => (
       <tr>{Object.keys(props.columnMap).map(key => getPropsCell(key as ColumnKey, item))}</tr>
     );
     return {
@@ -98,8 +97,8 @@ export default defineComponent({
   render() {
     return (
       <CommonBox
-        title={this.title}
         subtitle={this.subtitle}
+        title={this.title}
       >
         <table class='props-table'>
           <thead>

@@ -25,11 +25,17 @@
  */
 
 import { ExtractPropTypes } from 'vue';
+import { toType } from 'vue-types';
 
 import { PropTypes, resolveClassName } from '@bkui-vue/shared';
 
 const EventProps = {
   onContentScroll: Function,
+};
+
+export type IScrollbarOption = {
+  enabled: boolean;
+  size?: 'normal' | 'small';
 };
 
 export const virtualRenderProps = {
@@ -65,7 +71,7 @@ export const virtualRenderProps = {
   minHeight: PropTypes.number.def(30),
 
   /** 整体最大高度 */
-  maxHeight: PropTypes.number,
+  maxHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
   /**
    * 整体高度
@@ -113,9 +119,6 @@ export const virtualRenderProps = {
   /** 外层Dom元素需要渲染成的目标元素 */
   renderAs: PropTypes.string.def('div'),
 
-  /** 内容层渲染成目标元素 */
-  contentAs: PropTypes.string.def('div'),
-
   /** top 滚动填充 */
   scrollOffsetTop: PropTypes.number.def(0),
 
@@ -147,11 +150,26 @@ export const virtualRenderProps = {
   keepAlive: PropTypes.bool.def(false),
 
   /**
+   * 是否允许滚动条改变原有DOM结构
+   */
+  scrollbar: toType<IScrollbarOption>('IScrollbarOption', {
+    default: {
+      enabled: true,
+    },
+  }),
+
+  /**
    * 数据监听改变时，是否自动重置位置到[0, 0]
    */
   autoReset: PropTypes.bool.def(true),
 
   wrapperStyle: PropTypes.any.def({}),
+
+  /**
+   * 传入数据如果没有设置rowKey，是否自动生成$index作为唯一ID
+   * $index的值默认为index
+   */
+  autoIndex: PropTypes.bool.def(true),
 
   ...EventProps,
 };

@@ -1,15 +1,13 @@
 <template>
   <div class="badge-demo">
     <bk-badge
-      position="top-left"
+      style="margin-right: 40px"
       :count="999"
+      position="top-left"
       theme="danger"
       dot
-      style="margin-right: 40px"
     >
-      <bk-button theme="primary">
-        top-left
-      </bk-button>
+      <bk-button theme="primary"> top-left </bk-button>
     </bk-badge>
   </div>
 </template>

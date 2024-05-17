@@ -161,24 +161,24 @@ export default defineComponent({
 
     const renderDom = () => (
       <div
+        ref={button}
+        style={wrapperStyle.value}
         class={[
           `${resolveClassName('slider-button')}`,
           props.params.vertical ? 'vertical' : 'horizontal',
           { grabbing: dragging.value },
         ]}
-        ref={button}
         tabindex='0'
-        style={wrapperStyle.value}
         onClick={(event: MouseEvent) => event.stopPropagation()}
         onMousedown={onButtonDown}
       >
         {Boolean(tip.value.content) ? (
           <>
             <Popover
-              content={tip.value.content}
-              theme={'dark'}
-              placement={tip.value.placement}
               boundary={document.body}
+              content={tip.value.content}
+              placement={tip.value.placement}
+              theme={'dark'}
             >
               <div class={['slider-button', { 'slider-button-disable': props.params.disable }]}></div>
             </Popover>

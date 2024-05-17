@@ -1,12 +1,12 @@
 <template>
   <bk-transfer
-    :target-list="value"
-    :source-list="list"
-    :title="title"
-    :empty-content="emptyContent"
     :display-key="'service_name'"
-    :sort-key="'service_code'"
+    :empty-content="emptyContent"
     :setting-key="'service_code'"
+    :sort-key="'service_code'"
+    :source-list="list"
+    :target-list="value"
+    :title="title"
     sortable
     @change="change"
   />

@@ -96,6 +96,16 @@ const buttonEvents: IPropsTableItem[] = [
   },
 ];
 
+const buttonSlot: IPropsTableItem[] = [
+  {
+    name: 'default',
+    type: 'Slot',
+    default: null,
+    desc: '默认插槽',
+    optional: [],
+  },
+];
+
 const demos = [
   {
     title: '基础按钮',
@@ -171,7 +181,7 @@ export default defineComponent({
         <DemoTitle
           name='Button'
           desc='常用的操作按钮'
-          link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/button`}
+          npmLink={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/button`}
           designLink='https://bkdesign.bk.tencent.com/design/9'
         />
         {demos.map(({ DemoComponent, ...demo }) => (
@@ -180,14 +190,19 @@ export default defineComponent({
           </DemoBox>
         ))}
         <PropsBox
+          title='Button 事件'
+          subtitle=''
+          propsData={buttonEvents}
+        />
+        <PropsBox
           title='Button 属性'
           subtitle=''
           propsData={buttonProps}
         />
         <PropsBox
-          title='Button 事件'
+          title='Button 插槽'
           subtitle=''
-          propsData={buttonEvents}
+          propsData={buttonSlot}
         />
       </div>
     );

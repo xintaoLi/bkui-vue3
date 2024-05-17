@@ -48,7 +48,7 @@ export interface IFormItemRule {
   max?: number;
   maxlength?: number;
   pattern?: RegExp;
-  validator?: (any) => boolean | Promise<boolean>;
-  message: string | (() => string);
+  validator?: (any) => Promise<boolean> | boolean;
+  message: (() => string) | string;
   trigger: 'blur' | 'change';
 }

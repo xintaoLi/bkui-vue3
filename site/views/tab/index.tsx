@@ -26,13 +26,10 @@
 
 import { defineComponent } from 'vue';
 
-import { tabPanelProps, tabProps } from '../../../packages/tab/src/props';
 import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-import { resolvePropsToDesData } from '../utils';
-
 import DemoAdd from './demo-add.vue';
 import DemoBase from './demo-base.vue';
 import CardDemo from './demo-card.vue';
@@ -43,23 +40,154 @@ import DemoExtend from './demo-extend.vue';
 import DemoJsx from './demo-jsx';
 import DemoPosition from './demo-position.vue';
 
-const tabPropsJson: IPropsTableItem[] = resolvePropsToDesData(tabProps);
-const tabPanelPropsJson: IPropsTableItem[] = resolvePropsToDesData(tabPanelProps);
-// const tabEventPropsJson: IPropsTableItem[] = resolvePropsToDesData(tabEventProps);
+const tabPropsJson: IPropsTableItem[] = [
+  {
+    name: 'active',
+    type: 'Number|String',
+    default: '--',
+    desc: '选中的 tab',
+  },
+  {
+    name: 'type',
+    type: 'String',
+    default: '--',
+    desc: '选项卡样式',
+    optional: ['card', 'border-card', 'unborder-card', 'vertical-card card-grid'],
+  },
+  {
+    name: 'tab-position',
+    type: 'String',
+    default: '--',
+    desc: '选项卡样式',
+    optional: ['left', 'right', 'top'],
+  },
+  {
+    name: 'closable',
+    type: 'Boolean',
+    default: '--',
+    desc: '动态删除选项卡',
+  },
+  {
+    name: 'addable',
+    type: 'Boolean',
+    default: '--',
+    desc: '动态添加选项卡',
+  },
+  {
+    name: 'sortable',
+    type: 'Boolean',
+    default: '--',
+    desc: '拖拽排序选项卡',
+  },
+  {
+    name: 'sort-type',
+    type: 'Boolean',
+    default: '--',
+    desc: '拖拽排序选项卡',
+    optional: ['insert', 'replace'],
+  },
+  {
+    name: 'label-height',
+    type: 'Number',
+    default: '--',
+    desc: '选项卡 高度',
+  },
+  {
+    name: 'scroll-step',
+    type: 'Number',
+    default: '--',
+    desc: '选项卡 高度',
+  },
+  {
+    name: 'validate-active',
+    type: 'Boolean',
+    default: '--',
+    desc: '有效选中',
+  },
+  {
+    name: 'active-bar-size',
+    type: 'Number',
+    default: '--',
+    desc: '选中条宽度',
+  },
+  {
+    name: 'active-bar-color',
+    type: 'Number',
+    default: '--',
+    desc: '选中条颜色',
+  },
+];
+// const tabPanelPropsJson: IPropsTableItem[] = resolvePropsToDesData(tabPanelProps);
+const tabPanelPropsJson: IPropsTableItem[] = [
+  {
+    name: 'name',
+    type: 'String|Number',
+    default: '--',
+    desc: 'Panel 标记',
+  },
+  {
+    name: 'label',
+    type: 'String|Function',
+    default: '--',
+    desc: 'Panel 渲染内容',
+  },
+  {
+    name: 'tips',
+    type: 'String',
+    default: '--',
+    desc: '选项卡提示',
+  },
+  {
+    name: 'closable',
+    type: 'Boolean',
+    default: '--',
+    desc: '选项卡关闭',
+  },
+  {
+    name: 'visible',
+    type: 'Boolean',
+    default: '--',
+    desc: '选项卡可见',
+  },
+  {
+    name: 'disabled',
+    type: 'Boolean',
+    default: '--',
+    desc: '选项卡禁用',
+  },
+  {
+    name: 'sortable',
+    type: 'Boolean',
+    default: '--',
+    desc: '选项卡排序',
+  },
+  {
+    name: 'render-directive',
+    type: 'Boolean',
+    default: 'show|if',
+    desc: 'Panel 渲染方式',
+  },
+  {
+    name: 'panel',
+    type: 'String|Function',
+    default: '--',
+    desc: 'Panel 渲染',
+  },
+];
 const tabEventPropsJson = [
   {
     name: 'add',
-    desc: '切换事件',
+    desc: '添加选项卡事件',
     params: '{ e: MouseEvent }',
   },
   {
     name: 'change',
-    desc: '切换事件',
+    desc: '切换选项卡选中事件',
     params: 'name',
   },
   {
     name: 'remove',
-    desc: '移除事件',
+    desc: '移除选项卡事件',
     params: 'index, panel',
   },
   {
@@ -83,95 +211,95 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Tab 选项卡'
           desc='选项卡切换组件。'
           designLink='https://bkdesign.bk.tencent.com/design/80'
+          name='Tab 选项卡'
         />
         <DemoBox
-          title='基础用法'
-          desc='基础的、简洁的标签页。'
           componentName='tab'
           demoName='demo-base'
+          desc='基础的、简洁的标签页。'
+          title='基础用法'
         >
           <DemoBase />
         </DemoBox>
         <DemoBox
-          title='选项卡样式'
-          desc='通过配置 type 属性，设置选项卡样式。支持的属性有 card, border-card, unborder-card, vertical-card card-grid'
           componentName='tab'
           demoName='demo-card'
+          desc='通过配置 type 属性，设置选项卡样式。支持的属性有 card, border-card, unborder-card, vertical-card card-grid'
+          title='选项卡样式'
         >
           <CardDemo />
         </DemoBox>
         <DemoBox
-          title='标签样式 '
-          desc='通过配置 type 属性，设置选项卡样式。支持的属性有 card, border-card, unborder-card, vertical-card card-grid'
           componentName='tab'
           demoName='demo-card-tab'
+          desc='通过配置 type 属性，设置选项卡样式。支持的属性有 card, border-card, unborder-card, vertical-card card-grid'
+          title='标签样式 '
         >
           <DemoCardTab />
         </DemoBox>
         <DemoBox
-          title='card-grid'
-          desc='通过配置 type 属性，设置选项卡样式。支持的属性有 card, border-card, unborder-card, vertical-card card-grid'
           componentName='tab'
           demoName='demo-card-grid'
+          desc='通过配置 type 属性，设置选项卡样式。支持的属性有 card, border-card, unborder-card, vertical-card card-grid'
+          title='card-grid'
         >
           <DemoCardGrid />
         </DemoBox>
         <DemoBox
-          title='选项卡位置'
-          desc='通过配置 tab-position 属性，设置选项卡位置。支持的属性有 left, right, top。当 tab-position 属性配置为 left 和 right 时，addable 属性以及 closable 属性无效。'
           componentName='tab'
           demoName='demo-position'
+          desc='通过配置 tab-position 属性，设置选项卡位置。支持的属性有 left, right, top。当 tab-position 属性配置为 left 和 right 时，addable 属性以及 closable 属性无效。'
+          title='选项卡位置'
         >
           <DemoPosition />
         </DemoBox>
         <DemoBox
-          title='可增删的选项卡'
-          desc='配置 addable 属性可动态添加选项卡；配置 closable 可以动态删除选项卡'
           componentName='tab'
           demoName='demo-add'
+          desc='配置 addable 属性可动态添加选项卡；配置 closable 可以动态删除选项卡'
+          title='可增删的选项卡'
         >
           <DemoAdd />
         </DemoBox>
         <DemoBox
-          title='拖拽排序'
-          desc='sortType 为replace时，为交换位置；为jump时，为插入当前位置。bk-tab :sortable=“true” 。tab 可拖拽排序。bk-tab-panel :unsortable=“ture”,此选项不可排序'
           componentName='tab'
           demoName='demo-drag'
+          desc='sortType 为replace时，为交换位置；为jump时，为插入当前位置。bk-tab :sortable=“true” 。tab 可拖拽排序。bk-tab-panel :unsortable=“ture”,此选项不可排序'
+          title='拖拽排序'
         >
           <DemoDrag />
         </DemoBox>
         <DemoBox
-          title='自定义选项卡内容'
-          desc='通过使用 slot 自定义选项卡内容'
           componentName='tab'
           demoName='demo-extend'
+          desc='通过使用 slot 自定义选项卡内容'
+          title='自定义选项卡内容'
         >
           <DemoExtend />
         </DemoBox>
         <DemoBox
-          title='tsx用法'
-          desc='tsx 写法'
           componentName='tab'
-          suffix='.tsx'
           demoName='demo-jsx'
+          desc='tsx 写法'
+          suffix='.tsx'
+          title='tsx用法'
         >
           <DemoJsx />
         </DemoBox>
         <PropsBox
-          title='tab 属性'
           propsData={tabPropsJson}
+          title='tab 属性'
         />
         <PropsBox
-          title='tab 事件'
           columnMap={eventColumnMap}
           propsData={tabEventPropsJson}
+          title='tab 事件'
         />
         <PropsBox
-          title='tab-Panel 属性'
           propsData={tabPanelPropsJson}
+          title='tab-Panel 属性'
         />
       </div>
     );

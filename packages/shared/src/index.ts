@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 /**
  * Tencent is pleased to support the open source community by making
  * 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition) available.
@@ -35,7 +34,7 @@ export * from './token';
 export * from './utils';
 export * from './vue-types';
 export * from './z-index-manager';
-export * from './mask';
+export * from './frame-throttle';
 
 export function classes(dynamicCls: object, constCls = ''): string {
   return Object.entries(dynamicCls)
@@ -111,7 +110,7 @@ export function debounce(delay = 300, fn: Function, immediate = false) {
   const debounced = function (this: any) {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const ctx = this; // 当前上下文
-    // eslint-disable-next-line prefer-rest-params
+
     const args = arguments; // fn的参数
 
     // 取消之前的延时调用
@@ -154,7 +153,7 @@ export function filterProperty(data: object, filter: string[]) {
   );
 }
 
-export function arrayEqual(arr1: Array<string | number | string[]> = [], arr2: Array<string | number | string[]> = []) {
+export function arrayEqual(arr1: Array<number | string | string[]> = [], arr2: Array<number | string | string[]> = []) {
   if (arr1.length !== arr2.length) {
     return false;
   }

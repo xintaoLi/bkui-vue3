@@ -24,8 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import { v4 as uuidv4 } from 'uuid';
-
 import {
   createPopper,
   Instance,
@@ -35,6 +33,7 @@ import {
   State,
   VirtualElement,
 } from '@popperjs/core';
+import { v4 as uuidv4 } from 'uuid';
 
 import { isElement, merge } from './helper';
 
@@ -49,7 +48,7 @@ export declare type IOptions = {
   theme?: string;
   trigger?: string;
   disabled?: boolean;
-  appendTo?: string | HTMLElement;
+  appendTo?: HTMLElement | string;
   afterShow?: () => void;
   afterHidden?: () => void;
   /**
@@ -57,7 +56,7 @@ export declare type IOptions = {
    * 是否将弹出内容固定到目标元素位置
    * 例如：appendTo = document.body, fixOnBoundary = true，则弹出内容会一直固定到body
    */
-  fixOnBoundary?: Boolean;
+  fixOnBoundary?: boolean;
 };
 
 export declare type IBKPopover = Instance & {
@@ -102,13 +101,13 @@ export class BKPopover {
   private disabled = false;
 
   /** 执行显示函数 */
-  private afterShow: void | any = null;
+  private afterShow: any | void = null;
 
   /** 执行隐藏函数 */
-  private afterHidden: void | any = null;
+  private afterHidden: any | void = null;
 
   /** 弹出内容AppendTo */
-  private appendTo: string | HTMLElement = 'parent';
+  private appendTo: HTMLElement | string = 'parent';
 
   /** 父级容器 */
   private container?: HTMLElement = null;
@@ -118,9 +117,9 @@ export class BKPopover {
    * 是否将弹出内容固定到目标元素位置
    * 例如：appendTo = document.body, fixOnBoundary = true，则弹出内容会一直固定到body
    */
-  private fixOnBoundary: Boolean = false;
+  private fixOnBoundary = false;
 
-  constructor(reference?: string | HTMLElement, popperRefer?: string | HTMLElement, options?: IOptions) {
+  constructor(reference?: HTMLElement | string, popperRefer?: HTMLElement | string, options?: IOptions) {
     this.instanceOptions = this.initDefaultOptions(options);
     this.reference = this.resolveInputSelectorToHtmlElement(reference);
     this.popperRefer = this.resolveInputSelectorToHtmlElement(popperRefer);
@@ -260,7 +259,7 @@ export class BKPopover {
    */
   private getAppendToTarget() {
     const { appendTo } = this;
-    let target: string | HTMLElement = appendTo;
+    let target: HTMLElement | string = appendTo;
     if (appendTo !== 'parent') {
       if (typeof appendTo === 'string') {
         target = document.querySelector(appendTo) as HTMLElement;
@@ -353,7 +352,7 @@ export class BKPopover {
    * @param checkVirtualDom 是否检查虚拟DOM
    * @returns Html Element Or Null
    */
-  private resolveInputSelectorToHtmlElement(refer?: string | HTMLElement) {
+  private resolveInputSelectorToHtmlElement(refer?: HTMLElement | string) {
     if (this.isElement(refer)) {
       return refer as HTMLElement;
     }

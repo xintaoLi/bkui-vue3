@@ -3,8 +3,8 @@
     v-model="area"
     :custom-text-fillback="customFillback"
     :list="list"
-    is-remote
     :remote-method="remoteMethod"
+    is-remote
   />
 </template>
 <script setup>
@@ -16,10 +16,12 @@
     {
       id: 'hunan',
       name: '湖南',
-    }, {
+    },
+    {
       id: 'guangxi',
       name: '广西',
-    }, {
+    },
+    {
       id: 'yunnan',
       name: '云南',
     },
@@ -41,9 +43,11 @@
     }, 1000);
   };
 
-  const customFillback = (data, nodes) => data.map((item) => {
-    const target = nodes.find(node => node.id === item);
-    return target ? target.name : item;
-  }).join('/');
-
+  const customFillback = (data, nodes) =>
+    data
+      .map(item => {
+        const target = nodes.find(node => node.id === item);
+        return target ? target.name : item;
+      })
+      .join('/');
 </script>

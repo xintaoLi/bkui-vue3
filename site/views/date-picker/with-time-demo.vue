@@ -1,18 +1,16 @@
 <template>
   <bk-date-picker
     v-model="dateValue"
-    clearable
     :disable-date="disableDate"
     type="datetime"
+    clearable
     @change="handleChange"
     @clear="handleClear"
-    @pick-success="handleOk"
     @open-change="handleOpenChange"
+    @pick-success="handleOk"
   >
     <template #footer>
-      <div class="custom-footer">
-        我是自定义 footer
-      </div>
+      <div class="custom-footer">我是自定义 footer</div>
     </template>
     <!-- <template #confirm>
       <div class="custom-footer">
@@ -27,11 +25,11 @@
   const dateValue = ref(new Date());
   const disableDate = date => date && date.valueOf() < Date.now() - 86400;
 
-  const handleChange = (date) => {
+  const handleChange = date => {
     console.log('handleChange', date);
     dateValue.value = date;
   };
-  const handleOpenChange = (isOpen) => {
+  const handleOpenChange = isOpen => {
     console.error('handleOpenChange');
     console.log(isOpen);
   };

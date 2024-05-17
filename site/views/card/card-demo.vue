@@ -15,8 +15,8 @@
     </div>
     <div class="card-demo-item">
       <bk-card
-        title="Card卡片标题"
         class="mr40"
+        title="Card卡片标题"
         show-footer
         show-header
       >
@@ -27,12 +27,9 @@
         </div>
         <template #footer>
           <div class="card-demo-foot">
-            <span class="card-demo-foot-item">
-              <help-document-fill /></span>
-            <span class="card-demo-foot-item">
-              <help /></span>
-            <span class="card-demo-foot-item">
-              <help-fill /></span>
+            <span class="card-demo-foot-item"> <help-document-fill /></span>
+            <span class="card-demo-foot-item"> <help /></span>
+            <span class="card-demo-foot-item"> <help-fill /></span>
           </div>
         </template>
       </bk-card>
@@ -42,7 +39,7 @@
 
 <script setup>
   import { Help, HelpDocumentFill, HelpFill } from 'bkui-vue/lib/icon';
-  const editHandler = (v) => {
+  const editHandler = v => {
     console.log(v);
   };
 </script>
@@ -69,7 +66,7 @@
     .card-demo-item {
       display: inline-block;
       width: 400px;
-      margin-left: 30px
+      margin-left: 30px;
     }
 
     .card-demo-foot {

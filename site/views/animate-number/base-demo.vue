@@ -1,13 +1,9 @@
 <template>
   <bk-animate-number
-    :value="numValue"
     :digits="2"
+    :value="numValue"
   />
-  <bk-button
-    @click="handleClick"
-  >
-    +
-  </bk-button>
+  <bk-button @click="handleClick"> + </bk-button>
 </template>
 
 <script setup>

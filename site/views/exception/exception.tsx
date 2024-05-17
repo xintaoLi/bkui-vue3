@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import PartDemo from './part-demo.vue';
 
@@ -69,29 +68,29 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Exception 异常提示'
           desc=''
+          name='Exception 异常提示'
         />
         <DemoBox
-          title='基础用法'
-          desc='配置 type 为异常类型 403、404、500、building、empty、search-empty，也可以不配置，默认为 404'
           componentName='exception'
           demoName='base-demo'
+          desc='配置 type 为异常类型 403、404、500、building、empty、search-empty，也可以不配置，默认为 404'
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
         <DemoBox
-          title='局部异常提示'
-          desc='配置 scene 为使用场景为 part'
           componentName='exception'
           demoName='part-demo'
+          desc='配置 scene 为使用场景为 part'
+          title='局部异常提示'
         >
           <PartDemo />
         </DemoBox>
         <PropsBox
-          title='属性'
-          subtitle=''
           propsData={props}
+          subtitle=''
+          title='属性'
         />
       </div>
     );

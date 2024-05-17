@@ -50,50 +50,50 @@ export default defineComponent({
           onClick={this.handleClick}
         >
           <BkException
+            scene='page'
             type={this.type}
-            scene='page'
           ></BkException>
         </div>
         <div style='min-height: 300px; padding: 10px 0; border: 1px solid #dcdcdc; margin: 10px 0;'>
           <BkException
+            scene='page'
             type='403'
-            scene='page'
           ></BkException>
         </div>
         <div style='min-height: 300px; padding: 10px 0; border: 1px solid #dcdcdc; margin: 10px 0;'>
           <BkException
+            scene='page'
             type='500'
-            scene='page'
           ></BkException>
         </div>
         <div style='min-height: 300px; padding: 10px 0; border: 1px solid #dcdcdc; margin: 10px 0;'>
           <BkException
+            scene='page'
             type='building'
-            scene='page'
           ></BkException>
         </div>
         <div style='min-height: 300px; padding: 10px 0; border: 1px solid #dcdcdc; margin: 10px 0;'>
           <BkException
+            scene='page'
             type='empty'
-            scene='page'
           ></BkException>
         </div>
         <div style='min-height: 300px; padding: 10px 0; border: 1px solid #dcdcdc; margin: 10px 0;'>
           <BkException
+            scene='page'
             type='search-empty'
-            scene='page'
           ></BkException>
         </div>
         <div style='min-height: 300px; padding: 10px 0; border: 1px solid #dcdcdc; margin: 10px 0;'>
           <BkException
-            type='login'
             scene='page'
+            type='login'
           ></BkException>
         </div>
         <div style='min-height: 300px; padding: 10px 0; border: 1px solid #dcdcdc; margin: 10px 0;'>
           <BkException
-            type='login'
             scene='page'
+            type='login'
           >
             <div class='slot-default'>
               <div>这里是描述</div>
@@ -103,42 +103,42 @@ export default defineComponent({
         </div>
         <div style='display: flex; height: auto; padding: 20px 0; border: 1px solid #dcdcdc; margin: 10px 0;'>
           <BkException
+            scene='part'
             type='404'
-            scene='part'
           ></BkException>
           <BkException
+            scene='part'
             type='403'
-            scene='part'
           ></BkException>
         </div>
         <div style='display: flex; height: auto; padding: 20px 0; border: 1px solid #dcdcdc; margin: 10px 0;'>
           <BkException
+            scene='part'
             type='500'
-            scene='part'
           ></BkException>
           <BkException
+            scene='part'
             type='building'
-            scene='part'
           ></BkException>
         </div>
         <div style='display: flex; height: auto; padding: 20px 0; border: 1px solid #dcdcdc; margin: 10px 0;'>
           <BkException
+            scene='part'
             type='empty'
-            scene='part'
           ></BkException>
           <BkException
-            type='search-empty'
             scene='part'
+            type='search-empty'
           ></BkException>
         </div>
         <div style='display: flex; height: auto; padding: 20px 0; border: 1px solid #dcdcdc; margin: 10px 0;'>
           <BkException
-            type='login'
             scene='part'
+            type='login'
           ></BkException>
           <BkException
-            type='login'
             scene='part'
+            type='login'
           ></BkException>
         </div>
       </div>

@@ -24,14 +24,14 @@
  * IN THE SOFTWARE.
  */
 
-import type { ComponentInternalInstance, ComputedRef } from 'vue';
 import { getCurrentInstance, nextTick, ref, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
-import type { Language } from '@bkui-vue/locale';
 import Select, { BkOption } from '@bkui-vue/select';
 
 import type { IPaginationInstance } from './type';
+import type { Language } from '@bkui-vue/locale';
+import type { ComponentInternalInstance, ComputedRef } from 'vue';
 
 export default (t: ComputedRef<Language['pagination']>) => {
   const { proxy } = getCurrentInstance() as ComponentInternalInstance & { proxy: IPaginationInstance };
@@ -84,28 +84,23 @@ export default (t: ComputedRef<Language['pagination']>) => {
           'is-first': isFirst,
           'is-last': isLast,
         }}
-        {...{
-          disabled: proxy.disabled,
-        }}
       >
         <div>{t.value.eachPage}</div>
         <Select
           class={`${resolveClassName('pagination-limit-select')}`}
           clearable={false}
-          size='small'
-          withValidate={false}
-          modelValue={localLimit.value}
-          onChange={handleLimitChange}
           disabled={proxy.disabled}
           filterable={false}
+          modelValue={localLimit.value}
+          size='small'
+          withValidate={false}
+          onChange={handleLimitChange}
         >
           {proxy.limitList.map((num, index) => (
             <BkOption
-              // value={num}
-              // label={`${num}`}
               id={num}
-              name={`${num}`}
               key={`${index}_${num}`}
+              name={`${num}`}
             />
           ))}
         </Select>

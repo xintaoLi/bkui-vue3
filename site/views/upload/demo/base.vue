@@ -1,15 +1,15 @@
 <template>
   <div class="demo">
     <bk-upload
-      with-credentials
-      :tip="'只允许上传JPG、PNG、JPEG、ZIP的文件'"
       :handle-res-code="handleRes"
+      :select-change="handleSelectChange"
+      :tip="'只允许上传JPG、PNG、JPEG、ZIP的文件'"
       :url="'https://jsonplaceholder.typicode.com/posts/'"
-      :selectChange="handleSelectChange"
-      @success="handleSuccess"
+      with-credentials
+      @done="handleDone"
       @error="handleError"
       @progress="handleProgress"
-      @done="handleDone"
+      @success="handleSuccess"
     />
   </div>
 </template>
@@ -26,10 +26,10 @@
   const handleError = (file, fileList, error) => {
     console.log(file, fileList, error, 'handleError');
   };
-  const handleDone = (fileList) => {
+  const handleDone = fileList => {
     console.log(fileList, 'handleDone');
   };
-  const handleRes = (response) => {
+  const handleRes = response => {
     console.log(response, 'handleRes');
     if (response.id) {
       return true;
@@ -37,9 +37,9 @@
     return false;
   };
 
-  const handleSelectChange = (event) => {
-    console.log(event, 'change')
-  }
+  const handleSelectChange = event => {
+    console.log(event, 'change');
+  };
 </script>
 
 <style lang="less">

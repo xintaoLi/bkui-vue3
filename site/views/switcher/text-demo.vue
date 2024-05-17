@@ -2,17 +2,17 @@
   <div>
     <bk-switcher
       v-model="demo1"
-      true-value="a"
       false-value="b"
+      true-value="a"
       @change="handleChange"
     />
     <bk-switcher
       v-model="demo1"
-      show-text
-      true-value="a"
       false-value="b"
-      on-text="真值"
       off-text="假值"
+      true-value="a"
+      show-text
+      on-text="真值"
     />
   </div>
 </template>
@@ -28,7 +28,7 @@
     },
     setup() {
       const demo1 = ref('a');
-      const handleChange = (value) => {
+      const handleChange = value => {
         console.log(value);
       };
       return {
@@ -37,9 +37,7 @@
       };
     },
   });
-
 </script>
-
 
 <style scoped>
   .bk-switcher {

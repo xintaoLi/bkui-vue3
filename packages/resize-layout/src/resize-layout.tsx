@@ -192,7 +192,7 @@ export default defineComponent({
       }
       const asideRect = asideRef.value.getBoundingClientRect();
       // 最小化同时设置为已折叠，此时展开以初始化initial-divide数据为参考
-      // eslint-disable-next-line no-multi-assign
+
       minimized.value = collapsed.value = asideRect[cssPropKey.value] <= parseAutoMinimize.value;
       if (!minimized.value) {
         asideContentVisible.value = true;
@@ -280,9 +280,9 @@ export default defineComponent({
         class={bkResizeLayoutClass}
       >
         <aside
-          class={`${this.resolveClassName('resize-layout-aside')}`}
           ref='asideRef'
           style={this.asideStyle}
+          class={`${this.resolveClassName('resize-layout-aside')}`}
         >
           <div
             class={`${this.resolveClassName('resize-layout-aside-content')}`}
@@ -291,14 +291,14 @@ export default defineComponent({
             {this.$slots.aside?.()}
           </div>
           <i
+            style={this.triggerStyle}
             class={`${this.resolveClassName('resize-trigger')}`}
             v-show={!this.disabled && (!this.collapsed || this.autoMinimize)}
-            style={this.triggerStyle}
             onMousedown={withModifiers(this.handleMousedown, ['left'])}
           ></i>
           <i
-            class={[`${this.resolveClassName('resize-proxy')}`, this.placement]}
             ref='resizeProxyRef'
+            class={[`${this.resolveClassName('resize-proxy')}`, this.placement]}
             v-show={!this.collapsed || this.autoMinimize}
           ></i>
           {this.collapsible &&
@@ -321,8 +321,8 @@ export default defineComponent({
         </aside>
         <main class={`${this.resolveClassName('resize-layout-main')}`}>{this.$slots.main?.()}</main>
         <div
-          class={`${this.resolveClassName('resize-mask')}`}
           ref='resizeMaskRef'
+          class={`${this.resolveClassName('resize-mask')}`}
         ></div>
       </div>
     );

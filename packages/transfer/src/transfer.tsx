@@ -24,12 +24,11 @@
  * IN THE SOFTWARE.
  */
 
-/* eslint-disable arrow-body-style */
 import { computed, defineComponent, ref, toRaw, toRefs, watch } from 'vue';
 
 import Checkbox, { BkCheckboxGroup } from '@bkui-vue/checkbox';
 import { useLocale, usePrefix } from '@bkui-vue/config-provider';
-import { AngleLeft, AngleRight, ArrowsRight, Error, Search, Transfer } from '@bkui-vue/icon/';
+import { AngleLeft, AngleRight, ArrowsRight, Error, Search, Transfer } from '@bkui-vue/icon';
 import Input from '@bkui-vue/input';
 
 import { ArrayType } from './const';
@@ -277,7 +276,7 @@ export default defineComponent({
       const selectField = isLeft ? 'source' : 'target';
       const titleText = isLeft ? `${this.title[0] ?? this.t.sourceList}` : `${this.title[1] ?? this.t.targetList}`;
       const isDisabled = isLeft ? !leftList.length : !rightList.length;
-      // eslint-disable-next-line max-len
+
       const isIndeterminate =
         !!this.multipleSelectList[selectField].length && !this.multipleSelectAllValue[selectField];
       const selectCount = this.multipleSelectList[selectField].length;
@@ -293,9 +292,9 @@ export default defineComponent({
           {this.multiple ? (
             <Checkbox
               class='header-checkbox'
-              label={titleText}
               v-model={this.multipleSelectAllValue[selectField]}
               indeterminate={isIndeterminate}
+              label={titleText}
               onChange={val => this.handleAllChecked(val, selectField)}
             />
           ) : (
@@ -350,9 +349,11 @@ export default defineComponent({
           {!multiple && (
             <span class='icon-wrapper'>
               {isLeft ? (
-                <ArrowsRight class={`${this.resolveClassName('icon')} icon-move`} />
+                // <ArrowsRight class={`${this.resolveClassName('icon')} icon-move`} />
+                <ArrowsRight class={this.resolveClassName('icon')} />
               ) : (
-                <Error class={`${this.resolveClassName('icon')} icon-delete`} />
+                // <Error class={`${this.resolveClassName('icon')} icon-delete`} />
+                <Error class={[this.resolveClassName('icon'), this.resolveClassName('icon-delete')]} />
               )}
             </span>
           )}
@@ -404,13 +405,13 @@ export default defineComponent({
           {getHeaderHtml('left-header')}
           {this.searchable && (
             <Input
-              v-model={this.selectSearchQuery}
               class='transfer-search-input'
+              v-model={this.selectSearchQuery}
               clearable={true}
               placeholder={this.searchPlaceholder || this.t.search}
             >
               {{
-                prefix: () => <Search class='icon-search' />,
+                prefix: () => <Search class={this.resolveClassName('icon-search')} />,
               }}
             </Input>
           )}
@@ -432,7 +433,7 @@ export default defineComponent({
             </div>
           </div>
         ) : (
-          <Transfer class='transfer' />
+          <Transfer class={this.resolveClassName('transfer-icon')} />
         )}
         <div class='target-list'>
           {getHeaderHtml('right-header')}

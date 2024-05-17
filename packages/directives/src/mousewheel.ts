@@ -25,6 +25,7 @@
  */
 
 import normalizeWheel from 'normalize-wheel';
+
 import type { ObjectDirective } from 'vue';
 
 const isFirefox = typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().indexOf('firefox') > -1;

@@ -97,6 +97,11 @@ export default defineComponent({
       className += ` ${resolveClassName('collapse-card')}`;
     }
 
+    // 色块样式
+    if (props.useBlockTheme) {
+      className += ` ${resolveClassName('collapse-block')}`;
+    }
+
     // 图标位置
     if (props.headerIconAlign === 'left') {
       className += ` ${resolveClassName('collapse-icon-left')}`;
@@ -141,11 +146,11 @@ export default defineComponent({
         return (
           <CollapsePanel
             key={index}
-            item-click={handleItemClick}
             disabled={item.disabled}
-            name={name}
             icon={icon}
             isFormList={true}
+            item-click={handleItemClick}
+            name={name}
             title={title}
           >
             {{

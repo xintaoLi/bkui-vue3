@@ -36,7 +36,6 @@ import Tag from '@bkui-vue/tag';
 
 import { useHover } from '../../select/src/common';
 import { useTagsOverflow } from '../../tag-input/src/common';
-
 import CascaderPanel from './cascader-panel';
 import { INode } from './interface';
 import Store from './store';
@@ -123,7 +122,7 @@ export default defineComponent({
     // 用computed定义checkedValue变量，用于监听modelValue的变化
     const checkedValue = computed({
       get: () => modelValue.value,
-      set: (value: Array<string | number | string[]>) => {
+      set: (value: Array<number | string | string[]>) => {
         emit('update:modelValue', value);
       },
     });
@@ -166,7 +165,7 @@ export default defineComponent({
     };
 
     // 更新选中
-    const updateValue = (val: Array<string | number | string[]>) => {
+    const updateValue = (val: Array<number | string | string[]>) => {
       // 更新多选情况下的选中标签
       if (multiple) {
         store.value.setNodesCheck(val as Array<string[]>); // 同步节点选中的状态
@@ -393,9 +392,9 @@ export default defineComponent({
             // 根据tag是否超出显示范围，来决定是否渲染
             return (
               <span
-                class='tag-item'
-                style={{ display: isOverflow ? 'none' : '' }}
                 key={tag}
+                style={{ display: isOverflow ? 'none' : '' }}
+                class='tag-item'
               >
                 <span class='tag-item-name'>{tag}</span>
                 <Error
@@ -427,17 +426,17 @@ export default defineComponent({
     // 定义popoverRender函数，用于渲染弹出框
     const popoverRender = () => (
       <Popover
+        ref='popover'
+        class={this.resolveClassName('cascader-popover-wrapper')}
+        arrow={false}
+        boundary='body'
+        disabled={this.disabled}
+        offset={4}
         placement='bottom-start'
         theme={`light ${this.resolveClassName('cascader-popover')}`}
         trigger='click'
-        arrow={false}
-        disabled={this.disabled}
-        offset={4}
-        class={this.resolveClassName('cascader-popover-wrapper')}
-        ref='popover'
         onAfterHidden={this.popoverChangeEmitter}
         onAfterShow={this.popoverChangeEmitter}
-        boundary='body'
       >
         {{
           default: () =>
@@ -449,19 +448,19 @@ export default defineComponent({
                 {this.filterable
                   ? (this.isCollapse || this.selectedTags.length === 0) && (
                       <input
+                        ref='inputRef'
                         class={[
                           this.resolveClassName('cascader-search-input'),
                           {
                             'is-disabled': this.disabled,
                           },
                         ]}
-                        type='text'
-                        onInput={this.searchInputHandler}
-                        onBlur={this.searchBlueHandler}
-                        placeholder={this.calcuPlaceholder}
-                        value={this.searchKey}
                         disabled={this.disabled}
-                        ref='inputRef'
+                        placeholder={this.calcuPlaceholder}
+                        type='text'
+                        value={this.searchKey}
+                        onBlur={this.searchBlueHandler}
+                        onInput={this.searchInputHandler}
                       />
                     )
                   : textRender()}
@@ -470,14 +469,9 @@ export default defineComponent({
           content: () => (
             <div class={this.resolveClassName('cascader-popover')}>
               <CascaderPanel
-                store={this.store}
                 ref='cascaderPanel'
                 width={this.scrollWidth}
                 height={this.scrollHeight}
-                search-key={this.searchKey}
-                separator={this.separator}
-                is-filtering={this.isFiltering}
-                suggestions={this.suggestions}
                 v-model={this.checkedValue}
                 v-slots={{
                   default: scope =>
@@ -487,6 +481,11 @@ export default defineComponent({
                       <span class={this.resolveClassName('cascader-node-name')}>{scope.node.name}</span>
                     ),
                 }}
+                is-filtering={this.isFiltering}
+                search-key={this.searchKey}
+                separator={this.separator}
+                store={this.store}
+                suggestions={this.suggestions}
               ></CascaderPanel>
             </div>
           ),
@@ -500,6 +499,7 @@ export default defineComponent({
           popoverRender()
         ) : (
           <div
+            ref='bkCascaderRef'
             class={[
               this.resolveClassName('cascader'),
               this.extCls,
@@ -512,11 +512,10 @@ export default defineComponent({
                 'is-simplicity': this.behavior === 'simplicity',
               },
             ]}
-            tabindex='0'
             data-placeholder={this.calcuPlaceholder}
+            tabindex='0'
             onMouseenter={this.setHover}
             onMouseleave={this.cancelHover}
-            ref='bkCascaderRef'
           >
             {suffixIcon()}
             {popoverRender()}

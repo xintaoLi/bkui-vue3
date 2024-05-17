@@ -2,25 +2,25 @@
   <div style="width: 100%">
     <div class="mb10">
       <bk-progress
-        text-inside
+        :percent="46"
         :show-text="false"
         :stroke-width="18"
-        :percent="46"
+        text-inside
       />
     </div>
     <div class="mb10">
       <bk-progress
-        text-inside
-        :stroke-width="18"
         :percent="46"
+        :stroke-width="18"
+        text-inside
       />
     </div>
     <div>
       <bk-progress
-        text-inside
-        :stroke-width="22"
-        :percent="70"
         :format="format"
+        :percent="70"
+        :stroke-width="22"
+        text-inside
       />
     </div>
   </div>
@@ -45,7 +45,7 @@
 </script>
 
 <style scoped>
-.mb10 {
-  margin-bottom: 10px;
-}
+  .mb10 {
+    margin-bottom: 10px;
+  }
 </style>

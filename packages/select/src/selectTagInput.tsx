@@ -23,14 +23,15 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import debounce from 'lodash/debounce';
 import { computed, defineComponent, inject, onBeforeUnmount, onMounted, ref, toRefs, watch } from 'vue';
-import { PropType } from 'vue-types/dist/types';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { bkTooltips } from '@bkui-vue/directives';
+import { OverflowTitle } from '@bkui-vue/overflow-title';
 import { classes, InputBehaviorType, PropTypes, TagThemeType } from '@bkui-vue/shared';
 import Tag from '@bkui-vue/tag';
+import debounce from 'lodash/debounce';
+import { PropType } from 'vue-types/dist/types';
 
 import { selectKey } from './common';
 import { ISelected } from './type';
@@ -61,11 +62,11 @@ export default defineComponent({
     const { modelValue, collapseTags, selected } = toRefs(props);
     const value = ref(modelValue.value);
     const inputRef = ref<HTMLElement>();
-    const overflowTagIndex = ref<number | null>(null);
+    const overflowTagIndex = ref<null | number>(null);
     const overflowContent = computed(() =>
       selected.value
         .slice(overflowTagIndex.value, selected.value.length)
-        .map(item => item.label)
+        .map(item => select?.handleGetLabelByValue(item.value))
         .join(', '),
     );
 
@@ -180,46 +181,49 @@ export default defineComponent({
 
     return (
       <div
-        class={selectTagClass}
         ref='tagWrapperRef'
+        class={selectTagClass}
       >
         {this.$slots?.prefix?.()}
         <div class={tagWrapperClass}>
           {this.$slots.default?.() ??
             this.selected.map((item, index) => (
               <Tag
-                closable
-                theme={this.tagTheme}
+                ref={el => (this.tagsRefs[index] = el)}
                 style={{
                   display: this.collapseTags && this.overflowTagIndex && index >= this.overflowTagIndex ? 'none' : '',
                 }}
-                ref={el => (this.tagsRefs[index] = el)}
+                theme={this.tagTheme}
+                closable
                 onClose={() => this.handleRemoveTag(item.value)}
               >
-                {this.select?.handleGetLabelByValue(item.value)}
+                {this.$slots.tagRender?.(item) ?? (
+                  <OverflowTitle type='tips'>{this.select?.handleGetLabelByValue(item.value)}</OverflowTitle>
+                )}
               </Tag>
             ))}
           <Tag
-            class={this.resolveClassName('select-overflow-tag')}
+            ref='collapseTagRef'
             style={{
               display: !!this.overflowTagIndex && this.collapseTags ? '' : 'none',
             }}
+            class={this.resolveClassName('select-overflow-tag')}
             v-bk-tooltips={{
               content: this.overflowContent,
               disabled: !this.overflowTagIndex || !this.collapseTags,
+              extCls: this.resolveClassName('select-tooltips'),
             }}
-            ref='collapseTagRef'
           >
             +{this.selected.length - this.overflowTagIndex}
           </Tag>
           <input
-            class={this.resolveClassName('select-tag-input')}
             ref='inputRef'
-            type='text'
             style={inputStyle}
+            class={this.resolveClassName('select-tag-input')}
+            disabled={this.disabled}
             placeholder={!this.selected.length ? this.placeholder : ''}
             readonly={!this.filterable}
-            disabled={this.disabled}
+            type='text'
             value={!this.filterable ? '' : this.value}
             onInput={this.handleInput}
             onKeydown={this.handleKeydown}

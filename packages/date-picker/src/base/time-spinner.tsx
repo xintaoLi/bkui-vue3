@@ -24,15 +24,16 @@
  * IN THE SOFTWARE.
  */
 
-import debounce from 'lodash/debounce';
-import type { ExtractPropTypes, PropType } from 'vue';
 import { computed, defineComponent, nextTick, onMounted, reactive, ref, toRefs, watch } from 'vue';
 
 import { useLocale, usePrefix } from '@bkui-vue/config-provider';
 import { scrollTop } from '@bkui-vue/shared';
+import debounce from 'lodash/debounce';
 
 import { timePanelProps } from '../props';
 import { firstUpperCase } from '../utils';
+
+import type { ExtractPropTypes, PropType } from 'vue';
 
 const timeSpinnerProps = {
   hours: {
@@ -425,29 +426,29 @@ export default defineComponent({
       >
         <div class={this.resolveClassName('time-picker-cells-title-wrapper')}>
           <div
-            class={[this.resolveClassName('time-picker-cells-title'), this.focusedColumn === 0 ? 'active' : '']}
             style={this.styles}
+            class={[this.resolveClassName('time-picker-cells-title'), this.focusedColumn === 0 ? 'active' : '']}
           >
             {this.t.hour}
           </div>
           <div
-            class={[this.resolveClassName('time-picker-cells-title'), this.focusedColumn === 1 ? 'active' : '']}
             style={this.styles}
+            class={[this.resolveClassName('time-picker-cells-title'), this.focusedColumn === 1 ? 'active' : '']}
           >
             {this.t.min}
           </div>
           <div
+            style={this.styles}
             class={[this.resolveClassName('time-picker-cells-title'), this.focusedColumn === 2 ? 'active' : '']}
             v-show={this.showSeconds}
-            style={this.styles}
           >
             {this.t.sec}
           </div>
         </div>
         <div
-          class={this.resolveClassName('time-picker-cells-list')}
           ref='hoursRef'
           style={this.styles}
+          class={this.resolveClassName('time-picker-cells-list')}
         >
           <ul class={this.resolveClassName('time-picker-cells-ul')}>
             {this.hoursList.map(item => (
@@ -462,9 +463,9 @@ export default defineComponent({
           </ul>
         </div>
         <div
-          class={this.resolveClassName('time-picker-cells-list')}
           ref='minutesRef'
           style={this.styles}
+          class={this.resolveClassName('time-picker-cells-list')}
         >
           <ul class={this.resolveClassName('time-picker-cells-ul')}>
             {this.minutesList.map(item => (
@@ -479,10 +480,10 @@ export default defineComponent({
           </ul>
         </div>
         <div
-          class={this.resolveClassName('time-picker-cells-list')}
-          v-show={this.showSeconds}
           ref='secondsRef'
           style={this.styles}
+          class={this.resolveClassName('time-picker-cells-list')}
+          v-show={this.showSeconds}
         >
           <ul class={this.resolveClassName('time-picker-cells-ul')}>
             {this.secondsList.map(item => (

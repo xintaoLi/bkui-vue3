@@ -3,183 +3,117 @@
     <bk-container :col="12">
       <bk-row>
         <bk-col :span="0">
-          <div class="content">
-            12/12
-          </div>
+          <div class="content">12/12</div>
         </bk-col>
       </bk-row>
       <bk-row>
         <bk-col :span="6">
-          <div class="content">
-            6/12
-          </div>
+          <div class="content">6/12</div>
         </bk-col>
         <bk-col :span="6">
-          <div class="content">
-            6/12
-          </div>
+          <div class="content">6/12</div>
         </bk-col>
       </bk-row>
       <bk-row>
         <bk-col :span="4">
-          <div class="content">
-            4/12
-          </div>
+          <div class="content">4/12</div>
         </bk-col>
         <bk-col :span="4">
-          <div class="content">
-            4/12
-          </div>
+          <div class="content">4/12</div>
         </bk-col>
         <bk-col :span="4">
-          <div class="content">
-            4/12
-          </div>
+          <div class="content">4/12</div>
         </bk-col>
       </bk-row>
       <bk-row>
         <bk-col :span="3">
-          <div class="content">
-            3/12
-          </div>
+          <div class="content">3/12</div>
         </bk-col>
         <bk-col :span="3">
-          <div class="content">
-            3/12
-          </div>
+          <div class="content">3/12</div>
         </bk-col>
         <bk-col :span="3">
-          <div class="content">
-            3/12
-          </div>
+          <div class="content">3/12</div>
         </bk-col>
         <bk-col :span="3">
-          <div class="content">
-            3/12
-          </div>
+          <div class="content">3/12</div>
         </bk-col>
       </bk-row>
       <bk-row>
         <bk-col :span="2">
-          <div class="content">
-            2/12
-          </div>
+          <div class="content">2/12</div>
         </bk-col>
         <bk-col :span="2">
-          <div class="content">
-            2/12
-          </div>
+          <div class="content">2/12</div>
         </bk-col>
         <bk-col :span="2">
-          <div class="content">
-            2/12
-          </div>
+          <div class="content">2/12</div>
         </bk-col>
         <bk-col :span="2">
-          <div class="content">
-            2/12
-          </div>
+          <div class="content">2/12</div>
         </bk-col>
         <bk-col :span="2">
-          <div class="content">
-            2/12
-          </div>
+          <div class="content">2/12</div>
         </bk-col>
         <bk-col :span="2">
-          <div class="content">
-            2/12
-          </div>
+          <div class="content">2/12</div>
         </bk-col>
       </bk-row>
       <bk-row>
         <bk-col :span="1">
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col :span="1">
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col :span="1">
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col :span="1">
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col :span="1">
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col :span="1">
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col :span="1">
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col :span="1">
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col :span="1">
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col :span="1">
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col :span="1">
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col :span="1">
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
       </bk-row>
       <bk-row>
         <bk-col :span="8">
-          <div class="content">
-            8/12
-          </div>
+          <div class="content">8/12</div>
         </bk-col>
         <bk-col :span="4">
-          <div class="content">
-            4/12
-          </div>
+          <div class="content">4/12</div>
         </bk-col>
       </bk-row>
       <bk-row>
         <bk-col :span="3">
-          <div class="content">
-            3/12
-          </div>
+          <div class="content">3/12</div>
         </bk-col>
         <bk-col :span="6">
-          <div class="content">
-            6/12
-          </div>
+          <div class="content">6/12</div>
         </bk-col>
         <bk-col :span="3">
-          <div class="content">
-            3/12
-          </div>
+          <div class="content">3/12</div>
         </bk-col>
       </bk-row>
     </bk-container>

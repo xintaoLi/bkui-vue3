@@ -1,19 +1,15 @@
 <template>
   <div>
     <bk-loading
-      loading
       title="数据加载中"
+      loading
     >
-      <div class="loading-title-container">
-        Content
-      </div>
+      <div class="loading-title-container">Content</div>
     </bk-loading>
   </div>
 </template>
 
-<script setup>
-
-</script>
+<script setup></script>
 
 <style lang="postcss">
   .loading-title-container {

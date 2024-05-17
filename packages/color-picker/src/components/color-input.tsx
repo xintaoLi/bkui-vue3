@@ -24,11 +24,11 @@
  * IN THE SOFTWARE.
  */
 
-import tinycolor from 'tinycolor2';
 import { defineComponent, ExtractPropTypes, reactive, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { PropTypes } from '@bkui-vue/shared';
+import tinycolor from 'tinycolor2';
 
 import InputContainer from './input-container';
 const colorPickerProps = {

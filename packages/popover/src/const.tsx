@@ -24,13 +24,13 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
+
 export const enum EMIT_EVENTS {
   CLICK_OUTSIDE = 'clickoutside',
-  CONTENT_MOUSEENTER = 'contentMouseenter',
-  CONTENT_MOUSELEAVE = 'contentMouseleave',
   CONTENT_AfterHidden = 'afterHidden',
   CONTENT_AfterShow = 'afterShow',
+  CONTENT_MOUSEENTER = 'contentMouseenter',
+  CONTENT_MOUSELEAVE = 'contentMouseleave',
 }
 
 export const EVENT_SHOW_HIDE_FN = (_args: { isShow: boolean }) => true;

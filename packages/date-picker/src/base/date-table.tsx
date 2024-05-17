@@ -24,14 +24,15 @@
  * IN THE SOFTWARE.
  */
 
-import jsCalendar from 'js-calendar';
-import type { ExtractPropTypes } from 'vue';
 import { computed, defineComponent, PropType } from 'vue';
 
 import { useLocale, usePrefix } from '@bkui-vue/config-provider';
+import jsCalendar from 'js-calendar';
+
+import { clearHours, isInRange } from '../utils';
 
 import type { DatePickerValueType, DisabledDateType } from '../interface';
-import { clearHours, isInRange } from '../utils';
+import type { ExtractPropTypes } from 'vue';
 
 const dateTableProps = {
   tableDate: {

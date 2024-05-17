@@ -22,7 +22,6 @@
 </template>
 <script setup>
   import BkAlert from '@bkui-vue/alert';
-
 </script>
 <style lang="postcss">
   .bk-alert ~ .bk-alert {

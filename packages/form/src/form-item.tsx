@@ -23,9 +23,6 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import get from 'lodash/get';
-import isFunction from 'lodash/isFunction';
-import type { ComputedRef, ExtractPropTypes } from 'vue';
 import {
   computed,
   defineComponent,
@@ -40,12 +37,16 @@ import {
 import { useLocale, usePrefix } from '@bkui-vue/config-provider';
 import { bkTooltips } from '@bkui-vue/directives';
 import { ExclamationCircleShape } from '@bkui-vue/icon';
-import type { Language } from '@bkui-vue/locale';
 import { classes, formItemKey, PropTypes, useForm, useFormItem } from '@bkui-vue/shared';
+import get from 'lodash/get';
+import isFunction from 'lodash/isFunction';
 
-import type { IFormItemRule } from './type';
 import { getRuleMessage } from './utils';
 import defaultValidator from './validator';
+
+import type { IFormItemRule } from './type';
+import type { Language } from '@bkui-vue/locale';
+import type { ComputedRef, ExtractPropTypes } from 'vue';
 
 const formItemProps = {
   label: PropTypes.string,
@@ -58,7 +59,6 @@ const formItemProps = {
   min: PropTypes.number,
   maxlength: PropTypes.number,
   rules: PropTypes.array,
-  autoCheck: PropTypes.bool.def(false),
   description: PropTypes.string,
   errorDisplayType: PropTypes.oneOf(['tooltips', 'normal']).def('normal'),
 };
@@ -164,7 +164,7 @@ const mergeRules: (
   return [...filterPropRules, ...formatConfigRules];
 };
 
-const getTriggerRules = (trigger: String, rules: IFormItemRule[]) =>
+const getTriggerRules = (trigger: string, rules: IFormItemRule[]) =>
   rules.reduce((result, rule) => {
     if (!rule.trigger || !trigger) {
       result.push(rule);
@@ -177,7 +177,7 @@ const getTriggerRules = (trigger: String, rules: IFormItemRule[]) =>
     return result;
   }, []);
 
-const isValid = (value: string | number): boolean => value !== undefined;
+const isValid = (value: number | string): boolean => value !== undefined;
 
 export default defineComponent({
   name: 'FormItem',
@@ -421,16 +421,16 @@ export default defineComponent({
       <div class={itemClassees}>
         {this.isShowLabel && (
           <div
-            class={`${this.resolveClassName('form-label')}`}
             style={this.labelStyles}
+            class={`${this.resolveClassName('form-label')}`}
           >
             {renderLabel()}
             {this.isFormTypeVertical && this.$slots.labelAppend?.()}
           </div>
         )}
         <div
-          class={`${this.resolveClassName('form-content')}`}
           style={this.contentStyles}
+          class={`${this.resolveClassName('form-content')}`}
         >
           {this.$slots.default?.()}
           {renderError()}

@@ -47,7 +47,7 @@ export default defineComponent({
     );
     // 如果单独使用，避免报 injection "*" not found. 相比getCurrentInstance()?.parent.type.name 方法简洁
     if (!props.alone) {
-      localActiveItems = inject<Ref<(string | number)[]>>('localActiveItems');
+      localActiveItems = inject<Ref<(number | string)[]>>('localActiveItems');
       handleItemClick = inject<(value: Partial<{ name: string }>) => void>('handleItemClick');
       watch(
         localActiveItems,
@@ -99,8 +99,8 @@ export default defineComponent({
       }
       return (
         <div
-          v-show={isActive.value}
           class={`${resolveClassName('collapse-content')} ${(isActive.value && 'active') || ''}`}
+          v-show={isActive.value}
         >
           {getContent()}
         </div>

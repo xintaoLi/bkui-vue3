@@ -1,36 +1,36 @@
 <template>
   <div>
     <bk-input
+      class="mb8"
       v-model="xxxx"
-      class="mb8"
       size="small"
     />
     <bk-input
+      class="mb8"
       v-model="prefix"
-      size="small"
-      class="mb8"
-      type="url"
       prefix="https://"
-    />
-    <bk-input
-      v-model="normal"
-      class="mb8"
-    />
-    <bk-input
-      v-model="suffix"
-      class="mb8"
+      size="small"
       type="url"
-      suffix="@qq.com"
     />
     <bk-input
+      class="mb8"
+      v-model="normal"
+    />
+    <bk-input
+      class="mb8"
+      v-model="suffix"
+      suffix="@qq.com"
+      type="url"
+    />
+    <bk-input
+      class="mb8"
       v-model="search"
       size="large"
-      class="mb8"
       type="search"
     />
     <bk-input
-      v-model="large"
       class="mb8"
+      v-model="large"
       size="large"
     />
   </div>
@@ -46,7 +46,7 @@
   const large = ref('');
 </script>
 <style lang="postcss" scoped>
-.mb8 {
-  margin-bottom: 8px;
-}
+  .mb8 {
+    margin-bottom: 8px;
+  }
 </style>

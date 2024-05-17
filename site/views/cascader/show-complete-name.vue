@@ -3,8 +3,8 @@
     <bk-cascader
       v-model="area"
       :list="list"
-      trigger="click"
       :show-complete-name="false"
+      trigger="click"
     />
   </div>
 </template>
@@ -27,10 +27,12 @@
           disabled: true,
         },
       ],
-    }, {
+    },
+    {
       id: 'guangxi',
       name: '广西',
-    }, {
+    },
+    {
       id: 'yunnan',
       name: '云南',
       children: [
@@ -64,6 +66,4 @@
     },
   ];
   const area = ref([]);
-
 </script>
-

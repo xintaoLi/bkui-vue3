@@ -24,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import type { ExtractPropTypes } from 'vue';
 import { defineComponent, ref, toRefs, watch } from 'vue';
 
 import { useLocale, usePrefix } from '@bkui-vue/config-provider';
@@ -35,6 +34,8 @@ import useList from './use-list';
 import useSmallList from './use-small-list';
 import useTotal from './use-total';
 
+import type { ExtractPropTypes } from 'vue';
+
 export const paginationProps = {
   modelValue: PropTypes.number.def(1),
   count: PropTypes.number.def(0).isRequired,
@@ -44,13 +45,11 @@ export const paginationProps = {
   type: PropTypes.oneOf(['default', 'compact']).def('default'),
   location: PropTypes.oneOf(['left', 'right']).def('right'),
   align: PropTypes.oneOf(['left', 'center', 'right']).def('left'),
-  size: PropTypes.size(),
   small: PropTypes.bool.def(false),
   showTotalCount: PropTypes.bool.def(true),
   prevText: PropTypes.string,
   nextText: PropTypes.string,
   disabled: PropTypes.bool.def(false),
-  beforeChange: PropTypes.func,
   layout: PropTypes.custom((value: string[]) => {
     const layoutNameMap = {
       total: true,
@@ -119,8 +118,8 @@ export default defineComponent({
   render() {
     const paginationClass = classes({
       [`${this.resolveClassName('pagination')}`]: true,
-      [`${this.resolveClassName(`pagination--${this.size}`)}`]: true,
       [`is-align-${this.align}`]: true,
+      'is-disabled': this.disabled,
     });
     const layoutMap = {
       total: this.renderTotal,

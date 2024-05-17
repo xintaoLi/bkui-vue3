@@ -34,7 +34,6 @@ import {
   defineComponent,
   // EmitsOptions,
   h,
-  nextTick,
   onMounted,
   onUnmounted,
   reactive,
@@ -42,12 +41,16 @@ import {
   type SetupContext,
   SlotsType,
   watch,
+  nextTick,
+  Ref,
 } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
+import { VirtualElement } from '@bkui-vue/scrollbar';
 
 import { type VirtualRenderProps, virtualRenderProps } from './props';
 import useFixTop from './use-fix-top';
+import useScrollbar from './use-scrollbar';
 import useTagRender from './use-tag-render';
 import virtualRender, { computedVirtualIndex, VisibleRender } from './v-virtual-render';
 
@@ -59,15 +62,15 @@ export default defineComponent({
   props: virtualRenderProps,
   emits: ['content-scroll' as string],
   slots: Object as SlotsType<{
-    default?: any;
-    beforeContent?: any;
-    afterContent?: any;
-    afterSection?: any;
+    default?: Record<string, object>;
+    beforeContent?: Record<string, object>;
+    afterContent?: Record<string, object>;
+    afterSection?: Record<string, object>;
   }>,
   setup(props: VirtualRenderProps, ctx: SetupContext) {
-    const { renderAs, contentAs } = props;
+    const { renderAs } = props;
 
-    const resolvePropClassName = (prop: string | string[] | any[] | any) => {
+    const resolvePropClassName = (prop: Record<string, object> | Record<string, object>[] | string | string[]) => {
       if (typeof prop === 'string') {
         return [prop];
       }
@@ -89,9 +92,21 @@ export default defineComponent({
       handleScrollCallback,
       pagination,
       throttleDelay: props.throttleDelay,
+      scrollbar: props.scrollbar,
     }));
 
     const refRoot = ref(null);
+
+    /** 如果有分组状态，计算总行数 */
+    const listLength = ref(0);
+
+    /** 实际高度，根据行高和总行数计算出来的实际高度 */
+    const innerHeight = ref(0);
+
+    const virtualRoot: Ref<VirtualElement> = ref(null);
+
+    const { init, scrollTo, updateScrollHeight } = useScrollbar(props);
+
     let instance = null;
     const pagination = reactive({
       startIndex: 0,
@@ -112,24 +127,41 @@ export default defineComponent({
       const translateX = scrollLeft;
       Object.assign(pagination, { startIndex, endIndex, scrollTop, translateX, translateY, scrollLeft, pos });
       let start = pagination.startIndex * props.groupItemCount;
-      let end = (pagination.endIndex + props.preloadItemCount) * props.groupItemCount;
+      let end = pagination.endIndex * props.groupItemCount;
       const total = localList.value.length;
       if (total < end) {
-        const contentLength = end - start;
-        calcList.value = localList.value.slice(start, total);
-        end = total + 1;
-        start = end - contentLength;
+        end = total;
+        start = end - Math.floor(refRoot.value.offsetHeight / props.lineHeight);
         start = start < 0 ? 0 : start;
       }
-      const value = localList.value.slice(start, end + 10);
+
+      if (end > total) {
+        end = total;
+        start = end - Math.floor(refRoot.value.offsetHeight / props.lineHeight);
+      }
+
+      const value = localList.value.slice(start, end);
       calcList.value = value;
       if (event) {
-        ctx.emit('content-scroll', [event, pagination]);
+        ctx.emit('content-scroll', [event, pagination, value]);
       }
     };
 
     onMounted(() => {
       instance = new VisibleRender(binding, refRoot.value);
+
+      if (props.scrollbar?.enabled) {
+        virtualRoot.value = new VirtualElement({
+          delegateElement: refRoot.value,
+          scrollHeight: innerHeight.value,
+          onScollCallback: handleScrollBarCallback,
+        });
+        init(virtualRoot as Ref<Partial<Element> & Partial<VirtualElement>>);
+        updateScrollHeight(contentHeight.value);
+        instance.executeThrottledRender.call(instance, { offset: { x: 0, y: 0 } });
+        return;
+      }
+
       instance.install();
     });
 
@@ -139,19 +171,13 @@ export default defineComponent({
 
     const handleChangeListConfig = () => {
       /** 数据改变时激活当前表单，使其渲染DOM */
-      handleListChanged(props.list);
+      handleListChanged(props.list as Record<string, object>[]);
     };
-
-    /** 如果有分组状态，计算总行数 */
-    const listLength = ref(0);
-
-    /** 实际高度，根据行高和总行数计算出来的实际高度 */
-    const innerHeight = ref(0);
 
     /**
      * 列表数据改变时，处理相关参数
      */
-    const handleListChanged = (list: any[]) => {
+    const handleListChanged = (list: Record<string, object>[]) => {
       listLength.value = Math.ceil((list || []).length / props.groupItemCount);
       pagination.count = listLength.value;
 
@@ -176,29 +202,20 @@ export default defineComponent({
     /** 列表数据重置之后的处理事项 */
     const afterListDataReset = (_scrollToOpt = { left: 0, top: 0 }) => {
       const el = refRoot.value as HTMLElement;
-      nextTick(() => {
-        computedVirtualIndex(props.lineHeight, handleScrollCallback, pagination, el, { target: el });
-      });
+      computedVirtualIndex(props.lineHeight, handleScrollCallback, pagination, el, { target: el });
     };
 
     /** 映射传入的数组为新的数组，增加 $index属性，用来处理唯一Index */
     const localList = computed(() => {
-      if (props.rowKey !== undefined) {
+      if (props.rowKey !== undefined || !props.autoIndex) {
         return props.list;
       }
 
-      return (props.list || []).map((item: any, index) => ({ ...item, $index: index }));
+      return ((props.list || []) as Record<string, object>[]).map((item, index) => ({ ...item, $index: index }));
     });
 
     /** 展示列表内容区域样式 */
-    const innerContentStyle = computed(() =>
-      props.scrollPosition === 'content'
-        ? {
-            top: `${pagination.scrollTop + props.scrollOffsetTop}px`,
-            transform: `translateY(-${pagination.translateY}px)`,
-          }
-        : {},
-    );
+    const innerContentStyle = computed(() => (props.scrollPosition === 'content' ? {} : {}));
 
     /** 虚拟渲染外层容器样式 */
     const wrapperStyle = computed(() => {
@@ -207,19 +224,15 @@ export default defineComponent({
         height,
         width: typeof props.width === 'number' ? `${props.width}px` : props.width,
         display: 'inline-block',
-        maxHeight: props.maxHeight ?? height,
+        maxHeight: props.maxHeight ? `${props.maxHeight}px` : false,
+        minHeight: props.minHeight ? `${props.minHeight}px` : false,
         ...(props.scrollPosition === 'container' ? innerContentStyle.value : {}),
         ...props.wrapperStyle,
       };
     });
 
-    /** 虚拟渲染区域内置占位区域样式，用来撑起总高度，出现滚动条 */
-    const innerStyle = computed(() => {
-      const isHidden = typeof props.abosuteHeight === 'number' && props.abosuteHeight === 0;
-      return {
-        height: `${innerHeight.value < props.minHeight ? props.minHeight : innerHeight.value}px`,
-        display: isHidden ? 'none' : 'block',
-      };
+    const contentHeight = computed(() => {
+      return innerHeight.value < props.minHeight ? props.minHeight : innerHeight.value;
     });
 
     const { resolveClassName } = usePrefix();
@@ -227,16 +240,9 @@ export default defineComponent({
     /** 外层样式列表 */
     const wrapperClass = computed(() => [
       resolveClassName('virtual-render'),
-      props.scrollXName,
-      props.scrollYName,
+
       ...resolvePropClassName(props.className),
       props.scrollPosition === 'container' ? resolveClassName('virtual-content') : '',
-    ]);
-
-    /** 内容区域样式列表 */
-    const innerClass = computed(() => [
-      props.scrollPosition === 'content' ? resolveClassName('virtual-content') : '',
-      ...resolvePropClassName(props.contentClassName),
     ]);
 
     /**
@@ -246,27 +252,41 @@ export default defineComponent({
     const reset = () => {
       handleChangeListConfig();
       afterListDataReset();
+      instance?.executeThrottledRender.call(instance, { offset: { x: 0, y: 0 } });
     };
 
-    const { scrollTo, fixToTop } = useFixTop(props, refRoot);
+    const { fixToTop } = useFixTop(props, scrollTo);
 
     watch(
-      () => [props.lineHeight, props.height, props.list, props.maxHeight],
+      () => [contentHeight.value, props.list],
       () => {
         instance?.setBinding(binding);
         handleChangeListConfig();
+        updateScrollHeight(contentHeight.value);
+        afterListDataReset();
         nextTick(() => {
-          afterListDataReset();
+          instance?.executeThrottledRender.call(instance, {
+            offset: { x: pagination.scrollLeft, y: pagination.scrollTop },
+          });
         });
       },
-      { deep: true, immediate: true },
+      {
+        immediate: true,
+        deep: true,
+      },
     );
 
     ctx.expose({
       reset,
       scrollTo,
       fixToTop,
+      refRoot,
+      refContent: refRoot,
     });
+
+    const handleScrollBarCallback = args => {
+      instance.executeThrottledRender.call(instance, args);
+    };
 
     return () =>
       h(
@@ -274,31 +294,15 @@ export default defineComponent({
         renderAs || 'div',
         {
           ref: refRoot,
-          class: wrapperClass.value,
+          class: [...wrapperClass.value],
           style: wrapperStyle.value,
         },
         [
           ctx.slots.beforeContent?.() ?? '',
-          h(
-            contentAs || 'div',
-            {
-              class: innerClass.value,
-              style: {
-                ...innerContentStyle.value,
-                ...props.contentStyle,
-              },
-            },
-            [
-              ctx.slots.default?.({
-                data: calcList.value,
-              }) ?? '',
-            ],
-          ),
+          ctx.slots.default?.({
+            data: calcList.value,
+          }) ?? '',
           ctx.slots.afterContent?.() ?? '',
-          h('div', {
-            class: [resolveClassName('virtual-section')],
-            style: innerStyle.value,
-          }),
           ctx.slots.afterSection?.() ?? '',
         ],
       );

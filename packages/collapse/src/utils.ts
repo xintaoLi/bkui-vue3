@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 /*
  * Tencent is pleased to support the open source community by making
  * 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition) available.
@@ -28,7 +27,7 @@ const trimArr = function (s: string) {
   return (s || '').split(' ').filter(item => !!item.trim());
 };
 
-export function removeClass(el: HTMLElement | Element, cls: string): void {
+export function removeClass(el: Element | HTMLElement, cls: string): void {
   if (!el || !cls) return;
   const classes = trimArr(cls);
   let curClass = el.getAttribute('class') || '';
@@ -45,7 +44,7 @@ export function removeClass(el: HTMLElement | Element, cls: string): void {
 }
 
 /* istanbul ignore next */
-export function addClass(el: HTMLElement | Element, cls: string): void {
+export function addClass(el: Element | HTMLElement, cls: string): void {
   if (!el) return;
   let className = el.getAttribute('class') || '';
   const curClass = trimArr(className);

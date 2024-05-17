@@ -37,7 +37,7 @@
 </script>
 
 <style scoped>
-.mb10 {
-  margin-bottom: 10px;
-}
+  .mb10 {
+    margin-bottom: 10px;
+  }
 </style>

@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import DemoAlert from './demo/alert.vue';
 import DemoAlertClose from './demo/alert-close.vue';
 import DemoAlertCloseText from './demo/alert-close-text.vue';
@@ -100,57 +99,57 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Alert'
           desc='展示页面的提示信息'
-          link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/alert`}
           designLink='https://bkdesign.bk.tencent.com/design/46'
+          link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/alert`}
+          name='Alert'
         />
         <DemoBox
-          title='基本用法'
-          desc=''
           componentName='alert'
           demoName='/demo/alert'
+          desc=''
+          title='基本用法'
         >
           <DemoAlert />
         </DemoBox>
         <DemoBox
-          title='不显示ICON'
-          desc=''
           componentName='alert'
           demoName='/demo/alert-show-icon'
+          desc=''
+          title='不显示ICON'
         >
           <DemoAlertShowIcon />
         </DemoBox>
         <DemoBox
-          title='可关闭'
-          desc=''
           componentName='alert'
           demoName='/demo/alert-close'
+          desc=''
+          title='可关闭'
         >
           <DemoAlertClose />
         </DemoBox>
         <DemoBox
-          title='自定义关闭按钮文字'
-          desc=''
           componentName='alert'
           demoName='/demo/alert-close-text'
+          desc=''
+          title='自定义关闭按钮文字'
         >
           <DemoAlertCloseText />
         </DemoBox>
         <PropsBox
-          title='Alert 属性'
-          subtitle=''
           propsData={alertProps}
+          subtitle=''
+          title='Alert 属性'
         />
         <PropsBox
-          title='Alert 事件'
-          subtitle=''
           propsData={alertEvents}
+          subtitle=''
+          title='Alert 事件'
         />
         <PropsBox
-          title='Alert 插槽'
-          subtitle=''
           propsData={alertSlots}
+          subtitle=''
+          title='Alert 插槽'
         />
       </div>
     );

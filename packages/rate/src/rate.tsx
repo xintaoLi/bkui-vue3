@@ -100,25 +100,25 @@ export default defineComponent({
       <p class={rateClass}>
         {props.editable ? (
           <star
-            rate={props.modelValue}
             hover-rate={hoverRate.value}
-            onChooseRate={chooseRate}
+            rate={props.modelValue}
             onChangeHover={changeHover}
+            onChooseRate={chooseRate}
             onMouseleave={() => changeHover(0)}
             {...commonAttrs}
           ></star>
         ) : (
           [
             <star
-              rate={5}
               style={starStyle.value}
               class={`${resolveClassName('score-real')}`}
               editable={false}
+              rate={5}
               {...commonAttrs}
             ></star>,
             <star
-              rate={0}
               editable={false}
+              rate={0}
               {...commonAttrs}
             ></star>,
           ]

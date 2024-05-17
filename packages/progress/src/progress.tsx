@@ -56,7 +56,6 @@ export const progressType = {
 export type ProgressType = ExtractPropTypes<typeof progressType>;
 
 export default defineComponent({
-  // eslint-disable-next-line vue/no-reserved-component-names
   name: 'Progress',
   props: progressType,
   setup() {
@@ -87,8 +86,8 @@ export default defineComponent({
       if (!showText || textInside) return null;
       return (
         <span
-          class='progress-text'
           style={typeof formatPercent === 'string' ? titleStyle : undefined}
+          class='progress-text'
         >
           {this.$slots.default ? this.$slots.default() : formatPercent}
         </span>

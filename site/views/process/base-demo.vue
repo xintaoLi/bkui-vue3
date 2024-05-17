@@ -6,7 +6,8 @@
       @click="processChanged"
     />
   </div>
-</template>;
+</template>
+;
 <script>
   import { defineComponent, reactive } from 'vue';
 
@@ -18,7 +19,7 @@
       });
 
       // 改变当前选中值
-      const processChanged = (index) => {
+      const processChanged = index => {
         state.curprocess = index;
       };
 

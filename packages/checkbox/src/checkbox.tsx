@@ -24,14 +24,16 @@
  * IN THE SOFTWARE.
  */
 
-import type { ExtractPropTypes } from 'vue';
 import { defineComponent } from 'vue';
+import { func } from 'vue-types';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { Loading } from '@bkui-vue/icon';
 import { classes, PropTypes, SizeEnum } from '@bkui-vue/shared';
 
 import { useCheckbox, useFocus } from './common';
+
+import type { ExtractPropTypes } from 'vue';
 
 export const checkboxProps = {
   modelValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number]),
@@ -41,7 +43,7 @@ export const checkboxProps = {
   disabled: PropTypes.bool.def(false),
   checked: PropTypes.bool.def(false),
   indeterminate: PropTypes.bool,
-  beforeChange: PropTypes.func,
+  beforeChange: func<(event: boolean | number | string) => Promise<boolean> | boolean>().def(() => true),
   size: PropTypes.size().def(SizeEnum.DEFAULT),
   immediateEmitChange: PropTypes.bool.def(true), // 默认设置checked是否触发change事件
 };
@@ -105,11 +107,11 @@ export default defineComponent({
         <span class={this.resolveClassName('checkbox-input')}>
           <input
             ref='inputRef'
+            class={`${this.resolveClassName('checkbox-original')}`}
+            checked={this.isChecked}
+            disabled={this.isDisabled || this.isPrechecking}
             role='checkbox'
             type='checkbox'
-            class={`${this.resolveClassName('checkbox-original')}`}
-            disabled={this.isDisabled || this.isPrechecking}
-            checked={this.isChecked}
             onChange={this.handleChange}
           />
         </span>

@@ -30,7 +30,6 @@ import DemoBox from '../../../components/demo-box';
 import DemoTitle from '../../../components/demo-title';
 import PropsBox from '../../../components/props-box';
 import { IPropsTableItem } from '../../../typings';
-
 import BaseDemo from './base-demo.vue';
 import ModuleCombinaDemo from './module-combina-demo.vue';
 const menuPropsJson: IPropsTableItem[] = [
@@ -68,34 +67,34 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Log Search'
           desc='业务组件 Log Search， 由索引集选择、查询语句输入、过滤条件选择等多方检索条件组合而成，还包含了自动解析查询语句，切换自动查询或手动查询能力等。支持 Vue2/Vue3 版本 无差别使用'
+          name='Log Search'
           npmLink='https://www.npmjs.com/package/@blueking/log-search'
         />
         <DemoBox
-          title='基础用法'
-          subtitle='组件的基础用法'
-          desc='配置数据源 serviceConfig 直接使用'
           componentName='blueking/log-search'
           demoName='base-demo'
+          desc='配置数据源 serviceConfig 直接使用'
+          subtitle='组件的基础用法'
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
 
         <DemoBox
-          title='功能组合示例'
-          subtitle='可对组件功能进行拼装与组合，自定义使用组合形态。'
-          showTools={false}
-          desc=''
           componentName='blueking/log-search'
           demoName='module-combina-demo'
+          desc=''
+          showTools={false}
+          subtitle='可对组件功能进行拼装与组合，自定义使用组合形态。'
+          title='功能组合示例'
         >
           <ModuleCombinaDemo />
         </DemoBox>
 
         <PropsBox
-          title='组件属性'
           propsData={menuPropsJson}
+          title='组件属性'
         />
       </div>
     );

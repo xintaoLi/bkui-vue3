@@ -24,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import tinycolor from 'tinycolor2';
 import {
   computed,
   defineComponent,
@@ -35,6 +34,7 @@ import {
   ref,
   Transition,
   watch,
+  type VNodeRef,
 } from 'vue';
 import { toType } from 'vue-types';
 
@@ -42,9 +42,9 @@ import { usePrefix } from '@bkui-vue/config-provider';
 import { clickoutside } from '@bkui-vue/directives';
 import { AngleUp } from '@bkui-vue/icon';
 import { classes, PropTypes, useFormItem } from '@bkui-vue/shared';
+import tinycolor from 'tinycolor2';
 
 import PickerDropdown from '../../date-picker/src/base/picker-dropdown';
-
 import ColorInput from './components/color-input';
 import HueSlider from './components/hue-slider';
 import RecommendColors from './components/recommend-colors';
@@ -52,9 +52,9 @@ import SaturationPanel from './components/saturation-panel';
 import { formatColor, toRGBAString } from './utils';
 
 enum ColorPickSizeEnum {
-  UNKNOWN = '',
-  SMALL = 'small',
   LARGE = 'large',
+  SMALL = 'small',
+  UNKNOWN = '',
 }
 const colorPickerProps = {
   modelValue: PropTypes.string.def(''),
@@ -89,9 +89,9 @@ export default defineComponent({
     const colorStr = ref('');
     // 储存当前颜色的相关信息
     const colorObj = reactive(JSON.parse(JSON.stringify(whiteColorObj)));
-    const dropRef = ref<any>(null);
-    const saturationPanelRef = ref<any>(null);
-    const referenceRef = ref<any>(null);
+    const dropRef = ref<VNodeRef | null>(null);
+    const saturationPanelRef = ref<VNodeRef | null>(null);
+    const referenceRef = ref<VNodeRef | null>(null);
 
     const { resolveClassName } = usePrefix();
 
@@ -272,11 +272,11 @@ export default defineComponent({
     return () => (
       <div
         ref={referenceRef}
-        tabindex='0'
         class={colorPickerCls.value}
-        onKeydown={handleTriggerKeydown}
         v-clickoutside={hideDropDown}
+        tabindex='0'
         onClick={toggleDropdown}
+        onKeydown={handleTriggerKeydown}
       >
         {typeof slots.trigger === 'function' ? (
           slots.trigger({ value: colorStr.value, isShowDropdown: showDropdown.value })
@@ -285,10 +285,10 @@ export default defineComponent({
             <div class={`${resolveClassName('color-picker-color')}`}>
               {/* 如果传入的色值为空字符串或者没有传值默认白色背景 + 中间一个叉 */}
               <span
+                style={`background: ${colorStr.value || '#FFF'}`}
                 class={`${resolveClassName('color-picker-color-square')} ${
                   !colorStr.value && `${resolveClassName('color-picker-empty')}`
                 }`}
-                style={`background: ${colorStr.value || '#FFF'}`}
               ></span>
             </div>
             {props.showValue ? (
@@ -297,7 +297,7 @@ export default defineComponent({
               </div>
             ) : undefined}
             <div class={`${resolveClassName('color-picker-icon')}`}>
-              <AngleUp class='icon-angle-down'></AngleUp>
+              <AngleUp class={resolveClassName('icon-angle-down')}></AngleUp>
             </div>
           </>
         )}
@@ -313,10 +313,10 @@ export default defineComponent({
                 onClick={e => {
                   e.stopPropagation();
                 }}
+                onKeydown={handleDropdownKeydown}
                 onMousedown={e => {
                   e.stopPropagation();
                 }}
-                onKeydown={handleDropdownKeydown}
               >
                 {/* 饱和度面板 */}
                 <SaturationPanel
@@ -332,8 +332,8 @@ export default defineComponent({
                 {/* 色彩值 */}
                 <ColorInput
                   colorObj={colorObj}
-                  onTab={handleTabInput}
                   onChange={handleColorChange}
+                  onTab={handleTabInput}
                 ></ColorInput>
                 {/* 预设值 */}
                 {isRenderRecommend.value ? (
@@ -342,8 +342,8 @@ export default defineComponent({
                       colorObj={colorObj}
                       recommend={props.recommend}
                       recommendEmpty={props.recommendEmpty}
-                      onTab={handleTabRecommend}
                       onChange={handleColorChange}
+                      onTab={handleTabRecommend}
                     ></RecommendColors>
                   </div>
                 ) : undefined}

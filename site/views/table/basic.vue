@@ -1,101 +1,149 @@
 <template>
-  <div class="row">
-    <bk-table
-      :columns="columns"
-      :data="tableData"
-      :settings="settings"
-      :sort-val-format="format"
-      row-draggable
-      stripe
-      @dragend="handleDragend"
-    >
-      <template #setting>
-        <h1>Setting Content Slot</h1>
-      </template>
-    </bk-table>
+  <bk-button @click="clearSelection">取消全选</bk-button>
+  <div style="display: grid;">
+    <div style="height: 300px">
+      <bk-table rowDraggable ref="refTable" :data="projectTable" height="auto" max-height="100%" stripe
+        :fixedBottom="fixedBottom" show-overflow-tooltip :pagination="pagination" virtual-enabled>
+        <bk-table-column type="selection" :min-width="30" width="30" align="center" />
+        <bk-table-column label="用户组" prop="groupName" :sort="true" />
+        <bk-table-column label="用户描述" prop="groupDesc" />
+        <bk-table-column label="有效期" prop="validityPeriod" />
+        <bk-table-column label="加入时间" prop="joinedTime" />
+        <bk-table-column label="加入方式/操作人" prop="operateSource">
+          <template #default="{ row }">
+            {{ row.operateSource }}/{{ row.operator }}
+          </template>
+        </bk-table-column>
+      </bk-table>
+    </div>
   </div>
 </template>
 
-<script lang="jsx">
-  import { defineComponent } from 'vue';
+<script setup>
 
-  import { DATA_COLUMNS, DATA_TABLE } from './options';
-  const columns = [...DATA_COLUMNS];
-
-  export default defineComponent({
-    components: {},
-    data() {
-      return {
-        format: [/(\d+\.?\d*)/],
-        maxHeight: 300,
-        isLoading: false,
-        tableData: [...DATA_TABLE],
-        columns,
-        overflowTooltip: {
-          popoverOption: {
-            maxWidth: 400,
-          },
-        },
-        settings: {
-          trigger: 'click',
-          extCls: 'settings-custom-class',
-          fields: [
-            {
-              name: '序号',
-              id: 'index',
-              disabled: true,
-            },
-            {
-              name: '名称/内网IP',
-              id: 'ip',
-            },
-            {
-              name: '来源',
-              id: 'source',
-            },
-            {
-              name: '创建时间',
-              id: 'create_time',
-            },
-          ],
-          checked: ['ip', 'index'],
-        },
-      };
-    },
-    watch: {
-      tableData: {
-        immediate: true,
-        handler(val) {
-          console.log('tableData change', val);
-        },
+import { ref, reactive, onMounted } from 'vue'
+const refTable = ref(null);
+const pagination = ref({ count: 11, limit: 10, current: 1 });
+const clearSelection = () => {
+  refTable.value.clearSelection();
+};
+const fixedBottom = reactive({
+  position: 'relative',
+  height: 42
+})
+const projectTable = ref([]);
+onMounted(() => {
+  setTimeout(() => {
+    projectTable.value = [
+      {
+        groupId: 1,
+        groupName: '11',
+        groupDesc: 'kjkjkjk',
+        validityPeriod: '0505',
+        joinedTime: '08-18',
+        operateSource: '加入组',
+        operator: '张三',
+        removeMemberButtonControl: true,
       },
-    },
-    methods: {
-      handleCellClick(arg) {
-        const { cell, row, column } = arg;
-        console.log('handleCellClick', cell, row, column, cell.getValue());
+      {
+        groupId: 2,
+        groupName: '22',
+        groupDesc: 'kjkjkjk',
+        validityPeriod: '0505',
+        joinedTime: '08-18',
+        operateSource: '加入组',
+        operator: '张三',
+        removeMemberButtonControl: false,
+      }, {
+        groupId: 3,
+        groupName: '33',
+        groupDesc: 'kjkjkjk',
+        validityPeriod: '0505',
+        joinedTime: '08-18',
+        operateSource: '加入组',
+        operator: '张三',
+        removeMemberButtonControl: false,
       },
-      handleCellDblclick(arg) {
-        const { cell, row, column } = arg;
-        console.log('handleCellDblclick', cell, row, column, cell.getValue());
+      {
+        groupId: 4,
+        groupName: '44',
+        groupDesc: 'kjkjkjk',
+        validityPeriod: '0505',
+        joinedTime: '08-18',
+        operateSource: '加入组',
+        operator: '张三',
+        removeMemberButtonControl: false,
+      }, {
+        groupId: 5,
+        groupName: '55',
+        groupDesc: 'kjkjkjk',
+        validityPeriod: '0505',
+        joinedTime: '08-18',
+        operateSource: '加入组',
+        operator: '张三',
+        removeMemberButtonControl: false,
       },
-      handleSortBy(arg) {
-        console.log('handleSortBy', arg);
+      {
+        groupId: 6,
+        groupName: '66',
+        groupDesc: 'kjkjkjk',
+        validityPeriod: '0505',
+        joinedTime: '08-18',
+        operateSource: '加入组',
+        operator: '张三',
+        removeMemberButtonControl: false,
+      }, {
+        groupId: 7,
+        groupName: '77',
+        groupDesc: 'kjkjkjk',
+        validityPeriod: '0505',
+        joinedTime: '08-18',
+        operateSource: '加入组',
+        operator: '张三',
+        removeMemberButtonControl: false,
       },
-      handleDblClick(...args) {
-        console.log(args);
+      {
+        groupId: 8,
+        groupName: '88',
+        groupDesc: 'kjkjkjk',
+        validityPeriod: '0505',
+        joinedTime: '08-18',
+        operateSource: '加入组',
+        operator: '张三',
+        removeMemberButtonControl: false,
+      }, {
+        groupId: 9,
+        groupName: '99',
+        groupDesc: 'kjkjkjk',
+        validityPeriod: '0505',
+        joinedTime: '08-18',
+        operateSource: '加入组',
+        operator: '张三',
+        removeMemberButtonControl: false,
       },
-      handleMouseEnter(...args) {
-        console.log('mouse-enter', args);
+      {
+        groupId: 10,
+        groupName: '1010',
+        groupDesc: 'kjkjkjk',
+        validityPeriod: '0505',
+        joinedTime: '08-18',
+        operateSource: '加入组',
+        operator: '张三',
+        removeMemberButtonControl: false,
       },
-      handleDragend(...args) {
-        console.log('handleDragend', args);
-      },
-    // handleMouseLeave(...args) {
-    //   console.log('mouse-leave', args);
-    // },
-    },
-  });
+      {
+        groupId: 11,
+        groupName: '1111',
+        groupDesc: 'kjkjkjk',
+        validityPeriod: '0505',
+        joinedTime: '08-18',
+        operateSource: '加入组',
+        operator: '张三',
+        removeMemberButtonControl: false,
+      }
+    ]
+  }, 2000);
+})
 </script>
 <style scoped>
 .row {

@@ -1,12 +1,12 @@
 <template>
   <bk-swiper
     class="swiper"
-    :list="list"
-    :is-loop="false"
     :height="200"
+    :is-loop="false"
+    :list="list"
   >
     <template #default="item">
-      <div style="text-align: center;">
+      <div style="text-align: center">
         {{ item }}
       </div>
     </template>

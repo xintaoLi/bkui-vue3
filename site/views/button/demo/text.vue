@@ -1,24 +1,24 @@
 <template>
   <div class="basic-button-list">
     <bk-button
-      text
       theme="primary"
+      text
     >
       文字按钮
     </bk-button>
     <bk-button
-      text
+      class="ml10"
       theme="primary"
       disabled
-      class="ml10"
       loading
+      text
     >
       加载中
     </bk-button>
     <bk-button
-      text
       class="ml10"
       disabled
+      text
     >
       禁用状态
     </bk-button>

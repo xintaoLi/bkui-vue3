@@ -1,12 +1,12 @@
 <template>
   <bk-transfer
+    :display-key="'name'"
+    :setting-key="'code'"
+    :sort-key="'code'"
     :source-list="rtxList"
     :target-list="rtxValue"
-    :display-key="'name'"
-    :sort-key="'code'"
-    :setting-key="'code'"
-    sortable
     searchable
+    sortable
     @change="change"
   >
     <template #left-header>
@@ -16,11 +16,13 @@
           <span
             v-if="sourceLength"
             @click="addAll"
-          >选择全部</span>
+            >选择全部</span
+          >
           <span
             v-else
             class="disabled"
-          >选择全部</span>
+            >选择全部</span
+          >
         </div>
       </div>
     </template>
@@ -32,28 +34,26 @@
           <span
             v-if="targetLength"
             @click="removeAll"
-          >全部移除</span>
+            >全部移除</span
+          >
           <span
             v-else
             class="disabled"
-          >全部移除</span>
+            >全部移除</span
+          >
         </div>
       </div>
     </template>
 
     <template #left-empty-content>
       <div>
-        <div class="empty-content">
-          数据为空
-        </div>
+        <div class="empty-content">数据为空</div>
       </div>
     </template>
 
     <template #right-empty-content>
       <div>
-        <div class="empty-content">
-          未选择任何数据
-        </div>
+        <div class="empty-content">未选择任何数据</div>
       </div>
     </template>
   </bk-transfer>
@@ -92,7 +92,7 @@
       },
       addAll() {
         const list = [];
-        this.rtxList.forEach((item) => {
+        this.rtxList.forEach(item => {
           list.push(item.code);
         });
         this.rtxValue = [...list];
@@ -125,14 +125,14 @@
 
       &.disabled {
         cursor: not-allowed;
-        opacity: .5;
+        opacity: 0.5;
       }
     }
   }
 
   .disabled {
     cursor: not-allowed;
-    opacity: .5;
+    opacity: 0.5;
   }
 
   .remove-all {

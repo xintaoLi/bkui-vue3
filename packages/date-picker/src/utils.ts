@@ -24,13 +24,13 @@
  * IN THE SOFTWARE.
  */
 
+import { usePrefix } from '@bkui-vue/config-provider';
 import { format as dateFnsFormat, toDate } from 'date-fns';
-import type { InjectionKey } from 'vue';
-
-import { resolveClassName } from '@bkui-vue/shared';
 
 import fecha from './fecha';
+
 import type { IDatePickerCtx, ITimePickerCtx, PickerTypeType } from './interface';
+import type { InjectionKey } from 'vue';
 
 export const RANGE_SEPARATOR = ' - ';
 
@@ -146,6 +146,10 @@ export const typeValueResolver = {
     formatter: (value, format) => dateFormat(value, format),
     parser: (text, format) => fecha.parse(text, format || 'yyyy-MM-dd'),
   },
+  yearrange: {
+    formatter: rangeFormatter,
+    parser: rangeParser,
+  },
   multiple: {
     formatter(value, format) {
       return value
@@ -249,6 +253,7 @@ export const DEFAULT_FORMATS: Record<PickerTypeType, string> = {
   month: 'yyyy-MM',
   monthrange: 'yyyy-MM',
   year: 'yyyy',
+  yearrange: 'yyyy',
   datetime: 'yyyy-MM-dd HH:mm:ss',
   time: 'HH:mm:ss',
   timerange: 'HH:mm:ss',
@@ -327,6 +332,7 @@ export const timePickerKey: InjectionKey<ITimePickerCtx> = Symbol('time-picker')
 // }
 
 export function iconBtnCls(direction, type = '') {
+  const { resolveClassName } = usePrefix();
   return [
     resolveClassName('picker-panel-icon-btn'),
     resolveClassName(`date-picker-${direction}-btn`),
@@ -419,7 +425,15 @@ export const isInRange = (time, a, b) => {
   if (!a || !b) {
     return false;
   }
-  const [start, end] = [a, b].sort();
+  const [start, end] = [a, b].sort((x, y) => {
+    if (x - y > 0) {
+      return 1;
+    }
+    if (x - y < 0) {
+      return -1;
+    }
+    return 0;
+  });
   return time >= start && time <= end;
 };
 

@@ -33,7 +33,7 @@ export declare type IOptions = {
   arrow: boolean;
   disabled: boolean;
   placement: Placement;
-  content: string | VNode;
+  content: VNode | string;
   showOnInit: boolean;
   theme: string;
   trigger: string;
@@ -221,7 +221,7 @@ function createPopperInstance(el: HTMLElement, popper: HTMLElement) {
               fn: ({ state }) => {
                 state.styles.popper.width = `${state.rects.reference.width}px`;
               },
-              effect: ({ state }: any) => {
+              effect: ({ state }) => {
                 state.elements.popper.style.overflowWrap = 'break-word';
                 state.elements.popper.style.width = `${state.elements.reference.offsetWidth}px`;
               },

@@ -1,62 +1,53 @@
 <template>
   <div class="badge-demo">
     <bk-badge style="margin-right: 40px">
-      <bk-button theme="primary">
-        top-right
-      </bk-button>
+      <bk-button theme="primary"> top-right </bk-button>
       <template #icon>
         <help />
       </template>
     </bk-badge>
     <bk-badge
+      style="margin-right: 40px"
+      :count="999"
       position="bottom-left"
-      :count="999"
       theme="success"
-      style="margin-right: 40px"
     >
-      <bk-button theme="primary">
-        bottom-left
-      </bk-button>
+      <bk-button theme="primary"> bottom-left </bk-button>
     </bk-badge>
     <bk-badge
+      style="margin-right: 40px"
+      :count="999"
       position="top-left"
-      :count="999"
       theme="danger"
       dot
-      style="margin-right: 40px"
     >
-      <bk-button theme="primary">
-        top-left
-      </bk-button>
+      <bk-button theme="primary"> top-left </bk-button>
     </bk-badge>
     <bk-badge
+      style="margin-right: 40px"
+      :count="999"
       position="top-right"
-      :count="999"
       theme="danger"
       dot
-      style="margin-right: 40px"
     >
-      <bk-button theme="primary">
-        top-right
-      </bk-button>
+      <bk-button theme="primary"> top-right </bk-button>
     </bk-badge>
     <bk-badge
-      position="bottom-right"
+      style="margin-right: 40px"
       :count="'数字字符串'"
       :radius="'0px'"
+      position="bottom-right"
       theme="warning"
-      style="margin-right: 40px"
     >
-      <bk-button theme="primary">
-        bottom-right
-      </bk-button>
+      <bk-button theme="primary"> bottom-right </bk-button>
     </bk-badge>
   </div>
 </template>
 
 <script>
-  import { Help } from 'bkui-vue/lib/icon';
   import { defineComponent } from 'vue';
+
+  import { Help } from 'bkui-vue/lib/icon';
   export default defineComponent({
     components: {
       Help,

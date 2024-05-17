@@ -6,21 +6,17 @@
       addable
     >
       <template #add>
-        <div @click="addPanel">
-          + 新增
-        </div>
+        <div @click="addPanel">+ 新增</div>
       </template>
       <template #setting>
-        <div style="margin: 0 10px">
-          设置
-        </div>
+        <div style="margin: 0 10px">设置</div>
       </template>
 
       <bk-tab-panel
-        v-for="(item,index) in panels"
+        v-for="(item, index) in panels"
         :key="item.name"
-        :name="item.name"
         :label="item.label"
+        :name="item.name"
       >
         <template #label>
           <div>自定义标签：{{ index }}---{{ item.name }}</div>
@@ -55,8 +51,7 @@
         this.active = name;
       },
       addPanel() {
-        const name = Math.random().toString(16)
-          .substring(4, 10);
+        const name = Math.random().toString(16).substring(4, 10);
         this.panels.push({
           name,
           label: `新标签页-${name.substring(0, 4)}`,

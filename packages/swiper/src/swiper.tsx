@@ -30,10 +30,10 @@ import { usePrefix } from '@bkui-vue/config-provider';
 import { PropTypes } from '@bkui-vue/shared';
 
 interface IRenderData {
-  link?: String;
-  url?: String;
-  color?: String;
-  class?: String;
+  link?: string;
+  url?: string;
+  color?: string;
+  class?: string;
 }
 
 export default defineComponent({
@@ -177,9 +177,9 @@ export default defineComponent({
     // render
     return () => (
       <section
-        class={`${resolveClassName('swiper-home')}`}
         ref={swiperRef}
         style={computedSwiperRenderStyle.value}
+        class={`${resolveClassName('swiper-home')}`}
       >
         <hgroup
           style={computedSwiperTranslateStyle.value}
@@ -187,13 +187,13 @@ export default defineComponent({
         >
           {computedRenderDataList.value.map(renderData => (
             <h3
-              class={`${resolveClassName('swiper-card')}`}
               style={computedSwiperRenderStyle.value}
+              class={`${resolveClassName('swiper-card')}`}
             >
               {slots.default?.(renderData) ?? (
                 <span
-                  class={getRenderItemClass(renderData)}
                   style={getRenderItemStyle(renderData)}
+                  class={getRenderItemClass(renderData)}
                   onClick={() => goToLink(renderData.link)}
                 ></span>
               )}

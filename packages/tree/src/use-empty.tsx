@@ -26,7 +26,7 @@
 import Exception from '@bkui-vue/exception';
 
 export default props => ({
-  renderEmpty: (type: '404' | '403' | '500' | 'building' | 'empty' | 'search-empty' | 'login') => (
+  renderEmpty: (type: '403' | '404' | '500' | 'building' | 'empty' | 'login' | 'search-empty') => (
     <Exception
       scene='part'
       type={type}

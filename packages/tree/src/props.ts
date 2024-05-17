@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { ExtractPropTypes } from 'vue';
+import { ExtractPropTypes, VNode } from 'vue';
 import { string, toType } from 'vue-types';
 
 import { PropTypes } from '@bkui-vue/shared';
@@ -31,18 +31,23 @@ import { PropTypes } from '@bkui-vue/shared';
 import { NodeContentActionEnum } from './constant';
 
 enum ColumnTypeEnum {
-  ONCE = 'once',
   EVERY = 'every',
+  ONCE = 'once',
 }
 enum TreeSearchMatchEnum {
-  FUZZY = 'fuzzy',
   FULL = 'full',
+  FUZZY = 'fuzzy',
 }
 
 enum TreeSearchResultEnum {
-  TREE = 'tree',
   LIST = 'list',
+  TREE = 'tree',
 }
+
+export type TreeNode = {
+  [key: string]: unknown;
+  children?: TreeNode[];
+};
 
 /**
  * Tree Prop: prefixIcon function
@@ -52,7 +57,13 @@ enum TreeSearchResultEnum {
  * @param {} renderType 当前渲染类型（action: 用来标识当前节点状态，展开 | 收起, node_type：节点类型，文件、文件夹）
  * @param {} item 当前节点数据
  */
-export type IPrefixIcon = (isRoot: boolean, hasChild: boolean, isOpen: boolean, renderType: string, item: any) => any;
+export type IPrefixIcon = (
+  isRoot: boolean,
+  hasChild: boolean,
+  isOpen: boolean,
+  renderType: string,
+  item: TreeNode,
+) => VNode | string;
 
 export const treeProps = {
   /**
@@ -205,6 +216,9 @@ export const treeProps = {
    */
   showCheckbox: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(false),
 
+  /**
+   * 默认选中的节点id，selectable为false时无效
+   */
   checked: PropTypes.arrayOf(PropTypes.any).def([]),
 
   /**
@@ -252,17 +266,38 @@ export const treeProps = {
    * attributes 为节点内置属性，包含节点是否展开，是否选中，是否有子节点等等
    */
   keepSlotData: PropTypes.bool.def(false),
+
+  /**
+   * 在显示复选框的情况下，是否严格的遵循父子互相关联的做法
+   */
+  checkStrictly: PropTypes.bool.def(true),
+
+  /**
+   * 是否开启监听Tree节点进入Tree容器可视区域
+   */
+  intersectionObserver: PropTypes.oneOfType([
+    PropTypes.bool.def(false),
+    PropTypes.shape<IIntersectionObserver>({
+      enabled: PropTypes.bool.def(false),
+      callback: PropTypes.func.def(undefined),
+    }),
+  ]).def(false),
 };
 
 type AsyncOption = {
-  callback: (item, cb) => Promise<any>;
-  cache: Boolean;
+  callback: (item, cb) => Promise<VNode | string>;
+  cache: boolean;
   deepAutoOpen?: string;
 };
 
+export type IIntersectionObserver = {
+  enabled: boolean;
+  callback: (node: TreeNode, level: number, index: number) => void;
+};
+
 export type SearchOption = {
-  value: string | number | boolean;
-  match?: `${TreeSearchMatchEnum}` | Function;
+  value: boolean | number | string;
+  match?: ((...args) => boolean) | `${TreeSearchMatchEnum}`;
   resultType?: `${TreeSearchResultEnum}`;
   showChildNodes?: boolean;
 };

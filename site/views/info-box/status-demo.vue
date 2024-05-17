@@ -8,26 +8,26 @@
     </bk-button>
 
     <bk-button
-      theme="danger"
+      style="margin-left: 15px"
       class="ml10"
-      style="margin-left: 15px;"
+      theme="danger"
       @click="handleDefault2"
     >
       错误
     </bk-button>
 
     <bk-button
-      theme="warning"
+      style="margin-left: 15px"
       class="ml10"
-      style="margin-left: 15px;"
+      theme="warning"
       @click="handleDefault3"
     >
       警告
     </bk-button>
 
     <bk-button
+      style="margin-left: 15px"
       class="ml10"
-      style="margin-left: 15px;"
       @click="handleDefault4"
     >
       loading
@@ -41,42 +41,41 @@
   import InfoBox from '@bkui-vue/info-box';
   const handleDefault1 = () => {
     InfoBox({
-      infoType: 'success',
+      type: 'success',
       title: '添加用户成功',
-      subTitle: h('a', {
-        style: {
-          color: '#3a84ff',
-          textDecoration: 'none',
-          cursor: 'pointer',
+      content: h(
+        'a',
+        {
+          style: {
+            color: '#3a84ff',
+            textDecoration: 'none',
+            cursor: 'pointer',
+          },
         },
-      }, '继续添加'),
-      onConfirm() {},
+        '继续添加',
+      ),
     });
   };
 
   const handleDefault2 = () => {
     InfoBox({
-      infoType: 'danger',
+      type: 'danger',
       title: '添加用户失败',
-      onConfirm() {},
     });
   };
 
   const handleDefault3 = () => {
     InfoBox({
-      infoType: 'warning',
+      type: 'warning',
       title: '此操作存在安全风险',
-      isLoading: false,
-      onConfirm() {},
     });
   };
 
   const handleDefault4 = () => {
     InfoBox({
-      infoType: 'loading',
+      type: 'loading',
       title: 'loding',
-      subTitle: '请稍等',
-      onConfirm() {},
+      content: '请稍等',
     });
   };
 </script>

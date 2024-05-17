@@ -26,6 +26,8 @@
 import { defineComponent } from 'vue';
 
 import { BASIC_DATA } from './options';
+
+import './tree.less';
 export default defineComponent({
   components: {},
   data() {
@@ -45,8 +47,8 @@ export default defineComponent({
       const fontIcon = !isAction ? rootFont : openFont;
       return (
         <span
-          class='custom-node'
           style='font-size: 8px; text-align: center;'
+          class='custom-node'
         >
           {fontIcon}
         </span>
@@ -55,15 +57,19 @@ export default defineComponent({
   },
   render() {
     return (
-      <div style='height: 300px; width: 100%; overflow: auto;'>
-        <span>function 返回对象</span>
-        <bk-tree
-          data={this.treeData}
-          levelLine={true}
-          prefix-icon={this.getPrefixIcon}
-          label='name'
-          children='children'
-        />
+      <div class={'row'}>
+        <div class={'column'}>
+          <span>function 返回对象</span>
+          <div class={'cell'}>
+            <bk-tree
+              children='children'
+              data={this.treeData}
+              label='name'
+              levelLine={true}
+              prefix-icon={this.getPrefixIcon}
+            />
+          </div>
+        </div>
       </div>
     );
   },

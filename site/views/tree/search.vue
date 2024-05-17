@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; overflow: auto;">
+  <div style="width: 100%; overflow: auto">
     <bk-input
       v-model="searchVal"
       placeholder="Search"
@@ -10,27 +10,27 @@
         <span>简化配置: <code>search = string</code></span>
         <bk-tree
           :data="treeData"
-          label="name"
-          children="children"
           :search="searchVal"
+          children="children"
+          label="name"
         />
       </div>
       <div class="cell">
         <span>详细配置：<code>search = { SearchOption }</code></span>
         <bk-tree
           :data="treeData"
-          label="name"
-          children="children"
           :search="searchOption1"
+          children="children"
+          label="name"
         />
       </div>
       <div class="cell">
         <span>详细配置-自定义搜索条件：<code>search = { SearchOption }</code></span>
         <bk-tree
           :data="treeData"
-          label="name"
-          children="children"
           :search="searchOption2"
+          children="children"
+          label="name"
         />
       </div>
     </div>
@@ -53,9 +53,9 @@
       searchOption1() {
         return {
           /**
-         * 需要匹配的值
-         * 支持字符串
-         * */
+           * 需要匹配的值
+           * 支持字符串
+           * */
           value: this.searchVal,
 
           /**
@@ -75,14 +75,14 @@
       searchOption2() {
         return {
           /**
-         * 需要匹配的值
-         * */
+           * 需要匹配的值
+           * */
           value: this.searchVal,
 
           /**
            * 支持模糊匹配（fuzzy） || 完全匹配（full）
            * 默认 模糊匹配（fuzzy）
-         * 支持自定义匹配函数 (searchValue, itemText, item) => true || false
+           * 支持自定义匹配函数 (searchValue, itemText, item) => true || false
            */
           match: this.searchFn,
 
@@ -104,20 +104,5 @@
   });
 </script>
 <style scoped>
-.row {
-  display: flex;
-  width: 100%;
-  height: 300px;
-  padding-top: 15px;
-  overflow: auto;
-
-}
-
-.cell {
-  width: 33%;
-  padding: 0 15px;
-  overflow: auto;
-  border-right: solid 1px #ddd;
-  flex: 1;
-}
+  @import './tree.less';
 </style>

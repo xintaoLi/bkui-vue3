@@ -1,20 +1,20 @@
 <template>
   <div class="bk-tooltips-position-top">
     <span
-      v-bk-tooltips="{content: '提示信息', placement: 'top-start'}"
       class="info mr20"
+      v-bk-tooltips="{ content: '提示信息', placement: 'top-start' }"
     >
       <info />
     </span>
     <span
-      v-bk-tooltips="{content: '提示信息', placement: 'top'}"
       class="info mr20"
+      v-bk-tooltips="{ content: '提示信息', placement: 'top' }"
     >
       <info />
     </span>
     <span
-      v-bk-tooltips="{content: '提示信息', placement: 'top-end'}"
       class="info"
+      v-bk-tooltips="{ content: '提示信息', placement: 'top-end' }"
     >
       <info />
     </span>
@@ -23,8 +23,8 @@
   <div class="bk-tooltips-position-center">
     <div class="bk-tooltips-position-center-left">
       <span
-        v-bk-tooltips="{content: '提示信息', placement: 'left'}"
         class="info"
+        v-bk-tooltips="{ content: '提示信息', placement: 'left' }"
       >
         <info />
       </span>
@@ -32,8 +32,8 @@
 
     <div class="bk-tooltips-position-center-right">
       <span
-        v-bk-tooltips="{content: '提示信息', placement: 'right'}"
         class="info"
+        v-bk-tooltips="{ content: '提示信息', placement: 'right' }"
       >
         <info />
       </span>
@@ -42,20 +42,20 @@
 
   <div class="bk-tooltips-position-bottom">
     <span
-      v-bk-tooltips="{content: '提示信息', placement: 'bottom-start'}"
       class="info mr20"
+      v-bk-tooltips="{ content: '提示信息', placement: 'bottom-start' }"
     >
       <info />
     </span>
     <span
-      v-bk-tooltips="{content: '提示信息', placement: 'bottom'}"
       class="info mr20"
+      v-bk-tooltips="{ content: '提示信息', placement: 'bottom' }"
     >
       <info />
     </span>
     <span
-      v-bk-tooltips="{content: '提示信息', placement: 'bottom-end'}"
       class="info"
+      v-bk-tooltips="{ content: '提示信息', placement: 'bottom-end' }"
     >
       <info />
     </span>
@@ -63,9 +63,10 @@
 </template>
 
 <script>
+  import { defineComponent } from 'vue';
+
   import { bkTooltips } from 'bkui-vue';
   import { Info } from 'bkui-vue/lib/icon';
-  import { defineComponent } from 'vue';
 
   export default defineComponent({
     components: {

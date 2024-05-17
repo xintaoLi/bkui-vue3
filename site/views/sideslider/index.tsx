@@ -30,8 +30,9 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
+import BeforeCloseDemo from './before-close-demo.vue';
+import DirectionDemo from './direction-demo.vue';
 import FooterDemo from './footer-demo.vue';
 import TitleDemo from './title-demo.vue';
 
@@ -50,20 +51,7 @@ const SideSliserPropsJson: IPropsTableItem[] = [
     desc: '自定义组件的标题',
     optional: [],
   },
-  {
-    name: 'quick-close',
-    type: 'Boolean',
-    default: 'false',
-    desc: '是否支持点击遮罩关闭组件',
-    optional: [],
-  },
-  {
-    name: 'show-mask',
-    type: 'Boolean',
-    default: 'true',
-    desc: '是否允许出现遮罩',
-    optional: [],
-  },
+
   {
     name: 'width',
     type: 'Number',
@@ -79,17 +67,24 @@ const SideSliserPropsJson: IPropsTableItem[] = [
     optional: ['left', 'right'],
   },
   {
-    name: 'before-close',
-    type: 'Function',
-    default: '',
-    desc: '关闭前的钩子函数',
+    name: 'esc-close',
+    type: 'Boolean',
+    default: 'true',
+    desc: '是否允许 esc 按键关闭弹框',
     optional: [],
   },
   {
-    name: 'ext-cls',
-    type: 'String',
-    default: '',
-    desc: '配置自定义样式类名，传入的类会被加在组件最外层的 DOM .bk-sideslider-wrapper 上',
+    name: 'show-mask',
+    type: 'Boolean',
+    default: 'true',
+    desc: '是否允许出现遮罩',
+    optional: [],
+  },
+  {
+    name: 'quick-close',
+    type: 'Boolean',
+    default: 'true',
+    desc: '是否允许点击遮罩关闭弹框',
     optional: [],
   },
   {
@@ -106,29 +101,45 @@ const SideSliserPropsJson: IPropsTableItem[] = [
     desc: '设置侧栏的z-index值，在transfer为true的情况下，改值会自动+1',
     optional: [],
   },
+  {
+    name: 'backgroundColor',
+    type: 'String',
+    default: '',
+    desc: '内容区背景颜色',
+  },
+  {
+    name: 'before-close',
+    type: 'Function',
+    default: '',
+    desc: '关闭前的钩子函数',
+    optional: [],
+  },
 ];
 
 const SideSliserEventJson: IPropsTableItem[] = [
+  {
+    name: 'closed',
+    type: '',
+    default: null,
+    desc: '组件关闭',
+  },
   {
     name: 'shown',
     type: '',
     default: null,
     desc: '显示组件后的回调函数',
-    optional: [],
   },
   {
     name: 'hidden',
     type: '',
     default: null,
     desc: '关闭组件后的回调函数',
-    optional: [],
   },
   {
     name: 'animation-end',
     type: '',
     default: null,
     desc: '关闭组件后动画结束的回调函数',
-    optional: [],
   },
 ];
 
@@ -161,51 +172,68 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Sideslider侧栏'
           desc='Sideslider组件， 提供一个从两侧滑入的组件，供用户填写/查看更多信息。'
-          link='https://www.google.com.hk/'
+          name='Sideslider侧栏'
         />
         <DemoBox
-          title='基础用法'
-          subtitle=''
-          desc='使用默认配置的组件'
           componentName='sideslider'
           demoName='base-demo'
+          desc='使用默认配置的组件'
+          subtitle=''
+          title='基础用法'
         >
-          <BaseDemo></BaseDemo>
+          <BaseDemo />
         </DemoBox>
         <DemoBox
-          title='自定义标题和内容'
+          componentName='sideslider'
+          demoName='before-close-demo'
+          desc='配置 before-close参数，点击遮罩关闭组件前会执行before-close函数'
           subtitle=''
-          desc='配置title参数和添加slot'
+          title='关闭前确认'
+        >
+          <BeforeCloseDemo />
+        </DemoBox>
+        <DemoBox
+          componentName='sideslider'
+          demoName='direction-demo'
+          desc='配置 direction参数，配置组件滑出的方向'
+          subtitle=''
+          title='显示方向'
+        >
+          <DirectionDemo />
+        </DemoBox>
+        <DemoBox
           componentName='sideslider'
           demoName='title-demo'
+          desc='配置title参数和添加slot'
+          subtitle=''
+          title='自定义标题和内容'
         >
           <TitleDemo></TitleDemo>
         </DemoBox>
         <DemoBox
-          title='自定义footer'
-          subtitle=''
-          desc='配置footer插槽，footer插槽内容会随着高度的变化而变化'
           componentName='sideslider'
           demoName='footer-demo'
+          desc='配置footer插槽，footer插槽内容会随着高度的变化而变化'
+          subtitle=''
+          title='自定义footer'
         >
           <FooterDemo></FooterDemo>
         </DemoBox>
         <PropsBox
-          title='Sideslider 属性'
-          subtitle=''
           propsData={SideSliserPropsJson}
+          subtitle=''
+          title='Sideslider 属性'
         />
         <PropsBox
-          title='Sideslider 事件'
-          subtitle=''
           propsData={SideSliserEventJson}
+          subtitle=''
+          title='Sideslider 事件'
         />
         <PropsBox
-          title='Sideslider 插槽'
-          subtitle=''
           propsData={SideSliserSlotJson}
+          subtitle=''
+          title='Sideslider 插槽'
         />
       </div>
     );

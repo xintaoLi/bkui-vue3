@@ -18,12 +18,13 @@
     },
     setup() {
       const loadingDemo = ref(true);
-      const requestHandler = lastValue => new Promise((resolve) => {
-        setTimeout(() => {
-          console.log(lastValue);
-          resolve();
-        }, 3000);
-      });
+      const requestHandler = lastValue =>
+        new Promise(resolve => {
+          setTimeout(() => {
+            console.log(lastValue);
+            resolve();
+          }, 3000);
+        });
 
       return {
         loadingDemo,
@@ -31,5 +32,4 @@
       };
     },
   });
-
 </script>

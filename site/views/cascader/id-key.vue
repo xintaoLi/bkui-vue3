@@ -163,6 +163,4 @@
     },
   ]);
   const area = ref(['root']);
-
 </script>
-

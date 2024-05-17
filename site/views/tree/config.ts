@@ -110,8 +110,8 @@ export default [
       { name: 'show-checkbox', type: 'Boolean', default: 'false', desc: '是否支持多选', optional: [] },
       { name: 'show-node-type-icon', type: 'Boolean', default: 'true', desc: '是否显示节点类型Icon', optional: [] },
       {
-        name: 'selected',
-        type: 'Object',
+        name: 'checked',
+        type: 'Array',
         default: 'null',
         desc: '默认选中的节点id(如果设置了node-key)或者节点对象，selectable为false时无效',
         optional: [],
@@ -152,6 +152,20 @@ export default [
         desc: '是否展示节点类型Icon（默认根节点是文件夹icon，子节点为文件icon）',
         optional: ['true', 'false'],
       },
+      {
+        name: 'intersection-observer',
+        type: 'Boolean|IIntersectionObserver',
+        default: 'false',
+        desc: '是否开启监听节点进入父容器可视区域',
+        optional: ['true', 'false', 'IIntersectionObserver'],
+      },
+      {
+        name: 'check-strictly',
+        type: 'Boolean',
+        default: 'true',
+        desc: '在显示复选框的情况下，是否严格的遵循父子互相关联的做法',
+        optional: ['true', 'false'],
+      },
     ],
   },
   {
@@ -182,6 +196,33 @@ export default [
     ],
   },
   {
+    title: 'IIntersectionObserver',
+    subTile: '监听节点进入父容器可视区域数据配置',
+    config: [
+      {
+        name: 'callback',
+        type: `({
+          level: any;
+          target: Record<string, any> | HTMLElement;
+          index: any;
+          parent: any;
+          node: Record<...> | HTMLElement;
+          isRoot: Boolean;
+        }) => void`,
+        default: 'undefined',
+        desc: '节点进入父容器可视区域时回调函数',
+        optional: [],
+      },
+      {
+        name: 'enabled',
+        type: 'Boolean',
+        default: 'false',
+        desc: '是否开启监听节点进入父容器可视区域',
+        optional: ['true', 'false'],
+      },
+    ],
+  },
+  {
     title: 'ISearchOption',
     subTile: '搜索配置',
     config: [
@@ -205,7 +246,7 @@ export default [
   },
   {
     title: 'Events',
-    subTile: '表格事件',
+    subTile: 'Tree抛出事件',
     type: 'events',
     config: [
       { name: 'node-click', desc: '节点点击事件', params: '' },
@@ -216,12 +257,24 @@ export default [
       { name: 'node-drag-over', desc: '节点拖拽经过事件', params: '' },
       { name: 'node-drag-leave', desc: '节点拖拽离开事件', params: '' },
       { name: 'node-drop', desc: '节点拖拽释放事件', params: '' },
+      {
+        name: 'node-enter-view',
+        desc: '节点进入父容器可视区域抛出事件',
+        params: `{
+        level: any;
+        target: Record<string, any> | HTMLElement;
+        index: any;
+        parent: any;
+        node: Record<...> | HTMLElement;
+        isRoot: Boolean;
+      }`,
+      },
     ],
   },
   {
     title: 'Methods',
-    subTile: 'bk-table 方法',
-    type: 'events',
+    subTile: 'bk-tree 方法',
+    type: 'Methods',
     config: [
       { name: 'handleTreeNodeClick', desc: '节点点击', params: '(item: any, e: MouseEvent)' },
       { name: 'isNodeChecked', desc: '判定指定节点是否选中', params: '(node)' },
@@ -241,9 +294,18 @@ export default [
         desc: '设置指定节点是否展开',
         params: '(item: any, isOpen = null, e: MouseEvent = null, fireEmit = true)',
       },
-      { name: 'setSelect', desc: '设置指定节点是否选中', params: '(item: any, selected = true, autoOpen = true)' },
+      {
+        name: 'setSelect',
+        desc: `* 设置节点选中状态
+           * @param nodes 选中节点，可以是多个
+           * @param selected 是否选中 default：true
+           * @param autoOpen 是否自动展开所有父级节点 default：true
+           * @param triggerEvent 是否触发抛出事件 false`,
+        params: '(item: any, selected = true, autoOpen = true, triggerEvent=false)',
+      },
       { name: 'asyncNodeClick', desc: '异步请求触发点击节点', params: '（item）' },
       { name: 'getData', desc: '获取当前树配置数据（经过内部处理的数据）', params: '（）' },
+      { name: 'getParentNode', desc: '获取指定节点的父级节点', params: 'node: 当前节点' },
     ],
   },
   {

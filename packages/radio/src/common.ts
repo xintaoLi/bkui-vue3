@@ -72,6 +72,8 @@ export const useRadio = () => {
   const isGroup = !isEmptyObj(radioGroup);
 
   const isChecked = ref<boolean>(false);
+
+  const isPrechecking = ref(false);
   const size = ref('default');
 
   // 禁用状态
@@ -115,26 +117,43 @@ export const useRadio = () => {
 
   // 值更新
   const handleChange = (event: Event) => {
-    if (isDisabled.value) {
+    if (isDisabled.value || isPrechecking.value) {
       return;
     }
+
     const $targetInput = event.target as HTMLInputElement;
-    isChecked.value = $targetInput.checked;
+    const newValue = $targetInput.checked;
 
-    const nextValue = isChecked.value ? props.label : '';
-    emit('update:modelValue', nextValue);
-    emit('change', nextValue);
-    // 更新 radio-group
-    if (isGroup) {
-      radioGroup.handleChange(currentInstance.proxy as IRadioInstance);
-    }
+    Promise.resolve(isGroup ? radioGroup.props.beforeChange(newValue) : props.beforeChange(newValue))
+      .then(result => {
+        if (result) {
+          isChecked.value = $targetInput.checked;
 
-    nextTick(() => {
-      // 选中状态保持同步
-      if ($targetInput.checked !== isChecked.value) {
+          const nextValue = isChecked.value ? props.label : '';
+          emit('update:modelValue', nextValue);
+          emit('change', nextValue);
+          // 更新 radio-group
+          if (isGroup) {
+            radioGroup.handleChange(currentInstance.proxy as IRadioInstance);
+          }
+
+          nextTick(() => {
+            // 选中状态保持同步
+            if ($targetInput.checked !== isChecked.value) {
+              $targetInput.checked = isChecked.value;
+            }
+          });
+          return Promise.resolve(true);
+        }
+
+        return Promise.reject();
+      })
+      .catch(() => {
         $targetInput.checked = isChecked.value;
-      }
-    });
+      })
+      .finally(() => {
+        isPrechecking.value = false;
+      });
   };
 
   onMounted(() => {

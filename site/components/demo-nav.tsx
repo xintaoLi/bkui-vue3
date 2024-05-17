@@ -233,7 +233,7 @@ export default defineComponent({
       }
     };
 
-    const popperWidth = ref<string | number>(220);
+    const popperWidth = ref<number | string>(220);
     // 初始化PopoverWidth
     const onPopoverFirstUpdate: OnFirstUpdateFnType = instance => {
       const { reference } = instance.elements;
@@ -273,13 +273,13 @@ export default defineComponent({
           v-clickoutside={this.hidePopover}
         >
           <BKPopover
-            theme='light'
-            trigger='manual'
             width={this.popperWidth}
             arrow={false}
-            placement='bottom-start'
-            offset={2}
             isShow={this.isPopoverShow}
+            offset={2}
+            placement='bottom-start'
+            theme='light'
+            trigger='manual'
             disableTeleport
           >
             {{
@@ -287,13 +287,13 @@ export default defineComponent({
                 <div class='demo-nav-popover'>
                   <BkInput
                     class='demo-nav-input'
-                    type='search'
-                    clearable={true}
                     v-model={this.searchVal}
-                    onInput={this.searchHandler}
+                    clearable={true}
+                    type='search'
                     onClear={this.hidePopover}
-                    onKeydown={this.keyupHandler}
                     onEnter={this.handleChooseCom}
+                    onInput={this.searchHandler}
+                    onKeydown={this.keyupHandler}
                   />
                 </div>
               ),
@@ -329,8 +329,8 @@ export default defineComponent({
         </div>
 
         <div
-          class='demo-nav-list'
           ref='navListRef'
+          class='demo-nav-list'
         >
           {Object.values(NavGroupMeta).map(group => this.getNavGroup(group))}
         </div>

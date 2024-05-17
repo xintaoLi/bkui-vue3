@@ -1,8 +1,6 @@
 <template>
   <div>
-    <bk-timeline
-      :list="state.list"
-    />
+    <bk-timeline :list="state.list" />
   </div>
 </template>
 <script>
@@ -26,7 +24,8 @@
           },
           {
             tag: '步骤3',
-            content: '由<strong>tony</strong>部署到<p style="color: #ff5656">生产环境</p>并发布至<strong>应用市场</strong>',
+            content:
+              '由<strong>tony</strong>部署到<p style="color: #ff5656">生产环境</p>并发布至<strong>应用市场</strong>',
           },
           {
             tag: '步骤4',
@@ -39,5 +38,4 @@
       };
     },
   });
-
 </script>

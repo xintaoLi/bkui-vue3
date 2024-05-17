@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 
 const backtopPropsJson: IPropsTableItem[] = [
@@ -38,35 +37,35 @@ const backtopPropsJson: IPropsTableItem[] = [
     name: 'visibility-height',
     type: 'Number',
     default: 200,
-    desc: '滚动多少px后，元素可见',
+    desc: '滚动高度达到此参数值才出现 Backtop',
     optional: [],
   },
   {
     name: 'target',
     type: 'String',
     default: '',
-    desc: '触发滚动的对象',
+    desc: '触发滚动的对象，可以是选择器字符串',
     optional: [],
   },
   {
     name: 'right',
     type: 'Number',
     default: 40,
-    desc: '控制其显示位置, 距离页面右边距',
+    desc: 'Backtop 距离页面右侧的距离',
     optional: [],
   },
   {
     name: 'bottom',
     type: 'Number',
     default: 40,
-    desc: '控制其显示位置, 距离页面底部边距',
+    desc: 'Backtop 距离页面底部的距离',
     optional: [],
   },
   {
     name: 'ext-cls',
     type: 'String',
     default: '',
-    desc: '自定义样式',
+    desc: '自定义样式类名',
     optional: [],
   },
 ];
@@ -77,25 +76,25 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Backtop 回到顶部'
           desc='Backtop 回到页面顶部的操作按钮'
-          link='https://www.google.com.hk/'
+          designLink='https://bkdesign.bk.tencent.com/design/162'
+          name='Backtop 回到顶部'
         />
 
         <DemoBox
-          title='基础用法'
-          desc='向下滚动以显示按钮'
           componentName='backtop'
           demoName='base-demo'
+          desc='向下滚动以显示按钮'
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
 
         <PropsBox
           style='height: 1000px'
-          title='Backtop 属性'
-          subtitle=''
           propsData={backtopPropsJson}
+          subtitle=''
+          title='Backtop 属性'
         />
       </div>
     );

@@ -3,124 +3,76 @@
     <bk-container>
       <bk-row>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/24
-          </div>
+          <div class="content">1/24</div>
         </bk-col>
       </bk-row>
     </bk-container>

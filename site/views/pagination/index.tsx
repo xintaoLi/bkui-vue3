@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import DemoPagination from './demo/pagination.vue';
 import DemoPaginationSmall from './demo/pagination-small.vue';
 
@@ -106,6 +105,20 @@ const paginationProps: IPropsTableItem[] = [
     optional: ['true', 'false'],
   },
   {
+    name: 'disabled',
+    type: 'Boolean',
+    default: 'false',
+    desc: ' 禁用',
+    optional: ['true', 'false'],
+  },
+  {
+    name: 'layout',
+    type: 'Array',
+    default: "['total', 'list', 'limit']",
+    desc: '控件布局',
+    optional: [],
+  },
+  {
     name: 'prev-text',
     type: 'String',
     default: '',
@@ -144,35 +157,35 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Pagination'
           desc='数据分页'
           designLink='https://bkdesign.bk.tencent.com/design/55'
+          name='Pagination'
         />
         <DemoBox
-          title='基本用法'
-          desc=''
           componentName='pagination'
           demoName='/demo/pagination'
+          desc=''
+          title='基本用法'
         >
           <DemoPagination />
         </DemoBox>
         <DemoBox
-          title='小型分页'
-          desc=''
           componentName='pagination'
           demoName='/demo/pagination-small'
+          desc=''
+          title='小型分页'
         >
           <DemoPaginationSmall />
         </DemoBox>
         <PropsBox
-          title='Pagination 属性'
-          subtitle=''
           propsData={paginationProps}
+          subtitle=''
+          title='Pagination 属性'
         />
         <PropsBox
-          title='Pagination 事件'
-          subtitle=''
           propsData={paginationEvents}
+          subtitle=''
+          title='Pagination 事件'
         />
       </div>
     );

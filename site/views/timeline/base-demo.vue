@@ -38,7 +38,7 @@
       });
 
       // 改变当前选中值
-      const timeLineChanged = (data) => {
+      const timeLineChanged = data => {
         alert(`选择了：${data.tag}`);
       };
       return {
@@ -47,5 +47,4 @@
       };
     },
   });
-
 </script>

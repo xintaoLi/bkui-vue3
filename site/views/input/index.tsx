@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import AutoSize from './demo/autosize.vue';
 import Basic from './demo/basic.vue';
 import Clearable from './demo/clearable.vue';
@@ -272,6 +271,31 @@ const inputSlots = [
   },
 ];
 
+// input export method
+const inputMethods = [
+  {
+    name: 'focus',
+    type: 'Function',
+    default: null,
+    desc: '组件聚集',
+    optional: [],
+  },
+  {
+    name: 'blur',
+    type: 'Function',
+    default: null,
+    desc: '失去焦点',
+    optional: [],
+  },
+  {
+    name: 'clear',
+    type: 'Function',
+    default: null,
+    desc: '清空内容',
+    optional: [],
+  }
+]
+
 const demos = [
   {
     // '基础输入框',
@@ -512,10 +536,10 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Input'
           desc='常用的输入框'
-          link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/input`}
           designLink='https://bkdesign.bk.tencent.com/design/14'
+          npmLink={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/input`}
+          name='Input'
         />
         {demos.map(({ DemoComponent, ...demo }) => (
           <DemoBox {...demo}>
@@ -523,19 +547,24 @@ export default defineComponent({
           </DemoBox>
         ))}
         <PropsBox
-          title='Input 属性'
-          subtitle=''
-          propsData={inputProps}
-        />
-        <PropsBox
-          title='Input 插槽'
-          subtitle=''
-          propsData={inputSlots}
-        />
-        <PropsBox
-          title='Input 事件'
-          subtitle=''
           propsData={inputEvents}
+          subtitle=''
+          title='Input 事件'
+        />
+        <PropsBox
+          propsData={inputMethods}
+          subtitle=''
+          title='Input 方法'
+        />
+        <PropsBox
+          propsData={inputProps}
+          subtitle=''
+          title='Input 属性'
+        />
+        <PropsBox
+          propsData={inputSlots}
+          subtitle=''
+          title='Input 插槽'
         />
       </div>
     );

@@ -80,7 +80,7 @@ export default function createPopoverComponent(options: $Popover) {
         refReference.value?.stopHide?.();
       };
 
-      const updateTarget = (target: MouseEvent | HTMLElement) => {
+      const updateTarget = (target: HTMLElement | MouseEvent) => {
         refProps.target = target;
         refReference.value?.resetPopover?.();
       };
@@ -112,10 +112,10 @@ export default function createPopoverComponent(options: $Popover) {
         <Popover
           {...refProps}
           ref={refReference}
-          onContentMouseenter={handleContentMouseenter}
-          onContentMouseleave={handleContentMouseleave}
           onAfterHidden={handlePopoverHidden}
           onAfterShow={handlePopoverShow}
+          onContentMouseenter={handleContentMouseenter}
+          onContentMouseleave={handleContentMouseleave}
         ></Popover>
       );
     },
@@ -164,7 +164,7 @@ export default function createPopoverComponent(options: $Popover) {
     $PopoverInstanceVm = null;
   }
 
-  function show(target?: MouseEvent | HTMLElement) {
+  function show(target?: HTMLElement | MouseEvent) {
     install();
     if (target) {
       ($PopoverInstanceVm as any)?.updateTarget(target);

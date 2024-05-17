@@ -51,8 +51,8 @@ export default defineComponent({
           <bk-table data={tableData}>
             {columns.map(column => (
               <bk-table-column
-                label={column.label}
                 field={column.field}
+                label={column.label}
               ></bk-table-column>
             ))}
           </bk-table>

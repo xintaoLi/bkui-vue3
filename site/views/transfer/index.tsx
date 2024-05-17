@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import CustomHeaderDemo from './custom-header-demo.vue';
 import CustomOptionDemo from './custom-option-demo.vue';
@@ -201,87 +200,87 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Transfer 穿梭框'
           desc='通过双栏穿梭选择框，利用更大的空间展示更多可选项、已选项的信息。'
           designLink='https://bkdesign.bk.tencent.com/design/125'
+          name='Transfer 穿梭框'
         />
         <DemoBox
-          title='基础用法'
-          subtitle=''
-          desc='默认配置 source-list 和 display-key，source-list 为必传 source-list 可以是普通数组(普通数组会自动去重)。当 source-list 为普通数组时，display-key 可不传。'
           componentName='transfer'
           demoName='base-demo'
+          desc='默认配置 source-list 和 display-key，source-list 为必传 source-list 可以是普通数组(普通数组会自动去重)。当 source-list 为普通数组时，display-key 可不传。'
+          subtitle=''
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
         <DemoBox
-          title='配置 target-list 以及设置排序'
-          subtitle=''
-          desc='配置 sortable 以及 sort-key 使得操作数据时数据的排序不变，配置 target-list 设置默认选择的数据。sortable 为 true 时开启排序功能，为 false 时则关闭，sort-key 为排序所依据的 key 值。注意：当 source-list 为普通数组时，开启排序时默认按照值排序，此时不需要传 sort-key。'
           componentName='transfer'
           demoName='target-list-demo'
+          desc='配置 sortable 以及 sort-key 使得操作数据时数据的排序不变，配置 target-list 设置默认选择的数据。sortable 为 true 时开启排序功能，为 false 时则关闭，sort-key 为排序所依据的 key 值。注意：当 source-list 为普通数组时，开启排序时默认按照值排序，此时不需要传 sort-key。'
+          subtitle=''
+          title='配置 target-list 以及设置排序'
         >
           <TargetListDemo></TargetListDemo>
         </DemoBox>
         <DemoBox
-          title='普通数组配置'
-          subtitle=''
-          desc='此时根据值排序；display-key、sort-key、setting-key 不需要传。'
           componentName='transfer'
           demoName='normal-list-demo'
+          desc='此时根据值排序；display-key、sort-key、setting-key 不需要传。'
+          subtitle=''
+          title='普通数组配置'
         >
           <NormalListDemo></NormalListDemo>
         </DemoBox>
         <DemoBox
-          title='自定义 header 和无数据时显示内容'
-          subtitle=''
-          desc='配置 slot 为 left-header 或 right-header 可自定义 header 内容，配置 slot 为 left-empty-content 和 right-empty-content 可自定义数据为空时所显示的内容(注意：当配置了 slot 时，其 title 和 empty-content 配置不会生效)'
           componentName='transfer'
           demoName='custom-header-demo'
+          desc='配置 slot 为 left-header 或 right-header 可自定义 header 内容，配置 slot 为 left-empty-content 和 right-empty-content 可自定义数据为空时所显示的内容(注意：当配置了 slot 时，其 title 和 empty-content 配置不会生效)'
+          subtitle=''
+          title='自定义 header 和无数据时显示内容'
         >
           <CustomHeaderDemo></CustomHeaderDemo>
         </DemoBox>
         <DemoBox
-          title='自定义 选项 模板'
-          subtitle=''
-          desc='配置 slot 为 source-option 或 target-option 可自定义 选项 内容。'
           componentName='transfer'
           demoName='custom-option-demo'
+          desc='配置 slot 为 source-option 或 target-option 可自定义 选项 内容。'
+          subtitle=''
+          title='自定义 选项 模板'
         >
           <CustomOptionDemo></CustomOptionDemo>
         </DemoBox>
         <DemoBox
-          title='左侧带搜索'
-          subtitle=''
-          desc='配置 searchable 启用搜索功能'
           componentName='transfer'
           demoName='search-demo'
+          desc='配置 searchable 启用搜索功能'
+          subtitle=''
+          title='左侧带搜索'
         >
           <SearchDemo></SearchDemo>
         </DemoBox>
         <DemoBox
-          title='勾选模式，支持多选'
-          subtitle=''
-          desc='配置 multiple 启用多选'
           componentName='transfer'
           demoName='multiple-demo'
+          desc='配置 multiple 启用多选'
+          subtitle=''
+          title='勾选模式，支持多选'
         >
           <MultipleDemo></MultipleDemo>
         </DemoBox>
         <PropsBox
-          title='Transfer 属性'
-          subtitle=''
           propsData={transferPropsJson}
+          subtitle=''
+          title='Transfer 属性'
         />
         <PropsBox
-          title='Transfer 插槽'
-          subtitle=''
           propsData={transferSlotsJson}
+          subtitle=''
+          title='Transfer 插槽'
         />
         <PropsBox
-          title='Transfer 事件'
-          subtitle=''
           propsData={transferChangeJson}
+          subtitle=''
+          title='Transfer 事件'
         />
       </div>
     );

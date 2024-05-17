@@ -206,10 +206,15 @@ export default defineComponent({
         return (
           <div
             key={name}
-            onClick={() => !disabled && this.handleTabChange(name)}
-            draggable={getValue(item.sortable, sortable)}
-            onDragstart={e => dragstart(index, e)}
             ref={active === name ? 'activeRef' : ''}
+            class={getNavItemClass()}
+            v-bk-tooltips={{ content: item.tips || '', disabled: !item.tips }}
+            draggable={getValue(item.sortable, sortable)}
+            onClick={() => !disabled && this.handleTabChange(name)}
+            onDragend={e => {
+              e.preventDefault();
+              dragend();
+            }}
             onDragenter={e => {
               e.preventDefault();
               dragenter(index);
@@ -220,16 +225,11 @@ export default defineComponent({
             onDragover={e => {
               e.preventDefault();
             }}
-            onDragend={e => {
-              e.preventDefault();
-              dragend();
-            }}
+            onDragstart={e => dragstart(index, e)}
             onDrop={e => {
               e.preventDefault();
               drop(index, sortType);
             }}
-            class={getNavItemClass()}
-            v-bk-tooltips={{ content: item.tips || '', disabled: !item.tips }}
           >
             <div>{tabLabel}</div>
             {getValue(item.closable, closable) ? (
@@ -265,8 +265,8 @@ export default defineComponent({
           <div class={this.resolveClassName('tab-header-operation')}>
             {list.map((item, index) => (
               <div
-                class={this.resolveClassName('tab-header-item')}
                 key={index}
+                class={this.resolveClassName('tab-header-item')}
               >
                 {item}
               </div>

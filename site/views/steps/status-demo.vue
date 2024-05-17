@@ -2,19 +2,19 @@
   <div>
     <bk-steps
       class="mb20"
-      status="error"
       :cur-step="2"
+      status="error"
     />
 
     <bk-steps
       class="mb20"
-      status="loading"
       :cur-step="2"
+      status="loading"
     />
   </div>
 </template>
 <style>
-.mb20 {
-  margin-bottom: 20px
-}
+  .mb20 {
+    margin-bottom: 20px;
+  }
 </style>

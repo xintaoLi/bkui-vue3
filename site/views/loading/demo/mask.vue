@@ -1,21 +1,17 @@
 <template>
   <div>
     <bk-loading
-      loading
       :opacity="0.6"
       :z-index="100"
       color="#62ba62"
+      loading
     >
-      <div class="loading-container">
-        Content
-      </div>
+      <div class="loading-container">Content</div>
     </bk-loading>
   </div>
 </template>
 
-<script setup>
-
-</script>
+<script setup></script>
 
 <style lang="postcss">
   .loading-container {

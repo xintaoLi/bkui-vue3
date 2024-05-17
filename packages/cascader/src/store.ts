@@ -34,7 +34,7 @@ const flatNodes = (data, leafOnly: boolean) =>
       acc.push(node);
     } else {
       !leafOnly && acc.push(node);
-      // eslint-disable-next-line no-param-reassign
+
       acc = acc.concat(flatNodes(node.children, leafOnly));
     }
     return acc;

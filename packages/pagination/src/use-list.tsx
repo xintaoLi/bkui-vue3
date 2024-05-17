@@ -24,13 +24,13 @@
  * IN THE SOFTWARE.
  */
 
-import type { ComponentInternalInstance } from 'vue';
 import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { AngleLeft, AngleRight, Ellipsis } from '@bkui-vue/icon';
 
 import type { IPaginationInstance } from './type';
+import type { ComponentInternalInstance } from 'vue';
 
 const PAGE_ITEMS_NUM = 5;
 
@@ -100,6 +100,9 @@ export default () => {
    * @desc 上一页
    */
   const handlePrePage = () => {
+    if (proxy.disabled) {
+      return;
+    }
     if (isPagePreDisabled.value) {
       return;
     }
@@ -109,6 +112,9 @@ export default () => {
    * @desc 下一页
    */
   const handleNextPage = () => {
+    if (proxy.disabled) {
+      return;
+    }
     if (isPageNextDisabled.value) {
       return;
     }
@@ -119,6 +125,9 @@ export default () => {
    * @param { Number } totalPageNum
    */
   const handleItemClick = (totalPageNum: number) => {
+    if (proxy.disabled) {
+      return;
+    }
     if (totalPageNum === localCurrent.value) {
       return;
     }
@@ -128,12 +137,18 @@ export default () => {
    * @desc 上一批分页
    */
   const handlePreBatch = () => {
+    if (proxy.disabled) {
+      return;
+    }
     localCurrent.value = Math.max(1, localCurrent.value - PAGE_ITEMS_NUM);
   };
   /**
    * @desc 下一批分页
    */
   const handleNextBatch = () => {
+    if (proxy.disabled) {
+      return;
+    }
     localCurrent.value = Math.min(proxy.totalPageNum, localCurrent.value + PAGE_ITEMS_NUM);
   };
 
@@ -157,11 +172,11 @@ export default () => {
         {proxy.prevText || <AngleLeft />}
       </div>
       <div
+        key='1'
         class={{
           [`${resolveClassName('pagination-list-item')}`]: true,
           'is-active': localCurrent.value === 1,
         }}
-        key='1'
         onClick={() => handleItemClick(1)}
       >
         1
@@ -177,11 +192,11 @@ export default () => {
       )}
       {list.value.map(num => (
         <div
+          key={num}
           class={{
             [`${resolveClassName('pagination-list-item')}`]: true,
             'is-active': localCurrent.value === num,
           }}
-          key={num}
           onClick={() => handleItemClick(num)}
         >
           {num}
@@ -198,11 +213,11 @@ export default () => {
       )}
       {proxy.totalPageNum > 1 && (
         <div
+          key='last'
           class={{
             [`${resolveClassName('pagination-list-item')}`]: true,
             'is-active': localCurrent.value === proxy.totalPageNum,
           }}
-          key='last'
           onClick={() => handleItemClick(proxy.totalPageNum)}
         >
           {proxy.totalPageNum}

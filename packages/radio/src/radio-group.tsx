@@ -24,14 +24,16 @@
  * IN THE SOFTWARE.
  */
 
-import type { ExtractPropTypes } from 'vue';
 import { defineComponent, onMounted, provide, watch } from 'vue';
+import { func } from 'vue-types';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { PropTypes, useFormItem } from '@bkui-vue/shared';
 
 import { radioGroupKey } from './common';
+
 import type { IRadioGroupContext } from './type';
+import type { ExtractPropTypes } from 'vue';
 
 const radioGroupProps = {
   name: PropTypes.string.def(''),
@@ -40,6 +42,7 @@ const radioGroupProps = {
   withValidate: PropTypes.bool.def(true),
   type: PropTypes.oneOf(['tab', 'capsule', 'card']).def('tab'),
   size: PropTypes.size(),
+  beforeChange: func<(event: boolean | number | string) => Promise<boolean> | boolean>().def(() => true),
 };
 
 export type RadioGroupProps = Readonly<ExtractPropTypes<typeof radioGroupProps>>;
@@ -66,7 +69,6 @@ export default defineComponent({
 
     const handleChange: IRadioGroupContext['handleChange'] = checkedRadioInstance => {
       const nextValue = checkedRadioInstance.label;
-
       radioInstanceList.forEach(radioInstance => {
         if (radioInstance !== checkedRadioInstance) {
           radioInstance.setChecked(false);

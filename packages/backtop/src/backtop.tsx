@@ -24,12 +24,12 @@
  * IN THE SOFTWARE.
  */
 
-import throttle from 'lodash/throttle';
 import { defineComponent, onBeforeUnmount, onMounted, type Ref, ref, Transition, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { AngleUp } from '@bkui-vue/icon';
 import { bkZIndexManager, PropTypes } from '@bkui-vue/shared';
+import throttle from 'lodash/throttle';
 
 export default defineComponent({
   name: 'Backtop',
@@ -90,12 +90,12 @@ export default defineComponent({
       <Transition name='bk-fade'>
         {visible.value ? (
           <div
-            class={`${resolveClassName('backtop')} ${props.extCls}`}
             style={{
               right: styleRight,
               bottom: styleBottom,
               zIndex: zIndex.value,
             }}
+            class={`${resolveClassName('backtop')} ${props.extCls}`}
             onClick={scrollTop}
           >
             {slots.default?.() ?? <AngleUp class={`${resolveClassName('backtop-icon')}`}></AngleUp>}

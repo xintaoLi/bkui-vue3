@@ -65,18 +65,22 @@ export default defineComponent({
     formatterLabel: { type: Function, default: (value: number) => value }, // 自定义间断点下文字格式
     formatterButtonLabel: { type: Function, default: (value: number) => value }, // 自定义滑块下文字格式
     formatterTipLabel: { type: Function, default: (value: number) => value }, // 自定义tip格式
+    labelClick: {
+      type: [Boolean, Function],
+      default: false,
+    },
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { slots, emit }) {
     /* 滑动选择器长度 */
     const sliderSize = ref(1);
     /* 第一个滑块与第二个滑块的值 */
-    const firstValue = ref<number | null>(null);
-    const secondValue = ref<number | null>(null);
+    const firstValue = ref<null | number>(null);
+    const secondValue = ref<null | number>(null);
     const oldValue = ref(null);
     /* 第一个输入框与第二个输入框的值 */
-    const firstInput = ref<number | null>(0);
-    const secondInput = ref<number | null>(0);
+    const firstInput = ref<null | number>(0);
+    const secondInput = ref<null | number>(0);
     /* 以下为refDom */
     const slider = ref(null);
     const firstbutton = ref(null);
@@ -128,14 +132,13 @@ export default defineComponent({
         result.push(i * stepWidth);
       }
       if (props.range) {
-        // eslint-disable-next-line max-len
         return result.filter(
           step =>
             step < (100 * (rangeMinValue.value - props.minValue)) / (props.maxValue - props.minValue) ||
             step > (100 * (rangeMaxValue.value - props.minValue)) / (props.maxValue - props.minValue),
         );
       }
-      // eslint-disable-next-line max-len
+
       return result.filter(
         step => step > (100 * (firstValue.value - props.minValue)) / (props.maxValue - props.minValue),
       );
@@ -359,7 +362,7 @@ export default defineComponent({
         secondValue.value = val;
       }
     };
-    const betweenLabelStyle = (postion: 'start' | 'end') => {
+    const betweenLabelStyle = (postion: 'end' | 'start') => {
       let value = 0;
       if (postion === 'start') {
         value = props.vertical ? props.maxValue : props.minValue;
@@ -373,23 +376,47 @@ export default defineComponent({
     };
 
     const { resolveClassName } = usePrefix();
+    const handleStepLabelClick = (e: MouseEvent, step: any) => {
+      let percent = step.stepWidth ?? step.percent ?? step;
+      if (props.labelClick) {
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        let fnResult;
+        if (typeof props.labelClick === 'function') {
+          const args = {
+            percent,
+            step,
+          };
+          fnResult = props.labelClick(e, args);
+          if (fnResult === false) {
+            return;
+          }
+        }
+
+        percent = typeof fnResult === 'number' ? fnResult : percent;
+        console.log('handleStepLabelClick', percent);
+        setPosition(percent);
+        return;
+      }
+    };
 
     const renderDom = () => (
       <div class={[`${resolveClassName('slider')}`, props.extCls]}>
         {slots.start?.()}
         <div
-          class={`${resolveClassName('slider-runway')}`}
           ref={slider}
           style={runwayStyle.value}
+          class={`${resolveClassName('slider-runway')}`}
           onClick={setButtonPos}
         >
           <div
+            style={barStyle.value}
             class={[
               `${resolveClassName('slider-bar')}`,
               props.vertical ? 'vertical' : 'horizontal',
               { disable: props.disable },
             ]}
-            style={barStyle.value}
           ></div>
           {props.showInterval
             ? intervals.value.map((interval, index) => {
@@ -399,8 +426,9 @@ export default defineComponent({
                 return (
                   <div
                     key={index}
-                    class={[`${resolveClassName('slider-interval')}`, { vertical: props.vertical }]}
                     style={getIntervalStyle(interval)}
+                    class={[`${resolveClassName('slider-interval')}`, { vertical: props.vertical }]}
+                    onClick={e => handleStepLabelClick(e, interval)}
                   ></div>
                 );
               })
@@ -413,8 +441,9 @@ export default defineComponent({
                 return (
                   <div
                     key={index}
-                    class={[`${resolveClassName('slider-interval')}`, { vertical: props.vertical }]}
                     style={getIntervalStyle(custom.percent)}
+                    class={[`${resolveClassName('slider-interval')}`, { vertical: props.vertical }]}
+                    onClick={e => handleStepLabelClick(e, custom)}
                   ></div>
                 );
               })
@@ -425,14 +454,14 @@ export default defineComponent({
                 if (props.showBetweenLabel) {
                   return [
                     <div
-                      class='label-start'
                       style={[{ opacity: betweenLabelStyle('start') }]}
+                      class='label-start'
                     >
                       {props.formatterLabel(props.minValue)}
                     </div>,
                     <div
-                      class='label-end'
                       style={[{ opacity: betweenLabelStyle('end') }]}
+                      class='label-end'
                     >
                       {props.formatterLabel(props.maxValue)}
                     </div>,
@@ -441,9 +470,10 @@ export default defineComponent({
                 if (props.showIntervalLabel) {
                   return intervalLabels.value.map((intervalLabel, index) => (
                     <div
-                      class={[`${resolveClassName('slider-label')}`, props.vertical ? 'vertical' : 'horizontal']}
                       key={index}
                       style={getIntervalStyle(intervalLabel.stepWidth)}
+                      class={[`${resolveClassName('slider-label')}`, props.vertical ? 'vertical' : 'horizontal']}
+                      onClick={e => handleStepLabelClick(e, intervalLabel)}
                     >
                       {intervalLabel.stepLabel}
                     </div>
@@ -452,9 +482,10 @@ export default defineComponent({
                 if (props.customContent) {
                   return customList.value.map((item, index) => (
                     <div
-                      class={[`${resolveClassName('slider-label')}`, props.vertical ? 'vertical' : 'horizontal']}
                       key={index}
                       style={getIntervalStyle(item.percent)}
+                      class={[`${resolveClassName('slider-label')}`, props.vertical ? 'vertical' : 'horizontal']}
+                      onClick={e => handleStepLabelClick(e, item)}
                     >
                       {item.label}
                     </div>
@@ -465,16 +496,16 @@ export default defineComponent({
             </div>
           ) : undefined}
           <SliderButton
-            v-model={firstValue.value}
             ref={firstbutton}
+            v-model={firstValue.value}
             params={buttonParms.value}
             onEmitChange={emitChange}
             onResetSize={resetSize}
           ></SliderButton>
           {props.range ? (
             <SliderButton
-              v-model={secondValue.value}
               ref={secondbutton}
+              v-model={secondValue.value}
               params={buttonParms.value}
               onEmitChange={emitChange}
               onResetSize={resetSize}
@@ -485,10 +516,10 @@ export default defineComponent({
           <div class={`${resolveClassName('slider-input')}`}>
             <div class='input-item'>
               <Input
-                type='number'
-                modelValue={firstInput.value}
                 max={props.maxValue}
                 min={props.minValue}
+                modelValue={firstInput.value}
+                type='number'
                 onChange={firstInputChange}
               ></Input>
             </div>
@@ -497,10 +528,10 @@ export default defineComponent({
                   <div class='input-center'>～</div>,
                   <div class='input-item'>
                     <Input
-                      type='number'
-                      modelValue={secondInput.value}
                       max={props.maxValue}
                       min={props.minValue}
+                      modelValue={secondInput.value}
+                      type='number'
                       onChange={secondInputChange}
                     ></Input>
                   </div>,

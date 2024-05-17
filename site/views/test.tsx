@@ -46,8 +46,8 @@ export default defineComponent({
       <div>
         this is test, you can
         <BkButton
-          text
           theme='primary'
+          text
           onClick={() => {
             go('home');
           }}

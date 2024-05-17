@@ -1,15 +1,13 @@
 <template>
   <div>
     <div class="cell">
-      <bk-button @click="handleSetAllRowExpand">
-        展开|收起所有
-      </bk-button>
+      <bk-button @click="handleSetAllRowExpand"> 展开|收起所有 </bk-button>
       <bk-table
         ref="refTable1"
         :columns="columns"
         :data="tableData"
-        @row-expand="handleRowExpand"
         @row-click="handleRowClick"
+        @row-expand="handleRowExpand"
       >
         <template #expandContent>
           <span>Content</span>
@@ -57,13 +55,13 @@
   });
 </script>
 <style scoped>
-.row {
-  display: flex;
-  width: 100%;
-}
+  .row {
+    display: flex;
+    width: 100%;
+  }
 
-.cell {
-  flex: 1;
-  margin: 0px 5px 20px  5px;
-}
+  .cell {
+    flex: 1;
+    margin: 0px 5px 20px 5px;
+  }
 </style>

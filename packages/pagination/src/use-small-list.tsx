@@ -24,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import type { ComponentInternalInstance } from 'vue';
 import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
@@ -32,6 +31,7 @@ import { AngleLeft, AngleRight } from '@bkui-vue/icon';
 import Popover from '@bkui-vue/popover';
 
 import type { IPaginationInstance } from './type';
+import type { ComponentInternalInstance } from 'vue';
 
 export default () => {
   const { proxy } = getCurrentInstance() as ComponentInternalInstance & { proxy: IPaginationInstance };
@@ -91,6 +91,9 @@ export default () => {
    * @desc 上一页
    */
   const handlePrePage = () => {
+    if (proxy.disabled) {
+      return;
+    }
     if (isPagePreDisabled.value) {
       return;
     }
@@ -100,6 +103,9 @@ export default () => {
    * @desc 下一页
    */
   const handleNextPage = () => {
+    if (proxy.disabled) {
+      return;
+    }
     if (isPageNextDisabled.value) {
       return;
     }
@@ -110,6 +116,9 @@ export default () => {
    * @desc 获得焦点
    */
   const handlePageEditorFocus = () => {
+    if (proxy.disabled) {
+      return;
+    }
     isFocused.value = true;
   };
   /**
@@ -167,12 +176,13 @@ export default () => {
         <AngleLeft />
       </div>
       <Popover
+        width={56}
+        arrow={false}
+        boundary='body'
+        disabled={proxy.disabled}
+        placement='bottom'
         theme='light'
         trigger='click'
-        arrow={false}
-        width={56}
-        boundary='body'
-        placement='bottom'
       >
         {{
           default: () => (
@@ -185,10 +195,10 @@ export default () => {
               <span
                 ref={inputRef}
                 class={`${resolveClassName('pagination-editor')}`}
-                contenteditable
+                contenteditable={!proxy.disabled}
                 spellcheck='false'
-                onFocus={handlePageEditorFocus}
                 onBlur={handlePageEditorBlur}
+                onFocus={handlePageEditorFocus}
                 onInput={handlePageEditorInput}
                 onKeydown={handlePageEditorKeydown}
               >
@@ -202,11 +212,11 @@ export default () => {
             <div class={`${resolveClassName('pagination-picker-list')}`}>
               {list.value.map(item => (
                 <div
+                  key={item}
                   class={{
                     item: true,
                     'is-actived': item === localCurrent.value,
                   }}
-                  key={item}
                   onClick={() => handlePageChange(item)}
                 >
                   {item}

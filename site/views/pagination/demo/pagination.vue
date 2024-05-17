@@ -3,6 +3,7 @@
     v-model="current"
     :count="count"
     :limit="10"
+    size="small"
   />
 </template>
 <script setup>
@@ -12,6 +13,4 @@
 
   const count = ref(100);
   const current = ref(1);
-
 </script>
-

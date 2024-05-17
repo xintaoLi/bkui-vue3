@@ -26,7 +26,7 @@
 
 import { computed, defineComponent, h, toRefs, TransitionGroup } from 'vue';
 
-import { useLocale } from '@bkui-vue/config-provider';
+import { useLocale, usePrefix } from '@bkui-vue/config-provider';
 import { ArchiveFill, AudioFill, Del, Done, ImageFill, RightTurnLine, TextFill, VideoFill } from '@bkui-vue/icon';
 import Progress from '@bkui-vue/progress';
 import { classes } from '@bkui-vue/shared';
@@ -45,9 +45,11 @@ export default defineComponent({
   emits: ['remove', 'retry'],
   setup(props, { slots, emit }) {
     const t = useLocale('upload');
+    const { resolveClassName } = usePrefix();
+
     const { theme, disabled, multiple } = toRefs(props);
 
-    const classBlock = `${CLASS_PREFIX}-list`;
+    const classBlock = `${resolveClassName(CLASS_PREFIX)}-list`;
 
     const isPhotowall = computed<boolean>(() => theme.value === EThemes.PICTURE);
     const isSinglePhoto = computed<boolean>(() => isPhotowall.value && !multiple.value);
@@ -97,21 +99,21 @@ export default defineComponent({
 
     const PhotoItem = (file: UploadFile) => [
       <img
-        v-show={file.status !== 'uploading'}
-        src={file.url}
         class={`${classBlock}__picture-item-thumbnail`}
+        v-show={file.status !== 'uploading'}
         alt=''
+        src={file.url}
       />,
       <>
         {file.status === 'uploading' && (
           <Progress
-            class={`${classBlock}__picture-item-progress`}
-            type='circle'
-            color='#3a84ff'
-            bgColor='#333'
             width={50}
-            titleStyle={{ color: '#fff' }}
+            class={`${classBlock}__picture-item-progress`}
+            bgColor='#333'
+            color='#3a84ff'
             percent={file.percentage}
+            titleStyle={{ color: '#fff' }}
+            type='circle'
           />
         )}
       </>,
@@ -172,9 +174,9 @@ export default defineComponent({
       <div class={`${classBlock}__item-icon`}>
         {file.isPic ? (
           <img
-            src={file.url}
             class={`${classBlock}__item-thumbnail`}
             alt=''
+            src={file.url}
           />
         ) : (
           FileIcon(file)
@@ -204,23 +206,23 @@ export default defineComponent({
         {file.status === 'uploading' && (
           <Progress
             class={`${classBlock}__item-progress`}
-            showText={false}
             percent={file.percentage}
+            showText={false}
             size='small'
           />
         )}
         {file.status !== 'fail' && (
           <div class={`${classBlock}__item-speed`}>
             <span
-              v-show={file.size}
               class={`${classBlock}__item-speed-size`}
+              v-show={file.size}
             >
               {formatSize(file.size)}
             </span>
             {/* <span v-show={file.status === 'uploading'} class={`${classBlock}__item-speed-rate`}></span> */}
             <span
-              v-show={file.status === 'uploading'}
               class={`${classBlock}__item-speed-percentage`}
+              v-show={file.status === 'uploading'}
             >
               {file.percentage}%
             </span>

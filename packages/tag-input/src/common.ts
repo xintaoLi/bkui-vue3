@@ -155,7 +155,7 @@ export const getCharLength = (str: string) => {
  */
 export const useTagsOverflow = (
   tagInputRef: Ref<HTMLDivElement>,
-  collapseTags: Ref<Boolean>,
+  collapseTags: Ref<boolean>,
   selectedTagList: Ref<string[]>,
 ) => {
   watch(

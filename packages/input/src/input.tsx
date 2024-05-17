@@ -63,25 +63,25 @@ export const inputType = {
   overMaxLengthLimit: PropTypes.bool.def(false),
   showOverflowTooltips: PropTypes.bool.def(true),
   resize: PropTypes.bool.def(true),
-  autosize: PropTypes.oneOfType<Boolean | InputAutoSize>([Boolean, Object]).def(false),
+  autosize: PropTypes.oneOfType<InputAutoSize | boolean>([Boolean, Object]).def(false),
   stopPropagation: PropTypes.bool.def(true),
 };
 
 export const enum EVENTS {
-  UPDATE = 'update:modelValue',
-  FOCUS = 'focus',
   BLUR = 'blur',
   CHANGE = 'change',
   CLEAR = 'clear',
-  INPUT = 'input',
-  KEYPRESS = 'keypress',
-  KEYDOWN = 'keydown',
-  KEYUP = 'keyup',
-  ENTER = 'enter',
-  PASTE = 'paste',
+  COMPOSITIONEND = 'compositionend',
   COMPOSITIONSTART = 'compositionstart',
   COMPOSITIONUPDATE = 'compositionupdate',
-  COMPOSITIONEND = 'compositionend',
+  ENTER = 'enter',
+  FOCUS = 'focus',
+  INPUT = 'input',
+  KEYDOWN = 'keydown',
+  KEYPRESS = 'keypress',
+  KEYUP = 'keyup',
+  PASTE = 'paste',
+  UPDATE = 'update:modelValue',
 }
 function EventFunction(_value: any, _evt: KeyboardEvent);
 function EventFunction(_value: any, _evt: Event) {
@@ -117,7 +117,6 @@ export const inputEmitEventsType = {
 export type InputType = ExtractPropTypes<typeof inputType>;
 
 export default defineComponent({
-  // eslint-disable-next-line vue/no-reserved-component-names
   name: 'Input',
   directives: {
     bkTooltips,
@@ -138,7 +137,7 @@ export default defineComponent({
     const { class: cls, style, ...inputAttrs } = ctx.attrs;
 
     const inputRef = ref();
-    const innerInputValue = ref<{ value?: string | number }>(
+    const innerInputValue = ref<{ value?: number | string }>(
       typeof props.modelValue === 'undefined' || props.modelValue === null
         ? {}
         : {
@@ -202,8 +201,8 @@ export default defineComponent({
       search: () => <Search />,
       password: () => (
         <Unvisible
-          onClick={handleVisibleChange}
           class={suffixCls}
+          onClick={handleVisibleChange}
         />
       ),
     };
@@ -284,7 +283,7 @@ export default defineComponent({
       }
       return props.showOverflowTooltips && isOverflow.value && props.modelValue
         ? {
-            content: props.modelValue,
+            content: props.modelValue?.toString(),
             sameWidth: true,
           }
         : {
@@ -500,8 +499,8 @@ export default defineComponent({
     };
     return () => (
       <div
-        class={inputCls.value}
         style={style as any}
+        class={inputCls.value}
         v-bk-tooltips={tooltips.value}
       >
         {ctx.slots?.prefix?.() ??
@@ -517,8 +516,8 @@ export default defineComponent({
             {...inputAttrs}
             {...eventListener}
             {...bindProps.value}
-            rows={props.rows}
             style={textareaCalcStyle.value}
+            rows={props.rows}
             {...innerInputValue.value}
           />
         ) : (
@@ -527,10 +526,10 @@ export default defineComponent({
             {...inputAttrs}
             ref={inputRef}
             class={`${inputClsPrefix.value}--text`}
-            type={pwdVisible.value && props.type === 'password' ? 'text' : props.type}
-            step={props.step}
             max={props.max}
             min={props.min}
+            step={props.step}
+            type={pwdVisible.value && props.type === 'password' ? 'text' : props.type}
             {...eventListener}
             {...bindProps.value}
             {...innerInputValue.value}

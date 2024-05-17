@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import DemoRadio from './demo/radio.vue';
 import DemoRadioButton from './demo/radio-button.vue';
 import DemoRadioCard from './demo/radio-card.vue';
@@ -75,6 +74,13 @@ const radioProps: IPropsTableItem[] = [
     desc: '尺寸',
     optional: ['large', 'small'],
   },
+  {
+    name: 'beforeChange',
+    type: 'function',
+    default: null,
+    desc: '值改变之前的回调函数，返回值为 false 会终止值改变',
+    optional: [],
+  },
 ];
 
 const radioEvents: IPropsTableItem[] = [
@@ -108,6 +114,19 @@ const radioGroupProps: IPropsTableItem[] = [
     default: null,
     desc: '尺寸',
     optional: ['large', 'small'],
+  },
+  {
+    name: 'withValidate',
+    type: 'Boolean',
+    default: true,
+    desc: '值改变时是否触发表单的校验',
+  },
+  {
+    name: 'beforeChange',
+    type: 'function',
+    default: null,
+    desc: '值改变之前的回调函数，返回值为 false 会终止值改变',
+    optional: [],
   },
 ];
 
@@ -157,6 +176,12 @@ const radioButtonProps: IPropsTableItem[] = [
     desc: '尺寸',
     optional: ['large', 'small'],
   },
+  {
+    name: 'before-change',
+    type: '(event: boolean | number | string) => Promise<boolean> | boolean',
+    default: '() => true',
+    desc: '值改变之前的回调函数，返回值为 false 会终止值改变',
+  },
 ];
 
 const radioButtonEvents: IPropsTableItem[] = [
@@ -175,99 +200,99 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Radio'
           desc='表单-单选框，在一组选项中进行单选'
           designLink='https://bkdesign.bk.tencent.com/design/128'
+          name='Radio'
         />
         <DemoBox
-          title='基础用法'
-          desc=''
           componentName='radio'
           demoName='/demo/radio'
+          desc=''
+          title='基础用法'
         >
           <DemoRadio />
         </DemoBox>
         <DemoBox
-          title='单选框组'
-          desc='配合 bk-radio-group 使用'
           componentName='radio'
           demoName='/demo/radio-group'
+          desc='配合 bk-radio-group 使用'
+          title='单选框组'
         >
           <DemoRadioGroup />
         </DemoBox>
         <DemoBox
-          title='默认选中'
-          desc=''
           componentName='radio'
           demoName='/demo/radio-checked'
+          desc=''
+          title='默认选中'
         >
           <DemoRadioChecked />
         </DemoBox>
         <DemoBox
-          title='禁用状态'
-          desc=''
           componentName='radio'
           demoName='/demo/radio-disabled'
+          desc=''
+          title='禁用状态'
         >
           <DemoRadioDisabled />
         </DemoBox>
 
         <DemoBox
-          title='按钮样式'
-          desc=''
           componentName='radio'
           demoName='/demo/radio-button'
+          desc=''
+          title='按钮样式'
         >
           <DemoRadioButton />
         </DemoBox>
 
         <DemoBox
-          title='卡片样式'
-          desc='100%充满父容器，每个子项等分父容器宽度'
           componentName='radio'
           demoName='/demo/radio-card'
+          desc='100%充满父容器，每个子项等分父容器宽度'
+          title='卡片样式'
         >
           <DemoRadioCard />
         </DemoBox>
 
         <DemoBox
-          title='胶囊样式'
-          desc=''
           componentName='radio'
           demoName='/demo/radio-group-capsule'
+          desc=''
+          title='胶囊样式'
         >
           <DemoRadioGroupCapsule />
         </DemoBox>
 
         <PropsBox
-          title='Radios 属性'
-          subtitle=''
-          propsData={radioProps}
-        />
-        <PropsBox
-          title='Radios 事件'
-          subtitle=''
-          propsData={radioEvents}
-        />
-        <PropsBox
-          title='Radios-Groups 属性'
-          subtitle=''
           propsData={radioGroupProps}
+          subtitle=''
+          title='Radios-Groups 属性'
         />
         <PropsBox
-          title='Radios-Groups 事件'
+          propsData={radioProps}
           subtitle=''
-          propsData={radioGroupEvents}
+          title='Radios 属性'
         />
         <PropsBox
-          title='Radios-Button 属性'
-          subtitle=''
           propsData={radioButtonProps}
+          subtitle=''
+          title='Radios-Button 属性'
         />
         <PropsBox
-          title='Radios-Button 事件'
+          propsData={radioGroupEvents}
           subtitle=''
+          title='Radios-Groups 事件'
+        />
+        <PropsBox
+          propsData={radioEvents}
+          subtitle=''
+          title='Radios 事件'
+        />
+        <PropsBox
           propsData={radioButtonEvents}
+          subtitle=''
+          title='Radios-Button 事件'
         />
       </div>
     );

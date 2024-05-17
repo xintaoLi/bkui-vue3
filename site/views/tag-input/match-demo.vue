@@ -1,11 +1,11 @@
 <template>
   <bk-tag-input
     v-model="state.tags"
+    :list="state.list"
     placeholder="请选择城市"
+    allow-auto-match
     allow-create
     has-delete-icon
-    allow-auto-match
-    :list="state.list"
   />
 </template>
 

@@ -1,13 +1,13 @@
 <template>
   <bk-checkbox
-    label="weixin"
     :before-change="beforeWeixinChange"
+    label="weixin"
   >
     微信
   </bk-checkbox>
   <bk-checkbox
-    label="qq"
     :before-change="beforeQQChange"
+    label="qq"
   >
     QQ
   </bk-checkbox>
@@ -15,13 +15,12 @@
 <script setup>
   import { BkCheckbox } from '@bkui-vue/checkbox';
 
-  const beforeWeixinChange = () => new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, 3000);
-  });
+  const beforeWeixinChange = () =>
+    new Promise(resolve => {
+      setTimeout(() => {
+        resolve(true);
+      }, 3000);
+    });
 
   const beforeQQChange = () => false;
-
 </script>
-

@@ -108,15 +108,13 @@ export const DATA_COLUMNS = [
     type: 'index',
     width: 350,
     minWidth: 80,
-    sort: {
-      value: 'desc',
-    },
+    sort: true,
+    fixed: true,
     showOverflowTooltip: {
       mode: 'static',
       content: '这是个静态的提示，限制最大宽度为200px，测试一下是否生效，长度不够，数字来凑，哈哈哈',
       popoverOption: {
-        maxWidth: 300,
-        with: 100,
+        maxWidth: 250,
       },
     },
     className: () => 'custom-class',
@@ -145,7 +143,7 @@ export const DATA_COLUMNS = [
     width: 80,
     filter: {
       list: new Array(20).fill('').map((_, index) => ({ text: `${index}_QQ`, value: `${index}_QQ` })),
-      checked: ['QQ'],
+      checked: [],
     },
   },
   {
@@ -158,8 +156,11 @@ export const DATA_COLUMNS = [
     field: 'priority',
     sort: true,
     filter: {
-      list: [],
-      checked: [],
+      list: [
+        { text: '1', value: 1 },
+        { text: '2', value: 2 },
+        { text: '3', value: 3 },
+      ],
     },
   },
   {
@@ -284,19 +285,27 @@ export const DATA_FIX_COLUMNS = [
     label: '序号',
     type: 'index',
     sort: true,
-    width: 100,
+    minWidth: 30,
     fixed: true,
   },
   {
     label: '名称/内网IP',
     field: 'ip',
-    minWidth: 400,
+    minWidth: 50,
     fixed: true,
   },
   {
     label: '来源',
     field: 'source',
-    filter: true,
+    fixed: true,
+    filter: {
+      list: [
+        { text: '1_QQ', value: '1_QQ' },
+        { text: '2_QQ', value: '2_QQ' },
+        { text: 'QQ', value: 'QQ' },
+      ],
+      match: 'fuzzy',
+    },
     minWidth: 280,
   },
   {
@@ -313,13 +322,15 @@ export const DATA_FIX_COLUMNS = [
     label: '状态',
     field: 'status',
     width: 180,
-    fixed: 'right',
+    // fixed: 'right',
   },
   {
     label: '操作',
-    render: ({ data }) => <bk-input v-model={data.status}></bk-input>,
+    render: ({ data }) => {
+      return <bk-input v-model={data.status}></bk-input>;
+    },
     width: 180,
-    fixed: 'right',
+    // fixed: 'right',
   },
 ];
 

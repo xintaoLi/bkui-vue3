@@ -6,10 +6,10 @@
     </header>
     <bk-input
       v-model="val"
-      type="textarea"
-      :rows="6"
-      :over-max-length-limit="overMaxLengthLimit"
       :maxlength="255"
+      :over-max-length-limit="overMaxLengthLimit"
+      :rows="6"
+      type="textarea"
     />
   </div>
 </template>

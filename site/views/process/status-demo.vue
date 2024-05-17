@@ -1,16 +1,18 @@
 <template>
   <div>
     <bk-process
-      :list="state.list"
       :controllable="state.controllable"
       :cur-process="state.curprocess"
+      :list="state.list"
       @click="processChanged"
     />
   </div>
-</template>;
+</template>
+;
 <script>
-  import { Bk } from 'bkui-vue/lib/icon';
   import { defineComponent, reactive } from 'vue';
+
+  import { Bk } from 'bkui-vue/lib/icon';
 
   export default defineComponent({
     setup() {
@@ -18,7 +20,7 @@
         list: [
           { content: '测试一', description: '这是描述' },
           { content: '测试二', description: '这是描述2', status: 'loading' },
-          { content: '测试三', description: '这是描述3', status: 'error'  },
+          { content: '测试三', description: '这是描述3', status: 'error' },
           { content: '测试四', description: '这是描述4', icon: Bk },
           { content: '测试五', description: '这是描述5' },
         ],
@@ -27,7 +29,7 @@
       });
 
       // 改变当前选中值
-      const processChanged = (index) => {
+      const processChanged = index => {
         state.curprocess = index;
       };
 

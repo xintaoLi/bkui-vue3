@@ -4,9 +4,7 @@
     :footer-slot-cls="'custom-footer-wrapper'"
   >
     <template #footer>
-      <div class="custom-footer">
-        我是自定义 footer
-      </div>
+      <div class="custom-footer">我是自定义 footer</div>
     </template>
   </bk-date-picker>
 </template>
@@ -18,11 +16,11 @@
 </script>
 
 <style lang="postcss">
-.custom-footer-wrapper {
-  color: red;
-}
+  .custom-footer-wrapper {
+    color: red;
+  }
 
-.custom-footer {
-  text-align: center;
-}
+  .custom-footer {
+    text-align: center;
+  }
 </style>

@@ -2,7 +2,7 @@
   <div>
     <bk-breadcrumb :back-router="{ path: '/' }">
       <bk-breadcrumb-item
-        v-for="(item,index) in list"
+        v-for="(item, index) in list"
         :key="index"
         :to="item.link"
       >
@@ -11,7 +11,7 @@
     </bk-breadcrumb>
     <bk-breadcrumb style="margin-top: 10px">
       <bk-breadcrumb-item
-        v-for="(item,index) in list"
+        v-for="(item, index) in list"
         :key="index"
         :to="item.link"
       >
@@ -24,10 +24,10 @@
   </div>
 </template>
 <script>
-  import { AngleLeft } from 'bkui-vue/lib/icon';
   import { defineComponent, getCurrentInstance, ref } from 'vue';
 
   import { BkBreadcrumb, BkBreadcrumbItem } from '@bkui-vue/breadcrumb';
+  import { AngleLeft } from 'bkui-vue/lib/icon';
 
   export default defineComponent({
     name: 'SiteBreadcrumb',
@@ -56,5 +56,4 @@
       };
     },
   });
-
 </script>

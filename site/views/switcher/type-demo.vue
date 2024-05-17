@@ -2,135 +2,134 @@
   <div>
     <bk-switcher
       v-model="demo1"
+      :before-change="requestHandler"
       theme="success"
       is-outline
-      :before-change="requestHandler"
     />
     <bk-switcher
       v-model="demo1"
+      :before-change="requestHandler"
       size="large"
       is-outline
-      :before-change="requestHandler"
     />
     <bk-switcher
       v-model="demo1"
+      :before-change="requestHandler"
       size="small"
       is-outline
-      :before-change="requestHandler"
     />
 
     <bk-switcher
       v-model="demo1"
+      :before-change="requestHandler"
       theme="success"
       is-outline
       show-text
-      :before-change="requestHandler"
     />
     <bk-switcher
       v-model="demo1"
+      :before-change="requestHandler"
       size="large"
       is-outline
       show-text
-      :before-change="requestHandler"
     />
     <bk-switcher
       v-model="demo1"
+      :before-change="requestHandler"
       size="small"
       is-outline
       show-text
-      :before-change="requestHandler"
     />
 
     <div class="mt20">
       <bk-switcher
         v-model="demo1"
+        :before-change="requestHandler"
         theme="primary"
         is-square
-        :before-change="requestHandler"
       />
       <bk-switcher
         v-model="demo1"
+        :before-change="requestHandler"
         size="large"
         theme="primary"
         is-square
-        :before-change="requestHandler"
       />
       <bk-switcher
         v-model="demo1"
+        :before-change="requestHandler"
         size="small"
         theme="primary"
         is-square
-        :before-change="requestHandler"
       />
 
       <bk-switcher
         v-model="demo1"
+        :before-change="requestHandler"
         theme="primary"
         is-square
         show-text
-        :before-change="requestHandler"
       />
       <bk-switcher
         v-model="demo1"
+        :before-change="requestHandler"
         size="large"
         theme="primary"
         is-square
         show-text
-        :before-change="requestHandler"
       />
       <bk-switcher
         v-model="demo1"
+        :before-change="requestHandler"
         size="small"
         theme="primary"
         is-square
         show-text
-        :before-change="requestHandler"
       />
     </div>
 
-
     <div class="mt20">
       <bk-switcher
         v-model="demo1"
-        is-square
-        is-outline
         :before-change="requestHandler"
+        is-outline
+        is-square
       />
       <bk-switcher
         v-model="demo1"
+        :before-change="requestHandler"
         size="large"
-        is-square
         is-outline
-        :before-change="requestHandler"
+        is-square
       />
       <bk-switcher
         v-model="demo1"
-        size="small"
-        is-square
-        is-outline
         :before-change="requestHandler"
+        size="small"
+        is-outline
+        is-square
       />
 
       <bk-switcher
         v-model="demo1"
-        is-square
-        is-outline
-        show-text
         :before-change="requestHandler"
+        is-outline
+        is-square
+        show-text
       />
       <bk-switcher
         v-model="demo1"
-        is-square
-        is-outline
-        show-text
         :before-change="requestHandler"
+        is-outline
+        is-square
+        show-text
       />
       <bk-switcher
         v-model="demo1"
-        is-square
-        is-outline
-        show-text
         :before-change="requestHandler"
+        is-outline
+        is-square
+        show-text
       />
     </div>
   </div>
@@ -147,12 +146,13 @@
     },
     setup() {
       const demo1 = ref(true);
-      const requestHandler = lastValue => new Promise((resolve) => {
-        setTimeout(() => {
-          console.log(lastValue);
-          resolve();
-        }, 1000);
-      });
+      const requestHandler = lastValue =>
+        new Promise(resolve => {
+          setTimeout(() => {
+            console.log(lastValue);
+            resolve();
+          }, 1000);
+        });
 
       return {
         demo1,
@@ -160,9 +160,7 @@
       };
     },
   });
-
 </script>
-
 
 <style scoped>
   .bk-switcher {
@@ -170,6 +168,6 @@
   }
 
   .mt20 {
-    margin-top: 20px
+    margin-top: 20px;
   }
 </style>

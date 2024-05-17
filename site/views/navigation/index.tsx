@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 const navgationProps: IPropsTableItem[] = [
   {
@@ -151,24 +150,24 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Navigation'
           desc='Navigation组件， 为应用提供导航的整体布局。'
           link='https://www.google.com.hk/'
+          name='Navigation'
         />
         <DemoBox
-          title='基础用法'
-          subtitle='点击下面按钮可以切换不同的导航风格'
-          desc='通过属性配置切换不同的导航风格'
           componentName='navigation'
           demoName='base-demo'
+          desc='通过属性配置切换不同的导航风格'
+          subtitle='点击下面按钮可以切换不同的导航风格'
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
         <PropsBox propsData={navgationProps} />
         <PropsBox
-          title='SubMenu 插槽'
           columnMap={slotColumnMap}
           propsData={navgationSlotsJson}
+          title='SubMenu 插槽'
         />
       </div>
     );

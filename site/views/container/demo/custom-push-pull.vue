@@ -3,71 +3,55 @@
     <bk-container :col="12">
       <bk-row>
         <bk-col
-          :span="7"
           :push="5"
+          :span="7"
         >
-          <div class="content">
-            7/12 (push: 5)
-          </div>
+          <div class="content">7/12 (push: 5)</div>
         </bk-col>
         <bk-col
-          :span="5"
           :pull="7"
+          :span="5"
         >
-          <div class="content">
-            5/12 (pull: 7)
-          </div>
+          <div class="content">5/12 (pull: 7)</div>
         </bk-col>
       </bk-row>
       <bk-row>
         <bk-col
-          :span="3"
           :push="9"
+          :span="3"
         >
-          <div class="content">
-            3/12 (push: 9)
-          </div>
+          <div class="content">3/12 (push: 9)</div>
         </bk-col>
         <bk-col
-          :span="9"
           :pull="3"
+          :span="9"
         >
-          <div class="content">
-            9/12 (pull: 3)
-          </div>
+          <div class="content">9/12 (pull: 3)</div>
         </bk-col>
       </bk-row>
       <bk-row>
         <bk-col
-          :span="4"
           :offset="3"
+          :span="4"
         >
-          <div class="content">
-            4/12 (offset: 3)
-          </div>
+          <div class="content">4/12 (offset: 3)</div>
         </bk-col>
         <bk-col :span="5">
-          <div class="content">
-            5/12
-          </div>
+          <div class="content">5/12</div>
         </bk-col>
       </bk-row>
       <bk-row>
         <bk-col
-          :span="4"
           :push="8"
+          :span="4"
         >
-          <div class="content">
-            4/12 (push: 8)
-          </div>
+          <div class="content">4/12 (push: 8)</div>
         </bk-col>
         <bk-col
-          :span="3"
           :offset="-4"
+          :span="3"
         >
-          <div class="content">
-            3/12 (offset: -4)
-          </div>
+          <div class="content">3/12 (offset: -4)</div>
         </bk-col>
       </bk-row>
     </bk-container>

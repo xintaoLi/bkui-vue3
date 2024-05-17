@@ -94,8 +94,8 @@ export default defineComponent({
       <BkCascader
         v-model={this.area}
         list={this.list}
-        multiple
         trigger='click'
+        multiple
       />
     );
   },

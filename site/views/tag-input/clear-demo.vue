@@ -3,15 +3,15 @@
     <p>默认</p>
     <bk-tag-input
       v-model="state.tags"
-      placeholder="请选择城市"
       :list="state.list"
+      placeholder="请选择城市"
     />
     <p>hover 显示</p>
     <bk-tag-input
       v-model="state.tags"
+      :list="state.list"
       placeholder="请选择城市"
       show-clear-only-hover
-      :list="state.list"
     />
   </div>
 </template>

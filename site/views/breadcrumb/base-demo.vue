@@ -2,7 +2,7 @@
   <bk-breadcrumb>
     <bk-breadcrumb>
       <bk-breadcrumb-item
-        v-for="(item,index) in list"
+        v-for="(item, index) in list"
         :key="index"
         :to="item.link"
       >
@@ -34,5 +34,4 @@
       };
     },
   });
-
 </script>

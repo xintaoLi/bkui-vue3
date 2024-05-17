@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import DemoComposeFormItem from './demo/compose-form-item.vue';
 import DemoForm from './demo/form.vue';
 import DemoFormDescription from './demo/form-description.vue';
@@ -75,6 +74,64 @@ const formProps: IPropsTableItem[] = [
   },
 ];
 
+const formRules = [
+  {
+    name: 'required',
+    type: 'Boolean',
+    default: null,
+    desc: '验证不为空',
+  },
+  {
+    name: 'email',
+    type: 'Boolean',
+    default: null,
+    desc: '验证email',
+  },
+  {
+    name: 'min',
+    type: 'Boolean',
+    default: null,
+    desc: '数字最小值',
+  },
+  {
+    name: 'max',
+    type: 'Boolean',
+    default: null,
+    desc: '数字最大值',
+  },
+  {
+    name: 'maxlength',
+    type: 'Boolean',
+    default: null,
+    desc: '字符串最大长度',
+  },
+  {
+    name: 'pattern',
+    type: 'RegExp',
+    default: null,
+    desc: '自定义正则',
+  },
+  {
+    name: 'validator',
+    type: 'Function',
+    default: null,
+    desc: '自定义验证函数',
+  },
+  {
+    name: 'message',
+    type: 'String',
+    default: null,
+    desc: '验证错误提示',
+  },
+  {
+    name: 'trigger',
+    type: 'String',
+    default: 'change',
+    desc: '触发校验的方式',
+    optional: ['change', 'blur'],
+  },
+];
+
 const formMethods: IPropsTableItem[] = [
   {
     name: 'validate',
@@ -100,6 +157,12 @@ const formMethods: IPropsTableItem[] = [
 ];
 
 const formEvents: IPropsTableItem[] = [
+  {
+    name: 'submit',
+    default: null,
+    desc: '表单提交',
+    optional: [],
+  },
   {
     name: 'validate',
     type: '(property: string, result: boolean, message: string) => void',
@@ -160,6 +223,13 @@ const formItemProps: IPropsTableItem[] = [
     optional: [],
   },
   {
+    name: 'maxlength',
+    type: 'Number',
+    default: null,
+    desc: '验证规则最大长度',
+    optional: [],
+  },
+  {
     name: 'email',
     type: 'String',
     default: null,
@@ -187,6 +257,13 @@ const formItemProps: IPropsTableItem[] = [
     desc: '是否自动验证',
     optional: [],
   },
+  {
+    name: 'error-display-type',
+    type: 'String',
+    default: null,
+    desc: '错误提示类型',
+    optional: ['tooltips', 'normal'],
+  },
 ];
 
 const formItemSlots: IPropsTableItem[] = [
@@ -212,74 +289,79 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Form'
           desc='由输入框、选择器、单选框、多选框等控件组成'
           designLink='https://bkdesign.bk.tencent.com/design/33'
+          name='Form'
         />
         <DemoBox
-          title='基础用法'
-          desc=''
           componentName='form'
           demoName='/demo/form'
+          desc=''
+          title='基础用法'
         >
           <DemoForm />
         </DemoBox>
         <DemoBox
-          title='label 描述'
-          desc='FormItem 组件配置 description'
           componentName='form'
           demoName='/demo/form-description'
+          desc='FormItem 组件配置 description'
+          title='label 描述'
         >
           <DemoFormDescription />
         </DemoBox>
         <DemoBox
-          title='顶部对齐'
-          desc=''
           componentName='form'
           demoName='/demo/form-vertical'
+          desc=''
+          title='顶部对齐'
         >
           <DemoFormVertical />
         </DemoBox>
         <DemoBox
-          title='表单验证'
-          desc=''
           componentName='form'
           demoName='/demo/form-validator'
+          desc=''
+          title='表单验证'
         >
           <DemoFormValidator />
         </DemoBox>
         <DemoBox
-          title='组合表单组件'
-          desc=''
           componentName='form'
           demoName='/demo/compose-form-item'
+          desc=''
+          title='组合表单组件'
         >
           <DemoComposeFormItem />
         </DemoBox>
         <PropsBox
-          title='Form 属性'
-          subtitle=''
           propsData={formProps}
+          subtitle=''
+          title='Form 属性'
         />
         <PropsBox
-          title='Form 实例方法'
-          subtitle=''
           propsData={formMethods}
+          subtitle=''
+          title='Form 实例方法'
         />
         <PropsBox
-          title='Form 事件'
-          subtitle=''
           propsData={formEvents}
+          subtitle=''
+          title='Form 事件'
         />
         <PropsBox
-          title='Form-Item 属性'
-          subtitle=''
           propsData={formItemProps}
+          subtitle=''
+          title='Form-Item 属性'
         />
         <PropsBox
-          title='Form-Item Slot'
-          subtitle=''
           propsData={formItemSlots}
+          subtitle=''
+          title='Form-Item Slot'
+        />
+        <PropsBox
+          propsData={formRules}
+          subtitle=''
+          title='Rule 验证规则配置'
         />
       </div>
     );

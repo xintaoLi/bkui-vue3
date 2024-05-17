@@ -49,8 +49,8 @@ export default defineComponent({
     const { resolveClassName } = usePrefix();
     return () => (
       <div
-        class={`${resolveClassName('navigation-title')}`}
         style={{ borderBottomWidth: props.navigationType === 'left-right' ? '0' : '1px' }}
+        class={`${resolveClassName('navigation-title')}`}
       >
         {slots.default?.() || [
           <span class='title-icon'>

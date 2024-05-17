@@ -30,7 +30,6 @@ import DemoBox from '../../../components/demo-box';
 import DemoTitle from '../../../components/demo-title';
 import PropsBox from '../../../components/props-box';
 import { IPropsTableItem } from '../../../typings';
-
 import BaseDemo from './base-demo.vue';
 import DialogDemo from './dialog-demo.vue';
 import PartialDemo from './partial-demo.vue';
@@ -101,45 +100,45 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Functional Dependency'
           desc='业务组件 Functional Dependency， 用于蓝鲸平台下各个应用中功能依赖项展示使用，支持 Vue2/Vue3 版本 无差别使用'
+          name='Functional Dependency'
           npmLink='https://www.npmjs.com/package/@blueking/functional-dependency'
         />
         <DemoBox
-          title='默认展示'
-          subtitle='组件的 page 模式'
-          desc='配置 mode 为 page'
           componentName='blueking/functional-deps'
           demoName='base-demo'
+          desc='配置 mode 为 page'
+          subtitle='组件的 page 模式'
+          title='默认展示'
         >
           <BaseDemo />
         </DemoBox>
         <DemoBox
-          title='弹窗模式'
-          subtitle='组件的 dialog 弹窗模式'
-          desc='配置 mode 为 dialog'
           componentName='blueking/functional-deps'
           demoName='dialog-demo'
+          desc='配置 mode 为 dialog'
+          subtitle='组件的 dialog 弹窗模式'
+          title='弹窗模式'
         >
           <DialogDemo />
         </DemoBox>
         <DemoBox
-          title='局部展示模式'
-          subtitle='组件的 partial 局部展示模式'
-          desc='配置 mode 为 partial'
           componentName='blueking/functional-deps'
           demoName='partial-demo'
+          desc='配置 mode 为 partial'
+          subtitle='组件的 partial 局部展示模式'
+          title='局部展示模式'
         >
           <PartialDemo />
         </DemoBox>
         <PropsBox
-          title='组件属性'
           propsData={menuPropsJson}
+          title='组件属性'
         />
         <PropsBox
-          title='组件事件'
           columnMap={eventColumnMap}
           propsData={eventJson}
+          title='组件事件'
         />
       </div>
     );

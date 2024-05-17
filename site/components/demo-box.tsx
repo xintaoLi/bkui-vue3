@@ -23,11 +23,11 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import ClipboardJS from 'clipboard';
 import { computed, defineComponent, getCurrentInstance, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
 
 import { Code, Copy, DataShape } from '@bkui-vue/icon';
 import BkMessage from '@bkui-vue/message';
+import ClipboardJS from 'clipboard';
 
 import BoxIcon from './box-icon';
 import CodeBox from './code-box';
@@ -150,8 +150,8 @@ export default defineComponent({
   render() {
     return (
       <CommonBox
-        title={this.title}
         subtitle={this.subtitle}
+        title={this.title}
       >
         {[
           <div class='example-box'>
@@ -163,31 +163,31 @@ export default defineComponent({
               <div class='example-tools'>
                 {this.desc}
                 <BoxIcon
-                  tips='执行'
                   style={{ marginLeft: 'auto' }}
+                  tips='执行'
                 >
                   <Stackblitz
-                    code={this.activeCode}
                     style={{ width: '100%', height: '100%', textAlign: 'center', lineHeight: '23px' }}
+                    code={this.activeCode}
                   />
                 </BoxIcon>
                 <BoxIcon
+                  active={this.showCode}
                   tips='代码'
                   onClick={this.handleShowCodeChange}
-                  active={this.showCode}
                 >
                   <Code />
                 </BoxIcon>
                 <BoxIcon
+                  active={this.showConfigData}
                   tips='配置数据'
                   onClick={this.handleOptionDataShow}
-                  active={this.showConfigData}
                 >
                   <DataShape />
                 </BoxIcon>
                 <BoxIcon
-                  tips='copy'
                   ref='copyBtn'
+                  tips='copy'
                 >
                   <Copy />
                 </BoxIcon>
@@ -195,8 +195,8 @@ export default defineComponent({
             ),
           ],
           <div
-            class='eample-code'
             style={{ display: this.showCode || this.showConfigData ? 'block' : 'none' }}
+            class='eample-code'
           >
             <CodeBox
               code={this.activeCode}

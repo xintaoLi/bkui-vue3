@@ -24,12 +24,12 @@
  * IN THE SOFTWARE.
  */
 
-import _ from 'lodash';
 import { computed, defineComponent, h, onMounted, PropType, ref } from 'vue';
 
 import { bkTooltips } from '@bkui-vue/directives';
 import { IOptions } from '@bkui-vue/directives/src/tooltips';
 import { checkOverflow, PropTypes } from '@bkui-vue/shared';
+import _ from 'lodash';
 
 export default defineComponent({
   name: 'TagRender',
@@ -80,8 +80,8 @@ export default defineComponent({
 
     return (
       <div
-        class='tag'
         ref='tagRef'
+        class='tag'
         v-bk-tooltips={this.overflowTips}
       >
         <span class='text'>{this.node[this.displayKey]}</span>

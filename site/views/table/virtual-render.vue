@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 15px 0;">
+    <div style="padding: 15px 0">
       <bk-button
         theme="primary"
         @click="handleRandomRows"
@@ -10,12 +10,12 @@
       <span style="padding: 0 30px">当前行数：{{ randomRows.length }}</span>
     </div>
     <bk-table
+      :border="border"
       :columns="columns"
       :data="randomRows"
-      :border="border"
-      virtual-enabled
-      settings
       :height="300"
+      settings
+      virtual-enabled
     />
   </div>
 </template>
@@ -41,13 +41,12 @@
         this.randomRows.splice(
           0,
           this.randomRows.length,
-          ...new Array(Math.ceil(Math.random() * 90) + 10).fill('')
-            .map((_, index) => ({
-              ip: `${index}--192.168.0.x`,
-              source: `${index}_QQ`,
-              status: '创建中',
-              create_time: `2018-05-25 15:02:24.${index}`,
-            })),
+          ...new Array(Math.ceil(Math.random() * 90) + 10).fill('').map((_, index) => ({
+            ip: `${index}--192.168.0.x`,
+            source: `${index}_QQ`,
+            status: '创建中',
+            create_time: `2018-05-25 15:02:24.${index}`,
+          })),
         );
       },
     },

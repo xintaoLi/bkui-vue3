@@ -29,8 +29,8 @@
       />
       <bk-button
         class="ml10"
-        theme="primary"
         size="small"
+        theme="primary"
         loading
       />
       <bk-button
@@ -44,11 +44,7 @@
 
     <div class="mb10 basic-button-list">
       <span>默认尺寸</span>
-      <bk-button
-        class="ml10"
-      >
-        基础按钮
-      </bk-button>
+      <bk-button class="ml10"> 基础按钮 </bk-button>
       <bk-button class="ml10">
         <plus class="f22" />
         新增
@@ -101,8 +97,8 @@
       />
       <bk-button
         class="ml10"
-        theme="primary"
         size="large"
+        theme="primary"
         loading
       />
       <bk-button

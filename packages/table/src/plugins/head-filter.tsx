@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { computed, defineComponent, nextTick, reactive, ref, watch } from 'vue';
+import { computed, defineComponent, reactive, ref } from 'vue';
 
 import Button from '@bkui-vue/button';
 import Checkbox, { BkCheckboxGroup } from '@bkui-vue/checkbox';
@@ -34,26 +34,26 @@ import Popover from '@bkui-vue/popover';
 import { classes, PropTypes, RenderType } from '@bkui-vue/shared';
 import VirtualRender from '@bkui-vue/virtual-render';
 
-import { LINE_HEIGHT } from '../const';
 import { Column, IColumnType, IFilterShape } from '../props';
-import { getRowText, resolvePropVal } from '../utils';
 
 type IHeadFilterPropType = {
   column: Column;
   height: number;
 };
+
+const ROW_HEIGHT = 32;
+
 export default defineComponent({
   name: 'HeadFilter',
   props: {
     column: IColumnType,
-    height: PropTypes.number.def(LINE_HEIGHT),
+    height: PropTypes.number.def(ROW_HEIGHT),
   },
-  emits: ['change', 'filterSave'],
+  emits: ['change', 'filterSave', 'reset'],
 
   setup(props: IHeadFilterPropType, { emit }) {
     const { resolveClassName } = usePrefix();
     const t = useLocale('table');
-    const { column } = props;
     const filter = computed(() => props.column?.filter);
     const checked = computed(() => (filter.value as IFilterShape)?.checked ?? []);
     const searchValue = ref('');
@@ -61,17 +61,6 @@ export default defineComponent({
       isOpen: false,
       checked: checked.value,
     });
-
-    const maxHeight = computed(() => (filter.value as IFilterShape)?.maxHeight ?? LINE_HEIGHT * 15);
-    const height = computed(() => (filter.value as IFilterShape)?.height || '100%');
-
-    watch(
-      () => filter.value,
-      () => {
-        state.checked = checked.value;
-      },
-      { immediate: true, deep: true },
-    );
 
     const headClass = computed(() =>
       classes({
@@ -104,29 +93,27 @@ export default defineComponent({
     const theme = `light ${resolveClassName('table-head-filter')}`;
     const localData = computed(() => {
       const { list = [] } = filter.value as IFilterShape;
-      const filterList = list.filter(l => getRegExp(searchValue.value).test(l.value));
+      const filterList = list.filter(l => {
+        const reg = getRegExp(searchValue.value);
+        return reg.test(l.label) || reg.test(l.value);
+      });
       return filterList;
     });
 
-    const getRegExp = (val: string | number | boolean, flags = 'ig') =>
-      new RegExp(`${val}`.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), flags);
-
-    const defaultFilterFn = (checked: string[], row: any) => {
-      const { match } = filter.value as IFilterShape;
-      const matchText = getRowText(row, resolvePropVal(column, 'field', [column, row]));
-      if (match !== 'fuzzy') {
-        return checked.includes(matchText);
+    const maxLength = 5;
+    const maxHeight = computed(() => (filter.value as IFilterShape)?.maxHeight ?? ROW_HEIGHT * maxLength);
+    const height = computed(() => (filter.value as IFilterShape)?.height || '100%');
+    const minHeight = computed(() => {
+      const defaultMin = ROW_HEIGHT * 2;
+      if (localData.value.length > maxLength) {
+        return maxHeight.value;
       }
 
-      return checked.some((str: string) => getRegExp(str, 'img').test(matchText));
-    };
+      return defaultMin;
+    });
 
-    const filterFn =
-      typeof (filter.value as IFilterShape).filterFn === 'function'
-        ? // eslint-disable-next-line max-len
-          (checked: string[], row: any, index: number, data: any[]) =>
-            (filter.value as IFilterShape).filterFn(checked, row, props.column, index, data)
-        : (checked: string[], row: any) => (checked.length ? defaultFilterFn(checked, row) : true);
+    const getRegExp = (val: boolean | number | string, flags = 'ig') =>
+      new RegExp(`${val}`.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), flags);
 
     const handleBtnSaveClick = () => {
       handleFilterChange(true);
@@ -143,8 +130,7 @@ export default defineComponent({
           state.isOpen = false;
           return;
         }
-        (filter.value as IFilterShape).checked = state.checked;
-        emit('change', state.checked, filterFn);
+        emit('change', state.checked);
       }
     };
 
@@ -152,11 +138,12 @@ export default defineComponent({
       if (state.checked.length) {
         state.checked.length = 0;
         state.isOpen = false;
-        nextTick(() => emit('change', state.checked, filterFn));
+        emit('change', state.checked);
+        emit('reset', state.checked);
       }
     };
 
-    const resolveBtnOption = (opt: string | boolean, defText: string) => {
+    const resolveBtnOption = (opt: boolean | string, defText: string) => {
       const disabled = opt === 'disabled' || opt === false;
       const text = typeof opt === 'string' ? opt : defText;
       return { disabled, text };
@@ -172,9 +159,9 @@ export default defineComponent({
 
       return (
         <Button
-          theme='primary'
-          size='small'
           style='width: 56px; margin-right: 8px;'
+          size='small'
+          theme='primary'
           onClick={handleBtnSaveClick}
         >
           {text}
@@ -191,8 +178,8 @@ export default defineComponent({
       return (
         <Button
           style='width: 56px;'
-          size='small'
           disabled={state.checked.length === 0}
+          size='small'
           onClick={handleBtnResetClick}
         >
           {text}
@@ -215,13 +202,15 @@ export default defineComponent({
 
     const renderFilterList = scope => {
       if (scope.data.length) {
-        return scope.data.map((item: any) => (
-          <div class='list-item'>
+        return scope.data.map((item: { value: string; text: string }) => (
+          <div
+            key={item.value}
+            class='list-item'
+          >
             <Checkbox
-              label={item.value}
-              key={item.$index}
-              immediateEmitChange={false}
               checked={state.checked.includes(item.value)}
+              immediateEmitChange={false}
+              label={item.value}
               modelValue={state.checked.includes(item.value)}
               onChange={val => handleValueChange(val, item)}
             >
@@ -234,28 +223,17 @@ export default defineComponent({
       return <div class='list-item is-empty'>{t.value.emptyText}</div>;
     };
 
-    /* 监听过滤筛选值，更新表格
-    onMounted(() => {
-      watch(() => filter.value.checked, (val) => {
-        if (val?.length) {
-          state.checked = val;
-          emit('change', val, filterFn);
-        }
-      }, { immediate: true });
-    });
-    */
-
     return () => (
       <Popover
-        trigger='click'
+        arrow={false}
         isShow={state.isOpen}
+        offset={0}
         placement='bottom-start'
         renderType={RenderType.SHOWN}
-        arrow={false}
-        offset={0}
+        trigger='click'
         {...{ theme }}
-        onAfterShow={() => handlePopShow(true)}
         onAfterHidden={() => handlePopShow(false)}
+        onAfterShow={() => handlePopShow(true)}
       >
         {{
           default: () => <Funnel class={headClass.value} />,
@@ -266,14 +244,15 @@ export default defineComponent({
               </div>
               <BkCheckboxGroup class='content-list'>
                 <VirtualRender
-                  maxHeight={maxHeight.value}
+                  ref={refVirtualRender}
                   height={height.value}
+                  className='content-items'
                   lineHeight={32}
                   list={localData.value}
-                  throttleDelay={0}
+                  maxHeight={maxHeight.value}
+                  minHeight={minHeight.value}
                   scrollEvent={true}
-                  ref={refVirtualRender}
-                  className='content-items'
+                  throttleDelay={0}
                 >
                   {{
                     default: renderFilterList,

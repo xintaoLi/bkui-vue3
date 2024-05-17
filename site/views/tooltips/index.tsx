@@ -29,14 +29,14 @@ import { defineComponent } from 'vue';
 import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
-import type { IPropsTableItem } from '../../typings';
-
 import DemoJsx from './demo/base';
 import Base from './demo/base.vue';
 import Boundary from './demo/boundary.vue';
 import Callback from './demo/callback.vue';
 import Click from './demo/click.vue';
 import Position from './demo/position.vue';
+
+import type { IPropsTableItem } from '../../typings';
 
 const props: IPropsTableItem[] = [
   {
@@ -125,9 +125,6 @@ const props: IPropsTableItem[] = [
     desc: '配置自定义样式类名，传入的类会被加在组件最外层的 DOM',
     optional: [],
   },
-];
-
-const events: IPropsTableItem[] = [
   {
     name: 'onShow',
     type: 'Function',
@@ -187,9 +184,9 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Tooltips 工具提示 （指令）'
           desc='当鼠标指向页面元素时给出简单的提示'
           designLink='https://bkdesign.bk.tencent.com/design/115'
+          name='Tooltips 工具提示 （指令）'
         />
         {demos.map(({ DemoComponent, ...demo }) => (
           <DemoBox {...demo}>
@@ -197,24 +194,24 @@ export default defineComponent({
           </DemoBox>
         ))}
         <DemoBox
-          title='tsx用法'
-          desc='tsx 写法,content 为Vnode'
           componentName='tooltips'
-          suffix='.tsx'
           demoName='demo/base'
+          desc='tsx 写法,content 为Vnode'
+          suffix='.tsx'
+          title='tsx用法'
         >
           <DemoJsx />
         </DemoBox>
         <PropsBox
-          title='属性'
-          subtitle=''
           propsData={props}
-        ></PropsBox>
-        <PropsBox
-          title='事件'
           subtitle=''
-          propsData={events}
+          title='属性'
         ></PropsBox>
+        {/* <PropsBox
+          propsData={events}
+          subtitle=''
+          title='事件'
+        ></PropsBox> */}
       </div>
     );
   },

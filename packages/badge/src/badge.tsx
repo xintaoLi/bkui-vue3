@@ -119,8 +119,8 @@ export default defineComponent({
         {this.$slots.default?.() ?? ''}
         {!this.$props.visible ? (
           <span
-            class={badgeClass}
             style={this.radiusStyle}
+            class={badgeClass}
             onMouseenter={this.handleHover}
             onMouseleave={this.handleLeave}
           >

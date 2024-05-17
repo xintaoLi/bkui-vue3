@@ -1,25 +1,21 @@
 <template>
   <div class="basic-button-list">
+    <bk-button hover-theme="primary"> primary </bk-button>
     <bk-button
-      hover-theme="primary"
-    >
-      primary
-    </bk-button>
-    <bk-button
-      hover-theme="success"
       class="ml10"
+      hover-theme="success"
     >
       success
     </bk-button>
     <bk-button
-      hover-theme="warning"
       class="ml10"
+      hover-theme="warning"
     >
       warning
     </bk-button>
     <bk-button
-      hover-theme="danger"
       class="ml10"
+      hover-theme="danger"
     >
       danger
     </bk-button>

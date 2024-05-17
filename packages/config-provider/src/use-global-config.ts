@@ -24,8 +24,9 @@
  * IN THE SOFTWARE.
  */
 
-import merge from 'lodash/merge';
 import { App, computed, ComputedRef, getCurrentInstance, inject, provide, reactive, watch } from 'vue';
+
+import merge from 'lodash/merge';
 
 import { ConfigProviderProps } from './config-provider';
 import { defaultRootConfig, rootProviderKey } from './token';

@@ -24,9 +24,8 @@
  * IN THE SOFTWARE.
  */
 
-import type { ComputedPlacement } from '@popperjs/core';
-
 import type { DatePickerProps } from './props';
+import type { ComputedPlacement } from '@popperjs/core';
 
 // export type DatePickerPlacementType =
 //   | 'top'
@@ -47,7 +46,15 @@ import type { DatePickerProps } from './props';
 
 export type DatePickerPlacementType = ComputedPlacement;
 
-export type DatePickerTypeType = 'year' | 'month' | 'monthrange' | 'date' | 'daterange' | 'datetime' | 'datetimerange';
+export type DatePickerTypeType =
+  | 'date'
+  | 'daterange'
+  | 'datetime'
+  | 'datetimerange'
+  | 'month'
+  | 'monthrange'
+  | 'year'
+  | 'yearrange';
 export type TimePickerTypeType = 'time' | 'timerange';
 export type PickerTypeType = DatePickerTypeType | TimePickerTypeType;
 
@@ -58,10 +65,10 @@ export interface IDatePickerShortcut {
 }
 export type DatePickerShortcutsType = IDatePickerShortcut[];
 
-type ValueType = Date | string | number;
-export type DatePickerValueType = ValueType | [ValueType, ValueType];
+type ValueType = Date | number | string;
+export type DatePickerValueType = [ValueType, ValueType] | ValueType;
 
-export type DisabledDateType = (date: number | Date) => boolean;
+export type DisabledDateType = (date: Date | number) => boolean;
 
 export interface IDatePickerCtx {
   props: DatePickerProps;
@@ -70,13 +77,13 @@ export interface IDatePickerCtx {
 
 export interface ITimePickerCtx {
   parentName: string;
-  panelDate?: Date | string | number;
-  dates?: ValueType | [ValueType, ValueType];
+  panelDate?: Date | number | string;
+  dates?: [ValueType, ValueType] | ValueType;
 }
 
-export type DatePickerPanelType = 'DateRangePanel' | 'DatePanel' | 'RangeTimePickerPanel' | 'TimePickerPanel';
+export type DatePickerPanelType = 'DatePanel' | 'DateRangePanel' | 'RangeTimePickerPanel' | 'TimePickerPanel';
 
-export type SelectionModeType = 'year' | 'month' | 'date' | 'time';
+export type SelectionModeType = 'date' | 'month' | 'time' | 'year';
 
 export interface IDisabledHMS {
   disabledHours?: number[];

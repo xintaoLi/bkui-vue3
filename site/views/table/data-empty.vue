@@ -1,32 +1,30 @@
 <template>
   <div>
     <h3>空数据</h3>
-    <div style=" width: 100%;height: 300px;">
+    <div style="width: 100%; height: 300px">
       <bk-table
-        empty-text="没有数据"
         :columns="columns"
         :data="[]"
+        empty-text="没有数据"
       />
     </div>
     <h3>过滤为空-试试过滤来源为 Email</h3>
-    <div style=" width: 100%;height: 300px;">
+    <div style="width: 100%; height: 300px">
       <bk-table
-        empty-text="没有数据"
         :border="['outer']"
         :columns="columns"
         :data="tableData"
+        empty-text="没有数据"
       />
     </div>
     <h3>自定义空数据-empty插槽</h3>
-    <div style=" width: 100%;height: 300px;">
+    <div style="width: 100%; height: 300px">
       <bk-table
         :columns="columns"
         :data="[]"
       >
         <template #empty>
-          <div :style="emptyTextStyle">
-            EMPTY
-          </div>
+          <div :style="emptyTextStyle">EMPTY</div>
         </template>
       </bk-table>
     </div>

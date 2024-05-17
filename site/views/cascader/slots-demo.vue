@@ -1,8 +1,8 @@
 <template>
   <div class="slot-demo-wrapper">
     <bk-cascader
-      v-slot="{node, data}"
       v-model="area"
+      v-slot="{ node, data }"
       :list="list"
       trigger="click"
     >
@@ -15,7 +15,8 @@
         <span
           v-if="node.children.length"
           class="cascader-slots-demo-prepend"
-        >{{ node.children.length }}</span>
+          >{{ node.children.length }}</span
+        >
       </div>
     </bk-cascader>
   </div>
@@ -39,10 +40,12 @@
           disabled: true,
         },
       ],
-    }, {
+    },
+    {
       id: 'guangxi',
       name: '广西',
-    }, {
+    },
+    {
       id: 'yunnan',
       name: '云南',
       children: [
@@ -76,40 +79,39 @@
     },
   ];
   const area = ref([]);
-
 </script>
 
 <style lang="less">
-.bk-cascader-node {
-  .cascader-slots-demo-node {
-    position: relative;
-    display: flex;
-    align-items: center;
+  .bk-cascader-node {
+    .cascader-slots-demo-node {
+      position: relative;
+      display: flex;
+      align-items: center;
 
-    .cascader-slots-demo-round {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      margin-right: 5px;
-      background: #e5f6ea;
-      border: 1px solid #3fc06d;
-      border-radius: 50%;
-    }
+      .cascader-slots-demo-round {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: 5px;
+        background: #e5f6ea;
+        border: 1px solid #3fc06d;
+        border-radius: 50%;
+      }
 
-    .cascader-slots-demo-prepend {
-      position: absolute;
-      top: 8px;
-      right: 0px;
-      width: 16px;
-      height: 16px;
-      font-size: 12px;
-      line-height: 16px;
-      color: #979ba5;
-      text-align: center;
-      background-color: #f0f1f5;
-      border-radius: 2px;
-      justify-self: flex-end;
+      .cascader-slots-demo-prepend {
+        position: absolute;
+        top: 8px;
+        right: 0px;
+        width: 16px;
+        height: 16px;
+        font-size: 12px;
+        line-height: 16px;
+        color: #979ba5;
+        text-align: center;
+        background-color: #f0f1f5;
+        border-radius: 2px;
+        justify-self: flex-end;
+      }
     }
   }
-}
 </style>

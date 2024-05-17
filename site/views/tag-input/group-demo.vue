@@ -1,10 +1,10 @@
 <template>
   <bk-tag-input
     v-model="state.tags"
-    placeholder="请选择"
-    use-group
-    trigger="focus"
     :list="state.list"
+    placeholder="请选择"
+    trigger="focus"
+    use-group
   />
 </template>
 

@@ -147,14 +147,14 @@ export default defineComponent({
         <ul style={{ paddingBottom: `${this.paddingBottom}px` }}>
           {this.defaultProcessList.map((item, index) => (
             <li
-              onClick={() => {
-                this.jumpTo(index + 1);
-              }}
               style={{ cursor: this.controllable ? 'pointer' : '' }}
               class={{
                 success: this.curProcess >= index + 1,
                 current: isLoadingStatus(item) && index === this.curProcess - 1,
                 error: isErrorStatus(item) && index === this.curProcess - 1,
+              }}
+              onClick={() => {
+                this.jumpTo(index + 1);
               }}
             >
               <div>

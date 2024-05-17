@@ -24,24 +24,39 @@
  * IN THE SOFTWARE.
  */
 
-import type { PropType } from 'vue';
-
 import {
   APIResponse,
   EThemes,
+  ETypes,
   ExtraFormData,
   FormDataAttr,
   HeaderDataAttr,
   MaxSize,
   Theme,
+  Type,
   UploadFile,
   UploadRawFile,
   UploadRequestHandler,
 } from './upload.type';
 
+import type { PropType } from 'vue';
+
 const themes = [EThemes.BUTTON, EThemes.DRAGGABLE, EThemes.PICTURE];
 
+const types = [ETypes.FORMDATA, ETypes.BINARY];
+
 export default {
+  type: {
+    type: String as PropType<Type>,
+    default: 'formdata' as Type,
+    validator: (val: ETypes) => {
+      if (!val || types.includes(val)) {
+        return true;
+      }
+      console.error(`invalid type, ${val}, the type must be one of 【${types.join(' | ')}】`);
+      return false;
+    },
+  },
   theme: {
     type: String as PropType<Theme>,
     default: 'draggable' as Theme,
@@ -89,7 +104,7 @@ export default {
     default: 'post',
   },
   size: {
-    type: [Number, Object] as PropType<number | MaxSize>,
+    type: [Number, Object] as PropType<MaxSize | number>,
     default() {
       return {
         maxFileSize: 5,
@@ -111,7 +126,7 @@ export default {
     default: () => ({}),
   },
   header: {
-    type: [Array, Object] as PropType<HeaderDataAttr[] | HeaderDataAttr>,
+    type: [Array, Object] as PropType<HeaderDataAttr | HeaderDataAttr[]>,
     default: () => [],
   },
   tip: {
@@ -127,11 +142,11 @@ export default {
   },
   limit: Number,
   data: {
-    type: [Array, Object] as PropType<ExtraFormData[] | ExtraFormData>,
+    type: [Array, Object] as PropType<ExtraFormData | ExtraFormData[]>,
     default: () => [],
   },
   formDataAttributes: {
-    type: [Array, Object] as PropType<FormDataAttr[] | FormDataAttr>,
+    type: [Array, Object] as PropType<FormDataAttr | FormDataAttr[]>,
     default: () => [],
   },
   extCls: {

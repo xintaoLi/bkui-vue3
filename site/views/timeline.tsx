@@ -91,8 +91,8 @@ export default defineComponent({
       // }}
       <div style='height: 400px; margin-left: 40px; margin-top: 40px'>
         <BkTimeline
-          list={this.state.list}
           style={{ marginBottom: '40px' }}
+          list={this.state.list}
           onSelect={this.select}
         ></BkTimeline>
       </div>

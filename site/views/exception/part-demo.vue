@@ -10,41 +10,41 @@
   <div class="exception-wrap">
     <bk-exception
       class="exception-wrap-item exception-part"
-      type="403"
+      :class="{ 'exception-gray': isGray }"
+      description="你没有相应业务的访问权限，请前往申请相关业务权限"
       scene="part"
       title="没有权限"
-      description="你没有相应业务的访问权限，请前往申请相关业务权限"
-      :class="{'exception-gray': isGray}"
+      type="403"
     >
       <bk-button
-        text
         theme="primary"
+        text
       >
         去申请
       </bk-button>
     </bk-exception>
     <bk-exception
       class="exception-wrap-item exception-part"
-      type="empty"
-      scene="part"
+      :class="{ 'exception-gray': isGray }"
       description="没有数据"
-      :class="{'exception-gray': isGray}"
+      scene="part"
+      type="empty"
     />
   </div>
   <div class="exception-wrap">
     <bk-exception
       class="exception-wrap-item exception-part"
-      type="500"
-      scene="part"
+      :class="{ 'exception-gray': isGray }"
       description="服务维护中"
-      :class="{'exception-gray': isGray}"
+      scene="part"
+      type="500"
     />
     <bk-exception
       class="exception-wrap-item exception-part"
-      type="search-empty"
-      scene="part"
+      :class="{ 'exception-gray': isGray }"
       description="搜索为空"
-      :class="{'exception-gray': isGray}"
+      scene="part"
+      type="search-empty"
     />
   </div>
 </template>
@@ -53,29 +53,28 @@
 
   import BkException from '@bkui-vue/exception';
   const isGray = ref(false);
-
 </script>
 <style>
-.exception-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  margin-left: -10px;
-}
+  .exception-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -10px;
+  }
 
-.exception-wrap .exception-wrap-item {
-  height: 420px;
-  padding-top: 22px;
-  margin: 10px;
-  border: 1px solid #dcdee5;
-}
+  .exception-wrap .exception-wrap-item {
+    height: 420px;
+    padding-top: 22px;
+    margin: 10px;
+    border: 1px solid #dcdee5;
+  }
 
-.exception-wrap-item.exception-part {
-  height: 260px;
-  padding-top: 48px;
-  flex: 1;
-}
+  .exception-wrap-item.exception-part {
+    height: 260px;
+    padding-top: 48px;
+    flex: 1;
+  }
 
-.exception-wrap-item.exception-gray {
-  background-color: #f5f6fa;
-}
+  .exception-wrap-item.exception-gray {
+    background-color: #f5f6fa;
+  }
 </style>

@@ -32,9 +32,9 @@ import { Error } from '@bkui-vue/icon';
 import { PropTypes, TagThemeType } from '@bkui-vue/shared';
 
 enum TagStrokeType {
-  UNKNOWN = '',
   FILLED = 'filled',
   STROKE = 'stroke',
+  UNKNOWN = '',
 }
 
 export default defineComponent({
@@ -49,7 +49,6 @@ export default defineComponent({
     size: PropTypes.size(),
   },
   emits: ['change', 'close'],
-  // slots: ['icon'],
   slots: Object as SlotsType<{
     default?: () => HTMLElement;
     icon?: () => HTMLElement;
@@ -97,8 +96,8 @@ export default defineComponent({
 
     return (
       <div
-        class={classes}
         style={this.wrapperStyle}
+        class={classes}
         onClick={this.handleClick}
       >
         {this.$slots.icon ? <span class={`${this.resolveClassName('tag-icon')}`}>{this.$slots.icon()}</span> : ''}

@@ -13,7 +13,7 @@
   />
 </template>
 <script setup lang="ts">
-import FunctionalDependency from '@blueking/functional-dependency';
+  import FunctionalDependency from '@blueking/functional-dependency';
 
-import '@blueking/functional-dependency/vue3/vue3.css';
+  import '@blueking/functional-dependency/vue3/vue3.css';
 </script>

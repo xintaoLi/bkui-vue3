@@ -24,9 +24,10 @@
  * IN THE SOFTWARE.
  */
 import hljs from 'highlight.js';
-import type MarkdownIt from 'markdown-it';
 import markdownItContainer from 'markdown-it-container';
 import md from 'unplugin-vue-markdown/vite';
+
+import type MarkdownIt from 'markdown-it';
 
 const tipsList = ['info', 'tip', 'warning', 'danger'];
 const createTips = (cls: string) => ({

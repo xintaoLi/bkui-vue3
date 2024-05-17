@@ -41,6 +41,6 @@ writeStream.on('finish', () => {
   fs.writeFileSync(PACKAGE_PATH, JSON.stringify(package, null, 2), 'utf8');
 });
 
-writeStream.on('error', (err) => {
+writeStream.on('error', err => {
   console.error('复制到 package.json.tmp 错误', err);
 });

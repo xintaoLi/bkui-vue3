@@ -24,11 +24,12 @@
  * IN THE SOFTWARE.
  */
 
-import type { ExtractPropTypes } from 'vue';
 import { computed, defineComponent, ref } from 'vue';
 
 import Button from '@bkui-vue/button';
 import { useLocale, usePrefix } from '@bkui-vue/config-provider';
+
+import type { ExtractPropTypes } from 'vue';
 
 const confirmProps = {
   showTime: {
@@ -106,8 +107,8 @@ export default defineComponent({
   render() {
     return (
       <div
-        class={this.resolveClassName('picker-confirm')}
         ref='elRef'
+        class={this.resolveClassName('picker-confirm')}
         onKeydown={this.handleTab}
       >
         {this.showTime ? (
@@ -115,10 +116,10 @@ export default defineComponent({
           //   {this.labels.time}
           // </a>
           <Button
-            text
-            theme='primary'
             class={this.resolveClassName('picker-confirm-time')}
             disabled={this.timeDisabled}
+            theme='primary'
+            text
             onClick={this.handleToggleTime}
           >
             {this.labels.time}
@@ -140,10 +141,10 @@ export default defineComponent({
               ''
             )}
             <a
-              href='javascript: void(0);'
               class='confirm'
+              href='javascript: void(0);'
               onClick={this.handleSuccess}
-              onKeydown_enter={this.handleSuccess}
+              {...{ onKeydown_enter: this.handleSuccess }}
             >
               {this.labels.ok}
             </a>

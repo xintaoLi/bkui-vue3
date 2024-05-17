@@ -10,8 +10,8 @@
     </div>
   </section>
   <div
-    v-bkloading="loadingConf"
     class="directive-loading-box"
+    v-bkloading="loadingConf"
   >
     directive
   </div>

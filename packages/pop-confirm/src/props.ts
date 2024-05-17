@@ -28,8 +28,8 @@ import { toType } from 'vue-types';
 import { PlacementEnum, placementType, PropTypes } from '@bkui-vue/shared';
 
 export enum TriggerEnum {
-  HOVER = 'hover',
   CLICK = 'click',
+  HOVER = 'hover',
 }
 
 export function triggerType() {
@@ -50,20 +50,19 @@ export const PopConfirmEvent = {
 export const PopConfirmProps = {
   /**
    * 触发方式
-   * 支持 click hover manual
-   * manual： 通过isShow控制显示、隐藏
+   * 支持 click hover
    */
   trigger: triggerType(),
   title: PropTypes.string.def(''),
   content: PropTypes.string.def(''),
   confirmText: PropTypes.string.def(''),
   cancelText: PropTypes.string.def(''),
-  placement: PropTypes.oneOfType([placementType().def(PlacementEnum.TOP), PropTypes.string]).def(PlacementEnum.TOP),
-  theme: PropTypes.string.def('light '),
+  placement: placementType().def(PlacementEnum.TOP_START),
+  theme: PropTypes.string.def('light'),
   /**
    * 自定义icon：根据确认框中提示文字的语境来选择 icon的样式，当确认操作存在风险时，可选择带警示的icon来引起用户的注意。
    */
-  icon: PropTypes.string.def(''),
+  // icon: PropTypes.string.def(''),
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).def('auto'),
 };
 export default PopConfirmProps;

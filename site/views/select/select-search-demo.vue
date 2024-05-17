@@ -1,11 +1,11 @@
 <template>
   <div class="demo">
     <bk-select
-      v-model="selectedValue"
       class="bk-select"
-      multiple
-      filterable
+      v-model="selectedValue"
       :filter-option="filterOption"
+      filterable
+      multiple
       @search-change="searchChange"
     >
       <bk-option
@@ -16,22 +16,22 @@
       />
     </bk-select>
     <bk-select
-      v-model="selectedValue"
       class="bk-select"
+      v-model="selectedValue"
+      :filter-option="filterOption"
       :input-search="false"
       :list="searchList"
-      multiple
-      filterable
-      :filter-option="filterOption"
       :remote-method="searchDataSource"
+      filterable
+      multiple
     />
     <bk-select
-      v-model="selectedValue"
       class="bk-select"
+      v-model="selectedValue"
       :input-search="false"
-      multiple
-      filterable
       multiple-mode="tag"
+      filterable
+      multiple
     >
       <bk-option
         v-for="(item, index) in datasource"
@@ -41,12 +41,12 @@
       />
     </bk-select>
     <bk-select
+      class="bk-select"
       v-model="selectedValue"
-      class="bk-select"
-      multiple
-      filterable
-      allow-create
       multiple-mode="tag"
+      allow-create
+      filterable
+      multiple
     >
       <bk-option
         v-for="(item, index) in datasource"
@@ -57,10 +57,10 @@
     </bk-select>
     <bk-select
       class="bk-select"
-      multiple
-      filterable
       :remote-method="remoteMethod"
       multiple-mode="tag"
+      filterable
+      multiple
     >
       <bk-option
         v-for="(item, index) in list"
@@ -107,25 +107,25 @@
   ]);
   const selectedValue = ref('dancing');
   const list = ref([]);
-  const remoteMethod = async value => new Promise((resolve) => {
-    if (!value)  {
-      list.value = [];
-      resolve('ok');
-    } else {
-      setTimeout(() => {
-        list.value = new Array(10).fill('')
-          .map((_, i) => ({
+  const remoteMethod = async value =>
+    new Promise(resolve => {
+      if (!value) {
+        list.value = [];
+        resolve('ok');
+      } else {
+        setTimeout(() => {
+          list.value = new Array(10).fill('').map((_, i) => ({
             value: `${i}-${value}`,
             label: `label-${value}-${i}`,
           }));
-        resolve('ok');
-      }, 1000);
-    };
-  });
+          resolve('ok');
+        }, 1000);
+      }
+    });
   const filterOption = (input, options) => options.name?.includes(input);
 
   const searchList = ref();
-  const searchDataSource = (key) => {
+  const searchDataSource = key => {
     searchList.value = datasource.value.filter(item => item.label.includes(key));
   };
 
@@ -140,13 +140,12 @@
   });
 </script>
 <style scoped>
-.demo {
-  display: flex;
-}
+  .demo {
+    display: flex;
+  }
 
-.bk-select {
-  width: 300px;
-  margin-right: 20px;
-}
+  .bk-select {
+    width: 300px;
+    margin-right: 20px;
+  }
 </style>
-

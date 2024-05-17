@@ -6,64 +6,40 @@
     >
       <bk-row>
         <bk-col>
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
         <bk-col>
-          <div class="content">
-            1/12
-          </div>
+          <div class="content">1/12</div>
         </bk-col>
       </bk-row>
     </bk-container>

@@ -49,12 +49,12 @@ export default defineComponent({
         {/* <bk-config-provider prefix={'aabb'}> */}
         <div class='page-container-header'>
           <app-header
-            rootDomain='tencent.com'
-            loginUrl='https://login.bk.tencent.com'
             avatarHost='https://q1.qlogo.cn'
-            lessCodeUrl='https://github.com/TencentBlueKing/bk-lesscode/blob/master/readme.md'
             designUrl='https://bkdesign.bk.tencent.com/'
+            lessCodeUrl='https://github.com/TencentBlueKing/bk-lesscode/blob/master/readme.md'
+            loginUrl='https://login.bk.tencent.com'
             region='tencent'
+            rootDomain='tencent.com'
           ></app-header>
         </div>
         <div class='page-container-body'>

@@ -23,15 +23,16 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { computed, defineComponent, reactive, ref, watch } from 'vue';
+import { computed, defineComponent, nextTick, onMounted, reactive, ref, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { debounce } from '@bkui-vue/shared';
 import VirtualRender from '@bkui-vue/virtual-render';
 
-import { NODE_ATTRIBUTES, TreeEmitEventsType } from './constant';
-import { treeProps, TreePropTypes as defineTypes } from './props';
+import { EVENTS, NODE_ATTRIBUTES, TreeEmitEventsType } from './constant';
+import { treeProps, TreePropTypes as defineTypes, TreeNode } from './props';
 import useEmpty from './use-empty';
+import useIntersectionObserver from './use-intersection-observer';
 import useNodeAction from './use-node-action';
 import useNodeAttribute from './use-node-attribute';
 import useNodeDrag from './use-node-drag';
@@ -51,7 +52,10 @@ export default defineComponent({
   props: treeProps,
   emits: TreeEmitEventsType,
   setup(props, ctx) {
+    const root = ref();
+
     const { flatData, onSelected, registerNextLoop } = useTreeInit(props);
+
     const {
       checkNodeIsOpen,
       isRootNode,
@@ -61,12 +65,15 @@ export default defineComponent({
       hasChildNode,
       getNodePath,
       getNodeId,
+      getNodeAttr,
+      getParentNode,
+      getIntersectionResponse,
     } = useNodeAttribute(flatData, props);
 
     const { searchFn, isSearchActive, refSearch, isSearchDisabled, isTreeUI, showChildNodes } = useSearch(props);
     const matchedNodePath = reactive([]);
 
-    const filterFn = (item: any) => {
+    const filterFn = (item: TreeNode) => {
       if (isSearchActive.value) {
         if (showChildNodes) {
           return (
@@ -83,21 +90,22 @@ export default defineComponent({
 
     // 计算当前需要渲染的节点信息
     const renderData = computed(() => flatData.data.filter(item => filterFn(item)));
+    const { getLastVisibleElement, intersectionObserver } = useIntersectionObserver(props);
 
     const {
       renderTreeNode,
       handleTreeNodeClick,
-      setNodeOpened,
       setOpen,
       setNodeAction,
       setSelect,
       asyncNodeClick,
       setNodeAttribute,
+      isIndeterminate,
     } = useNodeAction(props, ctx, flatData, renderData, { registerNextLoop });
 
     const handleSearch = debounce(120, () => {
       matchedNodePath.length = 0;
-      flatData.data.forEach((item: any) => {
+      flatData.data.forEach((item: TreeNode) => {
         const isMatch = searchFn(getLabel(item, props), item);
         if (isMatch) {
           matchedNodePath.push(getNodePath(item));
@@ -116,19 +124,34 @@ export default defineComponent({
         { deep: true, immediate: true },
       );
     }
-    const root = ref();
+
+    onMounted(() => {
+      if (props.virtualRender) {
+        nextTick(() => {
+          scrollToTop();
+        });
+      }
+    });
 
     /**
      * 设置指定节点是否选中
      * @param item Node item | Node Id
      * @param checked
+     * @param triggerEvent 是否触发抛出事件
      */
-    const setChecked = (item: any[] | any, checked = true) => {
-      setNodeAction(resolveNodeItem(item), NODE_ATTRIBUTES.IS_CHECKED, checked);
+    const setChecked = (item: TreeNode | TreeNode[], checked = true, triggerEvent = false) => {
+      setNodeAction(resolveNodeItem(item as TreeNode), NODE_ATTRIBUTES.IS_CHECKED, checked);
+      if (triggerEvent) {
+        ctx.emit(
+          EVENTS.NODE_CHECKED,
+          flatData.data.filter(t => isNodeChecked(t)),
+          flatData.data.filter(t => isIndeterminate(t)),
+        );
+      }
     };
 
-    onSelected((newData: any) => {
-      setSelect(newData, true, props.autoOpenParentNode);
+    onSelected((newData: TreeNode) => {
+      setSelect(newData, true, props.autoOpenParentNode, true);
     });
 
     const getData = () => flatData;
@@ -173,7 +196,7 @@ export default defineComponent({
         return;
       }
 
-      const id = getNodeId(option);
+      const id = getNodeId(option as TreeNode);
       if (id) {
         root.value.fixToTop({
           index: renderData.value.findIndex(node => getNodeId(node) === id) + 1,
@@ -192,17 +215,19 @@ export default defineComponent({
       setOpen,
       setChecked,
       setNodeAction,
-      setNodeOpened,
+      setNodeOpened: setOpen,
       setSelect,
       scrollToTop,
       asyncNodeClick,
       getData,
       reset,
+      getNodeAttr,
+      getParentNode,
     });
 
     const { renderEmpty } = useEmpty(props);
     useNodeDrag(props, ctx, root, flatData);
-    const renderTreeContent = (scopedData: any[]) => {
+    const renderTreeContent = (scopedData: TreeNode[]) => {
       if (scopedData.length) {
         return scopedData.map(d => renderTreeNode(d, !isSearchActive.value || isTreeUI.value));
       }
@@ -211,24 +236,48 @@ export default defineComponent({
       return ctx.slots.empty?.() ?? renderEmpty(emptyType);
     };
 
+    /**
+     * 如果启用了虚拟渲染 & 虚拟滚动
+     * @param param0
+     */
+    const handleContentScroll = ([scroll, _pagination, list]) => {
+      if (intersectionObserver.value.enabled) {
+        if (scroll.offset.y > 5) {
+          if (!props.virtualRender) {
+            const lastElement = getLastVisibleElement(scroll.offset.y, root.value.refRoot);
+            const result = getIntersectionResponse(lastElement[0]);
+            intersectionObserver.value?.callback?.(result);
+            ctx.emit(EVENTS.NODE_ENTER_VIEW, result);
+            return;
+          }
+
+          const resp = getIntersectionResponse(list.slice(-1)[0]);
+          intersectionObserver.value?.callback?.(resp);
+          ctx.emit(EVENTS.NODE_ENTER_VIEW, resp);
+          return;
+        }
+      }
+    };
+
     const { resolveClassName } = usePrefix();
 
     return () => (
       <VirtualRender
-        class={resolveClassName('tree')}
-        style={getTreeStyle(null, props)}
-        list={renderData.value}
-        lineHeight={props.lineHeight}
-        height={props.height}
-        enabled={props.virtualRender}
-        rowKey={NODE_ATTRIBUTES.UUID}
-        keepAlive={true}
-        contentClassName={resolveClassName('container')}
-        throttleDelay={0}
         ref={root}
+        style={getTreeStyle(null, props)}
+        height={props.height}
+        class={resolveClassName('tree')}
+        contentClassName={resolveClassName('container')}
+        enabled={props.virtualRender}
+        keepAlive={true}
+        lineHeight={props.lineHeight}
+        list={renderData.value}
+        rowKey={NODE_ATTRIBUTES.UUID}
+        throttleDelay={0}
+        onContentScroll={handleContentScroll}
       >
         {{
-          default: (scoped: any) => renderTreeContent(scoped.data || []),
+          default: (scoped: { data: TreeNode[] }) => renderTreeContent(scoped.data || []),
         }}
       </VirtualRender>
     );

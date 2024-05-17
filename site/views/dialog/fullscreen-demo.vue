@@ -1,18 +1,18 @@
 <template>
   <div>
     <bk-button
-      @click="() => exampleSetting.dialog.isShow = true"
+      theme="primary"
+      text
+      @click="() => (isShow = true)"
     >
       全屏弹框
     </bk-button>
     <bk-dialog
-      :is-show="exampleSetting.dialog.isShow"
-      :title="'全屏弹框标题'"
-      :theme="'primary'"
-      :header-align="'center'"
+      v-model:is-show="isShow"
+      footer-align="center"
+      header-align="center"
+      title="全屏弹框标题"
       fullscreen
-      @closed="() => exampleSetting.dialog.isShow = false"
-      @confirm="() => exampleSetting.dialog.isShow = false"
     >
       <p>【首部及导言】</p>
       <p>欢迎您使用腾讯蓝鲸智云软件及服务。</p>
@@ -62,9 +62,5 @@
   import BkButton from '@bkui-vue/button';
   import BkDialog from '@bkui-vue/dialog';
 
-  const exampleSetting = ref({
-    dialog: {
-      isShow: false,
-    },
-  });
+  const isShow = ref(false);
 </script>

@@ -2,30 +2,30 @@
   <div class="basic-button-list">
     <bk-button loading />
     <bk-button
-      loading
+      class="ml10"
       theme="primary"
-      class="ml10"
+      loading
     />
     <bk-button
-      loading
+      class="ml10"
       theme="success"
-      class="ml10"
+      loading
     />
     <bk-button
-      loading
+      class="ml10"
       theme="warning"
-      class="ml10"
+      loading
     />
     <bk-button
-      loading
-      theme="danger"
       class="ml10"
+      theme="danger"
+      loading
     />
     <bk-button
-      loading
-      theme="danger"
+      class="ml10"
       loading-mode="spin"
-      class="ml10"
+      theme="danger"
+      loading
     />
   </div>
 </template>

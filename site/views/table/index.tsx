@@ -29,7 +29,6 @@ import { defineComponent } from 'vue';
 import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
-
 import basic from './basic.vue';
 import basicFilter from './basic-filter.vue';
 import basicSort from './basic-sort.vue';
@@ -49,6 +48,7 @@ import Expand from './expand.vue';
 import filterScope from './filter-scope.vue';
 import fixed from './fixed.vue';
 import flexLayout from './flex-layout.vue';
+import MultiHeader from './multi-header.vue';
 import * as TABLE_DATA from './options';
 import pagination from './pagination.vue';
 import RemotePagination from './remotePagination.vue';
@@ -85,6 +85,7 @@ export default defineComponent({
     flexLayout,
     basicSortBehavior,
     ScrollHorizontal,
+    MultiHeader,
   },
   render() {
     const configs = [
@@ -129,6 +130,20 @@ export default defineComponent({
          * @returns
          */
         component: () => <ColumnTemplate></ColumnTemplate>,
+      },
+      {
+        attrs: {
+          title: '多表头 & append-last-row实现统计功能',
+          subtitle: '基础用法，用于表单内容的录入',
+          desc: 'props: 支持 `field` 和 `prop`两种配置，配置效果一样',
+          componentName: 'table',
+          demoName: 'multi-header',
+        },
+        /**
+         * Table
+         * @returns
+         */
+        component: () => <MultiHeader></MultiHeader>,
       },
       {
         attrs: {
@@ -221,8 +236,8 @@ export default defineComponent({
       {
         attrs: {
           title: 'Events',
-          subtitle: '自定义Column渲染',
-          desc: 'props: column.render',
+          subtitle: 'table select event',
+          desc: 'event: select',
           componentName: 'table',
           demoName: 'event',
         },
@@ -245,20 +260,6 @@ export default defineComponent({
          * @returns
          */
         component: () => <pagination></pagination>,
-      },
-      {
-        attrs: {
-          title: 'flex 布局，中间自适应',
-          subtitle: '虚拟滚动暂不建议开启',
-          desc: 'props: is-flex',
-          componentName: 'table',
-          demoName: 'flex-layout',
-        },
-        /**
-         * Table
-         * @returns
-         */
-        component: () => <flex-layout></flex-layout>,
       },
       {
         attrs: {
@@ -466,9 +467,9 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Table'
           desc='Table组件， 为页面和功能提供列表。'
           designLink='https://bkdesign.bk.tencent.com/design/35'
+          name='Table'
         />
         {configs.map(cfg => (
           <DemoBox
@@ -481,10 +482,10 @@ export default defineComponent({
         {configList.map(cfg => (
           <div>
             <PropsBox
-              title={cfg.title}
               columnMap={renderMap[cfg.type]}
-              subtitle={cfg.subTile}
               propsData={cfg.config}
+              subtitle={cfg.subTile}
+              title={cfg.title}
             />
           </div>
         ))}

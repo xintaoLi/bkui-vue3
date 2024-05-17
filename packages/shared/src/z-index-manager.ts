@@ -34,20 +34,20 @@ export enum BKLAYERTYPE {
   /** 页面呈现的各类内容 */
   CONTENT = 'content',
 
-  /** 顶部导航、侧边导航以及用户信息等 */
-  NAVI = 'navi',
-
   /** 页面需全屏操作的部分功能或编辑器的全屏模式 */
   FULLSCREEN = 'fullScreen',
 
-  /** 各类功能插件 */
-  PLUGINS = 'plugins',
+  /** 各类消息提示 */
+  MESSAGE = 'message',
 
   /** 各类弹窗或抽屉（非模态弹窗不考虑） */
   MODAL = 'modal',
 
-  /** 各类消息提示 */
-  MESSAGE = 'message',
+  /** 顶部导航、侧边导航以及用户信息等 */
+  NAVI = 'navi',
+
+  /** 各类功能插件 */
+  PLUGINS = 'plugins',
 
   /** 各类popper提示 */
   POPPER = 'popper',

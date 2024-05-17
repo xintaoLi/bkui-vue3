@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import PrefixDemo from './prefix-demo.vue';
 import SeparatorDemo from './separator-demo.vue';
@@ -54,21 +53,21 @@ const breadcrumbPropsJson: IPropsTableItem[] = [
     name: 'back-router',
     type: 'String/Object',
     default: '',
-    desc: '路由跳转对象，同 vue-router 的 to',
+    desc: '点击回退按钮自定义的路由(路由跳转对象，同 vue-router 的 to)',
     optional: [],
   },
   {
     name: 'replace',
     type: 'Boolean',
     default: 'false',
-    desc: '开启backRouter并使用默认的icon跳转时，启用 replace 将不会向 history 添加新记录',
+    desc: '开启backRouter并使用默认的icon跳转时，是否替换当前路由历史',
     optional: [],
   },
   {
     name: 'ext-cls',
     type: 'String',
     default: '',
-    desc: '自定义样式',
+    desc: '自定义样式类名',
     optional: [],
   },
 ];
@@ -78,31 +77,65 @@ const breadcrumbSlotJson: IPropsTableItem[] = [
     name: 'default',
     type: 'Function',
     default: '',
-    desc: '默认插槽',
+    desc: '默认插槽，放置 BreadcrumbItem 组件',
     optional: [],
   },
   {
-    name: 'separator',
-    type: 'Function',
-    default: '',
-    desc: '分隔符插槽',
+    name: 'prefix',
+    type: 'Slot',
+    default: '-',
+    desc: '插槽，用于替换默认回退按钮',
     optional: [],
-  },
+  }
 ];
 
 const breadcrumbItemPropsJson: IPropsTableItem[] = [
   {
-    name: 'to',
-    type: 'String/Object',
+    name: 'ext-cls',
+    type: 'String',
     default: '',
-    desc: '路由跳转对象，同 vue-router 的 to',
+    desc: '自定义样式类名',
+    optional: [],
+  },
+  {
+    name: 'to',
+    type: 'String | Object',
+    default: '',
+    desc: '点击后跳转的链接，可以是一个路径或一个描述目标位置的对象',
     optional: [],
   },
   {
     name: 'replace',
     type: 'Boolean',
-    default: 'false',
-    desc: '在使用 to 进行路由跳转时，启用 replace 将不会向 history 添加新记录',
+    default: false,
+    desc: '是否替换当前的历史记录',
+    optional: [],
+  },
+];
+
+const breadcrumbItemEvents: IPropsTableItem[] = [
+  {
+    name: 'click',
+    type: 'Function',
+    default: '-',
+    desc: '点击事件自身的回调函数',
+    optional: [],
+  },
+];
+
+const breadcrumbItemSlots: IPropsTableItem[] = [
+  {
+    name: 'default',
+    type: 'Slot',
+    default: '-',
+    desc: '默认插槽，放置面包屑项的内容',
+    optional: [],
+  },
+  {
+    name: 'separator',
+    type: 'Slot',
+    default: '-',
+    desc: '自定义分隔符插槽',
     optional: [],
   },
 ];
@@ -124,56 +157,58 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Breadcrumb 面包屑'
           desc='Breadcrumb组件， 显示当前页面的路径，快速返回之前的任意页面。'
           link='https://www.google.com.hk/'
+          name='Breadcrumb 面包屑'
         />
 
         <DemoBox
-          title='基础用法'
-          subtitle='垂直菜单，子菜单内嵌在菜单区域。'
-          desc='通过设置 BkBreadcrumbItem 的 to 属性添加跳转链接。'
           componentName='breadcrumb'
           demoName='base-demo'
+          desc='通过设置 BkBreadcrumbItem 的 to 属性添加跳转链接。'
+          subtitle='垂直菜单，子菜单内嵌在菜单区域。'
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
 
         <DemoBox
-          title='字符分割'
-          subtitle='通过自定义 字符串 如：> | / 分割。'
-          desc='通过设置 BkBreadcrumb 的 separator 属性设置分隔符，他可以是字符串或者是slot'
           componentName='breadcrumb'
           demoName='separator-demo'
+          desc='通过设置 BkBreadcrumb 的 separator 属性设置分隔符，他可以是字符串或者是slot'
+          subtitle='通过自定义 字符串 如：> | / 分割。'
+          title='字符分割'
         >
           <SeparatorDemo></SeparatorDemo>
         </DemoBox>
 
         <DemoBox
-          title='支持返回配置以及前置插槽'
-          subtitle='增加前置插槽快速返回'
-          desc='通过设置 BkBreadcrumb 的 back-router 属性（和router参数一样）添加返回跳转链接，也可以使用slot自定义返回区域的内容。'
           componentName='breadcrumb'
           demoName='prefix-demo'
+          desc='通过设置 BkBreadcrumb 的 back-router 属性（和router参数一样）添加返回跳转链接，也可以使用slot自定义返回区域的内容。'
+          subtitle='增加前置插槽快速返回'
+          title='支持返回配置以及前置插槽'
         >
           <PrefixDemo></PrefixDemo>
         </DemoBox>
 
         <PropsBox
-          title='Breadcrumb 属性'
-          subtitle=''
           propsData={breadcrumbPropsJson}
-        />
-        <PropsBox
-          title='Breadcrumb 插槽'
           subtitle=''
-          propsData={breadcrumbSlotJson}
+          title='Breadcrumb 属性'
         />
         <PropsBox
+          propsData={breadcrumbSlotJson}
+          subtitle=''
+          title='Breadcrumb 插槽'
+        />
+        <PropsBox
+          propsData={breadcrumbItemPropsJson}
           subtitle=''
           title='Breadcrumb Item 属性'
-          propsData={breadcrumbItemPropsJson}
         />
+        <PropsBox propsData={breadcrumbItemEvents} subtitle='' title='Breadcrumb Item 事件' />
+        <PropsBox propsData={breadcrumbItemSlots} subtitle='' title='Breadcrumb Item 插槽' />
       </div>
     );
   },

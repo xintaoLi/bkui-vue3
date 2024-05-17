@@ -23,15 +23,15 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import isBoolean from 'lodash/isBoolean';
-import isString from 'lodash/isString';
-import type { ExtractPropTypes } from 'vue';
 import { defineComponent, provide } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { classes, formKey, PropTypes } from '@bkui-vue/shared';
+import isBoolean from 'lodash/isBoolean';
+import isString from 'lodash/isString';
 
 import type { IFormItemContext } from './type';
+import type { ExtractPropTypes } from 'vue';
 
 export const formProps = {
   formType: PropTypes.oneOf(['default', 'vertical']).def('default'),
@@ -51,7 +51,6 @@ export type FormProps = Readonly<ExtractPropTypes<typeof formProps>>;
 export type FormEvents = typeof formEvents;
 
 export default defineComponent({
-  // eslint-disable-next-line vue/no-reserved-component-names
   name: 'Form',
   props: formProps,
   emits: formEvents,
@@ -93,7 +92,7 @@ export default defineComponent({
      * @param { string | Array<string> } fields 指定表单字段
      * @returns { Promise<[]> }
      */
-    const validate = (fields?: string | Array<string>) => {
+    const validate = (fields?: Array<string> | string) => {
       let fieldMap = {};
       if (fields) {
         const fieldList = typeof fields === 'string' ? [fields] : fields;
@@ -141,7 +140,7 @@ export default defineComponent({
      * @desc 清除表单验证错误信息
      * @param { string | Array<string> } fields 指定表单字段
      */
-    const clearValidate = (fields?: string | Array<string>) => {
+    const clearValidate = (fields?: Array<string> | string) => {
       let fieldMap = {};
       if (fields) {
         const fieldList = typeof fields === 'string' ? [fields] : fields;

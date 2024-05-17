@@ -10,8 +10,8 @@
       <bk-slider
         v-model="demo2"
         :step="5"
-        show-interval
         range
+        show-interval
       />
     </div>
     <div :style="{ marginTop: '30px' }">
@@ -25,18 +25,18 @@
     <div :style="{ marginTop: '50px' }">
       <bk-slider
         v-model="demo1"
+        :formatter-label="v => `${v}%`"
         :step="5"
         show-interval
         show-interval-label
-        :formatter-label="(v) => `${v}%`"
       />
     </div>
     <div :style="{ marginTop: '50px' }">
       <bk-slider
         v-model="demo1"
         :step="5"
-        show-interval
         show-button-label
+        show-interval
       />
     </div>
   </div>
@@ -62,7 +62,6 @@
       };
     },
   });
-
 </script>
 <style scoped>
   .demo {

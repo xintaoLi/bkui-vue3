@@ -26,6 +26,7 @@
 
 import { computed, defineComponent, onBeforeUnmount, shallowRef } from 'vue';
 
+import { usePrefix } from '@bkui-vue/config-provider';
 import { classes } from '@bkui-vue/shared';
 
 import uploadProps from './props';
@@ -50,17 +51,19 @@ export default defineComponent({
   props: uploadProps,
   emits: ['exceed', 'progress', 'success', 'error', 'delete', 'done'],
   setup(props, { slots, emit, expose }) {
-    const requests = shallowRef<Record<string, XMLHttpRequest | Promise<unknown>>>({});
+    const { resolveClassName } = usePrefix();
+
+    const requests = shallowRef<Record<string, Promise<unknown> | XMLHttpRequest>>({});
 
     const isPhotowall = computed<boolean>(() => props.theme === EThemes.PICTURE);
     const isSinglePhoto = computed<boolean>(() => isPhotowall.value && !props.multiple);
 
     const classNames = computed(() =>
       classes({
-        [CLASS_PREFIX]: true,
-        [`${CLASS_PREFIX}--${props.theme}`]: true,
-        [`${CLASS_PREFIX}--disabled`]: props.disabled,
-        [`${CLASS_PREFIX}--single-picture`]: isSinglePhoto.value,
+        [`${resolveClassName(CLASS_PREFIX)}`]: true,
+        [`${resolveClassName(CLASS_PREFIX)}--${props.theme}`]: true,
+        [`${resolveClassName(CLASS_PREFIX)}--disabled`]: props.disabled,
+        [`${resolveClassName(CLASS_PREFIX)}--single-picture`]: isSinglePhoto.value,
         [props.extCls]: props.extCls ?? false,
       }),
     );
@@ -145,6 +148,7 @@ export default defineComponent({
 
     function send(file: UploadRawFile, sendFiles?: File[]) {
       const {
+        type,
         headers,
         header,
         data,
@@ -161,6 +165,7 @@ export default defineComponent({
 
       const { uid } = file;
       const options: UploadRequestOptions = {
+        type,
         headers,
         header,
         withCredentials,
@@ -247,12 +252,12 @@ export default defineComponent({
             onChange={handleFiles}
           />
         )}
-        {slots.tip ? slots.tip() : props.tip && <div class={`${CLASS_PREFIX}__tip`}>{props.tip}</div>}
+        {slots.tip ? slots.tip() : props.tip && <div class={`${resolveClassName(CLASS_PREFIX)}__tip`}>{props.tip}</div>}
         <UploadList
-          files={fileList.value}
-          theme={props.theme}
           disabled={props.disabled}
+          files={fileList.value}
           multiple={props.multiple}
+          theme={props.theme}
           onRemove={handleRemove}
           onRetry={handleRetry}
         >
@@ -261,8 +266,8 @@ export default defineComponent({
               isPhotowall.value && (
                 <UploadTrigger
                   {...triggerProps.value}
-                  file={file}
                   v-slots={slots}
+                  file={file}
                   onChange={handleFiles}
                   onRemove={handleRemove}
                 />

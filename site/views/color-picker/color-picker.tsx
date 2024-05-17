@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import PresetDemo from './preset-demo.vue';
 import SizeDemo from './size-demo.vue';
@@ -40,7 +39,7 @@ const colorPickerPropsJson: IPropsTableItem[] = [
   {
     name: 'model-value / v-model',
     type: 'String',
-    default: '#3A84FF',
+    default: '""',
     desc: '当前选择的RGB颜色值',
     optional: [],
   },
@@ -83,8 +82,22 @@ const colorPickerPropsJson: IPropsTableItem[] = [
     name: 'recommend',
     type: 'Boolean/Array',
     default: 'true',
-    desc: '是否显示预设值',
+    desc: '是否显示预设值，true 展示组件内置预设值，false 不展示预设值，数组自定义预设值',
     optional: [],
+  },
+  {
+    name: 'recommend-empty',
+    type: 'Boolean',
+    default: 'true',
+    desc: '预设值中是否包含空值',
+    optional: ['true', 'false'],
+  },
+  {
+    name: 'with-validate',
+    type: 'Boolean',
+    default: 'true',
+    desc: '在表单中时，是否应用 form-item 的校验规则',
+    optional: ['true', 'false'],
   },
   {
     name: 'ext-cls',
@@ -120,60 +133,59 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='ColorPicker 颜色选择器'
           desc='用于颜色选择，支持多种颜色格式，支持颜色预设。'
-          link='https://www.google.com.hk/'
+          name='ColorPicker 颜色选择器'
         />
 
         <DemoBox
-          title='基础用法'
-          desc='使用 bk-color-picker 标签配置颜色选择器组件'
           componentName='color-picker'
           demoName='base-demo'
+          desc='使用 bk-color-picker 标签配置颜色选择器组件'
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
 
         <DemoBox
-          title='不同尺寸'
-          desc='选择器有三种尺寸：大、默认（中）、小。'
           componentName='color-picker'
           demoName='size-demo'
+          desc='选择器有三种尺寸：大、默认（中）、小。'
+          title='不同尺寸'
         >
           <SizeDemo></SizeDemo>
         </DemoBox>
         <DemoBox
-          title='自定义slot'
-          desc='trigger slot '
           componentName='color-picker'
           demoName='size-demo'
+          desc='trigger slot '
+          title='自定义slot'
         >
           <SlotDemo></SlotDemo>
         </DemoBox>
 
         <DemoBox
-          title='颜色预设'
-          desc='当 recommend 属性为 true 时显示推荐的颜色预设，为 false 时关闭预设，也可传入数组自定义预设。'
           componentName='color-picker'
           demoName='preset-demo'
+          desc='当 recommend 属性为 true 时显示推荐的颜色预设，为 false 时关闭预设，也可传入数组自定义预设。'
+          title='颜色预设'
         >
           <PresetDemo></PresetDemo>
         </DemoBox>
 
         <PropsBox
-          title='BkColorPicker 属性'
           propsData={colorPickerPropsJson}
+          title='BkColorPicker 属性'
         />
 
         <PropsBox
-          title='BkColorPicker 事件'
           propsData={colorPickerChangePropsJson}
+          title='BkColorPicker 事件'
         />
 
         <PropsBox
-          title='插槽'
-          subtitle=''
           propsData={optionSlotJson}
+          subtitle=''
+          title='插槽'
         />
       </div>
     );

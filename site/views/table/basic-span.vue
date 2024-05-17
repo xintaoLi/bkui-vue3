@@ -6,8 +6,8 @@
       row-hover="auto"
       settings
       show-overflow-tooltip
-      @dblclick="handleDblClick"
       @column-sort="handleSortBy"
+      @dblclick="handleDblClick"
     />
   </div>
 </template>
@@ -24,23 +24,25 @@
         tableData: [...DATA_TABLE],
         columns: [...DATE_COL_SPAN],
         settings: {
-          fields: [{
-                     label: '序号',
-                     field: 'index',
-                     disabled: true,
-                   },
-                   {
-                     label: '名称/内网IP',
-                     field: 'ip',
-                   },
-                   {
-                     label: '来源',
-                     field: 'source',
-                   },
-                   {
-                     label: '创建时间',
-                     field: 'create_time',
-                   }],
+          fields: [
+            {
+              label: '序号',
+              field: 'index',
+              disabled: true,
+            },
+            {
+              label: '名称/内网IP',
+              field: 'ip',
+            },
+            {
+              label: '来源',
+              field: 'source',
+            },
+            {
+              label: '创建时间',
+              field: 'create_time',
+            },
+          ],
           checked: ['ip', 'index'],
         },
       };
@@ -56,13 +58,13 @@
   });
 </script>
 <style scoped>
-.row {
-  display: flex;
-  width: 100%;
-}
+  .row {
+    display: flex;
+    width: 100%;
+  }
 
-.cell {
-  flex: 1;
-  margin: 0 5px 0 5px;
-}
+  .cell {
+    flex: 1;
+    margin: 0 5px 0 5px;
+  }
 </style>

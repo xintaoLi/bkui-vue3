@@ -3,77 +3,77 @@
     <div>
       <div class="mb10">
         <bk-progress
-          :size="'small'"
           :percent="0"
-        />
-      </div>
-      <div class="mb10">
-        <bk-progress
           :size="'small'"
-          :percent="28"
         />
       </div>
       <div class="mb10">
         <bk-progress
+          :percent="28"
+          :size="'small'"
+        />
+      </div>
+      <div class="mb10">
+        <bk-progress
+          :percent="46"
           :size="'small'"
           :theme="'warning'"
-          :percent="46"
         />
       </div>
       <div class="mb10">
         <bk-progress
+          :percent="73"
           :size="'small'"
           :theme="'danger'"
-          :percent="73"
         />
       </div>
       <div class="mb10">
         <bk-progress
+          :percent="90"
           :size="'small'"
           :theme="'success'"
-          :percent="90"
         />
       </div>
     </div>
     <div>
       <div class="mb10">
         <bk-progress
-          :size="'large'"
           :percent="0"
-        />
-      </div>
-      <div class="mb10">
-        <bk-progress
           :size="'large'"
-          :percent="28"
         />
       </div>
       <div class="mb10">
         <bk-progress
+          :percent="28"
+          :size="'large'"
+        />
+      </div>
+      <div class="mb10">
+        <bk-progress
+          :percent="46"
           :size="'large'"
           :theme="'warning'"
-          :percent="46"
         />
       </div>
       <div class="mb10">
         <bk-progress
+          :percent="73"
           :size="'large'"
           :theme="'danger'"
-          :percent="73"
         />
       </div>
       <div class="mb10">
         <bk-progress
+          :percent="90"
           :size="'large'"
           :theme="'success'"
-          :percent="90"
         />
       </div>
       <div class="mb10">
         <bk-progress
-          :theme="'success'"
-          :stroke-width="20"
           :percent="90"
+          :stroke-width="20"
+          :theme="'success'"
         />
       </div>
     </div>
@@ -89,13 +89,12 @@
     components: {
       BkProgress,
     },
-    setup() {
-    },
+    setup() {},
   });
 </script>
 
 <style scoped>
-.mb10 {
-  margin-bottom: 10px;
-}
+  .mb10 {
+    margin-bottom: 10px;
+  }
 </style>

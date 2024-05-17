@@ -24,16 +24,16 @@
  * IN THE SOFTWARE.
  */
 
-import type { ExtractPropTypes } from 'vue';
 import { defineComponent, onMounted, provide, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { PropTypes, useFormItem } from '@bkui-vue/shared';
 
 import { checkboxGroupKey } from './common';
+
 import type { ICheckboxGroupContext, ICheckboxInstance } from './type';
+import type { ExtractPropTypes } from 'vue';
 const checkboxGroupProps = {
-  name: PropTypes.string.def(''),
   modelValue: PropTypes.array,
   disabled: PropTypes.bool,
   withValidate: PropTypes.bool.def(true),

@@ -37,6 +37,7 @@ export default defineComponent({
     return () => (
       <div>
         <Info
+          class='bk-tooltips-base'
           v-bk-tooltips={{
             content: (
               <div>
@@ -46,7 +47,6 @@ export default defineComponent({
               </div>
             ),
           }}
-          class='bk-tooltips-base'
         />
       </div>
     );

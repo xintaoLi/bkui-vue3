@@ -25,5 +25,10 @@
     "sourceMap": false,
     "noEmitOnError": false
   },
-  "include": ["../../packages/bkui-vue/*.ts", "../../packages/index.d.ts", "../../packages/icon/src/index.tsx"]
+  "include": [
+    "../../packages/bkui-vue/*.ts",
+    "../../packages/index.d.ts",
+    "../../packages/icon/src/index.tsx",
+    "../../index.d.ts"
+  ]
 }

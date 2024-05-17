@@ -40,12 +40,12 @@
     >
       <bk-select v-model="formData.school">
         <bk-option
-          value="1"
           label="本科以下"
+          value="1"
         />
         <bk-option
-          value="2"
           label="本科以上"
+          value="2"
         />
       </bk-select>
     </bk-form-item>
@@ -55,16 +55,16 @@
         type="textarea"
       />
     </bk-form-item>
-    <bk-form-item style="margin-top: 32px;">
+    <bk-form-item style="margin-top: 32px">
       <bk-button
-        theme="primary"
         native-type="button"
+        theme="primary"
         @click="submit"
       >
         提交
       </bk-button>
       <bk-button
-        style="margin-left: 8px;"
+        style="margin-left: 8px"
         @click="handleReset"
       >
         重置
@@ -81,7 +81,6 @@
   import BkInput from '@bkui-vue/input';
   import BkRadio, { BkRadioGroup } from '@bkui-vue/radio';
   import BkSelect, { BkOption } from '@bkui-vue/select';
-
 
   const formRef = ref('');
   const formData = ref({
@@ -106,7 +105,6 @@
   const handleReset = () => {
     formRef.value.clearValidate();
   };
-
 </script>
 <style lang="postcss" scoped>
   .example {

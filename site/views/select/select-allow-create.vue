@@ -1,33 +1,33 @@
 <template>
-  <div style="display: flex;">
+  <div style="display: flex">
     <bk-select
-      v-model="selectedValue"
       class="bk-select"
+      v-model="selectedValue"
+      multiple-mode="tag"
+      allow-create
       filterable
       multiple
-      allow-create
-      multiple-mode="tag"
       show-select-all
     >
       <bk-option
         v-for="(item, index) in datasource"
+        :disabled="item.disabled"
         :id="item.value"
         :key="index"
         :name="item.label"
-        :disabled="item.disabled"
       />
     </bk-select>
     <bk-select
       class="bk-select"
-      filterable
       allow-create
+      filterable
     >
       <bk-option
         v-for="(item, index) in datasource"
+        :disabled="item.disabled"
         :id="item.value"
         :key="index"
         :name="item.label"
-        :disabled="item.disabled"
       />
     </bk-select>
   </div>
@@ -68,9 +68,8 @@
   const selectedValue = ref('running');
 </script>
 <style scoped>
-.bk-select {
-  width: 300px;
-  margin-right: 10px;
-}
+  .bk-select {
+    width: 300px;
+    margin-right: 10px;
+  }
 </style>
-

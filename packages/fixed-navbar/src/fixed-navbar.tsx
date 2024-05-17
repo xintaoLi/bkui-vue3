@@ -70,8 +70,8 @@ export default defineComponent({
     return () =>
       props.modelValue && (
         <div
-          class={`${resolveClassName('fixed-navbar')} ${props.extCls} ${props.position}`}
           style={{ zIndex }}
+          class={`${resolveClassName('fixed-navbar')} ${props.extCls} ${props.position}`}
         >
           {navConfig.map(item => (
             <div

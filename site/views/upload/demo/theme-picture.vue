@@ -1,11 +1,11 @@
 <template>
   <div class="demo">
     <bk-upload
-      theme="picture"
-      with-credentials
       :files="files"
       :handle-res-code="handleRes"
       :url="'https://jsonplaceholder.typicode.com/posts/'"
+      theme="picture"
+      with-credentials
     />
   </div>
 </template>
@@ -27,7 +27,7 @@
     },
   ];
 
-  const handleRes = (response) => {
+  const handleRes = response => {
     if (response.id) {
       return true;
     }

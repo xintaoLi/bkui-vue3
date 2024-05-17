@@ -1,22 +1,18 @@
 <template>
   <bk-transfer
+    :display-key="'name'"
+    :setting-key="'code'"
+    :sort-key="'code'"
     :source-list="rtxList"
     :target-list="rtxValue"
-    :display-key="'name'"
-    :sort-key="'code'"
-    :setting-key="'code'"
     sortable
     @change="change"
   >
     <template #source-option="data">
-      <div>
-        code: {{ data.code }}, name: {{ data.name }}
-      </div>
+      <div>code: {{ data.code }}, name: {{ data.name }}</div>
     </template>
     <template #target-option="data">
-      <div>
-        code: {{ data.code }}, name: {{ data.name }}
-      </div>
+      <div>code: {{ data.code }}, name: {{ data.name }}</div>
     </template>
   </bk-transfer>
 </template>

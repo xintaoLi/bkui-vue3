@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import DisabledDemo from './disable-demo.vue';
 import IconDemo from './icon-demo.vue';
@@ -40,21 +39,21 @@ const linkPropsJson: IPropsTableItem[] = [
     name: 'theme',
     type: 'String',
     default: 'default',
-    desc: '文字链接主题色',
-    optional: ['danger', 'success', 'primary', 'warning', 'default'],
+    desc: '链接的主题颜色',
+    optional: ['danger', 'default', 'primary', 'success', 'warning'],
   },
   {
     name: 'href',
     type: 'String',
     default: '',
-    desc: '文字链接地址',
+    desc: '链接的 URL 地址',
     optional: [],
   },
   {
     name: 'disabled',
     type: 'Boolean',
     default: false,
-    desc: '是否禁用',
+    desc: '是否禁用链接',
     optional: [],
   },
   {
@@ -68,8 +67,8 @@ const linkPropsJson: IPropsTableItem[] = [
     name: 'target',
     type: 'String',
     default: '_self',
-    desc: 'a标签的target属性，规定在何处打开链接文档',
-    optional: ['_blank', '_self', '_parent', '_top'],
+    desc: '链接的打开方式',
+    optional: ['_self', '_blank', '_parent', '_top'],
   },
 ];
 
@@ -78,43 +77,42 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Link 文字链接'
           desc='Link 文字超链接'
-          link='https://www.google.com.hk/'
           designLink='https://bkdesign.bk.tencent.com/design/143'
+          name='Link 文字链接'
         />
 
         <DemoBox
-          title='基础用法'
-          desc='基础的文字链接用法'
           componentName='link'
           demoName='base-demo'
+          desc='基础的文字链接用法'
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
 
         <DemoBox
-          title='禁用状态和下划线'
-          desc='文字链接不可用状态，添加underline实现下划线'
           componentName='link'
           demoName='disable-demo'
+          desc='文字链接不可用状态，添加underline实现下划线'
+          title='禁用状态和下划线'
         >
           <DisabledDemo></DisabledDemo>
         </DemoBox>
 
         <DemoBox
-          title='支持设置图标'
-          desc='在 slot 中直接设置图标'
           componentName='link'
           demoName='icon-demo'
+          desc='在 slot 中直接设置图标'
+          title='支持设置图标'
         >
           <IconDemo></IconDemo>
         </DemoBox>
 
         <PropsBox
-          title='Link 属性'
-          subtitle=''
           propsData={linkPropsJson}
+          subtitle=''
+          title='Link 属性'
         />
       </div>
     );

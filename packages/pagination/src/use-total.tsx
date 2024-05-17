@@ -24,13 +24,13 @@
  * IN THE SOFTWARE.
  */
 
-import type { ComponentInternalInstance, ComputedRef } from 'vue';
 import { getCurrentInstance } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
-import type { Language } from '@bkui-vue/locale';
 
 import type { PaginationProps } from './pagination';
+import type { Language } from '@bkui-vue/locale';
+import type { ComponentInternalInstance, ComputedRef } from 'vue';
 
 export default (t: ComputedRef<Language['pagination']>) =>
   ({ isFirst, isLast }) => {

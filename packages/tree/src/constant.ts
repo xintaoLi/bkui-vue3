@@ -25,14 +25,16 @@
  */
 
 export enum EVENTS {
+  NODE_CHECKED = 'nodeChecked',
   NODE_CLICK = 'nodeClick',
   NODE_COLLAPSE = 'nodeCollapse',
-  NODE_EXPAND = 'nodeExpand',
-  NODE_CHECKED = 'nodeChecked',
-  NODE_DRAG_START = 'nodeDragStart',
-  NODE_DRAG_OVER = 'nodeDragOver',
   NODE_DRAG_LEAVE = 'nodeDragLeave',
+  NODE_DRAG_OVER = 'nodeDragOver',
+  NODE_DRAG_START = 'nodeDragStart',
   NODE_DROP = 'nodeDrop',
+  NODE_ENTER_VIEW = 'nodeEnterView',
+  NODE_EXPAND = 'nodeExpand',
+  NODE_SELECTED = 'nodeSelected',
 }
 const EMPTY = (..._args) => true;
 export const TreeEmitEventsType = {
@@ -44,6 +46,8 @@ export const TreeEmitEventsType = {
   [EVENTS.NODE_DRAG_OVER]: EMPTY,
   [EVENTS.NODE_DRAG_LEAVE]: EMPTY,
   [EVENTS.NODE_DROP]: EMPTY,
+  [EVENTS.NODE_ENTER_VIEW]: EMPTY,
+  [EVENTS.NODE_SELECTED]: EMPTY,
 };
 
 /**
@@ -52,24 +56,24 @@ export const TreeEmitEventsType = {
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const enum NODE_ATTRIBUTES {
   DEPTH = '__depth',
-  INDEX = '__index',
-  UUID = '__uuid',
-  PARENT = '__parent',
   HAS_CHILD = '__has_child',
-  PATH = '__path',
-  IS_ROOT = '__is_root',
-  ORDER = '__order',
-  IS_OPEN = '__is_open',
-  IS_CHECKED = '__is_checked',
-  IS_SELECTED = '__is_selected',
+  INDEX = '__index',
+  IS_ASYNC = '__is_async',
   IS_ASYNC_INIT = '__is_async_init',
+  IS_CACHED = '__is_cached',
+  IS_CHECKED = '__is_checked',
+  IS_INDETERMINATE = '__is_indeterminate',
+  IS_LOADING = '__is_loading',
   IS_MATCH = '__is_match',
   IS_NULL = '__IS_NULL',
-  IS_CACHED = '__is_cached',
-  IS_ASYNC = '__is_async',
-  IS_LOADING = '__is_loading',
+  IS_OPEN = '__is_open',
+  IS_ROOT = '__is_root',
+  IS_SELECTED = '__is_selected',
+  ORDER = '__order',
+  PARENT = '__parent',
+  PATH = '__path',
   TREE_NODE_ATTR = '__attr__',
-  IS_INDETERMINATE = '__is_indeterminate',
+  UUID = '__uuid',
 }
 
 export const NODE_SOURCE_ATTRS = {
@@ -88,7 +92,7 @@ export const NODE_SOURCE_ATTRS = {
  */
 export enum NodeContentActionEnum {
   CLICK = 'click',
-  SELECTED = 'selected',
-  EXPAND = 'expand',
   COLLAPSE = 'collapse',
+  EXPAND = 'expand',
+  SELECTED = 'selected',
 }

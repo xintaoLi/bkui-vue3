@@ -28,7 +28,7 @@ import { ExtractPropTypes } from 'vue';
 
 import uploadProps from './props';
 
-export const CLASS_PREFIX = 'bk-upload';
+export const CLASS_PREFIX = 'upload';
 
 export const enum EThemes {
   BUTTON = 'button',
@@ -38,20 +38,27 @@ export const enum EThemes {
 
 export type Theme = Lowercase<keyof typeof EThemes>;
 
+export const enum ETypes {
+  FORMDATA = 'formdata',
+  BINARY = 'binary',
+}
+
+export type Type = Lowercase<keyof typeof ETypes>;
+
 export const enum EUploadStatus {
-  NEW = 'new',
-  UPLOADING = 'uploading',
-  SUCCESS = 'success',
   FAIL = 'fail',
+  NEW = 'new',
+  SUCCESS = 'success',
+  UPLOADING = 'uploading',
 }
 
 export type UploadStatus = Lowercase<keyof typeof EUploadStatus>;
 
-export type FormDataAttr = { name: string; value: string | Blob | [string | Blob, string] };
+export type FormDataAttr = { name: string; value: [Blob | string, string] | Blob | string };
 
 export type HeaderDataAttr = { name: string; value: string };
 
-export type ExtraFormData = Record<string, string | Blob | [string | Blob, string]>;
+export type ExtraFormData = Record<string, [Blob | string, string] | Blob | string>;
 
 export type UploadFiles = UploadFile[];
 
@@ -92,25 +99,26 @@ export type SuccessResponse = APIResponse | XMLHttpRequestResponseType | unknown
 export type UploadProps = ExtractPropTypes<typeof uploadProps>;
 
 export interface UploadRequestOptions {
-  action: string;
-  method: string;
-  data?: ExtraFormData | ExtraFormData[];
-  formDataAttributes?: FormDataAttr | FormDataAttr[];
-  filename: string;
-  file: File;
-  headers?: Headers | Record<string, string | number | null | undefined>;
-  header?: HeaderDataAttr | HeaderDataAttr[];
-  withCredentials: boolean;
-  sliceUrl: string;
-  mergeUrl: string;
-  chunkSize: number;
-  onProgress: (event: UploadProgressEvent, i?: number) => void;
-  onError: (error: Error) => void;
-  onSuccess: (res: SuccessResponse) => void;
-  onComplete: () => void;
-}
+  action: string
+  method: string
+  type: Type,
+  data?: ExtraFormData | ExtraFormData[]
+  formDataAttributes?: FormDataAttr | FormDataAttr[]
+  filename: string
+  file: File
+  headers?: Headers | Record<string, string | number | null | undefined>
+  header?: HeaderDataAttr | HeaderDataAttr[],
+  withCredentials: boolean
+  sliceUrl: string
+  mergeUrl: string
+  chunkSize: number
+  onProgress: (event: UploadProgressEvent, i?: number) => void
+  onError: (error: Error) => void
+  onSuccess: (res: SuccessResponse) => void
+  onComplete: () => void
+};
 
-export type UploadRequestHandler = (options: UploadRequestOptions) => XMLHttpRequest | Promise<unknown>;
+export type UploadRequestHandler = (options: UploadRequestOptions) => Promise<unknown> | XMLHttpRequest;
 
 export type HookHandler = (uploadFile: UploadFile, uploadFiles: UploadFiles) => void;
 

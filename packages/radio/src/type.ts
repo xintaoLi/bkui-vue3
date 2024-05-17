@@ -24,10 +24,9 @@
  * IN THE SOFTWARE.
  */
 
-import type { ComponentPublicInstance } from 'vue';
-
 import type { RadioProps } from './radio';
 import type { RadioGroupProps } from './radio-group';
+import type { ComponentPublicInstance } from 'vue';
 
 export type IRadioInstance = ComponentPublicInstance<
   RadioProps,
