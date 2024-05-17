@@ -116,6 +116,7 @@ export default defineComponent({
           isShow={props.isShow}
           width={props.width}
           animateType={props.direction}
+          extCls={props.extCls}
           closeIcon={false}
           escClose={props.escClose}
           quickClose={props.quickClose}
