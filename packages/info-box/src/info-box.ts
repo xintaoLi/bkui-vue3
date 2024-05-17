@@ -24,7 +24,7 @@
  * IN THE SOFTWARE.
  */
 
-import { type App, createApp, VNode } from 'vue';
+import { createApp, h, ref, VNode } from 'vue';
 
 import RenderComponent, { genDefaultState } from './render-component';
 
@@ -36,8 +36,9 @@ export interface Props {
   infoType?: 'success' | 'danger' | 'warning' | 'loading'; // infoType 改名 type 继续存在为兼容老版本
   type?: 'success' | 'danger' | 'warning' | 'loading';
   title?: string | (() => VNode | string) | VNode;
-  subTitle?: string | (() => VNode) | VNode; // 弹窗内容
-  content?: string | (() => VNode) | VNode; // subTitle 改名 subTitle 继续存在为兼容老版本
+  subTitle?: string | (() => VNode) | VNode; // subTitle 改名 subTitle 继续存在为兼容老版本
+  content?: string | (() => VNode) | VNode;
+  footer?: string | (() => VNode) | VNode;
   headerAlign?: 'left' | 'center' | 'right';
   footerAlign?: 'left' | 'center' | 'right';
   contentAlign?: 'left' | 'center' | 'right';
@@ -46,8 +47,8 @@ export interface Props {
   escClose?: boolean;
   closeIcon?: boolean;
   confirmText?: string | (() => VNode) | VNode;
-  theme?: 'primary' | 'warning' | 'success' | 'danger';
-  confirmButtonTheme?: 'primary' | 'warning' | 'success' | 'danger'; // theme 改名 confirmButtonTheme 继续存在为兼容老版本
+  theme?: 'primary' | 'warning' | 'success' | 'danger'; // theme 改名 confirmButtonTheme 继续存在为兼容老版本
+  confirmButtonTheme?: 'primary' | 'warning' | 'success' | 'danger';
   cancelText?: string | (() => VNode) | VNode;
   beforeClose?: (action: string) => boolean | Promise<boolean>;
   onConfirm?: () => void;
@@ -61,16 +62,22 @@ interface InstanceMethods {
   update: (config: Partial<Props>) => void;
 }
 
-let infoboxInstance: App<Element>;
+const appRef = ref();
 const getInstance = () => {
-  if (!infoboxInstance) {
+  if (!appRef.value) {
     const container = document.createElement('div');
-    infoboxInstance = createApp(RenderComponent);
+    const infoboxInstance = createApp({
+      render() {
+        return h(RenderComponent, {
+          ref: appRef,
+        });
+      },
+    });
     document.body.appendChild(container);
     infoboxInstance.mount(container);
   }
 
-  return infoboxInstance._instance.exposed as InstanceMethods;
+  return appRef.value as InstanceMethods;
 };
 
 const InfoBox = (config: Partial<Props>) => {
