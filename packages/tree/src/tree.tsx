@@ -65,6 +65,8 @@ export default defineComponent({
       hasChildNode,
       getNodePath,
       getNodeId,
+      getNodeAttr,
+      getParentNode,
       getIntersectionResponse,
     } = useNodeAttribute(flatData, props);
 
@@ -203,6 +205,8 @@ export default defineComponent({
       asyncNodeClick,
       getData,
       reset,
+      getNodeAttr,
+      getParentNode,
     });
 
     const { renderEmpty } = useEmpty(props);

@@ -290,6 +290,7 @@ export default [
       { name: 'setSelect', desc: '设置指定节点是否选中', params: '(item: any, selected = true, autoOpen = true)' },
       { name: 'asyncNodeClick', desc: '异步请求触发点击节点', params: '（item）' },
       { name: 'getData', desc: '获取当前树配置数据（经过内部处理的数据）', params: '（）' },
+      { name: 'getParentNode', desc: '获取指定节点的父级节点', params: 'node: 当前节点' },
     ],
   },
   {
