@@ -90,6 +90,7 @@ export default defineComponent({
         ref='popoverRef'
         isShow={this.visible}
         trigger={this.trigger}
+        placement={this.placement}
         theme={this.theme}
         width={this.width}
         onAfterShow={() => (this.visible = true)}

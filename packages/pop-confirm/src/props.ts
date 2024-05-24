@@ -58,7 +58,7 @@ export const PopConfirmProps = {
   content: PropTypes.string.def(''),
   confirmText: PropTypes.string.def(''),
   cancelText: PropTypes.string.def(''),
-  placement: PropTypes.oneOfType([placementType().def(PlacementEnum.TOP), PropTypes.string]).def(PlacementEnum.TOP),
+  placement: placementType().def(PlacementEnum.TOP_START),
   theme: PropTypes.string.def('light '),
   /**
    * 自定义icon：根据确认框中提示文字的语境来选择 icon的样式，当确认操作存在风险时，可选择带警示的icon来引起用户的注意。
