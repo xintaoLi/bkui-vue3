@@ -81,7 +81,7 @@ export default (props: TablePropTypes, tableResp: ITableResponse, head?: Ref<HTM
     let preOffset = 0;
 
     for (start; ; ) {
-      start = start + -1 * opt;
+      start = start - opt;
       const index = Math.abs(start);
       const current = filterColumns[index];
       const curFixedPos = resolveFixColPos(current);
@@ -112,7 +112,7 @@ export default (props: TablePropTypes, tableResp: ITableResponse, head?: Ref<HTM
     }
     const fixedOffset: any = {
       left: 0,
-      right: -1,
+      right: 1,
     };
     const fixedPos = resolveFixColPos(column);
     fixedOffset[fixedPos] = getPreColumnOffset(fixedPos, column, fixedOffset[fixedPos]);
