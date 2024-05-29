@@ -117,7 +117,7 @@ export const resolveNumberOrStringToPix = (
   offset = null,
 ) => {
   let target: string | number = '';
-  if (/^auto|null|undefined$/gi.test(`${val}`)) {
+  if (/^null|undefined$/gi.test(`${val}`)) {
     target = defaultValue;
   } else {
     target = /^\d+\.?\d+$/.test(`${val}`) ? `${val}px` : val;
@@ -509,6 +509,20 @@ export const resolveColumnSortProp = (col: Column, props: TablePropTypes) => {
     fn: sortFn,
     scope: sortScope,
     active: !!col.sort,
+    enabled: !!col.sort,
+  };
+};
+
+export const resolveColumnFilterProp = (col: Column) => {
+  if (typeof col.filter === 'object') {
+    return {
+      ...col.filter,
+      enabled: true,
+    };
+  }
+
+  return {
+    enabled: !!col.filter,
   };
 };
 

@@ -612,7 +612,7 @@ const tableSchemaResponse = (props: TablePropTypes) => {
    * @param offsetWidth 需要减掉的偏移量（滚动条|外层边框）
    */
   const resolveColumnWidth = (root: HTMLElement, autoWidth = COL_MIN_WIDTH, offsetWidth = 0) => {
-    const { width } = root.getBoundingClientRect() || {};
+    const width = root.offsetWidth;
     const availableWidth = width - offsetWidth;
     // 可用来平均的宽度
     let avgWidth = availableWidth;

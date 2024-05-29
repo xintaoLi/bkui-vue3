@@ -82,6 +82,12 @@ export default () => {
     return;
   };
 
+  const setNodeInstanceId = (column: any, uniqueId: string) => {
+    if (!columnCache.has(column)) {
+      columnCache.set(columnCache, { uniqueId, column });
+    }
+  };
+
   const resolveColumns = (target?: ComponentInternalInstance) => {
     const instance = target ?? getCurrentInstance();
     columns.length = 0;
@@ -95,5 +101,6 @@ export default () => {
 
   return {
     resolveColumns,
+    setNodeInstanceId,
   };
 };
