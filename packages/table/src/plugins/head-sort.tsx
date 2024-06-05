@@ -88,13 +88,13 @@ export default defineComponent({
     return () => (
       <span class={resolveClassName('head-cell-sort')}>
         <AngleDownFill
-          style='align-items: flex-end;'
           class={['sort-action', 'sort-asc', props.active && sortType.value === SORT_OPTION.ASC ? 'active' : '']}
+          style='align-items: flex-end;'
           onClick={(e: MouseEvent) => handleSortClick(e, SORT_OPTION.ASC)}
         />
         <AngleUpFill
-          style='align-items: flex-start;'
           class={['sort-action', 'sort-desc', props.active && sortType.value === SORT_OPTION.DESC ? 'active' : '']}
+          style='align-items: flex-start;'
           onClick={(e: MouseEvent) => handleSortClick(e, SORT_OPTION.DESC)}
         />
       </span>

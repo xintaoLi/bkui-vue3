@@ -26,14 +26,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import { ComponentInternalInstance, getCurrentInstance, isVNode, unref } from 'vue';
 
-
 import { ITableColumn } from '../components/table-column';
 
 export default () => {
   const columns = [];
   let columnIndex = 0;
   const columnCache = new WeakMap();
-  const copyProps = (props: { [key: string]: any } | ITableColumn) => {
+  const copyProps = (props: ITableColumn | { [key: string]: any }) => {
     return Object.keys(props ?? {}).reduce((result, key) => {
       const target = key.replace(/-(\w)/g, (_, letter) => letter.toUpperCase());
       return Object.assign(result, { [target]: props[key] });

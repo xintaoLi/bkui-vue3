@@ -44,6 +44,7 @@ import useSettings from './hooks/use-settings';
 import { tableProps } from './props';
 
 export default defineComponent({
+  // eslint-disable-next-line vue/no-reserved-component-names
   name: 'Table',
   props: tableProps,
   emits: EMIT_EVENT_TYPES,

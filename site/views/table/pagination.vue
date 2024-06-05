@@ -1,8 +1,7 @@
 <template>
   <div style="width: 100%; height: 500px">
     <bk-table ref="refTable" height="100%" :columns="columns" :data="tableData" :pagination="pagination"
-      :pagination-heihgt="60" show-overflow-tooltip shift-multi-checked height="100%"
-      @selection-change="handleSelectionChange" />
+      :pagination-heihgt="60" show-overflow-tooltip shift-multi-checked @selection-change="handleSelectionChange" />
   </div>
 </template>
 
