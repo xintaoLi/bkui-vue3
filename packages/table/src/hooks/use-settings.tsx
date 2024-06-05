@@ -35,7 +35,6 @@ import { createDefaultSizeList, SETTING_SIZE } from '../const';
 import { EMIT_EVENTS } from '../events';
 import { Settings, SizeItem, TablePropTypes } from '../props';
 import { resolvePropVal } from '../utils';
-
 import { UseColumns } from './use-columns';
 
 const useSettings = (props: TablePropTypes, context: SetupContext, columns: UseColumns) => {
@@ -69,7 +68,7 @@ const useSettings = (props: TablePropTypes, context: SetupContext, columns: UseC
   const refSetting = ref(null);
   const options = reactive(getDefaultSettings());
 
-  const update = (settings: Settings | Boolean) => {
+  const update = (settings: Settings | boolean) => {
     Object.assign(options, getSettings(settings));
   };
 
@@ -225,11 +224,11 @@ const useSettings = (props: TablePropTypes, context: SetupContext, columns: UseC
 
     return (
       <Popover
-        trigger={options.trigger ?? ('manual' as any)}
-        placement='bottom-end'
         ref={refSetting}
-        arrow={true}
         extCls={options.extCls}
+        arrow={true}
+        placement='bottom-end'
+        trigger={options.trigger ?? ('manual' as any)}
         {...{ theme }}
       >
         {{
@@ -264,8 +263,8 @@ const useSettings = (props: TablePropTypes, context: SetupContext, columns: UseC
                       onClick={handleCheckAllClick}
                     >
                       <Checkbox
-                        label={t.value.setting.fields.selectAll}
                         indeterminate={Boolean(indeterminate.value)}
+                        label={t.value.setting.fields.selectAll}
                         modelValue={checkedFields.value.length > 0}
                       >
                         {t.value.setting.fields.selectAll}
@@ -281,8 +280,8 @@ const useSettings = (props: TablePropTypes, context: SetupContext, columns: UseC
                     <div class='field-item'>
                       <Checkbox
                         checked={checkedFields.value.includes(resolvedColVal(item, index))}
-                        label={resolvedColVal(item, index)}
                         disabled={isItemReadonly(item, index)}
+                        label={resolvedColVal(item, index)}
                       >
                         {resolvePropVal(item, ['name', 'label'], [item, index])}
                       </Checkbox>
@@ -300,8 +299,8 @@ const useSettings = (props: TablePropTypes, context: SetupContext, columns: UseC
               </div>
               <div class='setting-footer'>
                 <Button
-                  theme='primary'
                   style={buttonStyle}
+                  theme='primary'
                   onClick={handleSaveClick}
                 >
                   {t.value.setting.options.ok}

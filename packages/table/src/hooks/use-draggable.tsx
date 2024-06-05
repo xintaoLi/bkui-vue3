@@ -28,7 +28,6 @@ import { SetupContext } from 'vue';
 
 import { EMIT_EVENTS } from '../events';
 import { TablePropTypes } from '../props';
-
 import { UseRows } from './use-rows';
 
 export default (props: TablePropTypes, rows: UseRows, ctx: SetupContext<any>) => {

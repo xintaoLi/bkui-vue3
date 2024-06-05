@@ -24,17 +24,16 @@
  * IN THE SOFTWARE.
  */
 
-import type { ComputedRef } from 'vue';
-
 import type { Language } from '@bkui-vue/locale';
+import type { ComputedRef } from 'vue';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const enum BORDER_OPTION {
-  NONE = 'none',
-  ROW = 'row',
   COL = 'col',
-  OUTER = 'outer',
   HORIZONTAL = 'horizontal',
+  NONE = 'none',
+  OUTER = 'outer',
+  ROW = 'row',
 }
 
 /**
@@ -42,8 +41,8 @@ export const enum BORDER_OPTION {
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const enum ROW_HOVER {
-  HIGHLIGHT = 'highlight',
   AUTO = 'auto',
+  HIGHLIGHT = 'highlight',
 }
 
 export const ROW_HOVER_OPTIONS = [ROW_HOVER.AUTO, ROW_HOVER.HIGHLIGHT];
@@ -160,9 +159,9 @@ export const TB_FOOT_HEIGHT = 60;
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const enum SORT_OPTION {
   ASC = 'asc',
+  CUSTOM = 'custom',
   DESC = 'desc',
   NULL = 'null',
-  CUSTOM = 'custom',
 }
 
 export const SORT_OPTIONS = [SORT_OPTION.ASC, SORT_OPTION.DESC, SORT_OPTION.NULL, SORT_OPTION.CUSTOM];

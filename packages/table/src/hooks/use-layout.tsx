@@ -23,12 +23,12 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { debounce } from 'lodash';
 import { computed, onMounted, reactive, Ref, ref } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { classes } from '@bkui-vue/shared';
 import VirtualRender from '@bkui-vue/virtual-render';
+import { debounce } from 'lodash';
 
 import { DEF_COLOR, IHeadColor, LINE_HEIGHT } from '../const';
 import { EMIT_EVENTS } from '../events';
@@ -135,8 +135,8 @@ export default (props: TablePropTypes, ctx) => {
     return (
       <div
         ref={refRoot}
-        class={tableClass.value}
         style={tableStyle.value}
+        class={tableClass.value}
       >
         {childrend}
         <div style={columnGhostStyle}>{ctx.slots.default?.()}</div>
@@ -147,13 +147,13 @@ export default (props: TablePropTypes, ctx) => {
     return (
       <div
         ref={refHead}
-        class={headClass.value}
         style={headStyle.value}
+        class={headClass.value}
       >
         {childrend?.()}
         <div
-          class='col-resize-drag'
           style={resizeHeadColStyle.value}
+          class='col-resize-drag'
         ></div>
         {settings?.()}
       </div>
@@ -182,7 +182,7 @@ export default (props: TablePropTypes, ctx) => {
     return null;
   };
 
-  const bodyHeight: Ref<string | number> = ref('auto');
+  const bodyHeight: Ref<number | string> = ref('auto');
   const setBodyHeight = (height: number | string) => {
     bodyHeight.value = height;
   };
@@ -250,15 +250,15 @@ export default (props: TablePropTypes, ctx) => {
     return (
       <VirtualRender
         ref={refBody}
+        height={bodyHeight.value}
         class={bodyClass}
         enabled={props.virtualEnabled}
         lineHeight={lineHeight.value}
-        throttleDelay={120}
-        scrollEvent={true}
-        rowKey={props.rowKey}
-        height={bodyHeight.value}
         list={list}
+        rowKey={props.rowKey}
+        scrollEvent={true}
         scrollbar={{ enabled: props.scrollbar }}
+        throttleDelay={120}
         onContentScroll={handleScrollChanged}
       >
         {{
@@ -266,19 +266,19 @@ export default (props: TablePropTypes, ctx) => {
           default: (scope: any) => childrend?.(scope.data),
           afterSection: () => [
             <div
-              class={resizeColumnClass}
               style={resizeColumnStyle.value}
+              class={resizeColumnClass}
             ></div>,
             <div
-              class={fixedWrapperClass.value}
               style={fixedWrapperStyle.value}
+              class={fixedWrapperClass.value}
             >
               {fixedRows?.()}
             </div>,
             <div>{ctx.slots.appendBottom?.()}</div>,
             <div
-              class={fixedBottomRow}
               style={fixedWrapperStyle.value}
+              class={fixedBottomRow}
             >
               {loadingRow?.()}
             </div>,
@@ -291,8 +291,8 @@ export default (props: TablePropTypes, ctx) => {
     return (
       <div
         ref={refFooter}
-        class={footerClass.value}
         style={footerStyle.value}
+        class={footerClass.value}
       >
         {childrend}
       </div>

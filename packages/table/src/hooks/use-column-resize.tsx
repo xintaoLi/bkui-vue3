@@ -23,13 +23,13 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+import { ref, watch } from 'vue';
+
 import isElement from 'lodash/isElement';
 import throttle from 'lodash/throttle';
-import { ref, watch } from 'vue';
 
 import { COLUMN_ATTRIBUTE } from '../const';
 import { Column } from '../props';
-
 import { UseColumns } from './use-columns';
 
 export default (columns: UseColumns) => {
@@ -38,9 +38,9 @@ export default (columns: UseColumns) => {
 
   const pluginName = 'HeadColumnResize';
   const enum EVENTS {
+    MOUSE_DOWN = 'onMousedown',
     MOUSE_MOVE = 'onMousemove',
     MOUSE_OUT = 'onMouseout',
-    MOUSE_DOWN = 'onMousedown',
   }
   let isInDragSection = false;
   let isMouseDown = false;

@@ -26,7 +26,6 @@
 import { computed, reactive } from 'vue';
 
 import { TablePropTypes } from '../props';
-
 import { UseColumns } from './use-columns';
 
 /**
@@ -71,8 +70,8 @@ export default (_props: TablePropTypes, columns: UseColumns) => {
     if (fixedLeftColumns.value.length > 0) {
       return (
         <div
-          class='column_fixed column_fixed_left'
           style={fixedLeftStyle}
+          class='column_fixed column_fixed_left'
         ></div>
       );
     }
@@ -84,8 +83,8 @@ export default (_props: TablePropTypes, columns: UseColumns) => {
     if (fixedRightColumns.value.length > 0) {
       return (
         <div
-          class='column_fixed column_fixed_right'
           style={fixedRightStyle}
+          class='column_fixed column_fixed_right'
         ></div>
       );
     }
