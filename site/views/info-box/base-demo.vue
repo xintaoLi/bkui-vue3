@@ -7,8 +7,8 @@
       提示框
     </bk-button>
     <bk-button
-      theme="primary"
       style="margin-left: 15px"
+      theme="primary"
       @click="handleDefault2"
     >
       提示框2
@@ -17,19 +17,19 @@
 </template>
 
 <script setup>
-import InfoBox from '@bkui-vue/info-box';
+  import InfoBox from '@bkui-vue/info-box';
 
-const handleDefault1 = () => {
-  InfoBox({
-    title: '确认要删除？',
-    confirmFn() {},
-  });
-};
+  const handleDefault1 = () => {
+    InfoBox({
+      title: '确认要删除？',
+      confirmFn() {},
+    });
+  };
 
-const handleDefault2 = () => {
-  InfoBox({
-    title: '请确认是否重置？',
-    content: '重置后不可恢复',
-  });
-};
+  const handleDefault2 = () => {
+    InfoBox({
+      title: '请确认是否重置？',
+      content: '重置后不可恢复',
+    });
+  };
 </script>

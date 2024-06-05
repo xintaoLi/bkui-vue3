@@ -1,6 +1,6 @@
 <template>
   <bk-resize-layout
-    style="height: 500px;"
+    style="height: 500px"
     collapsible
   >
     <template #aside>

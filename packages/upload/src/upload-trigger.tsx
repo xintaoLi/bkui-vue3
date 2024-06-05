@@ -153,9 +153,9 @@ export default defineComponent({
       return (
         <div
           class={classNames}
-          onDrop={handleDrop}
-          onDragover={handleDragover}
           onDragleave={handleDragleave}
+          onDragover={handleDragover}
+          onDrop={handleDrop}
         >
           {slots.default ? (
             slots.default()
@@ -189,21 +189,21 @@ export default defineComponent({
 
     const SinglePicture = (file: UploadFile) => [
       <img
-        v-show={file.status !== 'uploading'}
-        src={file.url}
         class={`${classBlock}__picture-thumbnail`}
+        v-show={file.status !== 'uploading'}
         alt=''
+        src={file.url}
       />,
       <>
         {file.status === 'uploading' && (
           <Progress
-            class={`${classBlock}__picture-progress`}
-            type='circle'
-            color='#3a84ff'
-            bgColor='#333'
             width={50}
-            titleStyle={{ color: '#fff' }}
+            class={`${classBlock}__picture-progress`}
+            bgColor='#333'
+            color='#3a84ff'
             percent={file.percentage}
+            titleStyle={{ color: '#fff' }}
+            type='circle'
           />
         )}
       </>,
@@ -252,12 +252,12 @@ export default defineComponent({
         <input
           ref={inputEl}
           class={`${classBlock}__input-file`}
-          tabindex='-1'
-          onChange={handleFileChange}
           accept={acceptTypes.value}
-          multiple={multiple.value}
           disabled={disabled.value}
+          multiple={multiple.value}
+          tabindex='-1'
           type='file'
+          onChange={handleFileChange}
         />
       </div>
     );

@@ -4,8 +4,8 @@
       <bk-slider
         v-model="demo1"
         :custom-content="customContent"
-        show-tip
         :step="20"
+        show-tip
       />
     </div>
   </div>
@@ -49,7 +49,6 @@
       };
     },
   });
-
 </script>
 <style scoped>
   .demo {

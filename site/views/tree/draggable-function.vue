@@ -4,17 +4,17 @@
       <div class="cell">
         <bk-tree
           :data="treeData"
-          label="name"
-          children="children"
-          draggable
           :disable-drag="disableDrag"
           :disable-drop="disableDrop"
+          children="children"
+          label="name"
+          draggable
         >
           <template #node="item">
             <div>
-              isFolder：{{ String(item.isFolder) }},
-              disDraggable：{{ String(item.disabled) }},
-              <span style="color: #3a84ff;">{{ item.name }}</span>，
+              isFolder：{{ String(item.isFolder) }}, disDraggable：{{ String(item.disabled) }},
+              <span style="color: #3a84ff">{{ item.name }}</span
+              >，
             </div>
           </template>
         </bk-tree>
@@ -39,5 +39,5 @@
   });
 </script>
 <style scoped>
-@import './tree.less';
+  @import './tree.less';
 </style>

@@ -1,8 +1,5 @@
 {
-  "packages": [  
-    "packages/*", 
-    "scrpits/*"
-  ],
+  "packages": ["packages/*", "scripts/*", "site/*"],
   "npmClient": "yarn",
   "useWorkspaces": true,
   "version": "independent",
@@ -13,18 +10,13 @@
     },
     "version": {
       "conventionalCommits": true,
-      "ignoreChanges": [
-        "**/*.md"
-      ],
+      "ignoreChanges": ["**/*.md"],
       "noGitTagVersion": true,
       "noPush": true
-    },   
+    },
     "bootstrap": {
       "hoist": true,
-      "npmClientArgs": [
-        "--no-package-lock",
-        "--no-ci"
-      ]
+      "npmClientArgs": ["--no-package-lock", "--no-ci"]
     }
   }
 }

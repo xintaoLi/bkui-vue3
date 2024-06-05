@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import AutoSize from './demo/autosize.vue';
 import Basic from './demo/basic.vue';
 import Clearable from './demo/clearable.vue';
@@ -512,10 +511,10 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Input'
           desc='常用的输入框'
-          link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/input`}
           designLink='https://bkdesign.bk.tencent.com/design/14'
+          link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/input`}
+          name='Input'
         />
         {demos.map(({ DemoComponent, ...demo }) => (
           <DemoBox {...demo}>
@@ -523,19 +522,19 @@ export default defineComponent({
           </DemoBox>
         ))}
         <PropsBox
-          title='Input 属性'
-          subtitle=''
           propsData={inputProps}
+          subtitle=''
+          title='Input 属性'
         />
         <PropsBox
-          title='Input 插槽'
-          subtitle=''
           propsData={inputSlots}
+          subtitle=''
+          title='Input 插槽'
         />
         <PropsBox
-          title='Input 事件'
-          subtitle=''
           propsData={inputEvents}
+          subtitle=''
+          title='Input 事件'
         />
       </div>
     );

@@ -91,20 +91,20 @@
       handleDragend(...args) {
         console.log('handleDragend', args);
       },
-    // handleMouseLeave(...args) {
-    //   console.log('mouse-leave', args);
-    // },
+      // handleMouseLeave(...args) {
+      //   console.log('mouse-leave', args);
+      // },
     },
   });
 </script>
 <style scoped>
-.row {
-  display: flex;
-  width: 100%;
-}
+  .row {
+    display: flex;
+    width: 100%;
+  }
 
-.cell {
-  flex: 1;
-  margin: 0 5px 0 5px;
-}
+  .cell {
+    flex: 1;
+    margin: 0 5px 0 5px;
+  }
 </style>

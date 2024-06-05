@@ -1,7 +1,7 @@
 <template>
   <bk-rate
-    :model-value="disableRate"
     :editable="false"
+    :model-value="disableRate"
     size="default"
   />
 </template>

@@ -29,13 +29,13 @@ import { defineComponent } from 'vue';
 import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
-import type { IPropsTableItem } from '../../typings';
-
 import AlignDemo from './align-demo.vue';
 import BaseDemo from './base-demo.vue';
 import ButtonTextDemo from './button-text-demo.vue';
 import CallbackDemo from './callback-demo.vue';
 import StatusDemo from './status-demo.vue';
+
+import type { IPropsTableItem } from '../../typings';
 
 const props: IPropsTableItem[] = [
   {
@@ -202,62 +202,62 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='infoBox 消息提示'
           desc='用户操作后的消息提示，用于成功、失败、警告等消息提醒。'
           designLink='https://bkdesign.bk.tencent.com/design/33'
+          name='infoBox 消息提示'
         />
         <DemoBox
-          title='基础用法'
-          subtitle=''
-          desc='配置 title, content 等参数'
           componentName='info-box'
           demoName='base-demo'
+          desc='配置 title, content 等参数'
+          subtitle=''
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
         <DemoBox
-          title='各种状态'
-          subtitle=''
-          desc='配置 type 的值，实现成功，错误，警告，加载中的不同类型'
           componentName='info-box'
           demoName='status-demo'
+          desc='配置 type 的值，实现成功，错误，警告，加载中的不同类型'
+          subtitle=''
+          title='各种状态'
         >
           <StatusDemo />
         </DemoBox>
         <DemoBox
-          title='自定义按钮文字'
-          subtitle='按钮文字配置'
           componentName='info-box'
-          desc='配置 confirmText，cancelText'
           demoName='button-text-demo'
+          desc='配置 confirmText，cancelText'
+          subtitle='按钮文字配置'
+          title='自定义按钮文字'
         >
           <ButtonTextDemo />
         </DemoBox>
         <DemoBox
-          title='事件回调'
-          subtitle='确认，取消回调'
-          desc='onConfirm, onCancel'
           componentName='info-box'
           demoName='callback-demo'
+          desc='onConfirm, onCancel'
+          subtitle='确认，取消回调'
+          title='事件回调'
         >
           <CallbackDemo />
         </DemoBox>
         <DemoBox
-          title='文本对齐方式'
-          subtitle='确认，取消回调'
-          desc='headerAlign、contentAlign、footerAlign'
           componentName='info-box'
           demoName='align-demo'
+          desc='headerAlign、contentAlign、footerAlign'
+          subtitle='确认，取消回调'
+          title='文本对齐方式'
         >
           <AlignDemo />
         </DemoBox>
         <PropsBox
-          subtitle='InfoBox函数参数（以Dialog为准）'
           propsData={props}
+          subtitle='InfoBox函数参数（以Dialog为准）'
         />
         <PropsBox
-          subtitle='InfoBox函数返回实例'
           propsData={infoBox}
+          subtitle='InfoBox函数返回实例'
         />
       </div>
     );

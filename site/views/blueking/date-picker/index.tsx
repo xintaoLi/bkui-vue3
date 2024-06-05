@@ -30,7 +30,6 @@ import DemoBox from '../../../components/demo-box';
 import DemoTitle from '../../../components/demo-title';
 import PropsBox from '../../../components/props-box';
 import { IPropsTableItem } from '../../../typings';
-
 import BaseDemo from './base-demo.vue';
 import BaselineTimeDemo from './baseline-time-demo.vue';
 import SimpleDemo from './simple-demo.vue';
@@ -193,79 +192,79 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Date Picker'
           desc='业务组件 Date Picker， 用于页面上更复杂的时间选择使用，支持 Vue2/Vue3 版本 无差别使用'
+          name='Date Picker'
           npmLink='https://www.npmjs.com/package/@blueking/date-picker'
         />
         <DemoBox
-          title='基础用法'
-          subtitle='组件的基础用法'
-          desc='配置v-model直接使用'
           componentName='blueking/date-picker'
           demoName='base-demo'
+          desc='配置v-model直接使用'
+          subtitle='组件的基础用法'
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
         <DemoBox
-          title='时间段配置'
-          subtitle='不同的时间段配置'
-          desc='组件支持过去时间、未来时间、自然时间、精确时间的配置和展示'
           componentName='blueking/date-picker'
           demoName='time-demo'
+          desc='组件支持过去时间、未来时间、自然时间、精确时间的配置和展示'
+          subtitle='不同的时间段配置'
+          title='时间段配置'
         >
           <TimeDemo />
         </DemoBox>
         <DemoBox
-          title='时区配置'
-          subtitle='通过timezone属性来配置美国纽约时区'
-          desc='支持全球各个时区段和标志城市的时区配置'
           componentName='blueking/date-picker'
           demoName='timezone-demo'
+          desc='支持全球各个时区段和标志城市的时区配置'
+          subtitle='通过timezone属性来配置美国纽约时区'
+          title='时区配置'
         >
           <TimezoneDemo />
         </DemoBox>
         <DemoBox
-          title='基于某个时间点的最近时段'
-          subtitle='配置基准时间点'
-          desc='基于某个时间点的最近时段'
           componentName='blueking/date-picker'
           demoName='baseline-time-demo'
+          desc='基于某个时间点的最近时段'
+          subtitle='配置基准时间点'
+          title='基于某个时间点的最近时段'
         >
           <BaselineTimeDemo />
         </DemoBox>
         <DemoBox
-          title='可选时间段配置'
-          subtitle='通过validDateRange属性来配置有效可选的日期范围'
-          desc='有效可选的日期范围'
           componentName='blueking/date-picker'
           demoName='validate-demo'
+          desc='有效可选的日期范围'
+          subtitle='通过validDateRange属性来配置有效可选的日期范围'
+          title='可选时间段配置'
         >
           <ValidateDemo />
         </DemoBox>
         <DemoBox
-          title='展示风格'
-          subtitle='简约风格'
-          desc='配置behavior改变展示风格'
           componentName='blueking/date-picker'
           demoName='simple-demo'
+          desc='配置behavior改变展示风格'
+          subtitle='简约风格'
+          title='展示风格'
         >
           <SimpleDemo />
         </DemoBox>
         <PropsBox
-          title='now语法概述'
           subtitle='组件支持以下时间单位： s (seconds) 、 m (minutes) 、 h (hours) 、 d (days) 、 w (weeks) 、 M (months) 、 和 y (years)。
           (-)减号运算符是相对于当前日期和时间或 now 向后减一个时间单位。如果您想显示单位的完整周期（日、周、月等），请在末尾附加 /<time unit>。（+）加号同理。 '
           columnMap={exampleColumnJson}
           propsData={exampleJson}
+          title='now语法概述'
         />
         <PropsBox
-          title='组件属性'
           propsData={menuPropsJson}
+          title='组件属性'
         />
         <PropsBox
-          title='组件事件'
           columnMap={eventColumnMap}
           propsData={eventJson}
+          title='组件事件'
         />
       </div>
     );

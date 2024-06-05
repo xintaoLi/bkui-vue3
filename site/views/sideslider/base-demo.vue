@@ -1,8 +1,8 @@
 <template>
   <div>
     <bk-button
-      text
       theme="primary"
+      text
       @click="handleOpen"
     >
       打开侧栏
@@ -17,11 +17,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+  import { ref } from 'vue';
 
-const isShow = ref(false);
+  const isShow = ref(false);
 
-const handleOpen = () => {
-  isShow.value = true;
-};
+  const handleOpen = () => {
+    isShow.value = true;
+  };
 </script>

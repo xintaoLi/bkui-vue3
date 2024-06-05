@@ -25,5 +25,5 @@
  */
 
 // 组件的状态类型
-export type Types = '404' | '403' | '500' | 'building' | 'empty' | 'search-empty' | 'login';
+export type Types = '403' | '404' | '500' | 'building' | 'empty' | 'login' | 'search-empty';
 export type TypesMapType = { [key in Types]: string };

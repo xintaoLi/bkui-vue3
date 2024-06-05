@@ -56,10 +56,7 @@ module.exports = {
       rules: {
         'subject-valid'({ subject }) {
           console.log('it is a subject', subject);
-          return [
-            /^[\s\S]+?((issue)?\s+#\d+)$/i.test(subject),
-            'commit-msg should end with (#{issueId})',
-          ];
+          return [/^[\s\S]+?((issue)?\s+#\d+)$/i.test(subject), 'commit-msg should end with (#{issueId})'];
         },
       },
     },

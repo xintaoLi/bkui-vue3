@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import CustomDemo from './custom-demo.vue';
 import InputDemo from './input-demo.vue';
@@ -198,64 +197,64 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Slider 滑动选择器'
           desc='用于操作反馈的中间态(loading)、成功、失败等'
           designLink='https://bkdesign.bk.tencent.com/design/139'
+          name='Slider 滑动选择器'
         />
         <DemoBox
-          title='基础用法'
-          subtitle=''
-          desc='使用 v-model 将变量与 slider 滑杆进行数据绑定，默认最大值 max-value 为 100, 默认最小值为 min-value 0'
           componentName='slider'
           demoName='base-demo'
+          desc='使用 v-model 将变量与 slider 滑杆进行数据绑定，默认最大值 max-value 为 100, 默认最小值为 min-value 0'
+          subtitle=''
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
         <DemoBox
-          title='刻度'
-          subtitle=''
-          desc=''
           componentName='slider'
           demoName='step-demo'
+          desc=''
+          subtitle=''
+          title='刻度'
         >
           <StepDemo></StepDemo>
         </DemoBox>
         <DemoBox
-          title='带输入'
-          subtitle=''
-          desc=''
           componentName='slider'
           demoName='input-demo'
+          desc=''
+          subtitle=''
+          title='带输入'
         >
           <InputDemo></InputDemo>
         </DemoBox>
         <DemoBox
-          title='垂直'
-          subtitle=''
-          desc=''
           componentName='slider'
           demoName='vertical-demo'
+          desc=''
+          subtitle=''
+          title='垂直'
         >
           <VerticalDemo></VerticalDemo>
         </DemoBox>
         <DemoBox
-          title='自定义'
-          subtitle=''
-          desc=''
           componentName='slider'
           demoName='custom-demo'
+          desc=''
+          subtitle=''
+          title='自定义'
         >
           <CustomDemo></CustomDemo>
         </DemoBox>
         <PropsBox
-          title='Slider 属性'
-          subtitle=''
           propsData={switcherPropsJson}
+          subtitle=''
+          title='Slider 属性'
         />
         <PropsBox
-          title='Slider 事件'
-          subtitle=''
           propsData={switcherChangeJson}
+          subtitle=''
+          title='Slider 事件'
         />
       </div>
     );

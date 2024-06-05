@@ -33,7 +33,7 @@ export declare type IOptions = {
   arrow: boolean;
   disabled: boolean;
   placement: Placement;
-  content: string | VNode;
+  content: VNode | string;
   showOnInit: boolean;
   theme: string;
   trigger: string;

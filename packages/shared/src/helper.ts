@@ -24,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-/* eslint-disable no-underscore-dangle */
 /**
  * Returns true if `value` is neither null nor undefined, else returns false.
  * @param {*} value - The value to test.
@@ -167,10 +166,8 @@ export function mergerFn(key: string, target: any, source: any, options: any) {
   const sval = source[key];
 
   if (isObject(tval) && isObject(sval)) {
-    // eslint-disable-next-line no-use-before-define
     merge(tval, sval, options);
   } else {
-    // eslint-disable-next-line no-param-reassign
     target[key] = clone(sval);
   }
 }
@@ -192,12 +189,10 @@ export function merge(target: any, source: any, options?: any) {
     return target;
   }
 
-  // eslint-disable-next-line no-param-reassign
   options = options || {};
   const merger = options.merger || mergerFn;
 
   for (let i = 0; i < ilen; ++i) {
-    // eslint-disable-next-line no-param-reassign
     source = sources[i];
     if (!isObject(source)) {
       continue;
@@ -220,7 +215,6 @@ export function merge(target: any, source: any, options?: any) {
  * @returns {object} The `target` object.
  */
 export function mergeIf(target: any, source: any) {
-  // eslint-disable-next-line no-use-before-define
   return merge(target, source, { merger: mergerIfFn });
 }
 
@@ -239,7 +233,6 @@ export function mergerIfFn(key: string, target: any, source: any) {
   if (isObject(tval) && isObject(sval)) {
     mergeIf(tval, sval);
   } else if (!Object.prototype.hasOwnProperty.call(target, key)) {
-    // eslint-disable-next-line no-param-reassign
     target[key] = clone(sval);
   }
 }

@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import PrefixDemo from './prefix-demo.vue';
 import SeparatorDemo from './separator-demo.vue';
@@ -124,55 +123,55 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Breadcrumb 面包屑'
           desc='Breadcrumb组件， 显示当前页面的路径，快速返回之前的任意页面。'
           link='https://www.google.com.hk/'
+          name='Breadcrumb 面包屑'
         />
 
         <DemoBox
-          title='基础用法'
-          subtitle='垂直菜单，子菜单内嵌在菜单区域。'
-          desc='通过设置 BkBreadcrumbItem 的 to 属性添加跳转链接。'
           componentName='breadcrumb'
           demoName='base-demo'
+          desc='通过设置 BkBreadcrumbItem 的 to 属性添加跳转链接。'
+          subtitle='垂直菜单，子菜单内嵌在菜单区域。'
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
 
         <DemoBox
-          title='字符分割'
-          subtitle='通过自定义 字符串 如：> | / 分割。'
-          desc='通过设置 BkBreadcrumb 的 separator 属性设置分隔符，他可以是字符串或者是slot'
           componentName='breadcrumb'
           demoName='separator-demo'
+          desc='通过设置 BkBreadcrumb 的 separator 属性设置分隔符，他可以是字符串或者是slot'
+          subtitle='通过自定义 字符串 如：> | / 分割。'
+          title='字符分割'
         >
           <SeparatorDemo></SeparatorDemo>
         </DemoBox>
 
         <DemoBox
-          title='支持返回配置以及前置插槽'
-          subtitle='增加前置插槽快速返回'
-          desc='通过设置 BkBreadcrumb 的 back-router 属性（和router参数一样）添加返回跳转链接，也可以使用slot自定义返回区域的内容。'
           componentName='breadcrumb'
           demoName='prefix-demo'
+          desc='通过设置 BkBreadcrumb 的 back-router 属性（和router参数一样）添加返回跳转链接，也可以使用slot自定义返回区域的内容。'
+          subtitle='增加前置插槽快速返回'
+          title='支持返回配置以及前置插槽'
         >
           <PrefixDemo></PrefixDemo>
         </DemoBox>
 
         <PropsBox
-          title='Breadcrumb 属性'
-          subtitle=''
           propsData={breadcrumbPropsJson}
-        />
-        <PropsBox
-          title='Breadcrumb 插槽'
           subtitle=''
-          propsData={breadcrumbSlotJson}
+          title='Breadcrumb 属性'
         />
         <PropsBox
+          propsData={breadcrumbSlotJson}
+          subtitle=''
+          title='Breadcrumb 插槽'
+        />
+        <PropsBox
+          propsData={breadcrumbItemPropsJson}
           subtitle=''
           title='Breadcrumb Item 属性'
-          propsData={breadcrumbItemPropsJson}
         />
       </div>
     );

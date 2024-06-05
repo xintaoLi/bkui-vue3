@@ -23,17 +23,17 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import throttle from 'lodash/throttle';
 import { computed, CSSProperties, defineComponent, effectScope, ref, shallowRef, Teleport, Transition } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { bkTooltips } from '@bkui-vue/directives';
 import { AngleLeft, AngleRight, Close } from '@bkui-vue/icon';
 import { bkZIndexManager, getFullscreenRoot } from '@bkui-vue/shared';
+import throttle from 'lodash/throttle';
 
 import { propsImageViever as props } from './props';
 
-export type ViewerAction = 'zoomIn' | 'zoomOut' | 'clockwise' | 'anticlockwise';
+export type ViewerAction = 'anticlockwise' | 'clockwise' | 'zoomIn' | 'zoomOut';
 
 export default defineComponent({
   name: 'ImageViewer',
@@ -258,10 +258,10 @@ export default defineComponent({
       <Teleport to={teleportTo.value}>
         <Transition>
           <div
-            tabindex='-1'
             ref='wrapper'
-            class={`${resolveClassName('image-viewer-wrapper')}`}
             style={wrapStyles.value}
+            class={`${resolveClassName('image-viewer-wrapper')}`}
+            tabindex='-1'
           >
             <div
               class={`${resolveClassName('image-viewer-mask')}`}
@@ -291,18 +291,18 @@ export default defineComponent({
             {!isSingle.value ? (
               <>
                 <div
-                  onClick={prev}
                   class={`${resolveClassName('image-viewer-btn')} ${resolveClassName('image-viewer-prev')} ${
                     !props.loops && isFirst ? 'is-disabled' : ''
                   }`}
+                  onClick={prev}
                 >
                   <AngleLeft />
                 </div>
                 <div
-                  onClick={next}
                   class={`${resolveClassName('image-viewer-btn')} ${resolveClassName('image-viewer-prev')} ${
                     !props.loops && isLast ? 'is-disabled' : ''
                   }`}
+                  onClick={next}
                 >
                   <AngleRight />
                 </div>
@@ -347,11 +347,11 @@ export default defineComponent({
                     <img
                       key={i}
                       ref={el => (imgRefs[i] = el as HTMLImageElement)}
-                      class={`${resolveClassName('image-viewer-img')}`}
                       style={imgStyle.value}
+                      class={`${resolveClassName('image-viewer-img')}`}
                       src={url}
-                      onLoad={handleImgLoad}
                       onError={handleImgError}
+                      onLoad={handleImgLoad}
                       onMousedown={handleMouseDown}
                     />
                   );

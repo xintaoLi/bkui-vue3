@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import RangeDemo from './range-demo.vue';
 
@@ -56,23 +55,23 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='TimePicker 时间选择器'
           desc='时间选择器'
           designLink='https://bkdesign.bk.tencent.com/design/117'
+          name='TimePicker 时间选择器'
         />
         <DemoBox
-          title='基础用法'
-          desc='通过 v-model 或者 value 设置初始值'
           componentName='date-picker'
           demoName='base-demo'
+          desc='通过 v-model 或者 value 设置初始值'
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
         <DemoBox
-          title='开启时间范围'
-          desc='通过设置 type 属性为 timerange 来开启时间设置'
           componentName='time-picker'
           demoName='range-demo'
+          desc='通过设置 type 属性为 timerange 来开启时间设置'
+          title='开启时间范围'
         >
           <RangeDemo />
         </DemoBox>

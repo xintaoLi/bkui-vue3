@@ -74,27 +74,27 @@ export default defineComponent({
     return (
       <div>
         <Button
-          onClick={this.handleOpenSlider}
           theme='primary'
+          onClick={this.handleOpenSlider}
         >
           测试
         </Button>
         <Sideslider
-          v-model={[this.isShow, 'isShow']}
           width='500'
-          direction='right'
           extCls='custom-sideslider'
-          title='我是自定义标题'
-          quickClose={true}
-          showMask={true}
-          transfer={true}
-          scrollable={true}
+          v-model={[this.isShow, 'isShow']}
           beforeClose={this.handleCloseBefore}
+          direction='right'
+          quickClose={true}
+          scrollable={true}
+          showMask={true}
+          title='我是自定义标题'
+          transfer={true}
+          onAnimationEnd={this.handleAnimationEnd}
           // @ts-ignore
           onChange={this.handleChange}
-          onAnimationEnd={this.handleAnimationEnd}
-          onShown={this.handleShown}
           onHidden={this.handleHidden}
+          onShown={this.handleShown}
         >
           {sideSliderSlot}
         </Sideslider>

@@ -24,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import type { ExtractPropTypes, PropType } from 'vue';
 import {
   computed,
   defineComponent,
@@ -46,6 +45,8 @@ import fecha from '../fecha';
 import { IDisabledHMS, SelectionModeType } from '../interface';
 import { datePickerProps, timePanelProps } from '../props';
 import { initTime, mergeDateHMS, timePickerKey } from '../utils';
+
+import type { ExtractPropTypes, PropType } from 'vue';
 
 const timeProps = {
   disabledDate: {
@@ -204,24 +205,24 @@ export default defineComponent({
         }}
       >
         <div
-          class={this.resolveClassName('picker-panel-body')}
           style={{ width: `${this.width}px` }}
+          class={this.resolveClassName('picker-panel-body')}
         >
           {this.showDate ? <div class={this.resolveClassName('time-picker-header')}>{this.visibleDate}</div> : ''}
           <div class={this.resolveClassName('picker-panel-content')}>
             <TimeSpinner
               ref='timeSpinnerRef'
-              showSeconds={this.showSeconds}
-              steps={this.steps}
-              hours={this.timeSlots[0]}
-              minutes={this.timeSlots[1]}
-              seconds={this.timeSlots[2]}
               disabledHours={this.disabledHMS.disabledHours}
               disabledMinutes={this.disabledHMS.disabledMinutes}
               disabledSeconds={this.disabledHMS.disabledSeconds}
               hideDisabledOptions={this.hideDisabledOptions}
-              onPick-click={this.handlePickClick}
+              hours={this.timeSlots[0]}
+              minutes={this.timeSlots[1]}
+              seconds={this.timeSlots[2]}
+              showSeconds={this.showSeconds}
+              steps={this.steps}
               onChange={this.handleChange}
+              onPick-click={this.handlePickClick}
             />
           </div>
         </div>

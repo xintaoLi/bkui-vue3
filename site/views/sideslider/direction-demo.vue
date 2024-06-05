@@ -1,17 +1,17 @@
 <template>
   <div>
     <bk-button
-      @click="handleRight"
-      text
       theme="primary"
+      text
+      @click="handleRight"
     >
       右侧
     </bk-button>
     <bk-button
-      @click="handleLeft"
       style="margin-left: 10px"
-      text
       theme="primary"
+      text
+      @click="handleLeft"
     >
       左侧
     </bk-button>
@@ -26,9 +26,9 @@
     </bk-sideslider>
     <bk-sideslider
       v-model:isShow="isShowLeft"
+      direction="left"
       title="我是标题"
       quick-close
-      direction="left"
       transfer
     >
       left
@@ -37,16 +37,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+  import { ref } from 'vue';
 
-const isShowRight = ref(false);
-const isShowLeft = ref(false);
+  const isShowRight = ref(false);
+  const isShowLeft = ref(false);
 
-const handleRight = () => {
-  isShowRight.value = true;
-};
+  const handleRight = () => {
+    isShowRight.value = true;
+  };
 
-const handleLeft = () => {
-  isShowLeft.value = true;
-};
+  const handleLeft = () => {
+    isShowLeft.value = true;
+  };
 </script>

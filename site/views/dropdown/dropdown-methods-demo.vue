@@ -1,8 +1,8 @@
 <template>
   <div>
     <bk-dropdown
-      @show="handleShow"
       @hide="handleHide"
+      @show="handleShow"
     >
       <bk-button>hover触发</bk-button>
       <template #content>
@@ -23,7 +23,6 @@
 
   import BkDropdown from '@bkui-vue/dropdown';
   import BkMessage from '@bkui-vue/message';
-
 
   const dropdownList = ref(['生产环境', '预发布环境', '测试环境', '正式环境', '开发环境', '调试环境']);
 

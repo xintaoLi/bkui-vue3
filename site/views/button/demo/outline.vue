@@ -1,12 +1,10 @@
 <template>
   <div class="basic-button-list">
-    <bk-button outline>
-      反色按钮
-    </bk-button>
+    <bk-button outline> 反色按钮 </bk-button>
     <bk-button
-      outline
-      theme="primary"
       class="ml10"
+      theme="primary"
+      outline
     >
       反色按钮
     </bk-button>

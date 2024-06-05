@@ -62,14 +62,16 @@
     console.info(item, keyword);
     await new Promise(resolve => setTimeout(resolve, 300));
     if (!item && keyword) {
-      return [{
-        id: 'sdfds',
-        name: 'sdfsdfds',
-        value: {
-          id: 'sdfsdfsdfsdf',
-          name: `测试${keyword}`,
+      return [
+        {
+          id: 'sdfds',
+          name: 'sdfsdfds',
+          value: {
+            id: 'sdfsdfsdfsdf',
+            name: `测试${keyword}`,
+          },
         },
-      }];
+      ];
     }
     if (!item) return data;
     return data.find(set => set.id === item.id)?.children;

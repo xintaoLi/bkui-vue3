@@ -2,8 +2,8 @@
   <div>
     <bk-input
       v-model="val"
-      clearable
       :maxlength="88"
+      clearable
       show-word-limit
     />
   </div>

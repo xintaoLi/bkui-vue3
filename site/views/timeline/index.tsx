@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import CustomDemo from './custom-demo.vue';
 import HtmlDemo from './html-demo.vue';
@@ -139,73 +138,73 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Timeline 时间轴'
           desc='Timeline 时间轴，用于时间轴的场景组件'
           link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/timeline`}
+          name='Timeline 时间轴'
         />
         <DemoBox
-          title='基础用法'
-          desc='默认配置 list，list 为必传。可根据具体的应用场景，灵活地配置 list.tag 和 list.content，可以将时间作为标题，也可以作为内容的一部分'
           componentName='timeline'
           demoName='base-demo'
+          desc='默认配置 list，list 为必传。可根据具体的应用场景，灵活地配置 list.tag 和 list.content，可以将时间作为标题，也可以作为内容的一部分'
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
 
         <DemoBox
-          title='节点状态'
-          desc='在 list 数据源中配置 size color filled 属性呈现不同状态。绿色代表成功/已完成，蓝色代表正在进行，红色代表错误/失败，黄色代表告警/暂停，灰色代表未开始。实心代表已完成。'
           componentName='timeline'
           demoName='status-demo'
+          desc='在 list 数据源中配置 size color filled 属性呈现不同状态。绿色代表成功/已完成，蓝色代表正在进行，红色代表错误/失败，黄色代表告警/暂停，灰色代表未开始。实心代表已完成。'
+          title='节点状态'
         >
           <StatusDemo />
         </DemoBox>
 
         <DemoBox
-          title='自定义节点图标'
-          desc='在 list 数据源中配置 icon 属性'
           componentName='timeline'
           demoName='custom-demo'
+          desc='在 list 数据源中配置 icon 属性'
+          title='自定义节点图标'
         >
           <CustomDemo />
         </DemoBox>
 
         <DemoBox
-          title='节点样式可配置'
-          desc='在 list 数据源中配置 type 属性（值可取 defult, primary, warning, success, danger），默认为 defult'
           componentName='timeline'
           demoName='node-demo'
+          desc='在 list 数据源中配置 type 属性（值可取 defult, primary, warning, success, danger），默认为 defult'
+          title='节点样式可配置'
         >
           <NodeDemo />
         </DemoBox>
 
         <DemoBox
-          title='可配置 HTML 模板'
-          desc='对 list 数据源中的 content 属性配置正确的 HTML 模板内容(注意：你的站点上动态渲染的任意 HTML 可能会非常危险，因为它很容易导致 XSS 攻击)'
           componentName='timeline'
           demoName='html-demo'
+          desc='对 list 数据源中的 content 属性配置正确的 HTML 模板内容(注意：你的站点上动态渲染的任意 HTML 可能会非常危险，因为它很容易导致 XSS 攻击)'
+          title='可配置 HTML 模板'
         >
           <HtmlDemo />
         </DemoBox>
 
         <DemoBox
-          title='使用 Vnode 渲染'
-          desc='content 和 tag 支持 vnode 类型，支持jsx语法'
           componentName='timeline'
           demoName='vnode-demo'
+          desc='content 和 tag 支持 vnode 类型，支持jsx语法'
+          title='使用 Vnode 渲染'
         >
           <VnodeDemo />
         </DemoBox>
 
         <PropsBox
-          title='属性'
-          subtitle=''
           propsData={timelineProps}
+          subtitle=''
+          title='属性'
         />
         <PropsBox
-          title='事件'
-          subtitle=''
           propsData={timelineEvents}
+          subtitle=''
+          title='事件'
         />
       </div>
     );

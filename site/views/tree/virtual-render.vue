@@ -8,21 +8,21 @@
         >
           随机数据
         </bk-button>
-        <span style="padding: 4px;" />
+        <span style="padding: 4px" />
         <bk-button
           theme="primary"
           @click="() => handleHeightChange(100)"
         >
           设置高度 +
         </bk-button>
-        <span style="padding: 4px;" />
+        <span style="padding: 4px" />
         <bk-button
           theme="primary"
           @click="() => handleHeightChange(-100)"
         >
           设置高度 -
         </bk-button>
-        <span style="padding: 4px;" />
+        <span style="padding: 4px" />
         <bk-button
           theme="primary"
           @click="handleScrollToTop"
@@ -30,25 +30,25 @@
           ScrollToTop({{ scrollToPath }})
         </bk-button>
         <bk-input
+          style="width: 400px; margin-left: 20px"
           v-model="search.value"
-          style="width: 400px;margin-left: 20px;"
           type="search"
         />
       </div>
       <div
-        class="cell"
         :style="{ height: `${height}px` }"
+        class="cell"
       >
         <bk-tree
           ref="refTree"
-          expand-all
           :data="treeData"
           :search="search"
-          virtual-render
-          show-checkbox
-          level-line
-          label="name"
           children="children"
+          label="name"
+          expand-all
+          level-line
+          show-checkbox
+          virtual-render
         />
       </div>
     </div>
@@ -107,5 +107,5 @@
 </script>
 
 <style scoped>
-@import './tree.less';
+  @import './tree.less';
 </style>

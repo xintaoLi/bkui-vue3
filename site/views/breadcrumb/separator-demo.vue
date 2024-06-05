@@ -2,14 +2,14 @@
   <div>
     <div style="margin-bottom: 10px">
       分割符：<bk-input
+        style="width: 200px"
         v-model="separator"
         clearable
-        style="width: 200px"
       />
     </div>
     <bk-breadcrumb :separator="separator">
       <bk-breadcrumb-item
-        v-for="(item,index) in list"
+        v-for="(item, index) in list"
         :key="index"
         :to="item.link"
       >
@@ -22,7 +22,11 @@
         </template>
       </bk-breadcrumb-item>
       <bk-breadcrumb-item>
-        <a href="https://magicbox.bk.tencent.com/static_api/v3/main/index.html" target="_blank">MagicBox</a>
+        <a
+          href="https://magicbox.bk.tencent.com/static_api/v3/main/index.html"
+          target="_blank"
+          >MagicBox</a
+        >
       </bk-breadcrumb-item>
     </bk-breadcrumb>
   </div>
@@ -48,9 +52,7 @@
         { title: '滑块开关', link: { path: 'switcher' } },
         { title: '面包屑', link: null },
       ];
-      const list1 = [
-        { title: 'MagicBox', link: null }
-      ];
+      const list1 = [{ title: 'MagicBox', link: null }];
       return {
         list,
         list1,
@@ -58,5 +60,4 @@
       };
     },
   });
-
 </script>

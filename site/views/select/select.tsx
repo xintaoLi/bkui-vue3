@@ -1,5 +1,3 @@
-/* eslint-disable codecc/comment-ratio */
-
 /*
  * Tencent is pleased to support the open source community by making
  * 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition) available.
@@ -32,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import SelectAllowCreate from './select-allow-create.vue';
 import SelectBaseDemo from './select-base-demo.vue';
 import SelectGroupDemo from './select-group-demo.vue';
@@ -495,87 +492,87 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Select 下拉选框'
           desc='将动作或菜单折叠到下拉菜单中，支持单选和多选'
           designLink='https://bkdesign.bk.tencent.com/design/54'
+          name='Select 下拉选框'
         />
         <DemoBox
-          title='基础用法'
-          desc='基础单选'
           componentName='select'
           demoName='select-base-demo'
+          desc='基础单选'
+          title='基础用法'
         >
           <SelectBaseDemo />
         </DemoBox>
         <DemoBox
-          title='尺寸 & 风格'
-          desc='large、default、 small 三种尺寸，normal、simplicity两种风格'
           componentName='select'
           demoName='select-style-demo'
+          desc='large、default、 small 三种尺寸，normal、simplicity两种风格'
+          title='尺寸 & 风格'
         >
           <SelectStyleDemo />
         </DemoBox>
         <DemoBox
-          title='多选'
-          desc='支持 tag 形式的多选，支持打勾以及 checkbox 的多选样式'
           componentName='select'
           demoName='select-multi-demo'
+          desc='支持 tag 形式的多选，支持打勾以及 checkbox 的多选样式'
+          title='多选'
         >
           <SelectMultiDemo />
         </DemoBox>
         <DemoBox
-          title='分组'
-          desc=''
           componentName='select'
           demoName='select-group-demo'
+          desc=''
+          title='分组'
         >
           <SelectGroupDemo />
         </DemoBox>
         <DemoBox
-          title='搜索'
-          desc='远程搜索和本地搜索，注意：动态Options时建议使用value作为key，防止出现option没有销毁问题'
           componentName='select'
           demoName='select-search-demo'
+          desc='远程搜索和本地搜索，注意：动态Options时建议使用value作为key，防止出现option没有销毁问题'
+          title='搜索'
         >
           <SelectSearchDemo />
         </DemoBox>
         <DemoBox
-          title='滚动加载'
-          desc='滚动加载'
           componentName='select'
           demoName='select-scrollloading-demo'
+          desc='滚动加载'
+          title='滚动加载'
         >
           <SelectScrollLoadingDemo />
         </DemoBox>
         <DemoBox
-          title='自定义创建'
-          desc='自定义创建选项'
           componentName='select'
           demoName='select-allow-create'
+          desc='自定义创建选项'
+          title='自定义创建'
         >
           <SelectAllowCreate />
         </DemoBox>
         <DemoBox
-          title='Tree Select'
-          desc='Tree Select'
           componentName='select'
           demoName='select-tree-demo'
+          desc='Tree Select'
+          title='Tree Select'
         >
           <SelectTreeDemo />
         </DemoBox>
         <DemoBox
-          title='Virtual Select'
-          desc='虚拟滚动只支持list模式数据源'
           componentName='select'
           demoName='select-virtual-render'
+          desc='虚拟滚动只支持list模式数据源'
+          title='Virtual Select'
         >
           <SelectVirtualRender />
         </DemoBox>
         <DemoBox
-          title='自定义slot'
-          desc='自定义tag和trigger'
           componentName='select'
           demoName='select-slot-demo'
+          desc='自定义tag和trigger'
+          title='自定义slot'
         >
           <SelectSlotDemo />
         </DemoBox>
@@ -584,30 +581,30 @@ export default defineComponent({
           subtitle=''
         />
         <PropsBox
-          propsData={eventJson}
           columnMap={eventColumnMap}
+          propsData={eventJson}
           title='Select 事件'
         />
         <PropsBox
-          title='Select 插槽'
-          subtitle=''
           columnMap={slotColumnMap}
           propsData={selectSlots}
+          subtitle=''
+          title='Select 插槽'
         />
         <PropsBox
-          title='Select 方法'
-          subtitle=''
           propsData={selectExpose}
+          subtitle=''
+          title='Select 方法'
         />
         <PropsBox
-          title='Option 属性'
-          subtitle=''
           propsData={optionProps}
+          subtitle=''
+          title='Option 属性'
         />
         <PropsBox
-          title='Option 插槽'
-          subtitle=''
           propsData={optionSlot}
+          subtitle=''
+          title='Option 插槽'
         />
       </div>
     );

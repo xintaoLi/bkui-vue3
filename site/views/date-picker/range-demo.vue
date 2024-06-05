@@ -6,19 +6,17 @@
   /> -->
   <bk-date-picker
     ref="datePickerRef"
+    style="width: 100%"
+    :disabled-date="disabledDate"
+    :model-value="defaultValue"
+    type="datetimerange"
     append-to-body
     clearable
-    :model-value="defaultValue"
-    style="width: 100%;"
-    type="datetimerange"
-    :disabled-date="disabledDate"
     @change="handleChange"
     @pick-first="handlePickFirst"
   >
     <template #footer>
-      <div class="custom-footer">
-        我是自定义 footer
-      </div>
+      <div class="custom-footer">我是自定义 footer</div>
     </template>
     <template #confirm>
       <div class="custom-footer">
@@ -38,7 +36,7 @@
   import { reactive, ref } from 'vue';
   const datePickerRef = ref(null);
   const defaultValue = reactive([new Date(), new Date()]);
-  const handleChange = (date) => {
+  const handleChange = date => {
     defaultValue.value = date;
     console.error(datePickerRef);
     // datePickerRef.value.pickerPanelRef.handleToggleTime();

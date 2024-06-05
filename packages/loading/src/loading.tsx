@@ -35,10 +35,10 @@ export enum BkLoadingMode {
 }
 
 export enum BkLoadingSize {
-  Normal = '',
-  Mini = 'mini',
-  Small = 'small',
   Large = 'large',
+  Mini = 'mini',
+  Normal = '',
+  Small = 'small',
 }
 
 let defaultIndicator: () => VNode;
@@ -53,7 +53,7 @@ export const loadingTypes = {
   loading: PropTypes.bool.def(true),
   inline: PropTypes.bool.def(true),
   theme: {
-    type: String as PropType<'white' | 'primary' | 'warning' | 'success' | 'danger' | 'default'>,
+    type: String as PropType<'danger' | 'default' | 'primary' | 'success' | 'warning' | 'white'>,
   },
   title: PropTypes.string.def(''),
   size: {
@@ -136,13 +136,13 @@ export default defineComponent({
         {props.loading && [
           (ctx.slots.default || props.isDirective) && (
             <div
-              class={`${resolveClassName('loading-mask')}`}
               style={maskStyle.value}
+              class={`${resolveClassName('loading-mask')}`}
             ></div>
           ),
           <div
-            class={containerCls.value}
             style={zIndexStyle.value}
+            class={containerCls.value}
           >
             {indicator.value}
             {hasTitle.value && <div class={`${resolveClassName('loading-title')}`}>{props.title}</div>}

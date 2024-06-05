@@ -146,8 +146,8 @@ export default defineComponent({
           <div class={resolveClassName('modal-body')}>
             <div class={resolveClassName('modal-header')}>{slots.header?.()}</div>
             <div
-              class={resolveClassName('modal-content')}
               style={contentStyles.value}
+              class={resolveClassName('modal-content')}
             >
               <div style='position: relative; display: inline-block; width: 100%;'>
                 {slots.default?.()}
@@ -179,8 +179,8 @@ export default defineComponent({
 
       return (
         <Teleport
-          to='body'
           disabled={!props.transfer}
+          to='body'
         >
           <div
             ref={rootRef}
@@ -190,23 +190,23 @@ export default defineComponent({
             {props.showMask && (
               <Transition name={mask.getMaskCount() > 0 ? 'fadein' : ''}>
                 <div
-                  v-show={localShow.value}
                   ref={maskRef}
-                  class={{
-                    [resolveClassName('modal-mask')]: true,
-                  }}
                   style={{
                     zIndex: zIndex.value,
                   }}
+                  class={{
+                    [resolveClassName('modal-mask')]: true,
+                  }}
+                  v-show={localShow.value}
                   onClick={handleClickOutSide}
                 />
               </Transition>
             )}
             <Transition name={`modal-${props.animateType}`}>
               <div
-                v-show={localShow.value}
-                class={resolveClassName('modal-wrapper')}
                 style={modalWrapperStyles.value}
+                class={resolveClassName('modal-wrapper')}
+                v-show={localShow.value}
               >
                 {renderContent()}
               </div>

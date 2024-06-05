@@ -1,11 +1,11 @@
 <template>
   <div class="demo">
     <bk-upload
-      with-credentials
-      :limit="limit"
       :handle-res-code="handleRes"
+      :limit="limit"
       :tip="'最多上传2个文件'"
       :url="'https://jsonplaceholder.typicode.com/posts/'"
+      with-credentials
       @exceed="handleExceed"
     />
   </div>
@@ -25,7 +25,7 @@
     });
   };
 
-  const handleRes = (response) => {
+  const handleRes = response => {
     if (response.id) {
       return true;
     }

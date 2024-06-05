@@ -54,16 +54,16 @@ const Line = (_: any, { attrs, slots }) => {
   return (
     <div class='progress-outer'>
       <div
-        class={`${resolveClassName(`progress-${size || 'normal'}`)} progress-bar`}
         style={percentStyle}
+        class={`${resolveClassName(`progress-${size || 'normal'}`)} progress-bar`}
       >
         <div
           style={barStyle}
           class={{ 'progress-inner': true, [`${resolveClassName(`${theme}`)}`]: true }}
         >
           <div
-            class='inner-text'
             style={titleStyle}
+            class='inner-text'
           >
             {showDefault()}
           </div>

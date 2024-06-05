@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import EditDemo from './edit-demo.vue';
 import SizeDemo from './size-demo.vue';
@@ -82,51 +81,51 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Rate 评分'
           desc='评分组件'
           designLink='https://bkdesign.bk.tencent.com/design/147'
+          name='Rate 评分'
         />
 
         <DemoBox
-          title='基础用法'
-          subtitle=''
-          desc='通过 editable 设置为 false, 让 rate 组件只能查看不能编辑，只有非编辑态可以展示小数'
           componentName='rate'
           demoName='base-demo'
+          desc='通过 editable 设置为 false, 让 rate 组件只能查看不能编辑，只有非编辑态可以展示小数'
+          subtitle=''
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
 
         <DemoBox
-          title='控制组件大小'
-          subtitle=''
-          desc='通过 size 属性控制组件大小'
           componentName='rate'
           demoName='size-demo'
+          desc='通过 size 属性控制组件大小'
+          subtitle=''
+          title='控制组件大小'
         >
           <SizeDemo></SizeDemo>
         </DemoBox>
 
         <DemoBox
-          title='事件'
-          subtitle=''
-          desc='通过监听 change 事件来做出响应'
           componentName='rate'
           demoName='edit-demo'
+          desc='通过监听 change 事件来做出响应'
+          subtitle=''
+          title='事件'
         >
           <EditDemo></EditDemo>
         </DemoBox>
 
         <PropsBox
-          title='Rate 属性'
-          subtitle=''
           propsData={ratePropsJson}
+          subtitle=''
+          title='Rate 属性'
         />
 
         <PropsBox
-          title='Rate 事件'
-          subtitle=''
           propsData={rateEventJson}
+          subtitle=''
+          title='Rate 事件'
         />
       </div>
     );

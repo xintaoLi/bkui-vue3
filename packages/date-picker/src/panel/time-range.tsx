@@ -24,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import type { ExtractPropTypes, PropType } from 'vue';
 import { computed, defineComponent, inject, onMounted, reactive, ref, toRefs, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
@@ -35,6 +34,8 @@ import fecha from '../fecha';
 import { SelectionModeType } from '../interface';
 import { datePickerProps, timePanelProps } from '../props';
 import { initTime, timePickerKey } from '../utils';
+
+import type { ExtractPropTypes, PropType } from 'vue';
 
 const timeRangeProps = {
   steps: {
@@ -238,12 +239,12 @@ export default defineComponent({
         }}
       >
         <div
-          class={this.resolveClassName('picker-panel-body')}
           style={{ width: `${this.width * 2}px` }}
+          class={this.resolveClassName('picker-panel-body')}
         >
           <div
-            class={[this.resolveClassName('picker-panel-content'), this.resolveClassName('picker-panel-content-left')]}
             style={{ width: `${this.width}px` }}
+            class={[this.resolveClassName('picker-panel-content'), this.resolveClassName('picker-panel-content-left')]}
           >
             {this.showDate ? (
               <div class={`${this.resolveClassName('time-picker-header')}`}>{this.leftDatePanelLabel}</div>
@@ -252,22 +253,22 @@ export default defineComponent({
             )}
             <TimeSpinner
               ref='timeSpinnerRef'
-              steps={this.steps}
-              showSeconds={this.showSeconds}
-              hours={this.value[0] && this.dateStart.getHours()}
-              minutes={this.value[0] && this.dateStart.getMinutes()}
-              seconds={this.value[0] && this.dateStart.getSeconds()}
               disabledHours={this.disabledHours}
               disabledMinutes={this.disabledMinutes}
               disabledSeconds={this.disabledSeconds}
               hideDisabledOptions={this.hideDisabledOptions}
+              hours={this.value[0] && this.dateStart.getHours()}
+              minutes={this.value[0] && this.dateStart.getMinutes()}
+              seconds={this.value[0] && this.dateStart.getSeconds()}
+              showSeconds={this.showSeconds}
+              steps={this.steps}
               onChange={this.handleStartChange}
               onPick-click={this.handlePickClick}
             />
           </div>
           <div
-            class={[this.resolveClassName('picker-panel-content'), this.resolveClassName('picker-panel-content-right')]}
             style={{ width: `${this.width}px` }}
+            class={[this.resolveClassName('picker-panel-content'), this.resolveClassName('picker-panel-content-right')]}
           >
             {this.showDate ? (
               <div class={this.resolveClassName('time-picker-header')}>{this.rightDatePanelLabel}</div>
@@ -276,15 +277,15 @@ export default defineComponent({
             )}
             <TimeSpinner
               ref='timeSpinnerEndRef'
-              steps={this.steps}
-              showSeconds={this.showSeconds}
-              hours={this.value[1] && this.dateEnd.getHours()}
-              minutes={this.value[1] && this.dateEnd.getMinutes()}
-              seconds={this.value[1] && this.dateEnd.getSeconds()}
               disabledHours={this.disabledHours}
               disabledMinutes={this.disabledMinutes}
               disabledSeconds={this.disabledSeconds}
               hideDisabledOptions={this.hideDisabledOptions}
+              hours={this.value[1] && this.dateEnd.getHours()}
+              minutes={this.value[1] && this.dateEnd.getMinutes()}
+              seconds={this.value[1] && this.dateEnd.getSeconds()}
+              showSeconds={this.showSeconds}
+              steps={this.steps}
               onChange={this.handleEndChange}
               onPick-click={this.handlePickClick}
             />

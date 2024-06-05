@@ -2,8 +2,8 @@
   <div>
     <bk-tag-input
       v-model="state.tags"
-      placeholder="请选择城市"
       :list="state.list"
+      placeholder="请选择城市"
       @input="handleInput"
     />
     <p>请输入“州”来体验下搜索效果</p>
@@ -28,7 +28,7 @@
     ],
   });
 
-  const handleInput = (val) => {
+  const handleInput = val => {
     console.log(1, val);
   };
 </script>

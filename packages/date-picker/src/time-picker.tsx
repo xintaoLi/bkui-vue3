@@ -48,12 +48,13 @@ import { getFullscreenRoot, useFormItem } from '@bkui-vue/shared';
 import PickerDropdown from './base/picker-dropdown';
 import { dateIcon, timeIcon } from './common';
 // import VueTypes, { toType, toValidableType } from 'vue-types';
-// import { PropTypes } from '@bkui-vue/shared';
-import type { DatePickerPanelType, SelectionModeType } from './interface';
 import TimePanel from './panel/time';
 import TimeRangePanel from './panel/time-range';
 import { datePickerProps, timePanelProps, timePickerProps } from './props';
 import { extractTime, formatDate, isAllEmptyArr, parseDate, timePickerKey } from './utils';
+
+// import { PropTypes } from '@bkui-vue/shared';
+import type { DatePickerPanelType, SelectionModeType } from './interface';
 
 export default defineComponent({
   name: 'TimePicker',
@@ -325,7 +326,7 @@ export default defineComponent({
 
       if (state.visible) {
         const pickerPanel = pickerPanelRef?.value?.$el;
-        if (e && pickerPanel && pickerPanel.contains(e.target)) {
+        if (e && pickerPanel?.contains(e.target)) {
           return;
         }
 
@@ -635,30 +636,30 @@ export default defineComponent({
           {this.type === 'time' || this.type === 'timerange' ? timeIcon : dateIcon}
         </span>
         <input
-          type='text'
+          key={this.forceInputRerender}
+          ref='inputRef'
           class={[
             this.resolveClassName('date-picker-editor'),
             this.readonly ? 'readonly' : '',
             this.fontSizeCls,
             this.behavior === 'simplicity' ? 'only-bottom-border' : '',
           ]}
-          ref='inputRef'
-          key={this.forceInputRerender}
-          readonly={this.localReadonly}
           disabled={this.disabled}
           placeholder={this.placeholder}
+          readonly={this.localReadonly}
+          type='text'
           value={this.displayValue}
-          onFocus={this.handleFocus}
-          onClick={this.handleFocus}
           onBlur={this.handleBlur}
-          onKeydown={this.handleKeydown}
           onChange={this.handleInputChange}
+          onClick={this.handleFocus}
+          onFocus={this.handleFocus}
           onInput={this.handleInputInput}
+          onKeydown={this.handleKeydown}
         />
         {this.clearable && this.showClose ? (
           <Close
-            onClick={this.handleClear}
             class='clear-action'
+            onClick={this.handleClear}
           />
         ) : (
           ''
@@ -682,18 +683,18 @@ export default defineComponent({
           {this.$slots.trigger?.(this.displayValue) ?? defaultTrigger}
         </div>
         <Teleport
-          to={this.teleportTo}
           disabled={!this.appendToBody}
+          to={this.teleportTo}
         >
           <Transition name='bk-fade-down-transition'>
             <PickerDropdown
-              class={[this.appendToBody ? this.resolveClassName('date-picker-transfer') : '']}
               ref='pickerDropdownRef'
+              class={[this.appendToBody ? this.resolveClassName('date-picker-transfer') : '']}
               v-show={this.opened}
-              triggerRef={this.triggerRef}
-              placement={this.placement}
-              extPopoverCls={this.extPopoverCls}
               appendToBody={this.appendToBody}
+              extPopoverCls={this.extPopoverCls}
+              placement={this.placement}
+              triggerRef={this.triggerRef}
               onClick={this.handleTransferClick}
             >
               {this.hasHeader ? (
@@ -704,42 +705,42 @@ export default defineComponent({
               {this.panel === 'RangeTimePickerPanel' ? (
                 <TimeRangePanel
                   ref='pickerPanelRef'
-                  clearable={this.clearable}
-                  shortcuts={this.shortcuts}
-                  multiple={this.multiple}
-                  shortcutClose={this.shortcutClose}
-                  value={this.internalValue}
-                  startDate={this.startDate}
-                  disabledDate={this.disabledDate}
-                  onPick={this.onPick}
-                  onPick-clear={this.handleClear}
-                  onPick-success={this.onPickSuccess}
                   v-slots={shortcutsSlot}
+                  allowCrossDay={this.allowCrossDayProp}
+                  clearable={this.clearable}
+                  disabledDate={this.disabledDate}
                   disabledHours={this.ownPickerProps.disabledHours}
                   disabledMinutes={this.ownPickerProps.disabledMinutes}
                   disabledSeconds={this.ownPickerProps.disabledSeconds}
-                  allowCrossDay={this.allowCrossDayProp}
                   format={this.format}
+                  multiple={this.multiple}
+                  shortcutClose={this.shortcutClose}
+                  shortcuts={this.shortcuts}
+                  startDate={this.startDate}
+                  value={this.internalValue}
+                  onPick={this.onPick}
+                  onPick-clear={this.handleClear}
+                  onPick-success={this.onPickSuccess}
                 />
               ) : (
                 <TimePanel
                   ref='pickerPanelRef'
+                  v-slots={shortcutsSlot}
                   clearable={this.clearable}
                   confirm={this.isConfirm}
-                  shortcuts={this.shortcuts}
-                  multiple={this.multiple}
-                  shortcutClose={this.shortcutClose}
-                  value={this.internalValue}
-                  startDate={this.startDate}
                   disabledDate={this.disabledDate}
-                  onPick={this.onPick}
-                  onPick-clear={this.handleClear}
-                  onPick-success={this.onPickSuccess}
-                  v-slots={shortcutsSlot}
                   disabledHours={this.ownPickerProps.disabledHours}
                   disabledMinutes={this.ownPickerProps.disabledMinutes}
                   disabledSeconds={this.ownPickerProps.disabledSeconds}
                   format={this.format}
+                  multiple={this.multiple}
+                  shortcutClose={this.shortcutClose}
+                  shortcuts={this.shortcuts}
+                  startDate={this.startDate}
+                  value={this.internalValue}
+                  onPick={this.onPick}
+                  onPick-clear={this.handleClear}
+                  onPick-success={this.onPickSuccess}
                 />
               )}
               {this.hasFooter ? (

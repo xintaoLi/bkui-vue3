@@ -31,12 +31,12 @@
     <bk-form-item label="学历">
       <bk-select>
         <bk-option
-          value="1"
           label="本科以下"
+          value="1"
         />
         <bk-option
-          value="2"
           label="本科以上"
+          value="2"
         />
       </bk-select>
     </bk-form-item>
@@ -46,7 +46,7 @@
         type="textarea"
       />
     </bk-form-item>
-    <bk-form-item style="margin-top: 32px;">
+    <bk-form-item style="margin-top: 32px">
       <bk-button
         theme="primary"
         @click="handleValid"
@@ -86,7 +86,6 @@
   const handleValid = () => {
     formRef.value.validate();
   };
-
 </script>
 <style lang="postcss" scoped>
   .example {

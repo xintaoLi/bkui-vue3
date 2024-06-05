@@ -93,11 +93,11 @@ export default defineComponent({
           .fill(1)
           .map((_, index) => (
             <svg
-              class={starClass(index)}
               style={starStyle}
+              class={starClass(index)}
+              viewBox='0 0 64 64'
               x='0px'
               y='0px'
-              viewBox='0 0 64 64'
               onClick={() => chooseRate(index)}
               onMouseenter={(e: Event) => changeHover(index, e)}
               onMouseleave={(e: Event) => handleMouseLeave(e)}
@@ -106,7 +106,7 @@ export default defineComponent({
                 <g transform='translate(83.000000, 114.000000)'>
                   <g transform='translate(15.000000, 384.000000)'>
                     <g transform='translate(29.000000, 137.000000)'>
-                      {/* eslint-disable-next-line max-len */}
+                      {}
                       <polygon
                         class='st1'
                         points='48,53 28.2,63.9 32,40.8 16,24.4 38.1,21 48,-0.1 57.8,21 79.9,24.4 63.9,40.8 67.7,63.9'

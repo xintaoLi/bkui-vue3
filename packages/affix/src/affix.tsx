@@ -24,11 +24,11 @@
  * IN THE SOFTWARE.
  */
 
-import throttle from 'lodash/throttle';
 import { computed, defineComponent, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { classes, PropTypes } from '@bkui-vue/shared';
+import throttle from 'lodash/throttle';
 const on = (() => {
   if (document.addEventListener) {
     return (element, event, handler) => {
@@ -186,8 +186,8 @@ export default defineComponent({
       <div ref={root}>
         <div
           ref={point}
-          class={pointClass.value}
           style={offsetStyles.value}
+          class={pointClass.value}
         >
           {slots.default?.()}
         </div>

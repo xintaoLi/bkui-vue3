@@ -3,14 +3,14 @@
     <h3>垂直居左-基础样式</h3>
     <bk-tab
       v-model:active="active"
-      type="card"
       tab-position="left"
+      type="card"
     >
       <bk-tab-panel
-        v-for="(item,index) in panels"
+        v-for="(item, index) in panels"
         :key="item.name"
-        :name="item.name"
         :label="item.label"
+        :name="item.name"
       >
         {{ item.label }}-{{ index }}
       </bk-tab-panel>
@@ -18,14 +18,14 @@
     <h3>垂直居右-基础样式</h3>
     <bk-tab
       v-model:active="active"
-      type="card"
       tab-position="right"
+      type="card"
     >
       <bk-tab-panel
-        v-for="(item,index) in panels"
+        v-for="(item, index) in panels"
         :key="item.name"
-        :name="item.name"
         :label="item.label"
+        :name="item.name"
       >
         {{ item.label }}-{{ index }}
       </bk-tab-panel>
@@ -55,8 +55,7 @@
         this.active = name;
       },
       addPanel() {
-        const name = Math.random().toString(16)
-          .substring(4, 10);
+        const name = Math.random().toString(16).substring(4, 10);
         this.panels.push({
           name,
           label: `新标签页-${name.substring(0, 4)}`,

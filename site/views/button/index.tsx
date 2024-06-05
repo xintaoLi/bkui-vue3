@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import Basic from './demo/basic.vue';
 import Disabled from './demo/disabled.vue';
 import Group from './demo/group.vue';
@@ -169,10 +168,10 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Button'
           desc='常用的操作按钮'
-          link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/button`}
           designLink='https://bkdesign.bk.tencent.com/design/9'
+          link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/button`}
+          name='Button'
         />
         {demos.map(({ DemoComponent, ...demo }) => (
           <DemoBox {...demo}>
@@ -180,14 +179,14 @@ export default defineComponent({
           </DemoBox>
         ))}
         <PropsBox
-          title='Button 属性'
-          subtitle=''
           propsData={buttonProps}
+          subtitle=''
+          title='Button 属性'
         />
         <PropsBox
-          title='Button 事件'
-          subtitle=''
           propsData={buttonEvents}
+          subtitle=''
+          title='Button 事件'
         />
       </div>
     );

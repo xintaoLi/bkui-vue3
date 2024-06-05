@@ -1,17 +1,17 @@
 <template>
   <div ref="box">
-    <div style="border: 1px solid #ccc;height: 50px;">
+    <div style="border: 1px solid #ccc; height: 50px">
       <div
-        v-bk-tooltips="{ content: '提示信息',boundary:'parent' }"
         class="bk-tooltips-base"
+        v-bk-tooltips="{ content: '提示信息', boundary: 'parent' }"
       >
         <info />
       </div>
     </div>
     &nbsp;&nbsp;&nbsp;&nbsp;
     <div
-      v-bk-tooltips="{ content: '提示信息2,延迟3s', boundary:box }"
       class="bk-tooltips-base"
+      v-bk-tooltips="{ content: '提示信息2,延迟3s', boundary: box }"
     >
       <info />
     </div>
@@ -19,9 +19,10 @@
 </template>
 
 <script>
+  import { defineComponent, ref } from 'vue';
+
   import { bkTooltips } from 'bkui-vue';
   import { Info } from 'bkui-vue/lib/icon';
-  import { defineComponent, ref } from 'vue';
 
   export default defineComponent({
     components: {
@@ -42,8 +43,8 @@
 </script>
 
 <style lang="postcss">
-.bk-tooltips-base {
-  font-size: 18px;
-  color: #3a84ff;
-}
+  .bk-tooltips-base {
+    font-size: 18px;
+    color: #3a84ff;
+  }
 </style>

@@ -28,7 +28,6 @@ import { mount, shallowMount } from '@vue/test-utils';
 
 import CodeDiff from '../src';
 import { LANGUAGES } from '../src/code-diff';
-
 import { NEW_STR, OLD_STR } from './diffFile';
 
 describe('CodeDiff.tsx', () => {

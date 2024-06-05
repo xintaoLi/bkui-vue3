@@ -29,12 +29,12 @@ import { defineComponent } from 'vue';
 import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
-import type { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import CloseDemo from './close-demo.vue';
 import MultiDemo from './multi-demo.vue';
 import ThemeDemo from './theme-demo.vue';
+
+import type { IPropsTableItem } from '../../typings';
 
 const props: IPropsTableItem[] = [
   {
@@ -266,70 +266,70 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Message 消息提示'
           desc='用户操作后的消息提示，用于成功、失败、警告等消息提醒。'
           designLink='https://bkdesign.bk.tencent.com/design/47'
+          name='Message 消息提示'
         />
         <DemoBox
-          title='基础用法'
-          subtitle='使用默认配置的消息提示'
-          desc=''
           componentName='message'
           demoName='base-demo'
+          desc=''
+          subtitle='使用默认配置的消息提示'
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
         <DemoBox
-          title='内置主题'
-          subtitle='消息提醒提供消息、成功、警告、失败四种主题'
-          desc=''
           componentName='message'
           demoName='theme-demo'
+          desc=''
+          subtitle='消息提醒提供消息、成功、警告、失败四种主题'
+          title='内置主题'
         >
           <ThemeDemo />
         </DemoBox>
         <DemoBox
-          title='消息关闭'
-          subtitle='配置 delay 字段定义消息自动关闭的时间，当值为 0 时不自动关闭。配置 dismissable 字段控制是否显示右侧的手动关闭 icon。'
-          desc=''
           componentName='message'
           demoName='close-demo'
+          desc=''
+          subtitle='配置 delay 字段定义消息自动关闭的时间，当值为 0 时不自动关闭。配置 dismissable 字段控制是否显示右侧的手动关闭 icon。'
+          title='消息关闭'
         >
           <CloseDemo />
         </DemoBox>
         <DemoBox
-          title='高阶用法'
-          subtitle='适用于有更多面向开发信息的场景。'
-          desc=''
           componentName='message'
           demoName='close-demo'
+          desc=''
+          subtitle='适用于有更多面向开发信息的场景。'
+          title='高阶用法'
         >
           <MultiDemo />
         </DemoBox>
         <PropsBox
-          title='常规配置'
-          subtitle='适用于查看类页面的同步报错'
           propsData={props}
+          subtitle='适用于查看类页面的同步报错'
+          title='常规配置'
         ></PropsBox>
         <PropsBox
-          title='高阶配置-IMessage'
-          subtitle='适用于有更多面向开发信息的场景。'
           propsData={IMessage}
+          subtitle='适用于有更多面向开发信息的场景。'
+          title='高阶配置-IMessage'
         ></PropsBox>
         <PropsBox
-          title='高阶配置-IMessageAction'
-          subtitle='操作按钮自定义配置'
           propsData={IMessageActions}
+          subtitle='操作按钮自定义配置'
+          title='高阶配置-IMessageAction'
         ></PropsBox>
         <PropsBox
-          title='高阶配置-IMessageActionType'
-          subtitle='默认操作项说明'
           propsData={IMessageActionType}
+          subtitle='默认操作项说明'
+          title='高阶配置-IMessageActionType'
         ></PropsBox>
         <PropsBox
-          title='高阶配置-Slot'
-          subtitle='自定义插槽'
           propsData={ISlots}
+          subtitle='自定义插槽'
+          title='高阶配置-Slot'
         ></PropsBox>
       </div>
     );

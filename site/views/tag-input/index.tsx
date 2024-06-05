@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import ClearDemo from './clear-demo.vue';
 import CreateDemo from './create-demo.vue';
@@ -255,110 +254,110 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='TagInput 标签输入框'
           desc='常用于对标签列表的填写、关键字的输入'
+          name='TagInput 标签输入框'
         />
         <DemoBox
-          title='基础用法'
-          desc='通过 bk-tag-input 来使用组件，其中 list 属性为下拉选择列表选项'
           componentName='tag-input'
           demoName='base-demo'
+          desc='通过 bk-tag-input 来使用组件，其中 list 属性为下拉选择列表选项'
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
         <DemoBox
-          title='触发方式'
-          desc='配置 trigger 来设置下拉框的显示方式，有 focus（获焦点时显示）, search（搜索时显示）两种'
           componentName='tag-input'
           demoName='trigger-demo'
+          desc='配置 trigger 来设置下拉框的显示方式，有 focus（获焦点时显示）, search（搜索时显示）两种'
+          title='触发方式'
         >
           <TriggerDemo />
         </DemoBox>
         <DemoBox
-          title='hover 时才显示 clear 按钮'
-          desc='设置 show-clear-only-hover 为 true，则其 clear 按钮在 hover 时才会显示'
           componentName='tag-input'
           demoName='clear-demo'
+          desc='设置 show-clear-only-hover 为 true，则其 clear 按钮在 hover 时才会显示'
+          title='hover 时才显示 clear 按钮'
         >
           <ClearDemo />
         </DemoBox>
         <DemoBox
-          title='自定义标签'
-          desc='设置 allow-create 属性来输入自定义标签，按 Enter 键结束；设置 has-delete-icon 属性可显示标签删除按钮'
           componentName='tag-input'
           demoName='create-demo'
+          desc='设置 allow-create 属性来输入自定义标签，按 Enter 键结束；设置 has-delete-icon 属性可显示标签删除按钮'
+          title='自定义标签'
         >
           <CreateDemo />
         </DemoBox>
         <DemoBox
-          title='失去焦点自动匹配'
-          desc='设置 allow-auto-match 属性当输入内容时失去焦点后，如果完全匹配则自动选中，如果设置 allow-create 属性则创建标签'
           componentName='tag-input'
           demoName='match-demo'
+          desc='设置 allow-auto-match 属性当输入内容时失去焦点后，如果完全匹配则自动选中，如果设置 allow-create 属性则创建标签'
+          title='失去焦点自动匹配'
         >
           <MatchDemo />
         </DemoBox>
         <DemoBox
-          title='更多自定义配置'
-          desc='设置 save-key 属性定义选项的保存 key 值；设置 display-key 属性定义选项展示名称；search-key 属性定义多字段索引；tpl 属性可自定义下拉列表展示'
           componentName='tag-input'
           demoName='more-demo'
+          desc='设置 save-key 属性定义选项的保存 key 值；设置 display-key 属性定义选项展示名称；search-key 属性定义多字段索引；tpl 属性可自定义下拉列表展示'
+          title='更多自定义配置'
         >
           <MoreDemo />
         </DemoBox>
         <DemoBox
-          title='分组展示'
-          desc='配置 use-group 来启用分组功能， 数据源必须加上 children 的配置'
           componentName='tag-input'
           demoName='group-demo'
+          desc='配置 use-group 来启用分组功能， 数据源必须加上 children 的配置'
+          title='分组展示'
         >
           <GroupDemo />
         </DemoBox>
         <DemoBox
-          title='设置选中标签 tooltips'
-          desc='配置 tooltip-key 定义选中标签 hover 时的显示文案'
           componentName='tag-input'
           demoName='tooltips-demo'
+          desc='配置 tooltip-key 定义选中标签 hover 时的显示文案'
+          title='设置选中标签 tooltips'
         >
           <TooltipsDemo />
         </DemoBox>
         <DemoBox
-          title='列表项禁用'
-          desc='设置列表数据源 disabled 属性来禁用列表中的某些项，禁止用户选择'
           componentName='tag-input'
           demoName='list-disabled-demo'
+          desc='设置列表数据源 disabled 属性来禁用列表中的某些项，禁止用户选择'
+          title='列表项禁用'
         >
           <ListDisabledDemo />
         </DemoBox>
         <DemoBox
-          title='组件禁用状态'
-          desc='设置 disabled 属性来禁用组件'
           componentName='tag-input'
           demoName='disabled-demo'
+          desc='设置 disabled 属性来禁用组件'
+          title='组件禁用状态'
         >
           <DisabledDemo />
         </DemoBox>
         <DemoBox
-          title='批量输入'
-          desc='粘贴内容默认按“;”来分割内容，设置 paste-fn 方法可以自定义粘贴输出内容'
           componentName='tag-input'
           demoName='paste-demo'
+          desc='粘贴内容默认按“;”来分割内容，设置 paste-fn 方法可以自定义粘贴输出内容'
+          title='批量输入'
         >
           <PasteDemo />
         </DemoBox>
         <DemoBox
-          title='综合例子(多选)'
-          desc='设置 tpl 方法自定义下拉列表展示；设置 tagTpl 方法自定义标签展示，通过 max-data 属性限制最大可选数量'
           componentName='tag-input'
           demoName='example-demo'
+          desc='设置 tpl 方法自定义下拉列表展示；设置 tagTpl 方法自定义标签展示，通过 max-data 属性限制最大可选数量'
+          title='综合例子(多选)'
         >
           <ExampleDemo />
         </DemoBox>
         <DemoBox
-          title='综合例子(单选)'
-          desc='设置 filter-callback 定义过滤方法；设置 create-tag-validator 定义创建标签校验方法'
           componentName='tag-input'
           demoName='single-demo'
+          desc='设置 filter-callback 定义过滤方法；设置 create-tag-validator 定义创建标签校验方法'
+          title='综合例子(单选)'
         >
           <SingleDemo />
         </DemoBox>

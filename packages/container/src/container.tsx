@@ -69,8 +69,8 @@ export default defineComponent({
 
     return () => (
       <div
-        class={classes.value}
         style={style.value}
+        class={classes.value}
       >
         {ctx.slots.default?.()}
       </div>

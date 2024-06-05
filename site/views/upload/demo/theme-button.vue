@@ -1,13 +1,13 @@
 <template>
   <div class="demo">
     <bk-upload
-      theme="button"
-      with-credentials
       :files="files"
-      :size="5"
       :handle-res-code="handleRes"
+      :size="5"
       :tip="'最大上传5(Mb)的文件'"
       :url="'https://jsonplaceholder.typicode.com/posts/'"
+      theme="button"
+      with-credentials
     />
   </div>
 </template>
@@ -21,7 +21,7 @@
     },
   ];
 
-  const handleRes = (response) => {
+  const handleRes = response => {
     if (response.id) {
       return true;
     }

@@ -69,11 +69,17 @@ module.exports = {
     '^.+\\.(vue|md)$': path.resolve(__dirname, './node_modules/@vue/vue3-jest'),
     '^.+\\.(js)$': path.resolve(__dirname, './node_modules/babel-jest'),
     // '^.+\\.(ts|tsx)$': path.resolve(__dirname, './node_modules/ts-jest'),
-    '^.+\\.(ts|tsx)$': [path.resolve(__dirname, './node_modules/ts-jest'), {
-      babelConfig: path.resolve(__dirname, './babel.config.js'),
-      tsconfig: path.resolve(__dirname, './packages/tsconfig.json'),
-    }],
-    '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': path.resolve(__dirname, './node_modules/jest-transform-stub'),
+    '^.+\\.(ts|tsx)$': [
+      path.resolve(__dirname, './node_modules/ts-jest'),
+      {
+        babelConfig: path.resolve(__dirname, './babel.config.js'),
+        tsconfig: path.resolve(__dirname, './tsconfig.json'),
+      },
+    ],
+    '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': path.resolve(
+      __dirname,
+      './node_modules/jest-transform-stub',
+    ),
   },
   transformIgnorePatterns: ['node_modules', 'dist', 'bak'],
   testRegex: '.*\\.test\\.(js|ts|tsx)$',

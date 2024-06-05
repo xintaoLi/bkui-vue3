@@ -24,13 +24,13 @@
  * IN THE SOFTWARE.
  */
 
-import cloneDeep from 'lodash/cloneDeep';
 import { defineComponent, getCurrentInstance, useAttrs, useSlots } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { AngleLeft, AngleRight } from '@bkui-vue/icon';
 import Modal, { propsMixin } from '@bkui-vue/modal';
 import { PropTypes } from '@bkui-vue/shared';
+import cloneDeep from 'lodash/cloneDeep';
 
 const sliderProps = cloneDeep(propsMixin);
 sliderProps.width.default = '400';
@@ -117,24 +117,24 @@ export default defineComponent({
       return (
         <Modal
           {...inheritAttrs}
+          width={props.width}
           class={{
             [resolveClassName('sideslider')]: true,
             [`is-position-${props.direction}`]: props.direction,
           }}
-          isShow={props.isShow}
-          width={props.width}
-          animateType={props.direction}
           extCls={props.extCls}
+          animateType={props.direction}
           closeIcon={false}
           escClose={props.escClose}
+          isShow={props.isShow}
           quickClose={props.quickClose}
+          renderDirective={props.renderDirective}
           showMask={props.showMask}
           transfer={props.transfer}
-          renderDirective={props.renderDirective}
           zIndex={props.zIndex}
+          onClose={handleClose}
           onHidden={handleHidden}
           onShown={handleShown}
-          onClose={handleClose}
         >
           {modelSlot}
         </Modal>

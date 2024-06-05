@@ -2,14 +2,14 @@
   <div class="input-max-length-demo">
     <bk-input
       v-model="val"
-      clearable
       :maxlength="10"
+      clearable
       show-word-limit
     />
     <bk-input
       v-model="val2"
-      clearable
       :maxcharacter="10"
+      clearable
       show-word-limit
     />
     <bk-input

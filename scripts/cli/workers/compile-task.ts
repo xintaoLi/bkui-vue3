@@ -30,7 +30,6 @@ import { promisify } from 'util';
 
 import packageJson from '../../../package.json';
 import { ILibTaskOption, ITaskItem } from '../typings/task';
-
 import { WorkerPool } from './worker-pools';
 export class CompileTask {
   globals: GlobalsOption | null = null;

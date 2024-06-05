@@ -28,8 +28,8 @@ import { toType } from 'vue-types';
 import { PlacementEnum, placementType, PropTypes } from '@bkui-vue/shared';
 
 export enum TriggerEnum {
-  HOVER = 'hover',
   CLICK = 'click',
+  HOVER = 'hover',
 }
 
 export function triggerType() {

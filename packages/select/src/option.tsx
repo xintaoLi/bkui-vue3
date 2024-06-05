@@ -1,5 +1,3 @@
-/* eslint-disable vue/no-reserved-component-names */
-
 /*
  * Tencent is pleased to support the open source community by making
  * 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition) available.
@@ -26,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import isEqual from 'lodash/isEqual';
 import {
   computed,
   defineComponent,
@@ -43,6 +40,7 @@ import Checkbox from '@bkui-vue/checkbox';
 import { usePrefix } from '@bkui-vue/config-provider';
 import { Done } from '@bkui-vue/icon';
 import { classes, PropTypes, SelectedTypeEnum } from '@bkui-vue/shared';
+import isEqual from 'lodash/isEqual';
 
 import { optionGroupKey, selectKey } from './common';
 
@@ -88,7 +86,7 @@ export default defineComponent({
       select.activeOptionValue = optionID.value;
     };
 
-    const transformNode = (str: string): string | (string | VNode)[] => {
+    const transformNode = (str: string): (VNode | string)[] | string => {
       if (!str) return str;
       let keyword = searchValue.value;
       const len = keyword.length;
@@ -151,15 +149,15 @@ export default defineComponent({
     });
     return (
       <li
-        v-show={this.visible}
         class={selectItemClass}
+        v-show={this.visible}
         onClick={this.handleOptionClick}
         onMouseenter={this.handleMouseEnter}
       >
         {this.showSelectedIcon && this.selectedStyle === SelectedTypeEnum.CHECKBOX && (
           <Checkbox
-            disabled={this.disabled}
             class={this.resolveClassName('select-checkbox')}
+            disabled={this.disabled}
             modelValue={this.selected}
           />
         )}
@@ -173,9 +171,9 @@ export default defineComponent({
         )}
         {this.showSelectedIcon && this.selected && this.selectedStyle === SelectedTypeEnum.CHECK && (
           <Done
-            class={this.resolveClassName('select-selected-icon')}
             width={22}
             height={22}
+            class={this.resolveClassName('select-selected-icon')}
           />
         )}
       </li>

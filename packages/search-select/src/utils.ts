@@ -54,7 +54,7 @@ export interface ISearchSelectProvider {
   onEditEnter: (item: SelectedItem, index: number) => void;
   onEditBlur: () => void;
   onValidate: (str: string) => void;
-  editKey: Ref<String>;
+  editKey: Ref<string>;
   searchData: ComputedRef<ISearchItem[]>;
   isClickOutside: (target: Node) => boolean;
 }
@@ -120,11 +120,11 @@ export enum SearchLogical {
   OR = '|',
 }
 export interface IMenuFooterItem {
-  id: 'confirm' | 'cancel';
+  id: 'cancel' | 'confirm';
   name: string;
   disabled?: boolean;
 }
-export type SearchItemType = 'text' | 'default' | 'condition';
+export type SearchItemType = 'condition' | 'default' | 'text';
 export class SelectedItem {
   id: string;
   name: string;

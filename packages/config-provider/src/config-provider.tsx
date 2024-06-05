@@ -25,9 +25,9 @@
  */
 import { defineComponent, ExtractPropTypes, PropType } from 'vue';
 
-import type { Language } from '@bkui-vue/locale';
-
 import { provideGlobalConfig } from './use-global-config';
+
+import type { Language } from '@bkui-vue/locale';
 export const configProviderProps = {
   locale: {
     type: Object as PropType<Language>,

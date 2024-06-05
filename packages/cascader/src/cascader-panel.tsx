@@ -58,7 +58,7 @@ export default defineComponent({
     const activePath = ref([]);
     const checkValue = ref<(number | string | string[])[]>([]);
 
-    const getSizeComputed = (value: string | number) => {
+    const getSizeComputed = (value: number | string) => {
       if (typeof value === 'number') {
         return `${value}px`;
       }
@@ -181,7 +181,7 @@ export default defineComponent({
       return currentLevel.id === node.id;
     };
 
-    const isCheckedNode = (node: INode, checkValue: (string | number | string[])[]) => {
+    const isCheckedNode = (node: INode, checkValue: (number | string | string[])[]) => {
       const { multiple } = node.config;
       if (multiple) {
         return (checkValue as string[][]).some((val: string[]) => arrayEqual(val, node.path as string[]));
@@ -204,7 +204,7 @@ export default defineComponent({
 
     watch(
       () => props.modelValue,
-      (value: Array<string | number | string[]>) => {
+      (value: Array<number | string | string[]>) => {
         updateCheckValue(value);
       },
       { immediate: true },
@@ -241,8 +241,8 @@ export default defineComponent({
     const searchPanelRender = () =>
       this.suggestions.length ? (
         <ul
-          class={[this.resolveClassName('cascader-panel'), this.resolveClassName('scroll-y')]}
           style={{ height: this.panelHeight, width: this.panelWidth }}
+          class={[this.resolveClassName('cascader-panel'), this.resolveClassName('scroll-y')]}
         >
           {this.suggestions.map(node => (
             <li
@@ -260,8 +260,8 @@ export default defineComponent({
         </ul>
       ) : (
         <div
-          class={this.resolveClassName('cascader-search-empty')}
           style={{ width: emptyWidth }}
+          class={this.resolveClassName('cascader-search-empty')}
         >
           <span>{this.noDataText}</span>
         </div>
@@ -272,8 +272,8 @@ export default defineComponent({
           ? searchPanelRender()
           : this.menus.list.map(menu => (
               <ul
-                class={[this.resolveClassName('cascader-panel'), this.resolveClassName('scroll-y')]}
                 style={{ height: this.panelHeight, width: this.panelWidth }}
+                class={[this.resolveClassName('cascader-panel'), this.resolveClassName('scroll-y')]}
               >
                 {menu.length ? (
                   menu.map(node => (
@@ -288,10 +288,10 @@ export default defineComponent({
                     >
                       {node.config.multiple && (
                         <Checkbox
-                          disabled={node.isDisabled}
-                          v-model={node.checked}
-                          indeterminate={node.isIndeterminate}
                           style='margin-right: 5px'
+                          v-model={node.checked}
+                          disabled={node.isDisabled}
+                          indeterminate={node.isIndeterminate}
                           onChange={(val: unknown) => this.checkNode(node, !!val)}
                         ></Checkbox>
                       )}

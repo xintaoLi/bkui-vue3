@@ -1,8 +1,6 @@
 <template>
   <section>
-    <bk-button @click="handleColumnsIndexChange">
-      打乱顺序
-    </bk-button>
+    <bk-button @click="handleColumnsIndexChange"> 打乱顺序 </bk-button>
     <bk-table
       :data="tableData"
       :settings="settings"
@@ -12,45 +10,33 @@
         :key="column.label"
       >
         <bk-table-column
+          :field="column.field"
+          :index="column.index"
           :label="column.label"
           :type="column.type"
-          :field="column.field"
           :width="column.width"
-          :index="column.index"
         />
       </template>
     </bk-table>
     <h2>如何动态改变列的顺序</h2>
     <h3>1、增加index属性(建议设置index，更新次数少，性能更好)，通过改变index属性触发`bk-table-column`更新</h3>
     <code>
-      {
-      label: '序号',
-      type: 'index',
-      width: '120px',
-      index: 0
-      },
-      {
-      label: '名称/内网IP',
-      field: 'ip',
-      width: '320px',
-      index: 1
-      }, ...
+      { label: '序号', type: 'index', width: '120px', index: 0 }, { label: '名称/内网IP', field: 'ip', width: '320px',
+      index: 1 }, ...
     </code>
-    <br>
-    <br>
+    <br />
+    <br />
     <code>
-      {{
-        `<bk-table-column
+      {{ `<bk-table-column
         :label="column.label"
         :type="column.type"
         :field="column.field"
         :width="column.width"
         :index="column.index"
-      />`
-      }}
+      />` }}
     </code>
-    <br>
-    <br>
+    <br />
+    <br />
     <code>
       {{
         `const targetIndex = this.columns[2].index;
@@ -58,13 +44,11 @@
         this.columns[3].index = targetIndex;`
       }}
     </code>
-    <h3>2、通过nextTicket 或者 setTimeout更新Column数组，先删除，再追加，保证两次更新间隔，避免只是更新Column数组顺序，绑定组件属性不变</h3>
-    <code>
-      const target = this.columns.splice(2, 1);
-      setTimeout(() => {
-      this.columns.push(...target);
-      });
-    </code>
+    <h3>
+      2、通过nextTicket 或者
+      setTimeout更新Column数组，先删除，再追加，保证两次更新间隔，避免只是更新Column数组顺序，绑定组件属性不变
+    </h3>
+    <code> const target = this.columns.splice(2, 1); setTimeout(() => { this.columns.push(...target); }); </code>
   </section>
 </template>
 

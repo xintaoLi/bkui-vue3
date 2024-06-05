@@ -26,5 +26,4 @@
     },
   ];
   const show = ref(true);
-
 </script>

@@ -23,16 +23,15 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { kebabCase } from 'lodash';
 import { defineComponent } from 'vue';
 
 import BkResizeLayout from '@bkui-vue/resize-layout';
+import { kebabCase } from 'lodash';
 
 import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import AdvanceDemo from './advance-demo.vue';
 import AutoMiniMizeDemo from './auto-minimize-demo.vue';
 import BaseDemo from './base-demo.vue';
@@ -51,47 +50,47 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Resize Layout'
           desc='通过拉伸侧栏调整布局大小'
           designLink='https://bkdesign.bk.tencent.com/design/156'
+          name='Resize Layout'
         />
         <DemoBox
-          title='基础用法'
-          desc=''
           componentName='resize-layout'
           demoName='base-demo'
+          desc=''
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
         <DemoBox
-          title='最小化'
-          desc=''
           componentName='resize-layout'
           demoName='auto-minimize-demo'
+          desc=''
+          title='最小化'
         >
           <AutoMiniMizeDemo />
         </DemoBox>
         <DemoBox
-          title='实时拉伸'
-          desc=''
           componentName='resize-layout'
           demoName='immediate-demo'
+          desc=''
+          title='实时拉伸'
         >
           <ImmediateDemo />
         </DemoBox>
         <DemoBox
-          title='可折叠'
-          desc=''
           componentName='resize-layout'
           demoName='collapsible-demo'
+          desc=''
+          title='可折叠'
         >
           <CollapsibleDemo />
         </DemoBox>
         <DemoBox
-          title='多级嵌套'
-          desc=''
           componentName='resize-layout'
           demoName='advance-demo'
+          desc=''
+          title='多级嵌套'
         >
           <AdvanceDemo />
         </DemoBox>

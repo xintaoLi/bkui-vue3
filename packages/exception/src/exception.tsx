@@ -24,12 +24,12 @@
  * IN THE SOFTWARE.
  */
 
-import isFunction from 'lodash/isFunction';
 import { defineComponent } from 'vue';
 import { toType } from 'vue-types';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { classes, PropTypes } from '@bkui-vue/shared';
+import isFunction from 'lodash/isFunction';
 
 import permissions from './images/403.svg';
 import notFound from './images/404.svg';
@@ -41,13 +41,13 @@ import searchEmpty from './images/search-empty.svg';
 import { TypesMapType } from './typings';
 
 export enum ExceptionEnum {
-  CODE_404 = '404',
-  CODE_403 = '403',
-  CODE_500 = '500',
   BUILDING = 'building',
+  CODE_403 = '403',
+  CODE_404 = '404',
+  CODE_500 = '500',
   EMPTY = 'empty',
-  SEARCH = 'search-empty',
   LOGIN = 'login',
+  SEARCH = 'search-empty',
 }
 export enum SceneEnum {
   PAGE = 'page',
@@ -84,8 +84,8 @@ export default defineComponent({
         <div class={`${resolveClassName('exception-img')}`}>
           <img
             class='exception-image'
-            src={imgSrc}
             alt='type'
+            src={imgSrc}
           />
         </div>
       );

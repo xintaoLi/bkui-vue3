@@ -2,9 +2,9 @@
   <div>
     <bk-tag-input
       v-model="state.tags"
-      placeholder="请选择城市"
-      :paste-fn="pasteFn"
       :list="state.list"
+      :paste-fn="pasteFn"
+      placeholder="请选择城市"
     />
     <p>复制内容 guangzhou|chongqing|beijing 来体验粘贴多输入效果</p>
   </div>

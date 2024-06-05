@@ -24,13 +24,14 @@
  * IN THE SOFTWARE.
  */
 
-import type { ExtractPropTypes } from 'vue';
 import { computed, defineComponent, PropType } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 
-import type { DatePickerValueType } from '../interface';
 import { clearHours, isInRange } from '../utils';
+
+import type { DatePickerValueType } from '../interface';
+import type { ExtractPropTypes } from 'vue';
 
 const yearTableProps = {
   tableDate: {

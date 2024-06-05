@@ -41,8 +41,8 @@ import {
 } from './const';
 
 export enum SortScope {
-  CURRENT = 'current',
   ALL = 'all',
+  CURRENT = 'current',
 }
 
 export type ColumnFilterListItem = {
@@ -51,8 +51,8 @@ export type ColumnFilterListItem = {
 };
 
 export enum OverflowModeEnum {
-  STATIC = 'static',
   AUTO = 'auto',
+  STATIC = 'static',
 }
 
 export const EnumOverflowModeType = toType<`${OverflowModeEnum}`>('showOverflowTooltipMode', {
@@ -60,17 +60,17 @@ export const EnumOverflowModeType = toType<`${OverflowModeEnum}`>('showOverflowT
 });
 
 export enum ColumnTypeEnum {
-  SELECTION = 'selection',
-  INDEX = 'index',
   EXPAND = 'expand',
+  INDEX = 'index',
   NONE = '__COL_TYPE_NONE',
+  SELECTION = 'selection',
 }
 
 export enum TableAlignEnum {
-  LEFT = 'left',
-  RIGHT = 'right',
   CENTER = 'center',
+  LEFT = 'left',
   NONE = '',
+  RIGHT = 'right',
 }
 
 export const columnType = toType<`${ColumnTypeEnum}`>('columnType', {
@@ -90,9 +90,9 @@ export const fullType = toType<`${FullEnum}`>('full', {
 });
 
 export enum SettingSizeEnum {
-  SMALL = 'small',
-  MEDIUM = 'medium',
   LARGE = 'large',
+  MEDIUM = 'medium',
+  SMALL = 'small',
 }
 
 export const settingSizeType = toType<`${SettingSizeEnum}`>('columnSize', {
@@ -162,9 +162,9 @@ export const IFilterType = toType<IFilterPropShape>('IFilterPropShape', {
 });
 
 export enum ColumnPickEnum {
+  DISABLED = 'disabled',
   MULTI = 'multi',
   SINGLE = 'single',
-  DISABLED = 'disabled',
 }
 
 export enum ResizerWay {
@@ -216,10 +216,10 @@ export type Field = {
 };
 
 export type LabelFunctionString =
-  | ((_column, _index) => string | number | boolean | JSX.Element)
-  | string
+  | ((_column, _index) => JSX.Element | boolean | number | string)
+  | boolean
   | number
-  | boolean;
+  | string;
 export const LabelFunctionStringType = toType<LabelFunctionString>('LabelFunctionStringType', {});
 export type HeadRenderArgs = {
   cell?: any;
@@ -233,7 +233,7 @@ export type HeadRenderArgs = {
 export type RenderFunctionString = (args: HeadRenderArgs) => string | number | boolean | JSX.Element;
 export const RenderFunctionStringType = toType<RenderFunctionString>('RenderFunctionStringType', {});
 
-export type SpanFunctionString = (({ column, colIndex, row, rowIndex }) => number) | Number;
+export type SpanFunctionString = (({ column, colIndex, row, rowIndex }) => number) | number;
 export const SpanFunctionStringType = toType<SpanFunctionString>('SpanFunctionStringType', {});
 
 export type RowClassFunctionString = ((row: any) => string) | string;
@@ -245,7 +245,7 @@ export const RowHeightFunctionNumberType = toType<RowHeightFunctionNumber>('RowH
 type FunctionNumber = Function | number;
 export const FunctionNumberType = toType<FunctionNumber>('FunctionNumberType', {});
 
-type StringNumber = string | number;
+type StringNumber = number | string;
 export const StringNumberType = (val: number | string) => toType<StringNumber>('StringNumberType', {}).def(val);
 
 /**
@@ -276,7 +276,7 @@ export type Column = {
   columnKey?: string;
   showOverflowTooltip?: IOverflowTooltip;
   type?: string;
-  fixed?: string | boolean;
+  fixed?: boolean | string;
   resizable?: boolean;
   sort?: ISortShape | boolean | string;
   filter?: IFilterShape | boolean | string;
@@ -286,7 +286,7 @@ export type Column = {
   className?: RowClassFunctionString;
   align?: string;
   prop?: LabelFunctionString;
-  index?: Number;
+  index?: number;
   explain?: IColumnExplain;
 };
 
@@ -299,7 +299,7 @@ export const IColumnProp = toType<Column>('IColumnPropType', {
 });
 
 export type Thead = {
-  height?: Number;
+  height?: number;
   isShow?: boolean;
   cellFn?: Function;
   color?: IHeadColor | string;
@@ -323,13 +323,13 @@ export type IColumnActive = {
 export type IReactiveProp = {
   activeColumns: IColumnActive[];
   rowActions: Record<string, any>;
-  scrollTranslateY: Number;
-  scrollTranslateX: Number;
+  scrollTranslateY: number;
+  scrollTranslateX: number;
   pos: Record<string, any>;
   settings: Settings | boolean;
   setting: {
     size: string;
-    height: Number;
+    height: number;
   };
   defaultSort: Record<string, any>;
 };
@@ -342,14 +342,14 @@ export type Colgroups = Column & {
 
 export enum IColSortBehavior {
   /**
-   * 列排序是相互依赖的
-   */
-  interdependent = 'interdependent',
-
-  /**
    * 列与列之间的排序是独立的，互斥的
    */
   independent = 'independent',
+
+  /**
+   * 列排序是相互依赖的
+   */
+  interdependent = 'interdependent',
 }
 
 export const tableProps = {

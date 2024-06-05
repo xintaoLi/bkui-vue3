@@ -1,11 +1,11 @@
 <template>
   <div class="demo">
     <bk-select
-      v-model="selectedValue"
       class="bk-select"
+      v-model="selectedValue"
+      filterable
       multiple
       show-select-all
-      filterable
     >
       <bk-option-group
         label="分组1"
@@ -23,16 +23,16 @@
         collapsible
       >
         <bk-option
-          value="1001"
           label="运动-1"
+          value="1001"
         />
         <bk-option
-          value="1002"
           label="运动-2"
+          value="1002"
         />
         <bk-option
-          value="1003"
           label="运动-3"
+          value="1003"
         />
       </bk-option-group>
     </bk-select>
@@ -77,13 +77,12 @@
   const selectedValue = ref('');
 </script>
 <style scoped>
-.demo {
-  display: flex;
-}
+  .demo {
+    display: flex;
+  }
 
-.bk-select {
-  width: 300px;
-  margin-right: 20px;
-}
+  .bk-select {
+    width: 300px;
+    margin-right: 20px;
+  }
 </style>
-

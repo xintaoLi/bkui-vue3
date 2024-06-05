@@ -59,7 +59,7 @@ interface DebouncedFunc<T extends (...args: any[]) => any> {
 }
 
 export interface Options {
-  forceVisible: boolean | Axis;
+  forceVisible: Axis | boolean;
   clickOnTrack: boolean;
   scrollbarMinSize: number;
   scrollbarMaxSize: number;
@@ -103,9 +103,9 @@ type ClassNames = {
 type Axis = 'x' | 'y';
 type AxisProps = {
   scrollOffsetAttr: 'scrollLeft' | 'scrollTop';
-  sizeAttr: 'width' | 'height';
-  scrollSizeAttr: 'scrollWidth' | 'scrollHeight';
-  offsetSizeAttr: 'offsetWidth' | 'offsetHeight';
+  sizeAttr: 'height' | 'width';
+  scrollSizeAttr: 'scrollHeight' | 'scrollWidth';
+  offsetSizeAttr: 'offsetHeight' | 'offsetWidth';
   offsetAttr: 'left' | 'top';
   overflowAttr: 'overflowX' | 'overflowY';
   dragOffset: number;
@@ -287,11 +287,11 @@ export default class BkScrollbarCore {
    */
   wrapperScrollMap = {};
 
-  onMouseMove: DebouncedFunc<any> | (() => void) = () => {};
-  onWindowResize: DebouncedFunc<any> | (() => void) = () => {};
-  onStopScrolling: DebouncedFunc<any> | (() => void) = () => {};
-  onMouseEntered: DebouncedFunc<any> | (() => void) = () => {};
-  onMouseWheel: DebouncedFunc<any> | (() => void) = () => {};
+  onMouseMove: (() => void) | DebouncedFunc<any> = () => {};
+  onWindowResize: (() => void) | DebouncedFunc<any> = () => {};
+  onStopScrolling: (() => void) | DebouncedFunc<any> = () => {};
+  onMouseEntered: (() => void) | DebouncedFunc<any> = () => {};
+  onMouseWheel: (() => void) | DebouncedFunc<any> = () => {};
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   constructor(element: HTMLElement, options: Partial<Options> = {}) {
@@ -420,7 +420,7 @@ export default class BkScrollbarCore {
       // Hack for https://github.com/WICG/ResizeObserver/issues/38
       let resizeObserverStarted = false;
       const resizeObserver = elWindow.ResizeObserver || ResizeObserver;
-      // eslint-disable-next-line new-cap
+
       this.resizeObserver = new resizeObserver(() => {
         if (!resizeObserverStarted) return;
 

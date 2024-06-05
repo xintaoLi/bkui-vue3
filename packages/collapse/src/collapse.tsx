@@ -146,11 +146,11 @@ export default defineComponent({
         return (
           <CollapsePanel
             key={index}
-            item-click={handleItemClick}
             disabled={item.disabled}
-            name={name}
             icon={icon}
             isFormList={true}
+            item-click={handleItemClick}
+            name={name}
             title={title}
           >
             {{

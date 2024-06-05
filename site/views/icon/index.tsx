@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 const menuProps: IPropsTableItem[] = [
   {
@@ -60,16 +59,16 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Icon'
           desc='Icon组件， 可以通过组件的使用方式按需加载。'
           designLink='https://bkdesign.bk.tencent.com/design/5'
+          name='Icon'
         />
         <DemoBox
-          title='Icon展示'
-          subtitle='这里展示了我们UI所用到的所有Icon, 点击复制使用'
-          desc='点击复制使用Icon组件'
           componentName='icon'
           demoName='base-demo'
+          desc='点击复制使用Icon组件'
+          subtitle='这里展示了我们UI所用到的所有Icon, 点击复制使用'
+          title='Icon展示'
         >
           <BaseDemo />
         </DemoBox>

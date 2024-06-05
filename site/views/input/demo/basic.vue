@@ -1,8 +1,6 @@
 <template>
   <div>
-    <bk-input
-      v-model="xxxx"
-    />
+    <bk-input v-model="xxxx" />
   </div>
 </template>
 

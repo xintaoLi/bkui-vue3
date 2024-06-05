@@ -3,25 +3,25 @@
     <bk-cascader
       v-model="area"
       :list="list"
-      multiple
+      trigger="click"
       filterable
       float-mode
-      trigger="click"
+      multiple
     />
     <bk-cascader
       v-model="area"
       :list="list"
-      multiple
+      trigger="click"
       filterable
       float-mode
       limit-one-line
-      trigger="click"
+      multiple
     />
     <bk-cascader
       v-model="openArea"
       :list="list"
-      multiple
       trigger="click"
+      multiple
     />
   </div>
 </template>
@@ -44,10 +44,12 @@
           disabled: true,
         },
       ],
-    }, {
+    },
+    {
       id: 'guangxi',
       name: '广西',
-    }, {
+    },
+    {
       id: 'yunnan',
       name: '云南',
       children: [
@@ -82,15 +84,14 @@
   ];
   const area = ref([]);
   const openArea = ref([]);
-
 </script>
 
 <style lang="less" scoped>
-.cascader-wrapper {
-  width: 250px;
+  .cascader-wrapper {
+    width: 250px;
 
-  .bk-cascader-wrapper:not(:last-of-type) {
-    margin-bottom: 20px;
+    .bk-cascader-wrapper:not(:last-of-type) {
+      margin-bottom: 20px;
+    }
   }
-}
 </style>

@@ -23,13 +23,13 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import isFunction from 'lodash/isFunction';
 import { defineComponent, reactive, ref } from 'vue';
 
 import Button from '@bkui-vue/button';
 import { usePrefix } from '@bkui-vue/config-provider';
 import { Close, Error, Spinner, Success, Warn } from '@bkui-vue/icon';
 import Modal from '@bkui-vue/modal';
+import isFunction from 'lodash/isFunction';
 
 import type { Props } from './info-box';
 
@@ -180,21 +180,21 @@ export default defineComponent({
 
       return (
         <Modal
-          class={[resolveClassName('infobox'), state.class]}
-          isShow={isShow.value}
-          animateType='fadein'
-          transfer={true}
-          quickClose={false}
           width={state.width}
+          class={[resolveClassName('infobox'), state.class]}
+          animateType='fadein'
           closeIcon={state.closeIcon}
+          isShow={isShow.value}
+          quickClose={false}
+          transfer={true}
         >
           {{
             header: () => (
               <div class={resolveClassName('infobox-header')}>
                 {renderIcon()}
                 <div
-                  class={resolveClassName('infobox-title')}
                   style={{ textAlign: state.headerAlign }}
+                  class={resolveClassName('infobox-title')}
                 >
                   {renderTitle()}
                 </div>
@@ -203,8 +203,8 @@ export default defineComponent({
             default: () =>
               state.content && (
                 <div
-                  class={resolveClassName('infobox-content')}
                   style={{ textAlign: state.contentAlign }}
+                  class={resolveClassName('infobox-content')}
                 >
                   {renderContent()}
                 </div>

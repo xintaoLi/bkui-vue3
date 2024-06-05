@@ -49,8 +49,8 @@ export default defineComponent({
     });
     return () => (
       <div
-        class={`${resolveClassName('grid-row')}`}
         style={style.value}
+        class={`${resolveClassName('grid-row')}`}
       >
         {ctx.slots.default?.()}
       </div>

@@ -68,7 +68,6 @@ describe('BkLoading.tsx', () => {
         loading: false,
       },
       slots: {
-        // eslint-disable-next-line max-len
         default:
           '<div style="height: 300px; width: 300px; display: flex; align-items: center; justify-content: center;">content</div>',
       },

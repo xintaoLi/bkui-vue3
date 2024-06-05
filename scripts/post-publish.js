@@ -37,6 +37,6 @@ readStream.pipe(writeStream);
 writeStream.on('finish', () => {
   fs.unlinkSync(PACKAGE_TMP_PATH);
 });
-writeStream.on('error', (err) => {
+writeStream.on('error', err => {
   console.error('复制回 package.json 错误', err);
 });

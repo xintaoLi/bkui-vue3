@@ -24,9 +24,9 @@
  * IN THE SOFTWARE.
  */
 
-import type { InjectionKey } from 'vue';
-
 import { IFormContext, IFormItemContext } from '@bkui-vue/form';
+
+import type { InjectionKey } from 'vue';
 
 export const formKey: InjectionKey<IFormContext> = Symbol('form');
 

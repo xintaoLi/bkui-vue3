@@ -29,7 +29,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import Directive from './directive.vue';
 
@@ -107,37 +106,37 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='overflowTitle 文件溢出处理'
           desc='overflowTitle 文本溢出，通过title 或者tooltips展示全部内容.'
           link='#/overflowTitle'
+          name='overflowTitle 文件溢出处理'
         />
 
         <DemoBox
-          title='组件用法'
-          desc='组件用法'
           componentName='overflow-title'
           demoName='base-demo'
+          desc='组件用法'
+          title='组件用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
         <DemoBox
-          title='指令用法'
-          desc='指令用法'
           componentName='overflow-title'
           demoName='directive'
+          desc='指令用法'
+          title='指令用法'
         >
           <Directive></Directive>
         </DemoBox>
 
         <PropsBox
-          title='overflowTitle 组件属性'
-          subtitle=''
           propsData={overflowComponent}
+          subtitle=''
+          title='overflowTitle 组件属性'
         />
         <PropsBox
-          title='overflowTitle 指令属性(计算父元素宽度)'
-          subtitle=''
           propsData={overflowDirective}
+          subtitle=''
+          title='overflowTitle 指令属性(计算父元素宽度)'
         />
       </div>
     );

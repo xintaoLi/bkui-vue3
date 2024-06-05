@@ -36,7 +36,7 @@ export interface INodeConfig {
 
 export interface INode {
   checked: boolean;
-  children?: null[] | null;
+  children?: null | null[];
   config: IConfig;
   data: IData;
   leaf: boolean;

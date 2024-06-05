@@ -24,8 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import ClipboardJS from 'clipboard';
-import JSONFormatter from 'json-formatter-js';
 import {
   computed,
   defineComponent,
@@ -56,17 +54,19 @@ import {
   Warn,
 } from '@bkui-vue/icon';
 import { bkZIndexManager, isElement, PropTypes } from '@bkui-vue/shared';
+import ClipboardJS from 'clipboard';
+import JSONFormatter from 'json-formatter-js';
 
 enum MessageThemeEnum {
-  PRIMARY = 'primary',
-  WARNING = 'warning',
-  SUCCESS = 'success',
   ERROR = 'error',
+  PRIMARY = 'primary',
+  SUCCESS = 'success',
+  WARNING = 'warning',
 }
 
 enum MessageContentType {
-  KEY_VALUE = 'key-value',
   JSON = 'json',
+  KEY_VALUE = 'key-value',
 }
 
 enum IMessageActionType {
@@ -74,6 +74,11 @@ enum IMessageActionType {
    * 联系助手：默认直接拉起企业微信与助手的聊天，需要在 message.assistant 配置对应的企微群ID
    */
   ASSISTANT = 'assistant',
+
+  /**
+   * 关闭：点击关闭，Message 消失
+   */
+  CLOSE = 'close',
 
   /**
    * 展开详情：展开面向开发的详情
@@ -84,11 +89,6 @@ enum IMessageActionType {
    * 图钉按钮：点击后，Message 不会自动消失
    */
   FIX = 'fix',
-
-  /**
-   * 关闭：点击关闭，Message 消失
-   */
-  CLOSE = 'close',
 }
 
 type IMessageAction = {
@@ -106,14 +106,14 @@ type IMessageAction = {
   /**
    * 需要展示的ICON，如果不设置显示默认
    */
-  icon?: () => VNode | string | VNode;
+  icon?: () => VNode | VNode | string;
 
   /**
    * 鼠标点击事件，如果返回false则阻止默认点击行为
    * 如果返回其他，默认行为不会阻止
    * @returns
    */
-  onClick?: (...args) => Boolean | void;
+  onClick?: (...args) => boolean | void;
 
   /**
    * 自定义渲染 & 事件处理
@@ -146,7 +146,7 @@ export type IMessage = {
   /**
    * 错误码
    */
-  code: string | number;
+  code: number | string;
 
   /**
    * 错误概述
@@ -161,7 +161,7 @@ export type IMessage = {
   /**
    * 详情
    */
-  details: string | Record<string, any> | Array<Record<string, any> | string | number | boolean>;
+  details: Array<Record<string, any> | boolean | number | string> | Record<string, any> | string;
 
   /**
    * 助手
@@ -669,14 +669,14 @@ export default defineComponent({
             {this.toolOperation.isDetailShow && (
               <div class='message-detail'>
                 <div
-                  class='message-copy'
                   ref='refCopyMsgDiv'
+                  class='message-copy'
                 >
                   <CopyShape></CopyShape>
                 </div>
                 <div
-                  class='copy-status'
                   ref='refCopyStatus'
+                  class='copy-status'
                 >
                   <div class='inner'>
                     {renderIcon(this.copyStatus)}
@@ -714,9 +714,9 @@ export default defineComponent({
     return (
       <Transition name='bk-message-fade'>
         <div
-          v-show={this.visible}
-          class={this.classNames}
           style={this.styles as StyleValue}
+          class={this.classNames}
+          v-show={this.visible}
           onMouseenter={this.handleMouseenter}
           onMouseleave={this.handleMouseleave}
         >

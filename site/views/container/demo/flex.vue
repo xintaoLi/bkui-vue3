@@ -1,38 +1,28 @@
 <template>
   <div class="wrapper">
     <bk-container
-      flex
       :col="12"
+      flex
     >
       <bk-row>
         <bk-col :span="4">
-          <div class="content">
-            4/12
-          </div>
+          <div class="content">4/12</div>
         </bk-col>
         <bk-col :span="8">
-          <bk-row style="margin-bottom: 10px;">
+          <bk-row style="margin-bottom: 10px">
             <bk-col :span="4">
-              <div class="content">
-                4/12
-              </div>
+              <div class="content">4/12</div>
             </bk-col>
             <bk-col :span="4">
-              <div class="content">
-                4/12
-              </div>
+              <div class="content">4/12</div>
             </bk-col>
           </bk-row>
           <bk-row>
             <bk-col :span="3">
-              <div class="content">
-                3/12
-              </div>
+              <div class="content">3/12</div>
             </bk-col>
             <bk-col :span="5">
-              <div class="content">
-                5/12
-              </div>
+              <div class="content">5/12</div>
             </bk-col>
           </bk-row>
         </bk-col>

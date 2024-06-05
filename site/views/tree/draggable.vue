@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; overflow: auto;">
+  <div style="width: 100%; overflow: auto">
     <div class="row">
       <div class="column">
         <span>draggable: <code>draggable = true</code></span>
@@ -7,8 +7,8 @@
         <div class="cell">
           <bk-tree
             :data="treeData"
-            label="name"
             children="children"
+            label="name"
             draggable
           />
         </div>
@@ -18,10 +18,10 @@
         <div class="cell">
           <bk-tree
             :data="treeData"
-            label="name"
-            draggable
-            drag-sort
             children="children"
+            label="name"
+            drag-sort
+            draggable
           />
         </div>
       </div>
@@ -43,5 +43,5 @@
   });
 </script>
 <style scoped>
-@import './tree.less';
+  @import './tree.less';
 </style>

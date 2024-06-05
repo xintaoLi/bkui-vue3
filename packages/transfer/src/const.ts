@@ -26,7 +26,7 @@
 
 // 非数组，基础数据数组，对象数组
 export const enum ArrayType {
-  OBJECT_ARRAY = 'objectArray',
   BASE_ARRAY = 'baseArray',
   NOT_ARRAY = 'notArray',
+  OBJECT_ARRAY = 'objectArray',
 }

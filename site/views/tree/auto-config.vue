@@ -5,33 +5,31 @@
       <div class="cell">
         <bk-tree
           :data="treeData"
-          level-line
-          label="name"
           children="children"
+          label="name"
+          level-line
         />
       </div>
     </div>
     <div class="column">
       <div class="cell">
         <bk-tree
-          :data="autoOpen"
-          label="name"
-          children="children"
           :auto-open-parent-node="false"
+          :data="autoOpen"
+          children="children"
+          label="name"
         />
       </div>
     </div>
     <div class="column">
-      <bk-button @click="handleAutoSelect">
-        设置选中节点
-      </bk-button>
+      <bk-button @click="handleAutoSelect"> 设置选中节点 </bk-button>
       <div class="cell">
         <bk-tree
           ref="refAutoSelect"
           :data="autoCheck"
-          label="name"
-          children="children"
           :selected="selected"
+          children="children"
+          label="name"
         />
       </div>
     </div>
@@ -63,5 +61,5 @@
   });
 </script>
 <style scoped>
-@import './tree.less';
+  @import './tree.less';
 </style>

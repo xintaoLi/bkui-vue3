@@ -64,11 +64,11 @@ export default defineComponent({
       <div>
         <Collapse
           v-model={this.active}
-          list={this.list}
           v-slots={{
             default: (item, index) => this.titleSlot(item, index),
             content: (item, index) => this.contentSlot(item, index),
           }}
+          list={this.list}
         />
         <div>{this.active}</div>
       </div>

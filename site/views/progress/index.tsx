@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import ChangeDemo from './change-demo.vue';
 import SizeDemo from './size-demo.vue';
@@ -174,79 +173,79 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Progress 进度条'
           desc='进度条'
           designLink='https://bkdesign.bk.tencent.com/design/141'
+          name='Progress 进度条'
         />
 
         <DemoBox
-          title='基础用法'
-          subtitle='修改进度条主题'
-          desc='percent 是 0 到 100 之间的数值，提供 4 种主题，由 theme 属性来定义，可选的主题有 primary, warning, success, danger，默认为 primary, 由 color 属性来自定义颜色值。'
           componentName='progress'
           demoName='base-demo'
+          desc='percent 是 0 到 100 之间的数值，提供 4 种主题，由 theme 属性来定义，可选的主题有 primary, warning, success, danger，默认为 primary, 由 color 属性来自定义颜色值。'
+          subtitle='修改进度条主题'
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
 
         <DemoBox
-          title='大小设置'
-          subtitle=''
-          desc='可以使用 size 属性来配置进度条的尺寸，可接受 small large huge，也可配置strokeWidth线宽'
           componentName='progress'
           demoName='size-demo'
+          desc='可以使用 size 属性来配置进度条的尺寸，可接受 small large huge，也可配置strokeWidth线宽'
+          subtitle=''
+          title='大小设置'
         >
           <SizeDemo></SizeDemo>
         </DemoBox>
 
         <DemoBox
-          title='文案内显'
-          subtitle=''
-          desc='Progress 组件可通过 show-text 来控制文案是否显示， 通过 text-inside 属性来将进度条描述置于进度条内部, titleStyle 属性来调整百分数显示的样式 format 过滤文案展示'
           componentName='progress'
           demoName='text-demo'
+          desc='Progress 组件可通过 show-text 来控制文案是否显示， 通过 text-inside 属性来将进度条描述置于进度条内部, titleStyle 属性来调整百分数显示的样式 format 过滤文案展示'
+          subtitle=''
+          title='文案内显'
         >
           <TextDemo></TextDemo>
         </DemoBox>
 
         <DemoBox
-          title='动态值'
-          subtitle=''
-          desc='通过改变 percent 改变进度'
           componentName='progress'
           demoName='change-demo'
+          desc='通过改变 percent 改变进度'
+          subtitle=''
+          title='动态值'
         >
           <ChangeDemo></ChangeDemo>
         </DemoBox>
 
         <DemoBox
-          title='环形/仪表盘'
-          subtitle=''
-          desc='通过改变 type 修改进度条形状， line 默认线性 circle 圆形 dashboard 仪表盘'
           componentName='progress'
           demoName='type-demo'
+          desc='通过改变 type 修改进度条形状， line 默认线性 circle 圆形 dashboard 仪表盘'
+          subtitle=''
+          title='环形/仪表盘'
         >
           <TypeDemo></TypeDemo>
         </DemoBox>
 
         <DemoBox
-          title='环形/仪表盘大小颜色配置'
-          subtitle=''
-          desc='通过改变 color 修改进度颜色，bgColor修改背景颜色 width 修改大小 strokeWidth修改线宽'
           componentName='progress'
           demoName='type-size-demo'
+          desc='通过改变 color 修改进度颜色，bgColor修改背景颜色 width 修改大小 strokeWidth修改线宽'
+          subtitle=''
+          title='环形/仪表盘大小颜色配置'
         >
           <TypeSizeDemo></TypeSizeDemo>
         </DemoBox>
         <PropsBox
-          title='Progress 属性'
-          subtitle=''
           propsData={progressPropsJson}
+          subtitle=''
+          title='Progress 属性'
         />
         <PropsBox
+          propsData={progressSlotJson}
           subtitle='可以自定义文案'
           title='Progress 插槽'
-          propsData={progressSlotJson}
         />
       </div>
     );

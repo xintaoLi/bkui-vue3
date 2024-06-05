@@ -2,8 +2,8 @@
   <div class="cascader-wrapper">
     <bk-cascader
       v-model="area"
-      behavior="simplicity"
       :list="list"
+      behavior="simplicity"
       trigger="click"
     >
       <template #trigger="{ selected, isShow }">
@@ -31,10 +31,12 @@
           disabled: true,
         },
       ],
-    }, {
+    },
+    {
       id: 'guangxi',
       name: '广西',
-    }, {
+    },
+    {
       id: 'yunnan',
       name: '云南',
       children: [
@@ -68,7 +70,6 @@
     },
   ];
   const area = ref(['guangxi']);
-
 </script>
 
 <style lang="less" scoped>
@@ -79,4 +80,4 @@
       margin-bottom: 20px;
     }
   }
-  </style>
+</style>

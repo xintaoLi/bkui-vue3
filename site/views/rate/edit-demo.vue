@@ -10,7 +10,7 @@
 
   const rateValue = ref(3);
 
-  const handleRateChange = (rate) => {
+  const handleRateChange = rate => {
     alert(rate);
   };
 </script>

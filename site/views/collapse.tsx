@@ -59,8 +59,8 @@ export default defineComponent({
           重置ActiveIndex
         </BkButton>
         <BkCollapse
-          list={this.list}
           activeIndex={this.activeIndex}
+          list={this.list}
         ></BkCollapse>
       </div>
     );

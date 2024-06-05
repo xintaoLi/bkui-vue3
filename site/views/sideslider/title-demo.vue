@@ -1,9 +1,9 @@
 <template>
   <div>
     <bk-button
-      @click="handleOpen"
-      text
       theme="primary"
+      text
+      @click="handleOpen"
     >
       自定义标题和内容
     </bk-button>
@@ -19,11 +19,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+  import { ref } from 'vue';
 
-const isShow = ref(false);
+  const isShow = ref(false);
 
-const handleOpen = () => {
-  isShow.value = true;
-};
+  const handleOpen = () => {
+    isShow.value = true;
+  };
 </script>

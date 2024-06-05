@@ -1,17 +1,17 @@
 <template>
   <div class="cascader-wrapper">
     <bk-cascader
+      style="height: 32px"
       v-model="area"
-      style="height: 32px;"
       :list="list"
       check-any-level
     />
     <bk-cascader
       v-model="multipleArea"
       :list="list"
-      multiple
-      filterable
       check-any-level
+      filterable
+      multiple
     />
   </div>
 </template>
@@ -34,10 +34,12 @@
           disabled: true,
         },
       ],
-    }, {
+    },
+    {
       id: 'guangxi',
       name: '广西',
-    }, {
+    },
+    {
       id: 'yunnan',
       name: '云南',
       children: [
@@ -72,7 +74,6 @@
   ];
   const area = ref([]);
   const multipleArea = ref([]);
-
 </script>
 
 <style lang="less" scoped>
@@ -83,5 +84,4 @@
       margin-bottom: 20px;
     }
   }
-  </style>
-
+</style>

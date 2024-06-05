@@ -24,14 +24,15 @@
  * IN THE SOFTWARE.
  */
 
-import type { ExtractPropTypes } from 'vue';
 import { defineComponent, onMounted, provide, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { PropTypes, useFormItem } from '@bkui-vue/shared';
 
 import { radioGroupKey } from './common';
+
 import type { IRadioGroupContext } from './type';
+import type { ExtractPropTypes } from 'vue';
 
 const radioGroupProps = {
   name: PropTypes.string.def(''),

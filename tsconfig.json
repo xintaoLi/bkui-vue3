@@ -1,0 +1,59 @@
+{
+  "compilerOptions": {
+    "strictNullChecks": false,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "noImplicitAny": false,
+    "baseUrl": "./",
+    "paths": {
+      "@bkui-vue/*": ["./packages/*/src"]
+    },
+    "allowJs": true,
+    "importHelpers": true,
+    "sourceMap": true,
+    "noEmitOnError": true,
+    "moduleResolution": "node",
+
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    /* Bundler mode */
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "ts-node": {
+    "transpileOnly": false
+  },
+  "include": [
+    "packages/**/*.ts",
+    "packages/**/*.d.ts",
+    "packages/**/*.tsx",
+    "packages/**/*.vue",
+    "packages/**/*.js",
+    "site/**/*.ts",
+    "site/**/*.d.ts",
+    "site/**/*.tsx",
+    "site/**/*.vue",
+    "site/**/*.js",
+    "scripts/**/*.ts",
+    "scripts/**/*.d.ts",
+    "scripts/**/*.tsx",
+    "scripts/**/*.vue",
+    "scripts/**/*.js",
+    "./stylelint.config.js",
+    "./eslint.config.js",
+    "./prettier.config.js",
+    "./*.js",
+    "index.d.ts"
+  ]
+}

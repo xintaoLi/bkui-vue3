@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 
 const backtopPropsJson: IPropsTableItem[] = [
@@ -77,25 +76,25 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Backtop 回到顶部'
           desc='Backtop 回到页面顶部的操作按钮'
           link='https://www.google.com.hk/'
+          name='Backtop 回到顶部'
         />
 
         <DemoBox
-          title='基础用法'
-          desc='向下滚动以显示按钮'
           componentName='backtop'
           demoName='base-demo'
+          desc='向下滚动以显示按钮'
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
 
         <PropsBox
           style='height: 1000px'
-          title='Backtop 属性'
-          subtitle=''
           propsData={backtopPropsJson}
+          subtitle=''
+          title='Backtop 属性'
         />
       </div>
     );

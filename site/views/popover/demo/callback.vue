@@ -1,7 +1,7 @@
 <template>
   <bk-popover
-    placement="bottom"
     content="文字提示"
+    placement="bottom"
     @after-hidden="handleHide"
     @after-show="handleShow"
   >

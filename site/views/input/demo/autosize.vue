@@ -1,28 +1,26 @@
 <template>
   <div>
     <bk-input
-      v-model="val"
       class="mb8"
-      autosize
-      type="textarea"
-      :over-max-length-limit="overMaxLengthLimit"
+      v-model="val"
       :maxlength="255"
+      :over-max-length-limit="overMaxLengthLimit"
+      type="textarea"
+      autosize
     />
     <bk-input
-      v-model="val1"
       class="mb8"
+      v-model="val1"
       :autosize="autoSizeConf"
       type="textarea"
     />
-    <div
-      class="expandable-input-field mb8"
-    >
+    <div class="expandable-input-field mb8">
       <bk-input
-        v-model="val2"
-        type="textarea"
         class="hover-expand-textarea"
-        autosize
+        v-model="val2"
         :resize="false"
+        type="textarea"
+        autosize
       />
     </div>
   </div>
@@ -53,7 +51,7 @@
   }
   .hover-expand-textarea {
     position: absolute;
-    transition: all .6s ease;
+    transition: all 0.6s ease;
     height: 32px;
     min-height: 32px;
     &.is-focused,

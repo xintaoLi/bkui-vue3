@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import AcceptImage from './demo/accept-image.vue';
 import AcceptZip from './demo/accept-zip.vue';
 import Base from './demo/base.vue';
@@ -281,96 +280,96 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Upload'
           desc='通过点击或者拖拽上传文件'
           designLink='https://bkdesign.bk.tencent.com/design/41'
+          name='Upload'
         />
         <DemoBox
-          title='基础用法'
-          desc='上传组件提供图片和文件上传的功能，由 accept 属性来定义允许上传的文件类型，默认为 *'
           componentName='upload'
           demoName='/demo/base'
+          desc='上传组件提供图片和文件上传的功能，由 accept 属性来定义允许上传的文件类型，默认为 *'
+          title='基础用法'
         >
           <Base />
         </DemoBox>
         <DemoBox
-          title='上传图片'
-          desc='配置 accept 属性，限制用户只允许上传 jpg、jpeg、png 格式的图片'
           componentName='upload'
           demoName='/demo/accept-image'
+          desc='配置 accept 属性，限制用户只允许上传 jpg、jpeg、png 格式的图片'
+          title='上传图片'
         >
           <AcceptImage />
         </DemoBox>
         <DemoBox
-          title='上传 zip 文件'
-          desc='配置 accept 属性，限制用户只允许上传 zip 格式的文件'
           componentName='upload'
           demoName='/demo/accept-zip'
+          desc='配置 accept 属性，限制用户只允许上传 zip 格式的文件'
+          title='上传 zip 文件'
         >
           <AcceptZip />
         </DemoBox>
         <DemoBox
-          title='设置文件大小'
-          desc='配置 size 属性，限制上传文件的大小'
           componentName='upload'
           demoName='/demo/max-size'
+          desc='配置 size 属性，限制上传文件的大小'
+          title='设置文件大小'
         >
           <MaxSize />
         </DemoBox>
         <DemoBox
-          title='设置上传文件个数'
-          desc='配置 limit 属性，设置上传文件个数'
           componentName='upload'
           demoName='/demo/limit'
+          desc='配置 limit 属性，设置上传文件个数'
+          title='设置上传文件个数'
         >
           <Limit />
         </DemoBox>
         <DemoBox
-          title='点击按钮上传'
-          desc='设置 theme 属性为 button'
           componentName='upload'
           demoName='/demo/theme-button'
+          desc='设置 theme 属性为 button'
+          title='点击按钮上传'
         >
           <ThemeButton />
         </DemoBox>
         <DemoBox
-          title='照片墙'
-          desc='设置 theme 属性为 picture，限制文件类型为图片类型，比如：png，jpeg，jpg'
           componentName='upload'
           demoName='/demo/theme-picture'
+          desc='设置 theme 属性为 picture，限制文件类型为图片类型，比如：png，jpeg，jpg'
+          title='照片墙'
         >
           <ThemePicture />
         </DemoBox>
         <DemoBox
-          title='头像上传'
-          desc='设置 theme 属性为 picture，multiple 属性设置为 false，并限制文件类型为图片类型，比如：png，jpeg，jpg'
           componentName='upload'
           demoName='/demo/single-picture'
+          desc='设置 theme 属性为 picture，multiple 属性设置为 false，并限制文件类型为图片类型，比如：png，jpeg，jpg'
+          title='头像上传'
         >
           <SinglePicture />
         </DemoBox>
         <DemoBox
-          title='自定义文件列表项'
-          desc='使用 slot 自定义文件列表项'
           componentName='upload'
           demoName='/demo/slots-file'
+          desc='使用 slot 自定义文件列表项'
+          title='自定义文件列表项'
         >
           <SlotsFile />
         </DemoBox>
         <PropsBox
-          title='Upload 属性'
-          subtitle=''
           propsData={uploadProps}
+          subtitle=''
+          title='Upload 属性'
         />
         <PropsBox
-          title='Upload 事件'
-          subtitle=''
           propsData={uploadEvents}
+          subtitle=''
+          title='Upload 事件'
         />
         <PropsBox
-          title='Upload 插槽'
-          subtitle=''
           propsData={uploadSlots}
+          subtitle=''
+          title='Upload 插槽'
         />
       </div>
     );

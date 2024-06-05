@@ -1,8 +1,6 @@
 <template>
   <div>
-    <bk-timeline
-      :list="state.list"
-    />
+    <bk-timeline :list="state.list" />
   </div>
 </template>
 <script>
@@ -44,5 +42,4 @@
       };
     },
   });
-
 </script>

@@ -82,10 +82,10 @@ export default defineComponent({
         <div style='margin: 100px auto; display: flex; justify-content: space-between; padding: 200px 50px; flex-wrap: wrap;'>
           {this.dropdownList.map(item => (
             <BkDropdown
-              trigger={item.trigger}
-              placement={item.placement}
-              disabled={this.disabled}
               extCls={this.extCls}
+              disabled={this.disabled}
+              placement={item.placement}
+              trigger={item.trigger}
             >
               {{
                 default: () => (
@@ -112,9 +112,9 @@ export default defineComponent({
           ))}
           <BkButton onClick={this.handleChangeDisabled}>{`disabled: ${this.disabled}`}</BkButton>
           <BkDropdown
-            trigger='manual'
-            isShow={this.isShow}
             disabled={this.disabled}
+            isShow={this.isShow}
+            trigger='manual'
             onShowChange={val => (this.isShow = val)}
           >
             {{
@@ -134,8 +134,8 @@ export default defineComponent({
             }}
           </BkDropdown>
           <BkDropdown
-            trigger='click'
             disabled={this.disabled}
+            trigger='click'
           >
             {{
               default: () => (

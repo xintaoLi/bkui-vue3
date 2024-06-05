@@ -19,7 +19,7 @@
   </div>
 </template>
 <style>
-.mb20 {
-  margin-bottom: 20px
-}
+  .mb20 {
+    margin-bottom: 20px;
+  }
 </style>

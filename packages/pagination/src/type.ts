@@ -24,9 +24,8 @@
  * IN THE SOFTWARE.
  */
 
-import type { ComponentPublicInstance } from 'vue';
-
 import type { PaginationProps } from './pagination';
+import type { ComponentPublicInstance } from 'vue';
 
 export type IPaginationInstance = ComponentPublicInstance<
   PaginationProps,

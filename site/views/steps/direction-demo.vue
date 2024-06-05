@@ -1,12 +1,10 @@
 <template>
-  <div style="height: 400px;">
+  <div style="height: 400px">
     <bk-steps
-      :line-type="state.lineType"
       class="mb5"
+      :line-type="state.lineType"
     />
-    <bk-steps
-      direction="vertical"
-    />
+    <bk-steps direction="vertical" />
   </div>
 </template>
 <script>
@@ -24,7 +22,7 @@
   });
 </script>
 <style>
-.mb5 {
-  margin-bottom: 5px;
-}
+  .mb5 {
+    margin-bottom: 5px;
+  }
 </style>

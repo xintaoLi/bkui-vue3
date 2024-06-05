@@ -63,49 +63,49 @@ export default defineComponent({
     return (
       <form
         ref='formRef'
-        method='post'
         action='https://stackblitz.com/run'
+        method='post'
         target='_blank'
         onClick={this.submit}
       >
         <input
-          type='hidden'
           name='project[files][src/demo.vue]'
+          type='hidden'
           value={this.code}
         />
         <input
-          type='hidden'
           name='project[files][src/index.css]'
+          type='hidden'
           value={this.styleContent}
         />
         <input
-          type='hidden'
           name='project[files][src/main.js]'
+          type='hidden'
           value={this.mainJsContent}
         />
         <input
-          type='hidden'
           name='project[files][index.html]'
+          type='hidden'
           value={this.htmlContent}
         />
         <input
-          type='hidden'
           name='project[files][package.json]'
+          type='hidden'
           value={this.packageJSONContent}
         />
         <input
-          type='hidden'
           name='project[files][vite.config.js]'
+          type='hidden'
           value={this.viteConfigContent}
         />
         <input
-          type='hidden'
           name='project[files][.stackblitzrc]'
+          type='hidden'
           value={this.stackblitzRc}
         />
         <input
-          type='hidden'
           name='project[template]'
+          type='hidden'
           value='node'
         />
 

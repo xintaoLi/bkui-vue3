@@ -189,8 +189,8 @@ export default defineComponent({
             )}
             <div class={resolveClassName('dialog-header')}>
               <span
-                class={resolveClassName('dialog-title')}
                 style={`text-align: ${props.headerAlign}`}
+                class={resolveClassName('dialog-title')}
               >
                 {slots.header?.() ?? props.title}
               </span>
@@ -202,8 +202,8 @@ export default defineComponent({
           if (slots.footer) {
             return (
               <div
-                class={resolveClassName('dialog-footer')}
                 style={`text-align: ${props.footerAlign}`}
+                class={resolveClassName('dialog-footer')}
               >
                 {slots.footer()}
               </div>
@@ -218,16 +218,16 @@ export default defineComponent({
               return (
                 <>
                   <Button
-                    onClick={handleConfirm}
-                    theme={props.confirmButtonTheme}
                     loading={props.isLoading}
+                    theme={props.confirmButtonTheme}
+                    onClick={handleConfirm}
                   >
                     {localConfirmText.value}
                   </Button>
                   <Button
                     class={resolveClassName('dialog-cancel')}
-                    onClick={handleClose}
                     disabled={props.isLoading}
+                    onClick={handleClose}
                   >
                     {localCancelText.value}
                   </Button>
@@ -237,9 +237,9 @@ export default defineComponent({
             if (props.dialogType === 'confirm') {
               return (
                 <Button
-                  onClick={handleConfirm}
-                  theme={props.confirmButtonTheme}
                   loading={props.isLoading}
+                  theme={props.confirmButtonTheme}
+                  onClick={handleConfirm}
                 >
                   {localConfirmText.value}
                 </Button>
@@ -266,17 +266,17 @@ export default defineComponent({
                   )}
                   {props.current >= 1 && props.current === props.totalStep && (
                     <Button
-                      onClick={handleConfirm}
-                      theme={props.confirmButtonTheme}
                       loading={props.isLoading}
+                      theme={props.confirmButtonTheme}
+                      onClick={handleConfirm}
                     >
                       {localConfirmText.value}
                     </Button>
                   )}
                   <Button
                     class={resolveClassName('dialog-cancel')}
-                    onClick={handleClose}
                     disabled={props.isLoading}
+                    onClick={handleClose}
                   >
                     {localCancelText.value}
                   </Button>
@@ -286,8 +286,8 @@ export default defineComponent({
           };
           return (
             <div
-              class={resolveClassName('dialog-footer')}
               style={`text-align: ${props.footerAlign}`}
+              class={resolveClassName('dialog-footer')}
             >
               {renderFooterAction()}
             </div>
@@ -304,23 +304,23 @@ export default defineComponent({
       return (
         <Modal
           {...inheritAttrs}
+          width={props.fullscreen ? 'auto' : props.width}
           class={{
             [resolveClassName('dialog')]: true,
             'is-fullscreen': props.fullscreen,
           }}
-          isShow={props.isShow}
-          fullscreen={props.fullscreen}
-          width={props.fullscreen ? 'auto' : props.width}
           animateType='fadein'
           beforeClose={props.beforeClose}
           closeIcon={props.closeIcon}
           escClose={props.escClose}
-          quickClose={props.quickClose}
-          showMask={props.showMask}
-          transfer={props.transfer}
-          renderDirective={props.renderDirective}
+          fullscreen={props.fullscreen}
+          isShow={props.isShow}
           left={props.fullscreen ? '0px' : positionData.moveStyle.left}
+          quickClose={props.quickClose}
+          renderDirective={props.renderDirective}
+          showMask={props.showMask}
           top={props.fullscreen ? '0px' : positionData.moveStyle.top}
+          transfer={props.transfer}
           zIndex={props.zIndex}
           onClose={handleClose}
           onHidden={handleHidden}

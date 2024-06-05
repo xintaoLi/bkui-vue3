@@ -5,15 +5,13 @@
       新增
     </bk-button>
     <bk-button
-      theme="primary"
       class="ml10"
+      theme="primary"
     >
       下拉
       <angle-down class="f22" />
     </bk-button>
-    <bk-button
-      class="ml10"
-    >
+    <bk-button class="ml10">
       <search class="f22" />
     </bk-button>
     <bk-button
@@ -23,14 +21,12 @@
     >
       <search class="f22" />
     </bk-button>
-    <bk-button
-      class="ml10"
-    >
+    <bk-button class="ml10">
       <loading
         class="mr6"
-        loading
-        size="mini"
         mode="spin"
+        size="mini"
+        loading
       />
       loading
     </bk-button>
@@ -39,20 +35,20 @@
       loading
     />
     <bk-button
-      theme="primary"
       class="ml10"
+      theme="primary"
       loading
     />
     <bk-button
       class="ml10"
-      loading
       loading-mode="spin"
+      loading
     />
     <bk-button
       class="ml10"
+      loading-mode="spin"
       theme="primary"
       loading
-      loading-mode="spin"
     />
   </div>
 </template>

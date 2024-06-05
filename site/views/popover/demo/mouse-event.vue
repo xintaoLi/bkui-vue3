@@ -1,21 +1,11 @@
 <template>
-  <bk-button
-    @click="handlePopMsgBtn"
-  >
-    点击初始化Popover
-  </bk-button>
-  <bk-button @click="handleShowPop">
-    show
-  </bk-button>
-  <bk-button @click="handleShowPop">
-    show 2
-  </bk-button>
-  <bk-button @click="handleHidePop">
-    hide
-  </bk-button>
+  <bk-button @click="handlePopMsgBtn"> 点击初始化Popover </bk-button>
+  <bk-button @click="handleShowPop"> show </bk-button>
+  <bk-button @click="handleShowPop"> show 2 </bk-button>
+  <bk-button @click="handleHidePop"> hide </bk-button>
   <div
     ref="refContentTable"
-    style="width: 400px;display: none;"
+    style="width: 400px; display: none"
   >
     <content-table />
   </div>
@@ -56,4 +46,3 @@
     },
   });
 </script>
-

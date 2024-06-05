@@ -1,5 +1,3 @@
-/* eslint-disable vue/no-reserved-component-names */
-
 /*
  * Tencent is pleased to support the open source community by making
  * 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition) available.
@@ -26,9 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import isEqual from 'lodash/isEqual';
-import merge from 'lodash/merge';
-import { PopoverPropTypes } from 'popover/src/props';
 import { computed, defineComponent, onMounted, PropType, provide, reactive, ref, toRefs, watch } from 'vue';
 
 import Checkbox from '@bkui-vue/checkbox';
@@ -49,6 +44,9 @@ import {
   useFormItem,
 } from '@bkui-vue/shared';
 import VirtualRender from '@bkui-vue/virtual-render';
+import isEqual from 'lodash/isEqual';
+import merge from 'lodash/merge';
+import { PopoverPropTypes } from 'popover/src/props';
 
 import { isInViewPort, selectKey, toLowerCase, useHover, usePopover, useRegistry, useRemoteSearch } from './common';
 import Option from './option';
@@ -464,7 +462,7 @@ export default defineComponent({
       customOptionName.value = value;
     };
     // allow create(创建自定义选项)
-    const handleCreateCustomOption = (val: string | number, e: KeyboardEvent) => {
+    const handleCreateCustomOption = (val: number | string, e: KeyboardEvent) => {
       const value = String(val);
       if (!allowCreate.value || !value) return;
 
@@ -840,11 +838,11 @@ export default defineComponent({
       if (this.loading) {
         return (
           <Loading
-            loading={true}
-            theme='primary'
             class='spinner'
+            loading={true}
             mode='spin'
             size='mini'
+            theme='primary'
           />
         );
       }
@@ -876,14 +874,14 @@ export default defineComponent({
       return (
         <li
           class={this.resolveClassName('select-option')}
-          onMouseenter={this.handleSelectedAllOptionMouseEnter}
           onClick={this.toggleSelectAll}
+          onMouseenter={this.handleSelectedAllOptionMouseEnter}
         >
           {this.selectedStyle === 'checkbox' && (
             <Checkbox
               class={this.resolveClassName('select-checkbox')}
-              modelValue={this.isAllSelected}
               indeterminate={!this.isAllSelected && !!this.selected.length && !this.isAll}
+              modelValue={this.isAllSelected}
             />
           )}
           {this.t.selectAll}
@@ -915,38 +913,38 @@ export default defineComponent({
           <SelectTagInput
             ref='selectTagInputRef'
             v-model={this.customOptionName}
-            selected={this.selected}
-            tagTheme={this.tagTheme}
-            placeholder={this.localPlaceholder}
-            filterable={this.isInput}
-            disabled={this.isDisabled}
-            behavior={this.behavior}
-            onRemove={this.handleDeleteTag}
-            collapseTags={this.isCollapseTags}
-            onEnter={this.handleCreateCustomOption}
             v-slots={{
               prefix: renderPrefix(),
               default: this.$slots?.tag && (() => this.$slots?.tag({ selected: this.selected })),
               suffix: () => suffixIcon(),
             }}
+            behavior={this.behavior}
+            collapseTags={this.isCollapseTags}
+            disabled={this.isDisabled}
+            filterable={this.isInput}
+            placeholder={this.localPlaceholder}
+            selected={this.selected}
+            tagTheme={this.tagTheme}
+            onEnter={this.handleCreateCustomOption}
+            onRemove={this.handleDeleteTag}
           />
         );
       }
       return (
         <Input
           ref='inputRef'
-          type='text'
+          behavior={this.behavior}
+          disabled={this.isDisabled}
           modelValue={this.isInput ? this.customOptionName : this.selectedLabel.join(',')}
           placeholder={this.isInput ? this.selectedLabel.join(',') || this.localPlaceholder : this.localPlaceholder}
           readonly={!this.isInput}
           selectReadonly={true}
-          disabled={this.isDisabled}
-          behavior={this.behavior}
           size={this.size}
-          withValidate={false}
           stopPropagation={false}
-          onInput={this.handleInputChange}
+          type='text'
+          withValidate={false}
           onEnter={this.handleCreateCustomOption}
+          onInput={this.handleInputChange}
           {...(this.prefix ? { prefix: this.prefix } : null)}
           v-slots={{
             ...(typeof this.$slots?.prefix === 'function' ? { prefix: () => this.$slots?.prefix?.() } : null),
@@ -957,9 +955,9 @@ export default defineComponent({
     };
     const renderSelectTrigger = () => (
       <div
-        class={this.resolveClassName('select-trigger')}
-        style={{ height: this.autoHeight && this.collapseTags ? '32px' : '' }}
         ref='triggerRef'
+        style={{ height: this.autoHeight && this.collapseTags ? '32px' : '' }}
+        class={this.resolveClassName('select-trigger')}
         onClick={this.handleTogglePopover}
         onMouseenter={this.setHover}
         onMouseleave={this.cancelHover}
@@ -969,22 +967,22 @@ export default defineComponent({
     );
     const renderSelectContent = () => (
       <div
-        class={this.resolveClassName('select-content-wrapper')}
         ref='contentRef'
+        class={this.resolveClassName('select-content-wrapper')}
       >
         {renderAll()}
         {this.filterable && !this.inputSearch && (
           <div class={this.resolveClassName('select-search-wrapper')}>
             <Search
-              class='icon-search'
               width={16}
               height={16}
+              class='icon-search'
             />
             <input
               ref='searchRef'
               class={this.resolveClassName('select-search-input')}
-              placeholder={this.localSearchPlaceholder}
               v-model={this.searchValue}
+              placeholder={this.localSearchPlaceholder}
             />
           </div>
         )}
@@ -993,10 +991,10 @@ export default defineComponent({
             {this.searchLoading && (
               <Loading
                 class='mr5'
-                theme='primary'
                 loading={true}
                 mode='spin'
                 size='mini'
+                theme='primary'
               />
             )}
             <span>{this.curContentText}</span>
@@ -1004,8 +1002,8 @@ export default defineComponent({
         )}
         <div class={this.resolveClassName('select-content')}>
           <div
-            class={this.enableVirtualRender ? '' : this.resolveClassName('select-dropdown')}
             style={{ maxHeight: `${this.scrollHeight}px` }}
+            class={this.enableVirtualRender ? '' : this.resolveClassName('select-dropdown')}
             onScroll={this.handleScroll}
           >
             <ul
@@ -1015,22 +1013,22 @@ export default defineComponent({
               {renderSelectAll()}
               {this.enableVirtualRender ? (
                 <VirtualRender
-                  list={this.virtualList}
+                  ref='virtualRenderRef'
                   height={this.virtualHeight}
                   lineHeight={32}
-                  ref='virtualRenderRef'
+                  list={this.virtualList}
                 >
                   {{
                     default: ({ data }) => {
                       const optionRender = this.$slots?.optionRender || this.$slots?.virtualScrollRender;
                       return data.map(item => (
                         <Option
-                          key={item[this.idKey]}
                           id={item[this.idKey]}
-                          name={item[this.displayKey]}
+                          key={item[this.idKey]}
                           v-slots={
                             typeof optionRender === 'function' ? { default: () => optionRender({ item }) } : null
                           }
+                          name={item[this.displayKey]}
                         />
                       ));
                     },
@@ -1039,12 +1037,12 @@ export default defineComponent({
               ) : (
                 this.list.map(item => (
                   <Option
-                    key={item[this.idKey]}
                     id={item[this.idKey]}
-                    name={item[this.displayKey]}
+                    key={item[this.idKey]}
                     v-slots={
                       this.$slots?.optionRender ? { default: () => this.$slots?.optionRender?.({ item }) } : null
                     }
+                    name={item[this.displayKey]}
                   />
                 ))
               )}
@@ -1053,10 +1051,10 @@ export default defineComponent({
                 <li class={this.resolveClassName('select-options-loading')}>
                   <Loading
                     class='spinner mr5'
-                    theme='primary'
                     loading={true}
                     mode='spin'
                     size='mini'
+                    theme='primary'
                   ></Loading>
                   <span>{this.localLoadingText}</span>
                 </li>
@@ -1074,13 +1072,13 @@ export default defineComponent({
       <div class={selectClass}>
         <Popover
           {...this.popoverConfig}
-          onClickoutside={this.handleClickOutside}
-          onAfterShow={this.handlePopoverShow}
           ref='popoverRef'
           v-slots={{
             default: () => renderSelectTrigger(),
             content: () => renderSelectContent(),
           }}
+          onAfterShow={this.handlePopoverShow}
+          onClickoutside={this.handleClickOutside}
         ></Popover>
       </div>
     );

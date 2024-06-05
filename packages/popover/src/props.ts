@@ -35,10 +35,10 @@ export const EventProps = {
 type IAxesOffsets = {
   mainAxis?: number;
   crossAxis?: number;
-  alignmentAxis?: number | null;
+  alignmentAxis?: null | number;
 };
 
-type IContent = string | number | JSX.Element | HTMLElement;
+type IContent = HTMLElement | JSX.Element | number | string;
 
 export const PopoverProps = {
   isShow: PropTypes.bool.def(false),

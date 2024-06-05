@@ -7,10 +7,10 @@
       :show-overflow-tooltip="overflowTooltip"
       empty-cell-text="--"
       stripe
-      @dblclick="handleDblClick"
-      @column-sort="handleSortBy"
       @cell-click="handleCellClick"
       @cell-dblclick="handleCellDblclick"
+      @column-sort="handleSortBy"
+      @dblclick="handleDblClick"
       @row-mouse-enter="handleMouseEnter"
       @row-mouse-leave="handleMouseLeave"
     />
@@ -87,7 +87,8 @@
             {
               name: '创建时间',
               id: 'create_time',
-            }],
+            },
+          ],
           checked: ['ip', 'index'],
         },
       };
@@ -117,13 +118,13 @@
   });
 </script>
 <style scoped>
-.row {
-  display: flex;
-  width: 100%;
-}
+  .row {
+    display: flex;
+    width: 100%;
+  }
 
-.cell {
-  flex: 1;
-  margin: 0 5px 0 5px;
-}
+  .cell {
+    flex: 1;
+    margin: 0 5px 0 5px;
+  }
 </style>

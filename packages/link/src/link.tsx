@@ -32,10 +32,10 @@ import { classes, PropTypes } from '@bkui-vue/shared';
 
 enum LinkThemeEnum {
   DANGER = 'danger',
-  SUCCESS = 'success',
-  PRIMARY = 'primary',
-  WARNING = 'warning',
   DEFAULT = 'default',
+  PRIMARY = 'primary',
+  SUCCESS = 'success',
+  WARNING = 'warning',
 }
 export default defineComponent({
   name: 'Link',
@@ -74,9 +74,9 @@ export default defineComponent({
 
     return (
       <a
+        class={linkClass}
         href={this.href}
         target={this.target}
-        class={linkClass}
         onClick={this.handleClick}
       >
         <span>{this.$slots.default?.()}</span>

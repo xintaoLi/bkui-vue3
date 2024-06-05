@@ -3,16 +3,16 @@
     <span style="position: relative">
       未读消息
       <bk-badge
+        style="margin-left: 5px"
         :count="2"
         theme="danger"
-        style="margin-left: 5px"
       />
     </span>
     <span style="position: relative">
       <bk-badge
-        dot
+        style="margin-right: 5px; margin-left: 40px"
         theme="danger"
-        style=" margin-right: 5px;margin-left: 40px"
+        dot
       />
       未读消息
     </span>

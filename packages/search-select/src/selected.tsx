@@ -114,33 +114,33 @@ export default defineComponent({
     const contentComponent = (item: SelectedItem, index: number) =>
       this.editKey === `${item.id}_${index}` ? (
         <div
-          class='selected-input'
           key={this.editKey.toString()}
           ref='selectedInputRef'
+          class='selected-input'
         >
           <SearchSelectInput
-            ref='inputRef'
             key={this.editKey.toString()}
-            mode={SearchInputMode.EDIT}
-            data={this.data}
-            showCondition={false}
-            conditions={this.conditions}
-            defautUsingItem={this.copySeletedItem(item)}
+            ref='inputRef'
+            v-slots={{ ...this.$slots }}
             clickOutside={this.handleInputOutside}
+            conditions={this.conditions}
+            data={this.data}
+            defautUsingItem={this.copySeletedItem(item)}
             getMenuList={this.getMenuList}
+            mode={SearchInputMode.EDIT}
+            showCondition={false}
             validateValues={this.validateValues}
             valueBehavior={this.valueBehavior}
             onAdd={v => this.handleAddSelected(v, index)}
             onFocus={this.handleInputFocus}
-            v-slots={{ ...this.$slots }}
           />
         </div>
       ) : (
         <li
+          key={`${item.id}_${index}`}
           class={`search-container-selected ${
             !(this.overflowIndex >= 0 ? index < this.overflowIndex : index >= 0) ? 'hidden-selected' : ''
           }`}
-          key={`${item.id}_${index}`}
         >
           <span
             class='selected-name'

@@ -9,9 +9,9 @@
     <div :style="{ marginTop: '30px' }">
       <bk-slider
         v-model="demo2"
+        :min-value="-100"
         range
         show-input
-        :min-value="-100"
       />
     </div>
   </div>
@@ -37,7 +37,6 @@
       };
     },
   });
-
 </script>
 <style scoped>
   .demo {

@@ -39,7 +39,6 @@ let COLLATOR;
 function patchDict(patchers) {
   if (!patchers) return;
   if (typeof patchers === 'function') {
-    // eslint-disable-next-line no-param-reassign
     patchers = [patchers];
   }
   if (patchers.forEach) {
@@ -130,7 +129,6 @@ function genToken(ch) {
   }
 
   if (cmp < 0) {
-    // eslint-disable-next-line no-plusplus
     offset--;
   }
 

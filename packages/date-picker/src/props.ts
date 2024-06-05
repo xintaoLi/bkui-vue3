@@ -24,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import type { ExtractPropTypes } from 'vue';
 import { PropType } from 'vue';
 
 import type {
@@ -34,6 +33,7 @@ import type {
   DisabledDateType,
   PickerTypeType,
 } from './interface';
+import type { ExtractPropTypes } from 'vue';
 
 export const datePickerProps = {
   type: {
@@ -158,7 +158,7 @@ export const datePickerProps = {
   // medium: 14px
   // large: 16px
   fontSize: {
-    type: String as PropType<'normal' | 'medium' | 'large'>,
+    type: String as PropType<'large' | 'medium' | 'normal'>,
     default: 'normal',
   },
   // 结束时间是否允许“至今”
@@ -187,7 +187,7 @@ export const datePickerProps = {
     default: false,
   },
   behavior: {
-    type: String as PropType<'simplicity' | 'normal'>,
+    type: String as PropType<'normal' | 'simplicity'>,
     default: 'normal',
     validator(v) {
       return ['simplicity', 'normal'].indexOf(v) > -1;

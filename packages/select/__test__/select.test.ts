@@ -24,10 +24,10 @@
  * IN THE SOFTWARE.
  */
 
-import ResizeObserver from 'resize-observer-polyfill';
 import { nextTick } from 'vue';
 
 import { mount } from '@vue/test-utils';
+import ResizeObserver from 'resize-observer-polyfill';
 
 import BkSelect from '../src';
 import BkOption from '../src/option';

@@ -29,7 +29,6 @@ import { defineComponent } from 'vue';
 import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
-
 import basic from './basic.vue';
 import basicFilter from './basic-filter.vue';
 import basicSort from './basic-sort.vue';
@@ -452,9 +451,9 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Table'
           desc='Table组件， 为页面和功能提供列表。'
           designLink='https://bkdesign.bk.tencent.com/design/35'
+          name='Table'
         />
         {configs.map(cfg => (
           <DemoBox
@@ -467,10 +466,10 @@ export default defineComponent({
         {configList.map(cfg => (
           <div>
             <PropsBox
-              title={cfg.title}
               columnMap={renderMap[cfg.type]}
-              subtitle={cfg.subTile}
               propsData={cfg.config}
+              subtitle={cfg.subTile}
+              title={cfg.title}
             />
           </div>
         ))}

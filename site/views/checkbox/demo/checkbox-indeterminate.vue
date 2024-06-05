@@ -1,13 +1,10 @@
 <template>
   <bk-checkbox
     label="微信"
-    indeterminate
     checked
+    indeterminate
   />
 </template>
 <script setup>
-
-  import { BkCheckbox  } from '@bkui-vue/checkbox';
-
-
+  import { BkCheckbox } from '@bkui-vue/checkbox';
 </script>

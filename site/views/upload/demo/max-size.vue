@@ -1,11 +1,11 @@
 <template>
   <div class="demo">
     <bk-upload
-      with-credentials
-      :size="5"
       :handle-res-code="handleRes"
+      :size="5"
       :tip="'最大上传5(Mb)的文件'"
       :url="'https://jsonplaceholder.typicode.com/posts/'"
+      with-credentials
       @error="handleError"
     />
   </div>
@@ -18,7 +18,7 @@
     console.log(file, fileList, error, 'handleError');
   };
 
-  const handleRes = (response) => {
+  const handleRes = response => {
     if (response.id) {
       return true;
     }

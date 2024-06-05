@@ -23,13 +23,14 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import type { HTMLAttributes } from 'vue';
 import { computed, defineComponent, onBeforeUnmount, onMounted, ref, shallowRef } from 'vue';
 
 import Popover from '@bkui-vue/popover';
 import { debounce, hasOverflowEllipsis } from '@bkui-vue/shared';
 
 import props from '../props';
+
+import type { HTMLAttributes } from 'vue';
 // import getActualWidthByCanvas from '../utils/getActualWidthByCanvas';
 // import getActualWidthByDom from '../utils/getActualWidthByDom';
 
@@ -94,8 +95,8 @@ export default defineComponent({
         class='position-relative'
       >
         <Popover
-          placement={this.placement}
           boundary={this.boundary || document.body}
+          placement={this.placement}
           popoverDelay={[200, 0]}
           {...props.popoverOptions}
           disabled={this.type === 'title' || !this.isShowTips}

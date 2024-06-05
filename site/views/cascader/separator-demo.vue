@@ -6,7 +6,7 @@
   />
 </template>
 <script setup>
-  import {  ref } from 'vue';
+  import { ref } from 'vue';
 
   const list = [
     {
@@ -24,10 +24,12 @@
           disabled: true,
         },
       ],
-    }, {
+    },
+    {
       id: 'guangxi',
       name: '广西',
-    }, {
+    },
+    {
       id: 'yunnan',
       name: '云南',
       children: [
@@ -61,6 +63,4 @@
     },
   ];
   const area = ref([]);
-
 </script>
-

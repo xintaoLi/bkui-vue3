@@ -24,10 +24,9 @@
  * IN THE SOFTWARE.
  */
 
-import cloneDeep from 'lodash/cloneDeep';
-
 import { propsMixin } from '@bkui-vue/modal';
 import { AlignEnum, alignType, dialogTypeUnion, PropTypes, ThemeEnum } from '@bkui-vue/shared';
+import cloneDeep from 'lodash/cloneDeep';
 
 const dialogProps = cloneDeep(propsMixin);
 dialogProps.width.default = '480';

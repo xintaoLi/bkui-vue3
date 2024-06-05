@@ -29,12 +29,11 @@ import { createTypes, string, toType, VueTypeDef } from 'vue-types';
 
 const propTypesNS = createTypes({});
 
-export type VueNode = VNodeChild | JSX.Element;
+export type VueNode = JSX.Element | VNodeChild;
 
 // 将一个数组转化为一个有限集合 e.g. const arr = [1,2,3] as const; type UnionType = ElementType<typeof arr>;
-export type ElementType<T extends ReadonlyArray<unknown>> = T extends ReadonlyArray<infer ElementType>
-  ? ElementType
-  : never;
+export type ElementType<T extends ReadonlyArray<unknown>> =
+  T extends ReadonlyArray<infer ElementType> ? ElementType : never;
 
 // 用于创建字符串列表映射至 `K: V` 的函数
 export function stringEnum<T extends string>(o: Array<T>): { [K in T]: K } {
@@ -53,16 +52,16 @@ export type UnionToArrayType<T, L = LastOf<T>, N = [T] extends [never] ? true : 
   : Push<UnionToArrayType<Exclude<T, L>>, L>;
 
 export enum SizeEnum {
-  SMALL = 'small',
-  LARGE = 'large',
   DEFAULT = 'default',
+  LARGE = 'large',
+  SMALL = 'small',
 }
 
 export enum Placements {
-  Top = 'top',
+  Bottom = 'bottom',
   Left = 'left',
   Right = 'right',
-  Bottom = 'bottom',
+  Top = 'top',
 }
 
 export enum RenderDirectiveEnum {
@@ -75,8 +74,8 @@ export function renderDirectiveType() {
 }
 
 export enum AlignEnum {
-  LEFT = 'left',
   CENTER = 'center',
+  LEFT = 'left',
   RIGHT = 'right',
 }
 export function alignType() {
@@ -84,29 +83,29 @@ export function alignType() {
 }
 
 export enum ThemeEnum {
-  PRIMARY = 'primary',
-  WARNING = 'warning',
-  SUCCESS = 'success',
   DANGER = 'danger',
+  PRIMARY = 'primary',
+  SUCCESS = 'success',
+  WARNING = 'warning',
 }
 
 /** 弹层出现位置选项 */
 export enum PlacementEnum {
   AUTO = 'auto',
-  AUTO_START = 'auto-start',
   AUTO_END = 'auto-end',
-  TOP = 'top',
-  RIGHT = 'right',
+  AUTO_START = 'auto-start',
   BOTTOM = 'bottom',
-  LEFT = 'left',
-  TOP_START = 'top-start',
-  TOP_END = 'top-end',
-  BOTTOM_START = 'bottom-start',
   BOTTOM_END = 'bottom-end',
-  RIGHT_START = 'right-start',
-  RIGHT_END = 'right-end',
-  LEFT_START = 'left-start',
+  BOTTOM_START = 'bottom-start',
+  LEFT = 'left',
   LEFT_END = 'left-end',
+  LEFT_START = 'left-start',
+  RIGHT = 'right',
+  RIGHT_END = 'right-end',
+  RIGHT_START = 'right-start',
+  TOP = 'top',
+  TOP_END = 'top-end',
+  TOP_START = 'top-start',
 }
 
 export function placementType() {
@@ -115,8 +114,8 @@ export function placementType() {
 
 /** 弹层触发选项  */
 export enum TriggerEnum {
-  HOVER = 'hover',
   CLICK = 'click',
+  HOVER = 'hover',
   MANUAL = 'manual',
 }
 export function triggerType() {
@@ -134,10 +133,10 @@ export function renderType() {
 }
 
 export enum DialogTypeEnum {
-  SHOW = 'show',
-  OPERATION = 'operation',
   CONFIRM = 'confirm',
+  OPERATION = 'operation',
   PROCESS = 'process',
+  SHOW = 'show',
 }
 export function dialogTypeUnion() {
   return toType<`${DialogTypeEnum}`>('dialogType', {
@@ -162,11 +161,11 @@ export function lineStyleType() {
 }
 
 export enum TagThemeEnum {
-  UNKNOWN = '',
-  SUCCESS = 'success',
-  INFO = 'info',
-  WARNING = 'warning',
   DANGER = 'danger',
+  INFO = 'info',
+  SUCCESS = 'success',
+  UNKNOWN = '',
+  WARNING = 'warning',
 }
 
 export function TagThemeType() {
@@ -174,25 +173,25 @@ export function TagThemeType() {
 }
 
 export enum InputBehaviorEnum {
-  SIMPLICITY = 'simplicity',
   NORMAL = 'normal',
+  SIMPLICITY = 'simplicity',
 }
 
 export enum ProgressStrokeLineCapEnum {
   BUTT = 'butt',
-  SQUARE = 'square',
   ROUNDE = 'round',
+  SQUARE = 'square',
 }
 
 export enum ProgressEnum {
-  LINE = 'line',
   CIRCLE = 'circle',
   DASHBOARD = 'dashboard',
+  LINE = 'line',
 }
 
 export enum SwitcherThemeEnum {
-  SUCCESS = 'success',
   PRIMARY = 'primary',
+  SUCCESS = 'success',
 }
 
 export enum TimelineNodeTypeEnum {
@@ -306,8 +305,8 @@ export class PropTypes extends propTypesNS {
 }
 
 export enum SelectedTypeEnum {
-  CHECKBOX = 'checkbox',
   CHECK = 'check',
+  CHECKBOX = 'checkbox',
 }
 
 export function SelectedType() {

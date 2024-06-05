@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import DemoTsx from './demo-tsx';
 import FooterSlotDemo from './footer-slot-demo.vue';
@@ -65,95 +64,95 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='DatePicker 日期选择器'
           desc='日期选择器'
+          name='DatePicker 日期选择器'
         />
         <DemoBox
-          title='基础用法'
-          desc='通过 v-model 或者 value 设置初始值'
           componentName='date-picker'
           demoName='base-demo'
+          desc='通过 v-model 或者 value 设置初始值'
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
         <DemoBox
-          title='开启日期范围'
-          desc='通过设置 type 属性为 daterange 来开启时间设置'
           componentName='date-picker'
           demoName='range-demo'
+          desc='通过设置 type 属性为 daterange 来开启时间设置'
+          title='开启日期范围'
         >
           <RangeDemo />
         </DemoBox>
         <DemoBox
-          title='开启月份范围'
-          desc='通过设置 type 属性为 monthrange 来开启月份范围'
           componentName='date-picker'
           demoName='month-range-demo'
+          desc='通过设置 type 属性为 monthrange 来开启月份范围'
+          title='开启月份范围'
         >
           <MonthRangeDemo />
         </DemoBox>
         <DemoBox
-          title='开启年份范围'
-          desc='通过设置 type 属性为 yearrange 来开启月份范围'
           componentName='date-picker'
           demoName='year-range-demo'
+          desc='通过设置 type 属性为 yearrange 来开启月份范围'
+          title='开启年份范围'
         >
           <YearRangeDemo />
         </DemoBox>
         <DemoBox
-          title='开启时间设置'
-          desc='通过设置 type 属性为 datetime 来开启时间设置'
           componentName='date-picker'
           demoName='with-time-demo'
+          desc='通过设置 type 属性为 datetime 来开启时间设置'
+          title='开启时间设置'
         >
           <WithTimeDemo />
         </DemoBox>
         <DemoBox
-          title='trigger slot'
-          desc='可以通过 trigger slot 来增加自定义 trigger'
           componentName='date-picker'
           demoName='trigger-slot-demo'
+          desc='可以通过 trigger slot 来增加自定义 trigger'
+          title='trigger slot'
         >
           <TriggerSlotDemo />
         </DemoBox>
         <DemoBox
-          title='header slot'
-          desc='自定义 header'
           componentName='date-picker'
           demoName='header-slot-demo'
+          desc='自定义 header'
+          title='header slot'
         >
           <HeaderSlotDemo />
         </DemoBox>
         <DemoBox
-          title='footer slot'
-          desc='自定义 footer'
           componentName='date-picker'
           demoName='footer-slot-demo'
+          desc='自定义 footer'
+          title='footer slot'
         >
           <FooterSlotDemo />
         </DemoBox>
         <DemoBox
-          title='shortcuts slot'
-          desc='自定义 shortcuts'
           componentName='date-picker'
           demoName='shortcuts-slot-demo'
+          desc='自定义 shortcuts'
+          title='shortcuts slot'
         >
           <ShortcutsSlotDemo />
         </DemoBox>
         <DemoBox
-          title='demo-tsx'
-          desc='自定义插槽 tsx 写法'
           componentName='date-picker'
-          suffix='.tsx'
           demoName='demo-tsx'
+          desc='自定义插槽 tsx 写法'
+          suffix='.tsx'
+          title='demo-tsx'
         >
           <DemoTsx />
         </DemoBox>
         <DemoBox
-          title='年选择器与月选择器'
-          desc='通过 type 属性配置年选择器与月选择器'
           componentName='date-picker'
           demoName='year-month-demo'
+          desc='通过 type 属性配置年选择器与月选择器'
+          title='年选择器与月选择器'
         >
           <YearMonthDemo />
         </DemoBox>

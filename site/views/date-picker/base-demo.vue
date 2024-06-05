@@ -1,9 +1,9 @@
 <template>
   <bk-date-picker
     v-model="dateValue"
-    clearable
-    append-to-body
     :disabled-date="disabledDate"
+    append-to-body
+    clearable
   />
 </template>
 

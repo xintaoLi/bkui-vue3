@@ -92,7 +92,7 @@ describe('Switcher.tsx', () => {
           </bk-switcher>
       `,
       methods: {
-        handleChange(val: Boolean) {
+        handleChange(val: boolean) {
           wrapper.setData({
             value: val,
           });

@@ -1,9 +1,9 @@
 <template>
   <bk-swiper
     class="swiper"
-    :pics="picList"
-    :loop-time="6000"
     :height="400"
+    :loop-time="6000"
+    :pics="picList"
   />
 </template>
 

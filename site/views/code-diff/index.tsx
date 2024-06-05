@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import Basic from './demo/basic.vue';
 import DiffContext from './demo/diff-context.vue';
 import Format from './demo/format.vue';
@@ -152,9 +151,9 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Diff 差异对比'
           desc='代码差异对比使用highlight.js做代码高亮，所以在使用该组件之前，请先安装highlight.js依赖'
           link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/code-diff`}
+          name='Diff 差异对比'
         />
         {demos.map(({ DemoComponent, ...demo }) => (
           <DemoBox {...demo}>
@@ -162,9 +161,9 @@ export default defineComponent({
           </DemoBox>
         ))}
         <PropsBox
-          title='CodeDiff 属性'
-          subtitle=''
           propsData={codeDiffProps}
+          subtitle=''
+          title='CodeDiff 属性'
         />
       </div>
     );

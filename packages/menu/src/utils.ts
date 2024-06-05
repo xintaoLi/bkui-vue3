@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 /*
  * Tencent is pleased to support the open source community by making
  * 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition) available.
@@ -34,7 +33,7 @@ export interface IMenuProvider {
   readonly activeKey: Ref<string>;
   readonly openedKeys: Ref<string[]>;
   readonly mode: MenuMode;
-  readonly collapse: Ref<Boolean>;
+  readonly collapse: Ref<boolean>;
   readonly menuStore: Ref<Record<string, IMenuInfo>>;
   readonly registerMenuInfo: (key: string, info: IMenuInfo) => void;
   readonly unregisterMenuInfo: (key: string) => void;
@@ -71,7 +70,7 @@ const trimArr = function (s: string) {
   return (s || '').split(' ').filter(item => !!item.trim());
 };
 
-export function removeClass(el: HTMLElement | Element, cls: string): void {
+export function removeClass(el: Element | HTMLElement, cls: string): void {
   if (!el || !cls) return;
   const classes = trimArr(cls);
   let curClass = el.getAttribute('class') || '';
@@ -88,7 +87,7 @@ export function removeClass(el: HTMLElement | Element, cls: string): void {
 }
 
 /* istanbul ignore next */
-export function addClass(el: HTMLElement | Element, cls: string): void {
+export function addClass(el: Element | HTMLElement, cls: string): void {
   if (!el) return;
   let className = el.getAttribute('class') || '';
   const curClass = trimArr(className);

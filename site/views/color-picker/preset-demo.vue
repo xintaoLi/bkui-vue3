@@ -1,7 +1,7 @@
 <template>
   <bk-color-picker
-    v-model="color3"
     class="color-picker"
+    v-model="color3"
     :recommend="false"
   />
   <bk-color-picker
@@ -19,7 +19,7 @@
 </script>
 
 <style lang="postcss" scoped>
-.color-picker {
-  margin-right: 20px;
-}
+  .color-picker {
+    margin-right: 20px;
+  }
 </style>

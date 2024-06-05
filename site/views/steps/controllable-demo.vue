@@ -19,7 +19,7 @@
       });
 
       // 改变当前选中值
-      const stepChanged = (index) => {
+      const stepChanged = index => {
         state.curStep = index;
       };
       return {
@@ -29,5 +29,4 @@
       };
     },
   });
-
 </script>

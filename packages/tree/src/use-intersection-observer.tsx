@@ -24,8 +24,9 @@
  * IN THE SOFTWARE.
  */
 
-import { isElement } from 'lodash';
 import { computed } from 'vue';
+
+import { isElement } from 'lodash';
 
 import { IIntersectionObserver, TreePropTypes } from './props';
 type IntersectionObserverOptions = {

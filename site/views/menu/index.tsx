@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 const menuPropsJson: IPropsTableItem[] = [
   {
@@ -134,46 +133,46 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Menu'
           desc='Menu组件， 为页面和功能提供导航的菜单列表。'
           link='https://www.google.com.hk/'
+          name='Menu'
         />
         <DemoBox
-          title='基础用法'
-          subtitle='Menu组件的基础用法'
-          desc='垂直菜单，子菜单内嵌在菜单区域。'
           componentName='menu'
           demoName='base-demo'
+          desc='垂直菜单，子菜单内嵌在菜单区域。'
+          subtitle='Menu组件的基础用法'
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
         <PropsBox
-          title='Menu 属性'
           propsData={menuPropsJson}
+          title='Menu 属性'
         />
         <PropsBox
-          title='Menu 事件'
           columnMap={eventColumnMap}
           propsData={eventJson}
+          title='Menu 事件'
         />
         <PropsBox
-          title='SubMenu 事件'
           columnMap={eventColumnMap}
           propsData={subMenuEventJson}
+          title='SubMenu 事件'
         />
         <PropsBox
-          title='SubMenu 插槽'
           columnMap={slotColumnMap}
           propsData={subMenuSlotsJson}
+          title='SubMenu 插槽'
         />
         <PropsBox
-          title='MenuItem 属性'
           propsData={menuItemPropsJson}
+          title='MenuItem 属性'
         />
         <PropsBox
-          title='MenuItem 插槽'
           columnMap={slotColumnMap}
           propsData={menuItemSlotsJson}
+          title='MenuItem 插槽'
         />
       </div>
     );

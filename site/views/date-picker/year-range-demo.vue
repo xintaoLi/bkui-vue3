@@ -2,9 +2,9 @@
   <bk-date-picker
     ref="datePickerRef"
     class="mr15"
+    :disabled-date="disabledDate"
     :model-value="defaultValue"
     :placeholder="'选择年份范围'"
-    :disabled-date="disabledDate"
     type="yearrange"
     @change="handleChange"
     @pick-first="handlePickFirst"
@@ -19,7 +19,7 @@
     new Date(new Date().getFullYear() + 15, new Date().getMonth() + 4),
   ]);
   // const defaultValue = reactive(['2024-01-01', '2024-03-01']);
-  const handleChange = (date) => {
+  const handleChange = date => {
     defaultValue.value = date;
     console.error(date);
     console.error(datePickerRef);

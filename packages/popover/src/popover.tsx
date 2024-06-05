@@ -28,7 +28,6 @@ import { computed, defineComponent, onBeforeUnmount, onMounted, ref, Teleport, T
 import { RenderType } from '@bkui-vue/shared';
 
 import clickoutside from '../../directives/src/clickoutside';
-
 import Arrow from './arrow';
 import { EMIT_EVENT_TYPES } from './const';
 import Content from './content';
@@ -40,7 +39,6 @@ import { contentAsHTMLElement } from './utils';
 export default defineComponent({
   name: 'Popover',
   components: {
-    // eslint-disable-next-line vue/no-reserved-component-names
     Content,
     Arrow,
     Root,
@@ -167,21 +165,21 @@ export default defineComponent({
       <Root ref='refRoot'>
         <Reference ref='refDefaultReference'>{renderReferSlot(this.$slots.default?.() ?? <span></span>)}</Reference>
         <Teleport
-          to={this.boundary}
           disabled={!this.transBoundary}
+          to={this.boundary}
         >
           <Content
             ref='refContent'
-            visible={this.localIsShow}
-            data-theme={this.theme}
-            extCls={this.extCls}
             width={this.width}
             height={this.height}
-            maxWidth={this.maxWidth}
-            maxHeight={this.maxHeight}
-            eventDelay={this.componentEventDelay}
+            extCls={this.extCls}
             v-clickoutside={this.handleClickOutside}
             v-slots={{ arrow: () => (this.arrow ? <Arrow ref='refArrow'>{this.$slots.arrow?.()}</Arrow> : '') }}
+            data-theme={this.theme}
+            eventDelay={this.componentEventDelay}
+            maxHeight={this.maxHeight}
+            maxWidth={this.maxWidth}
+            visible={this.localIsShow}
           >
             {this.contentIsShow ? this.$slots.content?.() ?? this.renderContent() : ''}
           </Content>

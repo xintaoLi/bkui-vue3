@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import CheckAnyLevelDemo from './check-any-level-demo.vue';
 import CheckboxDemo from './checkbox-demo.vue';
@@ -238,133 +237,133 @@ export default defineComponent({
       <div>
         {/* 演示标题 */}
         <DemoTitle
-          name='Cascader 级联组件'
           desc='Cascader组件， 对有清晰的层级结构的数据集进行逐级查看、选择和使用'
           designLink='https://bkdesign.bk.tencent.com/design/114'
+          name='Cascader 级联组件'
         />
 
         {/* 基础用法 */}
         <DemoBox
-          title='基础用法'
-          subtitle='基础数据展示'
-          desc='通过trigger设置`click`或`hover`实现下一级的触发方式; 设置`filterable`属性可以进行搜索。behavior设置为simplicity简约样式'
           componentName='cascader'
           demoName='base-demo'
+          desc='通过trigger设置`click`或`hover`实现下一级的触发方式; 设置`filterable`属性可以进行搜索。behavior设置为simplicity简约样式'
+          subtitle='基础数据展示'
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
 
         {/* 任意级可选 */}
         <DemoBox
-          title='任意级可选'
-          subtitle='通过配置实现任意级可选'
-          desc='设置`check-any-level`为true，可以将非叶子节点作为可选级'
           componentName='cascader'
           demoName='check-any-level-demo'
+          desc='设置`check-any-level`为true，可以将非叶子节点作为可选级'
+          subtitle='通过配置实现任意级可选'
+          title='任意级可选'
         >
           <CheckAnyLevelDemo></CheckAnyLevelDemo>
         </DemoBox>
 
         {/* 多选 */}
         <DemoBox
-          title='多选'
-          subtitle='通过multiple开启多选, float-mode可以开启漂浮模式, limit-one-line将使用文字形式显示'
-          desc='开启 multiple 属性进行多选，注意此时 v-model 对应的值应是二维数组； 漂浮模式下，将不会挤占下方空间;'
           componentName='cascader'
           demoName='checkbox-demo'
+          desc='开启 multiple 属性进行多选，注意此时 v-model 对应的值应是二维数组； 漂浮模式下，将不会挤占下方空间;'
+          subtitle='通过multiple开启多选, float-mode可以开启漂浮模式, limit-one-line将使用文字形式显示'
+          title='多选'
         >
           <CheckboxDemo></CheckboxDemo>
         </DemoBox>
 
         {/* 列表别名设置 */}
         <DemoBox
-          title='列表别名设置'
-          subtitle='id-key name-key适配'
-          desc='列表id指定的key值，默认为id,若需要改为其他key值，在这里传入即可,列表name指定的key值，默认为name,若需要改为其他key值，在这里传入即可'
           componentName='cascader'
           demoName='id-key'
+          desc='列表id指定的key值，默认为id,若需要改为其他key值，在这里传入即可,列表name指定的key值，默认为name,若需要改为其他key值，在这里传入即可'
+          subtitle='id-key name-key适配'
+          title='列表别名设置'
         >
           <IdKey></IdKey>
         </DemoBox>
 
         {/* 分隔符 */}
         <DemoBox
-          title='分隔符'
-          subtitle='自定义分隔符'
-          desc='设置`separator`属性实现自定义分隔符'
           componentName='cascader'
           demoName='separator-demo'
+          desc='设置`separator`属性实现自定义分隔符'
+          subtitle='自定义分隔符'
+          title='分隔符'
         >
           <SeparatorDemo></SeparatorDemo>
         </DemoBox>
 
         {/* 仅显示最后一级 */}
         <DemoBox
-          title='仅显示最后一级'
-          subtitle='可在输入框仅显示最后一级的标签，而非完整路径'
-          desc='设置`show-complete-name`属性为`false`，则可以使输入框仅显示最后一级，默认显示完整路径'
           componentName='cascader'
           demoName='show-complete-name'
+          desc='设置`show-complete-name`属性为`false`，则可以使输入框仅显示最后一级，默认显示完整路径'
+          subtitle='可在输入框仅显示最后一级的标签，而非完整路径'
+          title='仅显示最后一级'
         >
           <ShowCompleteName></ShowCompleteName>
         </DemoBox>
 
         {/* 自定义节点 */}
         <DemoBox
-          title='自定义节点'
-          subtitle='通过插槽对节点内容实现个性化需求'
-          desc='可以通过`scoped slot`对级联选择器的备选项的节点内容进行自定义，scoped slot传入node表示当前节点的 Node 的数据,data代表原数据'
           componentName='cascader'
           demoName='slots-demo'
+          desc='可以通过`scoped slot`对级联选择器的备选项的节点内容进行自定义，scoped slot传入node表示当前节点的 Node 的数据,data代表原数据'
+          subtitle='通过插槽对节点内容实现个性化需求'
+          title='自定义节点'
         >
           <SlotsDemo></SlotsDemo>
         </DemoBox>
 
         {/* 远程加载 */}
         <DemoBox
-          title='远程加载'
-          subtitle='远程加载list，异步加载'
-          desc='可以通过`is-remote`开启动态加载，并通过`remote-method`来设置加载数据源的方法。注意远程拉取数据格式需要遵循list的要求'
           componentName='cascader'
           demoName='remote-demo'
+          desc='可以通过`is-remote`开启动态加载，并通过`remote-method`来设置加载数据源的方法。注意远程拉取数据格式需要遵循list的要求'
+          subtitle='远程加载list，异步加载'
+          title='远程加载'
         >
           <RemoteDemo></RemoteDemo>
         </DemoBox>
 
         {/* 自定义Trigger */}
         <DemoBox
-          title='自定义Trigger'
-          subtitle='通过插槽自定义trigger'
-          desc='可以通过`具名插槽#trigger`实现动态具名插槽，更加灵活。作用域插槽暴露出两个属性：selected 和 isShow, 分别用于设置当前选中值和是否显示下拉框， 具体使用方法如下'
           componentName='cascader'
           demoName='custom-trigger-demo'
+          desc='可以通过`具名插槽#trigger`实现动态具名插槽，更加灵活。作用域插槽暴露出两个属性：selected 和 isShow, 分别用于设置当前选中值和是否显示下拉框， 具体使用方法如下'
+          subtitle='通过插槽自定义trigger'
+          title='自定义Trigger'
         >
           <CustomTriggerDemo></CustomTriggerDemo>
         </DemoBox>
 
         {/* 自定义填充回调 */}
         <DemoBox
-          title='自定义填充回调'
-          subtitle='通过custom-text-fillback函数实现自定义text填充; 如果是多选使用tag，则使用custom-tags-fillback函数'
-          desc='默认填充时，如果绑定数据不在列表中，会造成无法填充，此时可以通过自定义填充回调实现自定义填充'
           componentName='cascader'
           demoName='custom-fillback'
+          desc='默认填充时，如果绑定数据不在列表中，会造成无法填充，此时可以通过自定义填充回调实现自定义填充'
+          subtitle='通过custom-text-fillback函数实现自定义text填充; 如果是多选使用tag，则使用custom-tags-fillback函数'
+          title='自定义填充回调'
         >
           <CustomFillback></CustomFillback>
         </DemoBox>
 
         {/* Cascader组件属性列表 */}
         <PropsBox
-          title='Cascader 属性'
-          subtitle=''
           propsData={cascaderPropsJson}
+          subtitle=''
+          title='Cascader 属性'
         />
 
         {/* Cascader组件事件列表 */}
         <PropsBox
-          title='Cascader 事件'
-          subtitle=''
           propsData={cascaderEventsJson}
+          subtitle=''
+          title='Cascader 事件'
         />
       </div>
     );

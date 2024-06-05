@@ -24,14 +24,14 @@
  * IN THE SOFTWARE.
  */
 
-import type { ExtractPropTypes } from 'vue';
 import { computed, defineComponent, nextTick, onBeforeUnmount, onMounted, PropType, reactive, ref, toRefs } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { BKPopover, bkZIndexManager, IBKPopover } from '@bkui-vue/shared';
-import type { Placement } from '@popperjs/core';
 
 import type { DatePickerPlacementType } from '../interface';
+import type { Placement } from '@popperjs/core';
+import type { ExtractPropTypes } from 'vue';
 
 const pickerDropdownProps = {
   placement: {
@@ -280,8 +280,8 @@ export default defineComponent({
     return (
       <div
         ref='refContentRef'
-        class={[this.resolveClassName('date-picker-dropdown'), this.className, this.extPopoverCls]}
         style={this.styles}
+        class={[this.resolveClassName('date-picker-dropdown'), this.className, this.extPopoverCls]}
         onClick={this.onClick}
       >
         {this.$slots.default?.() ?? ''}

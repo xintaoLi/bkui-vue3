@@ -1,8 +1,8 @@
 <template>
   <div>
     <bk-input
-      v-model="val"
       class="mb8"
+      v-model="val"
       disabled
     />
     <bk-input
@@ -17,7 +17,7 @@
   const val = ref('hello world');
 </script>
 <style lang="postcss" scoped>
-.mb8 {
-  margin-bottom: 8px;
-}
+  .mb8 {
+    margin-bottom: 8px;
+  }
 </style>

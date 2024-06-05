@@ -1,5 +1,5 @@
 <template>
-  <div style=" width: 100%;height: 300px;">
+  <div style="width: 100%; height: 300px">
     <bk-table
       :columns="columns"
       :data="tableData"
@@ -7,7 +7,7 @@
       @row-click="handleRowClick"
       @select="handleRowSelect"
     />
-    <span>on row click: {{ `index: ${ activeRowInfo.index }` }}</span>
+    <span>on row click: {{ `index: ${activeRowInfo.index}` }}</span>
   </div>
 </template>
 
@@ -20,7 +20,7 @@
     data() {
       return {
         tableData: [...DATA_TABLE],
-        columns: [{ type: 'selection', width: 20, }, ...DATA_COLUMNS],
+        columns: [{ type: 'selection', width: 20 }, ...DATA_COLUMNS],
         activeRowInfo: {},
       };
     },

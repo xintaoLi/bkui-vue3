@@ -12,6 +12,4 @@
   import { ref } from 'vue';
 
   const radioGroupValue = ref('微信');
-
 </script>
-

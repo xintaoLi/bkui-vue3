@@ -1,14 +1,14 @@
 <template>
-  <div style="background: #F5F7FA;padding: 10px 20px;">
+  <div style="background: #f5f7fa; padding: 10px 20px">
     <bk-tab
       v-model:active="active"
       type="card-grid"
     >
       <bk-tab-panel
-        v-for="(item,index) in panels"
+        v-for="(item, index) in panels"
         :key="item.name"
-        :name="item.name"
         :label="item.label"
+        :name="item.name"
       >
         {{ item.label }}-{{ index }}
       </bk-tab-panel>

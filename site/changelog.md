@@ -1,5 +1,23 @@
 ## 更新日志
 
+### 2.0.1-beta.15
+
+* **[feat]**:
+    - feat: 新增version标识组件库版本信息
+
+
+### 2.0.1-beta.14
+
+* **[feat]**:
+    - feat: 更新优化前端linter
+
+
+### 2.0.1-beta.12
+
+* **[feat]**:
+    - bugfix: 修复fixed column border-color transparent
+
+
 ### 2.0.1-beta.11
 
 * **[feat]**:

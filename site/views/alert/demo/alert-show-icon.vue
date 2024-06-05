@@ -1,28 +1,27 @@
 <template>
   <bk-alert
+    :show-icon="false"
     theme="success"
     title="成功的提示文字"
-    :show-icon="false"
   />
   <bk-alert
+    :show-icon="false"
     theme="info"
     title="消息的提示文字"
-    :show-icon="false"
   />
   <bk-alert
+    :show-icon="false"
     theme="warning"
     title="警告的提示文字"
-    :show-icon="false"
   />
   <bk-alert
+    :show-icon="false"
     theme="error"
     title="错误的提示文字"
-    :show-icon="false"
   />
 </template>
 <script setup>
   import BkAlert from '@bkui-vue/alert';
-
 </script>
 <style lang="postcss">
   .bk-alert ~ .bk-alert {

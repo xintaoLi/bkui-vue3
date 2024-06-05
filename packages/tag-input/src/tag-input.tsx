@@ -24,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import debounce from 'lodash/debounce';
 import { computed, defineComponent, nextTick, onMounted, reactive, type Ref, ref, toRefs, watch } from 'vue';
 
 import { useLocale, usePrefix } from '@bkui-vue/config-provider';
@@ -33,6 +32,7 @@ import { Close, Error } from '@bkui-vue/icon';
 import Loading, { BkLoadingSize } from '@bkui-vue/loading';
 import Popover from '@bkui-vue/popover';
 import { useFormItem } from '@bkui-vue/shared';
+import debounce from 'lodash/debounce';
 
 import { getCharLength, INPUT_MIN_WIDTH, useFlatList, usePage, useTagsOverflow } from './common';
 import ListTagRender from './list-tag-render';
@@ -895,42 +895,42 @@ export default defineComponent({
   render() {
     return (
       <div
-        class={`${this.resolveClassName('tag-input')}`}
         ref='bkTagSelectorRef'
+        class={`${this.resolveClassName('tag-input')}`}
         onClick={this.focusInputTrigger}
         onMouseenter={() => (this.isHover = true)}
         onMouseleave={() => (this.isHover = false)}
       >
         <Popover
+          arrow={false}
+          placement='bottom-start'
           theme={`light ${this.resolveClassName('tag-input-popover-content')}`}
           trigger='manual'
-          placement='bottom-start'
-          arrow={false}
           {...this.popoverProps}
         >
           {{
             default: () => (
               <div class={this.triggerClass}>
                 <ul
-                  class='tag-list'
                   ref='tagListRef'
                   style={{ marginLeft: `${this.leftSpace}px` }}
+                  class='tag-list'
                 >
                   {this.selectedTagList.map((item: any, index: number) => {
                     const isOverflow =
                       this.localCollapseTags && this.overflowTagIndex && index >= this.overflowTagIndex;
                     return (
                       <li
-                        class='tag-item'
                         style={{ display: isOverflow ? 'none' : '' }}
+                        class='tag-item'
                         onClick={this.tagFocus}
                       >
                         <TagRender
-                          node={item}
-                          tpl={this.tagTpl}
                           displayKey={this.displayKey}
-                          tooltipKey={this.tooltipKey || this.displayKey}
+                          node={item}
                           tagOverflowTips={this.tagOverflowTips}
+                          tooltipKey={this.tooltipKey || this.displayKey}
+                          tpl={this.tagTpl}
                         />
                         {this.showTagClose && (
                           <Error
@@ -942,20 +942,20 @@ export default defineComponent({
                     );
                   })}
                   <li
-                    ref='tagInputItemRef'
                     id='tagInputItem'
+                    ref='tagInputItemRef'
                     class='tag-input-item'
-                    role='input'
                     v-show={this.isEdit}
+                    role='input'
                   >
                     <input
-                      type='text'
-                      class='tag-input'
                       ref='tagInputRef'
+                      class='tag-input'
                       v-model={this.curInputValue}
-                      onInput={this.handleInput}
-                      onFocus={this.handleFocus}
+                      type='text'
                       onBlur={this.handleBlur}
+                      onFocus={this.handleFocus}
+                      onInput={this.handleInput}
                       onKeydown={this.handleKeydown}
                       onPaste={this.handlePaste}
                     />
@@ -1010,12 +1010,12 @@ export default defineComponent({
                               onClick={this.handleTagSelected.bind(this, item, 'select')}
                             >
                               <ListTagRender
-                                node={item}
+                                disabled={item.disabled}
                                 displayKey={this.displayKey}
-                                tpl={this.tpl}
+                                node={item}
                                 searchKey={this.searchKey}
                                 searchKeyword={this.curInputValue}
-                                disabled={item.disabled}
+                                tpl={this.tpl}
                               />
                             </li>
                           ))}
@@ -1031,12 +1031,12 @@ export default defineComponent({
                         onClick={this.handleTagSelected.bind(this, group, 'select')}
                       >
                         <ListTagRender
-                          node={group}
+                          disabled={group.disabled}
                           displayKey={this.displayKey}
-                          tpl={this.tpl}
+                          node={group}
                           searchKey={this.searchKey}
                           searchKeyword={this.curInputValue}
-                          disabled={group.disabled}
+                          tpl={this.tpl}
                         />
                       </li>
                     ),
@@ -1044,8 +1044,8 @@ export default defineComponent({
                   {this.isPageLoading ? (
                     <li class={`${this.resolveClassName('selector-list-item')} loading`}>
                       <Loading
-                        theme='primary'
                         size={BkLoadingSize.Small}
+                        theme='primary'
                       />
                     </li>
                   ) : null}

@@ -32,9 +32,9 @@ import { Circle, Done, Error } from '@bkui-vue/icon';
 import { classes, directionType, lineStyleType, PropTypes, ThemeEnum } from '@bkui-vue/shared';
 
 enum StatusEnum {
-  UNKNOWN = '',
   ERROR = 'error',
   LOADING = 'loading',
+  UNKNOWN = '',
 }
 const stepsProps = {
   theme: PropTypes.theme().def(ThemeEnum.PRIMARY),
@@ -233,12 +233,12 @@ export default defineComponent({
             ]}
           >
             <span
+              style={{ cursor: this.controllable ? 'pointer' : '' }}
               class={[
                 `${this.resolveClassName('step-indicator')}`,
                 `${this.resolveClassName(`step-${iconType(step) ? 'icon' : 'number'}`)}`,
                 `${this.resolveClassName(`step-icon${step.status}`)}`,
               ]}
-              style={{ cursor: this.controllable ? 'pointer' : '' }}
               onClick={() => {
                 this.jumpTo(index + 1);
               }}
@@ -248,8 +248,8 @@ export default defineComponent({
             {step.title ? (
               <div class={`${this.resolveClassName('step-content')}`}>
                 <div
-                  class={`${this.resolveClassName('step-title')}`}
                   style={{ cursor: this.controllable ? 'pointer' : '' }}
+                  class={`${this.resolveClassName('step-title')}`}
                   onClick={() => {
                     this.jumpTo(index + 1);
                   }}

@@ -24,13 +24,13 @@
  * IN THE SOFTWARE.
  */
 
-import { format as dateFnsFormat, toDate } from 'date-fns';
-import type { InjectionKey } from 'vue';
-
 import { usePrefix } from '@bkui-vue/config-provider';
+import { format as dateFnsFormat, toDate } from 'date-fns';
 
 import fecha from './fecha';
+
 import type { IDatePickerCtx, ITimePickerCtx, PickerTypeType } from './interface';
+import type { InjectionKey } from 'vue';
 
 export const RANGE_SEPARATOR = ' - ';
 

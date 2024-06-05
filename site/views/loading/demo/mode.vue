@@ -1,21 +1,17 @@
 <template>
   <div>
-    <bk-radio-group
-      v-model="size"
-    >
+    <bk-radio-group v-model="size">
       <bk-radio label="mini" />
       <bk-radio label="small" />
-      <bk-radio label="">
-        normal
-      </bk-radio>
+      <bk-radio label=""> normal </bk-radio>
       <bk-radio label="large" />
     </bk-radio-group>
 
     <bk-loading
-      loading
-      theme="primary"
-      mode="spin"
       :size="size"
+      mode="spin"
+      theme="primary"
+      loading
     >
       <div style="width: 100%; height: 360px" />
     </bk-loading>

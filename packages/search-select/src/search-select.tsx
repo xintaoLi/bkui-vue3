@@ -24,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import { addListener, removeListener } from 'resize-detector';
 import {
   computed,
   defineComponent,
@@ -42,6 +41,7 @@ import { useLocale, usePrefix } from '@bkui-vue/config-provider';
 import { clickoutside } from '@bkui-vue/directives';
 import { Close, ExclamationCircleShape, Search } from '@bkui-vue/icon';
 import { debounce } from '@bkui-vue/shared';
+import { addListener, removeListener } from 'resize-detector';
 
 import SearchSelectInput from './input';
 import SearchSelected from './selected';
@@ -365,8 +365,8 @@ export default defineComponent({
     // render
     return (
       <div
-        class={this.resolveClassName('search-select')}
         ref='wrapRef'
+        class={this.resolveClassName('search-select')}
       >
         <div
           class={{
@@ -377,38 +377,38 @@ export default defineComponent({
         >
           <div class='search-prefix'>{this.$slots.prepend?.()}</div>
           <div
-            class='search-container'
             style={{ maxHeight }}
+            class='search-container'
           >
             <SearchSelected
-              data={this.copyData}
+              v-slots={{ ...menuSlots }}
               conditions={this.localConditions}
-              selectedList={this.selectedList}
-              overflowIndex={this.overflowIndex}
+              data={this.copyData}
               getMenuList={this.getMenuList}
+              overflowIndex={this.overflowIndex}
+              selectedList={this.selectedList}
               validateValues={this.validateValues}
               valueBehavior={this.valueBehavior as ValueBehavior}
               onDelete={this.handleDeleteSelected}
               onSelectKey={this.handleSelectedKey}
-              v-slots={{ ...menuSlots }}
             />
             <div class='search-container-input'>
               <SearchSelectInput
                 ref='inputRef'
-                data={this.copyData}
-                showInputBefore={!this.selectedList.length}
-                showCondition={showCondition}
-                conditions={this.localConditions}
-                placeholder={this.placeholder || this.t.pleaseSelect}
+                v-slots={{ ...menuSlots }}
                 clickOutside={this.handleInputOutside}
+                conditions={this.localConditions}
+                data={this.copyData}
                 getMenuList={this.getMenuList}
+                placeholder={this.placeholder || this.t.pleaseSelect}
+                showCondition={showCondition}
+                showInputBefore={!this.selectedList.length}
                 validateValues={this.validateValues}
                 valueBehavior={this.valueBehavior as ValueBehavior}
                 onAdd={this.handleAddSelected}
                 onDelete={this.handleDeleteSelected}
                 onFocus={this.handleInputFocus}
                 onSelectKey={this.handleSelectedKey}
-                v-slots={{ ...menuSlots }}
               />
             </div>
           </div>
@@ -423,8 +423,8 @@ export default defineComponent({
               this.$slots.append()
             ) : (
               <Search
-                onClick={this.handleClickSearch}
                 class={`search-nextfix-icon ${this.isFocus ? 'is-focus' : ''}`}
+                onClick={this.handleClickSearch}
               ></Search>
             )}
           </div>

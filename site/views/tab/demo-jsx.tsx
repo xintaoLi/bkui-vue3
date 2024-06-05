@@ -83,8 +83,8 @@ export default defineComponent({
     const panels = this.panels.map((item, index) => (
       <BkTabPanel
         key={index}
-        name={item.name}
         label={item.label}
+        name={item.name}
       >
         {item.label}-{index}
       </BkTabPanel>
@@ -95,8 +95,8 @@ export default defineComponent({
           <h2>基础用法</h2>
           <div class='mb20'>基础的、简洁的标签页。</div>
           <BkTab
-            type='unborder-card'
             v-model={[this.active, 'active']}
+            type='unborder-card'
           >
             {panels}
           </BkTab>
@@ -112,8 +112,8 @@ export default defineComponent({
           <h2>选项卡样式</h2>
           <div class='mb20'>基础的、简洁的标签页。</div>
           <BkTab
-            type='card'
             v-model={[this.active, 'active']}
+            type='card'
           >
             {panels}
           </BkTab>
@@ -122,8 +122,8 @@ export default defineComponent({
           <h2>卡片样式</h2>
           <div class='mb20'>基础的、简洁的标签页。</div>
           <BkTab
-            type='border-card'
             v-model={[this.active, 'active']}
+            type='border-card'
           >
             {panels}
           </BkTab>
@@ -132,8 +132,8 @@ export default defineComponent({
           <h2>垂直居左-基础样式</h2>
           <div class='mb20'>left</div>
           <BkTab
-            tabPosition='left'
             v-model={[this.active, 'active']}
+            tabPosition='left'
           >
             {panels}
           </BkTab>
@@ -142,9 +142,9 @@ export default defineComponent({
           <h2>垂直居右-基础样式</h2>
           <div class='mb20'>right</div>
           <BkTab
-            onAdd={this.addPanel}
-            tabPosition='right'
             v-model={[this.active, 'active']}
+            tabPosition='right'
+            onAdd={this.addPanel}
           >
             {panels}
           </BkTab>
@@ -153,8 +153,8 @@ export default defineComponent({
           <h2>拖动</h2>
           <div class='mb20'>排序</div>
           <BkTab
-            sortable
             v-model={[this.active, 'active']}
+            sortable
           >
             {panels}
           </BkTab>
@@ -163,17 +163,15 @@ export default defineComponent({
           <h2>自定义内容</h2>
           <div class='mb20'>slot用法</div>
           <BkTab
+            v-model={[this.active, 'active']}
+            v-slots={slots}
             addable
             closable
-            v-slots={slots}
             onAdd={this.addPanel}
-            v-model={[this.active, 'active']}
           >
             {this.panels.map((item, index) => (
               <BkTabPanel
                 key={index}
-                name={item.name}
-                label={item.label}
                 v-slots={{
                   label: () => (
                     <div>
@@ -186,6 +184,8 @@ export default defineComponent({
                     </div>
                   ),
                 }}
+                label={item.label}
+                name={item.name}
               />
             ))}
           </BkTab>

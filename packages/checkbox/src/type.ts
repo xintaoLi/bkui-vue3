@@ -24,10 +24,9 @@
  * IN THE SOFTWARE.
  */
 
-import type { ComponentPublicInstance } from 'vue';
-
 import type { CheckboxProps } from './checkbox';
 import type { CheckboxGroupProps } from './checkbox-group';
+import type { ComponentPublicInstance } from 'vue';
 
 export type ICheckboxInstance = ComponentPublicInstance<
   CheckboxProps,

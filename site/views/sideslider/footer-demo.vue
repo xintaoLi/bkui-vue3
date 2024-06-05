@@ -1,9 +1,9 @@
 <template>
   <div>
     <bk-button
-      @click="handleOpen"
-      text
       theme="primary"
+      text
+      @click="handleOpen"
     >
       自定义footer
     </bk-button>
@@ -34,12 +34,12 @@
 </template>
 
 <script setup>
-import { defineComponent, ref } from 'vue';
+  import { defineComponent, ref } from 'vue';
 
-const isShow = ref(false);
-const contentHeight = ref(400);
+  const isShow = ref(false);
+  const contentHeight = ref(400);
 
-const handleOpen = () => {
-  isShow.value = true;
-};
+  const handleOpen = () => {
+    isShow.value = true;
+  };
 </script>

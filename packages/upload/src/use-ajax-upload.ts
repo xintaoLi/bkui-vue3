@@ -23,9 +23,8 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import SparkMD5 from 'spark-md5';
-
 import { isNullOrUndef } from '@bkui-vue/shared';
+import SparkMD5 from 'spark-md5';
 
 import type { UploadProgressEvent, UploadRequestHandler, UploadRequestOptions } from './upload.type';
 
@@ -183,13 +182,12 @@ export const ajaxSliceUpload: UploadRequestHandler = async option => {
 const sliceSend = (
   option: UploadRequestOptions,
   file: File,
-  blockCount: string | number | Blob,
+  blockCount: Blob | number | string,
   hash: unknown,
   progressList: any[],
   chunkSize: number,
 ) => {
   for (let i = 0; i < blockCount; i++) {
-    // eslint-disable-next-line no-loop-func
     const pooltask = new Promise((resolve, reject) => {
       const start = i * chunkSize;
       const end = Math.min(file.size, start + chunkSize);

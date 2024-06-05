@@ -5,10 +5,10 @@
       type="border-card"
     >
       <bk-tab-panel
-        v-for="(item,index) in panels"
+        v-for="(item, index) in panels"
         :key="item.name"
-        :name="item.name"
         :label="item.label"
+        :name="item.name"
       >
         {{ item.label }}-{{ index }}
       </bk-tab-panel>

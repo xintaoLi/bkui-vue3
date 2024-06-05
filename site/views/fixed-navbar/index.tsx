@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 
 const fixedNavBarPropsJson: IPropsTableItem[] = [
@@ -93,29 +92,29 @@ export default defineComponent({
     return (
       <>
         <DemoTitle
-          name='FixedNavbar 悬浮导航'
           desc='FixedNavbar 悬浮导航组件，快速设置右侧悬浮面板'
           link='https://www.google.com.hk/'
+          name='FixedNavbar 悬浮导航'
         />
 
         <DemoBox
-          title='基础用法'
-          desc='悬浮导航在右侧展示'
           componentName='fixed-navbar'
           demoName='base-demo'
+          desc='悬浮导航在右侧展示'
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
 
         <PropsBox
-          title='FixedNavbar 属性'
-          subtitle=''
           propsData={fixedNavBarPropsJson}
+          subtitle=''
+          title='FixedNavbar 属性'
         />
         <PropsBox
+          propsData={fixedItemPropsJson}
           subtitle=''
           title='NavItems 属性'
-          propsData={fixedItemPropsJson}
         />
       </>
     );

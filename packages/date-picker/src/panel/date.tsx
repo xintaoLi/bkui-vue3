@@ -25,8 +25,6 @@
  */
 
 // import type { Placement } from '@popperjs/core';
-// import { bkZIndexManager, BKPopover, IBKPopover } from '@bkui-vue/shared';
-import type { ExtractPropTypes } from 'vue';
 import {
   // onMounted,
   // onBeforeUnmount,
@@ -49,10 +47,12 @@ import Confirm from '../base/confirm';
 import DateTable from '../base/date-table';
 import MonthTable from '../base/month-table';
 import YearTable from '../base/year-table';
-import type { DatePickerShortcutsType, DatePickerValueType, DisabledDateType, SelectionModeType } from '../interface';
 import { formatDateLabels, iconBtnCls, siblingMonth, timePickerKey } from '../utils';
-
 import Time from './time';
+
+import type { DatePickerShortcutsType, DatePickerValueType, DisabledDateType, SelectionModeType } from '../interface';
+// import { bkZIndexManager, BKPopover, IBKPopover } from '@bkui-vue/shared';
+import type { ExtractPropTypes } from 'vue';
 
 const datePanelProps = {
   modelValue: {
@@ -351,8 +351,8 @@ export default defineComponent({
           ''
         )}
         <div
-          class={this.resolveClassName('picker-panel-body')}
           style='width: 261px;'
+          class={this.resolveClassName('picker-panel-body')}
         >
           <div
             class={this.resolveClassName('date-picker-header')}
@@ -369,8 +369,8 @@ export default defineComponent({
             {this.pickerTable === 'date-table' ? (
               <span
                 class={iconBtnCls('prev')}
-                onClick={() => this.changeMonth(-1)}
                 v-show={this.currentView === 'date'}
+                onClick={() => this.changeMonth(-1)}
               >
                 <AngleLeft style={{ fontSize: '20px', lineHeight: 1, verticalAlign: 'text-bottom' }}></AngleLeft>
               </span>
@@ -409,8 +409,8 @@ export default defineComponent({
             {this.pickerTable === 'date-table' ? (
               <span
                 class={iconBtnCls('next')}
-                onClick={() => this.changeMonth(+1)}
                 v-show={this.currentView === 'date'}
+                onClick={() => this.changeMonth(+1)}
               >
                 <AngleRight style={{ fontSize: '20px', lineHeight: 1, verticalAlign: 'text-bottom' }}></AngleRight>
               </span>
@@ -426,33 +426,33 @@ export default defineComponent({
                   case 'date-table':
                     return (
                       <DateTable
-                        tableDate={this.panelDate as Date}
                         disabledDate={this.disabledDate}
-                        selectionMode={this.selectionMode}
-                        modelValue={this.dates as DatePickerValueType}
                         focusedDate={this.focusedDate}
+                        modelValue={this.dates as DatePickerValueType}
+                        selectionMode={this.selectionMode}
+                        tableDate={this.panelDate as Date}
                         onPick={this.panelPickerHandlers}
                       />
                     );
                   case 'year-table':
                     return (
                       <YearTable
-                        tableDate={this.panelDate as Date}
                         disabledDate={this.disabledDate}
-                        selectionMode={this.selectionMode}
-                        modelValue={this.dates as DatePickerValueType}
                         focusedDate={this.focusedDate}
+                        modelValue={this.dates as DatePickerValueType}
+                        selectionMode={this.selectionMode}
+                        tableDate={this.panelDate as Date}
                         onPick={this.panelPickerHandlers}
                       />
                     );
                   case 'month-table':
                     return (
                       <MonthTable
-                        tableDate={this.panelDate as Date}
                         disabledDate={this.disabledDate}
-                        selectionMode={this.selectionMode}
-                        modelValue={this.dates as DatePickerValueType}
                         focusedDate={this.focusedDate}
+                        modelValue={this.dates as DatePickerValueType}
+                        selectionMode={this.selectionMode}
+                        tableDate={this.panelDate as Date}
                         onPick={this.panelPickerHandlers}
                       />
                     );
@@ -463,14 +463,14 @@ export default defineComponent({
             ) : (
               <Time
                 ref='timePickerRef'
-                value={this.dates}
+                disabledDate={this.disabledDate}
                 format={this.format}
                 selectionMode={this.selectionMode}
-                disabledDate={this.disabledDate}
+                value={this.dates}
                 // v-bind={this.timePickerOptions}
                 onPick={this.handlePick}
-                onPick-click={this.handlePickClick}
                 onPick-clear={this.handlePickClear}
+                onPick-click={this.handlePickClick}
                 onPick-success={this.handlePickSuccess}
                 onPick-toggle-time={this.handleToggleTime}
               />
@@ -478,14 +478,14 @@ export default defineComponent({
           </div>
           {this.confirm ? (
             <Confirm
+              v-slots={this.$slots}
               clearable={this.clearable}
+              isTime={this.isTime}
               showTime={this.showTime}
               timeDisabled={this.timeDisabled}
-              isTime={this.isTime}
-              onPick-toggle-time={this.handleToggleTime}
               onPick-clear={this.handlePickClear}
               onPick-success={this.handlePickSuccess}
-              v-slots={this.$slots}
+              onPick-toggle-time={this.handleToggleTime}
             ></Confirm>
           ) : (
             ''

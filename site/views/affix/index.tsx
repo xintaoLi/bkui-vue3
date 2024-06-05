@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import DemoAffix from './demo/affix.vue';
 import DemoAffixBottom from './demo/affix-bottom.vue';
 import DemoAffixCallback from './demo/affix-callback.vue';
@@ -83,67 +82,67 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Affix图钉'
           desc='使用图钉，可以将内容固定在屏幕上，并且不随页面的滚动而滚动。'
           link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/affix`}
+          name='Affix图钉'
         />
         <DemoBox
-          title='基础用法'
-          desc='不传值时：默认直接固定在最顶端'
           componentName='affix'
           demoName='demo/affix'
+          desc='不传值时：默认直接固定在最顶端'
+          title='基础用法'
         >
           <DemoAffix />
         </DemoBox>
         <DemoBox
-          title='固定在顶部'
-          desc='设置offset-top属性'
           componentName='affix'
           demoName='demo/affix-top'
+          desc='设置offset-top属性'
+          title='固定在顶部'
         >
           <DemoAffixTop />
         </DemoBox>
         <DemoBox
-          title='对象层级'
-          desc='设置z-index属性，设置affix对象的层级'
           componentName='affix'
           demoName='demo/affix-z-index'
+          desc='设置z-index属性，设置affix对象的层级'
+          title='对象层级'
         >
           <DemoAffixZIndex />
         </DemoBox>
         <DemoBox
-          title='固定在底部'
-          desc='设置offset-bottom属性, offset-top和offset-bottom只可以设置一个，如果都设置会使用offset-bottom'
           componentName='affix'
           demoName='demo/affix-bottom'
+          desc='设置offset-bottom属性, offset-top和offset-bottom只可以设置一个，如果都设置会使用offset-bottom'
+          title='固定在底部'
         >
           <DemoAffixBottom />
         </DemoBox>
         <DemoBox
-          title='固定状态改变时的回调'
-          desc='设置on-change属性，固定状态改变时的回调'
           componentName='affix'
           demoName='demo/affix-callback'
+          desc='设置on-change属性，固定状态改变时的回调'
+          title='固定状态改变时的回调'
         >
           <DemoAffixCallback />
         </DemoBox>
         <DemoBox
-          title='设置滚动容器'
-          desc='设置target属性，target为需要监听其滚动事件容器的id，默认为 window。'
           componentName='affix'
           demoName='demo/affix-container'
+          desc='设置target属性，target为需要监听其滚动事件容器的id，默认为 window。'
+          title='设置滚动容器'
         >
           <DemoAffixContainer />
         </DemoBox>
         <PropsBox
-          title='Affix Attributes'
-          subtitle=''
           propsData={affixProps}
+          subtitle=''
+          title='Affix Attributes'
         />
         <PropsBox
-          title='Affix Events'
-          subtitle=''
           propsData={affixEvents}
+          subtitle=''
+          title='Affix Events'
         />
       </div>
     );

@@ -191,7 +191,6 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
           <BodyEmpty
             filterList={dataList}
             list={props.data}
-            emptyText={localEmptyText.value}
           />
         )
       );
@@ -454,10 +453,10 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
     return [
       <TableRow key={rowId}>
         <tr
+          key={rowId}
           // @ts-ignore
           style={rowStyle}
           class={rowClass}
-          key={rowId}
           data-row-index={rowIndex}
           onClick={e => handleRowClick(e, row, rowIndex, rowList)}
           onDblclick={e => handleRowDblClick(e, row, rowIndex, rowList)}
@@ -516,11 +515,11 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
               const cellKey = `${rowId}_${index}_cell`;
               return (
                 <td
-                  class={cellClass}
+                  key={columnKey}
                   style={cellStyle}
+                  class={cellClass}
                   colspan={colspan}
                   rowspan={rowspan}
-                  key={columnKey}
                   onClick={event => handleEmit(event, EMIT_EVENTS.CELL_CLICK)}
                   onDblclick={event => handleEmit(event, EMIT_EVENTS.CELL_DBL_CLICK)}
                 >
@@ -528,9 +527,9 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
                     key={cellKey}
                     class={tdCtxClass}
                     column={column}
-                    row={row}
-                    parentSetting={props.showOverflowTooltip}
                     observerResize={props.observerResize}
+                    parentSetting={props.showOverflowTooltip}
+                    row={row}
                   >
                     {renderCell(row, column, rowIndex, rowList, isChild)}
                   </TableCell>

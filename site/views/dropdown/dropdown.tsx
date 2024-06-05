@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import AlignDemo from './align-demo.vue';
 import BaseDemo from './base-demo.vue';
 import DropdownBoundaryBody from './boundary-body-demo.vue';
@@ -140,90 +139,90 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='DropdownMenu 下拉菜单'
           desc=''
           designLink='https://bkdesign.bk.tencent.com/design/51'
+          name='DropdownMenu 下拉菜单'
         />
         <DemoBox
-          title='基础用法'
-          desc='slot[name=default] 配置触发对象，slot[name=content] 配置下拉菜单'
           componentName='dropdown'
           demoName='base-demo'
+          desc='slot[name=default] 配置触发对象，slot[name=content] 配置下拉菜单'
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
         <DemoBox
-          title='菜单出现的位置'
-          desc='通过配置参数 placement 可以让下拉菜单的位置，默认为 bottom'
           componentName='dropdown'
           demoName='align-demo'
+          desc='通过配置参数 placement 可以让下拉菜单的位置，默认为 bottom'
+          title='菜单出现的位置'
         >
           <AlignDemo />
         </DemoBox>
         <DemoBox
-          title='点击触发'
-          desc='通过 trigger=click 设置触发事件类型'
           componentName='dropdown'
           demoName='trigger-demo'
+          desc='通过 trigger=click 设置触发事件类型'
+          title='点击触发'
         >
           <TriggerDemo />
         </DemoBox>
         <DemoBox
-          title='自定义显示与隐藏'
-          desc='通过 isShow 下来菜单的显示与隐藏，trigger=manual下生效'
           componentName='dropdown'
           demoName='is-show-demo'
+          desc='通过 isShow 下来菜单的显示与隐藏，trigger=manual下生效'
+          title='自定义显示与隐藏'
         >
           <IsShowDemo />
         </DemoBox>
         <DemoBox
-          title='禁用状态'
-          desc='通过 disabled 来禁用下来弹出'
           componentName='dropdown'
           demoName='disabled-demo'
+          desc='通过 disabled 来禁用下来弹出'
+          title='禁用状态'
         >
           <DisabledDemo />
         </DemoBox>
         <DemoBox
-          title='回调函数'
-          desc='通过 show  hide 设置显示与隐藏的回调'
           componentName='dropdown'
           demoName='dropdown-methods-demo'
+          desc='通过 show  hide 设置显示与隐藏的回调'
+          title='回调函数'
         >
           <DropdownMethodsDemo />
         </DemoBox>
         <DemoBox
-          title='元素绑定在body下'
-          desc="通过 popoverOptions 设置 boundary: 'body'"
           componentName='dropdown'
           demoName='boundary-body-demo'
+          desc="通过 popoverOptions 设置 boundary: 'body'"
+          title='元素绑定在body下'
         >
           <DropdownBoundaryBody />
         </DemoBox>
         <PropsBox
-          title='Dropdown 属性'
-          subtitle=''
           propsData={dropdowProps}
+          subtitle=''
+          title='Dropdown 属性'
         />
         <PropsBox
-          title='DropdownMenu 属性'
-          subtitle=''
           propsData={dropdownMenuProps}
+          subtitle=''
+          title='DropdownMenu 属性'
         />
         <PropsBox
-          title='DropdownItem 属性'
-          subtitle=''
           propsData={dropdownItemProps}
+          subtitle=''
+          title='DropdownItem 属性'
         />
         <PropsBox
-          title='Dropdown 事件'
-          subtitle=''
           propsData={dropdownMethods}
+          subtitle=''
+          title='Dropdown 事件'
         />
         <PropsBox
-          title='DropdownItem 事件'
-          subtitle=''
           propsData={dropdownItemMethods}
+          subtitle=''
+          title='DropdownItem 事件'
         />
       </div>
     );

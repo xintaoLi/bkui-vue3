@@ -24,8 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-/* eslint-disable no-param-reassign, no-multi-assign */
-
 /**
  * @file fecha
  * https://github.com/taylorhakes/fecha
@@ -36,7 +34,7 @@ const token = /d{1,4}|M{1,4}|yy(?:yy)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'
 const twoDigits = /\d\d?/;
 const threeDigits = /\d{3}/;
 const fourDigits = /\d{4}/;
-// eslint-disable-next-line max-len
+
 const word =
   /[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+|[\u0600-\u06FF\\/]+(\s*?[\u0600-\u06FF]+){1,2}/i;
 const noop = function () {};

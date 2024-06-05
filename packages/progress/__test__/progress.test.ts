@@ -128,7 +128,7 @@ describe('Progress.tsx', () => {
     const wrapper = mount(Progress, {
       props: {
         percent: 88,
-        format: (percent: Number) => `百分比${percent}`,
+        format: (percent: number) => `百分比${percent}`,
       },
     });
     expect(wrapper.find('.progress-text').text()).toBe('百分比88');

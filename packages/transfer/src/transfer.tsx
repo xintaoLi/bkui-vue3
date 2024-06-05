@@ -24,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-/* eslint-disable arrow-body-style */
 import { computed, defineComponent, ref, toRaw, toRefs, watch } from 'vue';
 
 import Checkbox, { BkCheckboxGroup } from '@bkui-vue/checkbox';
@@ -277,7 +276,7 @@ export default defineComponent({
       const selectField = isLeft ? 'source' : 'target';
       const titleText = isLeft ? `${this.title[0] ?? this.t.sourceList}` : `${this.title[1] ?? this.t.targetList}`;
       const isDisabled = isLeft ? !leftList.length : !rightList.length;
-      // eslint-disable-next-line max-len
+
       const isIndeterminate =
         !!this.multipleSelectList[selectField].length && !this.multipleSelectAllValue[selectField];
       const selectCount = this.multipleSelectList[selectField].length;
@@ -293,9 +292,9 @@ export default defineComponent({
           {this.multiple ? (
             <Checkbox
               class='header-checkbox'
-              label={titleText}
               v-model={this.multipleSelectAllValue[selectField]}
               indeterminate={isIndeterminate}
+              label={titleText}
               onChange={val => this.handleAllChecked(val, selectField)}
             />
           ) : (
@@ -406,8 +405,8 @@ export default defineComponent({
           {getHeaderHtml('left-header')}
           {this.searchable && (
             <Input
-              v-model={this.selectSearchQuery}
               class='transfer-search-input'
+              v-model={this.selectSearchQuery}
               clearable={true}
               placeholder={this.searchPlaceholder || this.t.search}
             >

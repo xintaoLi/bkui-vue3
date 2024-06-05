@@ -6,9 +6,9 @@
       <div class="cell">
         <bk-tree
           :data="treeData"
-          level-line
-          label="name"
           children="children"
+          label="name"
+          level-line
         />
       </div>
     </div>
@@ -19,8 +19,8 @@
         <bk-tree
           :data="treeData"
           :level-line="'solid 1px red'"
-          label="name"
           children="children"
+          label="name"
         />
       </div>
     </div>
@@ -41,5 +41,5 @@
   });
 </script>
 <style scoped>
-@import './tree.less';
+  @import './tree.less';
 </style>

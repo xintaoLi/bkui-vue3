@@ -4,20 +4,20 @@
       theme="primary"
       @click="handlePrimary"
     >
-      消息
-    </bk-button>&nbsp;&nbsp;
+      消息 </bk-button
+    >&nbsp;&nbsp;
     <bk-button
       theme="success"
       @click="handleSuccess"
     >
-      成功
-    </bk-button>&nbsp;&nbsp;
+      成功 </bk-button
+    >&nbsp;&nbsp;
     <bk-button
       theme="warning"
       @click="handleWarning"
     >
-      警告
-    </bk-button>&nbsp;&nbsp;
+      警告 </bk-button
+    >&nbsp;&nbsp;
     <bk-button
       theme="danger"
       @click="handleError"
@@ -28,8 +28,9 @@
 </template>
 
 <script setup>
-  import { Message } from 'bkui-vue';
   import { h } from 'vue';
+
+  import { Message } from 'bkui-vue';
 
   const handlePrimary = () => {
     Message({

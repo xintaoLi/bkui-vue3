@@ -43,7 +43,6 @@ const colProps = {
 };
 
 export default defineComponent({
-  // eslint-disable-next-line vue/no-reserved-component-names
   name: 'Col',
   props: colProps,
   emits: [],
@@ -75,8 +74,8 @@ export default defineComponent({
 
     return () => (
       <div
-        class={`${resolveClassName('grid-col')}`}
         style={style.value}
+        class={`${resolveClassName('grid-col')}`}
       >
         {ctx.slots.default?.()}
       </div>

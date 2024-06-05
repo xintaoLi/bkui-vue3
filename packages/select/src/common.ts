@@ -93,7 +93,7 @@ export function useDebouncedRef<T>(value, delay = 200) {
 export function usePopover(config: IPopoverConfig, triggerRef: Ref<HTMLElement>) {
   const { popoverMinWidth } = config;
   let observerIns = null;
-  const popperWidth = ref<string | number>('auto');
+  const popperWidth = ref<number | string>('auto');
   const isPopoverShow = ref(false);
   const togglePopover = () => {
     isPopoverShow.value = !isPopoverShow.value;

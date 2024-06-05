@@ -1,9 +1,9 @@
 <template>
   <bk-tag-input
     v-model="state.tags"
+    :list="state.list"
     placeholder="请选择城市"
     trigger="focus"
-    :list="state.list"
   />
 </template>
 

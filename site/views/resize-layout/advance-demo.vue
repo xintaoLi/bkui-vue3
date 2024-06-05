@@ -1,13 +1,13 @@
 <template>
   <bk-resize-layout
-    style="height: 500px;"
+    style="height: 500px"
     collapsible
   >
     <template #aside>
       <bk-resize-layout
-        placement="top"
-        :border="false"
         style="height: 100%"
+        :border="false"
+        placement="top"
       >
         <template #aside>
           <div>aside-top</div>
@@ -19,9 +19,9 @@
     </template>
     <template #main>
       <bk-resize-layout
-        placement="bottom"
-        :border="false"
         style="height: 100%"
+        :border="false"
+        placement="bottom"
       >
         <template #aside>
           <div>aside-bottom</div>

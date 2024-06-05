@@ -1,8 +1,8 @@
 <template>
   <bk-form class="example">
     <bk-form-item
-      label="姓名"
       description="中文名"
+      label="姓名"
     >
       <bk-input
         placeholder="请输入"
@@ -16,8 +16,8 @@
       </bk-radio-group>
     </bk-form-item>
     <bk-form-item
-      label="联系方式"
       description="常用联系方式"
+      label="联系方式"
     >
       <bk-checkbox-group>
         <bk-checkbox label="QQ" />
@@ -28,12 +28,12 @@
     <bk-form-item label="学历">
       <bk-select>
         <bk-option
-          value="1"
           label="本科以下"
+          value="1"
         />
         <bk-option
-          value="2"
           label="本科以上"
+          value="2"
         />
       </bk-select>
     </bk-form-item>
@@ -43,10 +43,8 @@
         type="textarea"
       />
     </bk-form-item>
-    <bk-form-item style="margin-top: 32px;">
-      <bk-button theme="primary">
-        提交
-      </bk-button>
+    <bk-form-item style="margin-top: 32px">
+      <bk-button theme="primary"> 提交 </bk-button>
     </bk-form-item>
   </bk-form>
 </template>
@@ -57,7 +55,6 @@
   import BkInput from '@bkui-vue/input';
   import BkRadio, { BkRadioGroup } from '@bkui-vue/radio';
   import BkSelect, { BkOption } from '@bkui-vue/select';
-
 </script>
 <style lang="postcss" scoped>
   .example {

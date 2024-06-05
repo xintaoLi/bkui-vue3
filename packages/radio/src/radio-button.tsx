@@ -24,13 +24,14 @@
  * IN THE SOFTWARE.
  */
 
-import type { ExtractPropTypes } from 'vue';
 import { defineComponent } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { classes, PropTypes } from '@bkui-vue/shared';
 
 import { useFocus, useRadio } from './common';
+
+import type { ExtractPropTypes } from 'vue';
 
 const radioButtonProps = {
   name: PropTypes.string.def(''),
@@ -98,14 +99,14 @@ export default defineComponent({
       >
         <input
           class={`${this.resolveClassName('radio-button-input')}`}
-          type='radio'
-          tabindex='0'
-          value={this.label as any}
           checked={this.isChecked}
           disabled={this.isDisabled}
-          onFocus={this.handleFocus}
+          tabindex='0'
+          type='radio'
+          value={this.label as any}
           onBlur={this.handleBlur}
           onChange={this.handleChange}
+          onFocus={this.handleFocus}
         />
         {renderLabel()}
       </label>

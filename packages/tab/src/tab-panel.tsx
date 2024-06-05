@@ -56,9 +56,9 @@ export default defineComponent({
 
     return (
       <div
-        v-show={active}
         ref='content'
         class={resolveClassName('tab-panel')}
+        v-show={active}
       >
         {getContent()}
       </div>

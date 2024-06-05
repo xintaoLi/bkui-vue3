@@ -24,11 +24,11 @@
  * IN THE SOFTWARE.
  */
 
-import tinycolor from 'tinycolor2';
 import { computed, defineComponent, ExtractPropTypes, nextTick, ref, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { classes, PropTypes } from '@bkui-vue/shared';
+import tinycolor from 'tinycolor2';
 
 import { clamp } from '../utils';
 
@@ -147,10 +147,10 @@ export default defineComponent({
 
     return () => (
       <div
-        tabindex='0'
         class={`${resolveClassName('color-picker-recommend')} `}
-        onFocus={() => (isFocused.value = true)}
+        tabindex='0'
         onBlur={() => (isFocused.value = false)}
+        onFocus={() => (isFocused.value = true)}
         onKeydown={handleKeydown}
       >
         {colors.value.map((color, index) => (

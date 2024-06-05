@@ -25,8 +25,9 @@
  */
 import { App, ComponentPublicInstance, createApp, Directive, DirectiveBinding, h, reactive, UnwrapRef } from 'vue';
 
-import type { LoadingTypes } from './loading';
 import BkLoading from './loading';
+
+import type { LoadingTypes } from './loading';
 const INSTANCE_KEY = Symbol('vBkLoading');
 
 export type LoadingBinding = UnwrapRef<LoadingTypes>;

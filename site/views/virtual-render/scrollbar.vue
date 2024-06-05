@@ -1,31 +1,29 @@
 <template>
-  <div style=" width: 100%;height: 400px; overflow: auto;">
-    <div style="padding: 15px 0;">
+  <div style="width: 100%; height: 400px; overflow: auto">
+    <div style="padding: 15px 0">
       <bk-button
         theme="primary"
         @click="handleRandomRows"
       >
         随机1000-9999行数据
       </bk-button>
-      <bk-button @click="handleFixToTop">
-        fixToTop: index = {{ Math.ceil(randomRows.length / 2) }}
-      </bk-button>
+      <bk-button @click="handleFixToTop"> fixToTop: index = {{ Math.ceil(randomRows.length / 2) }} </bk-button>
 
       <span style="padding: 0 30px">当前行数：{{ randomRows.length }}</span>
     </div>
     <bk-virtual-render
       ref="refFixToTop"
-      :scrollbar="scrollbar"
-      :list="randomRows"
-      :line-height="30"
-      :height="300"
       :enabled="false"
+      :height="300"
+      :line-height="30"
+      :list="randomRows"
+      :scrollbar="scrollbar"
     >
-      <template #default="{data}">
+      <template #default="{ data }">
         <div
           v-for="item in data"
-          :key="item.$index"
           :style="getRowStyle(item)"
+          :key="item.$index"
         >
           <span :style="getCellStyle(item)">{{ item.$index + 1 }}</span>
           <span :style="getCellStyle(item)">{{ item.ip }}</span>
@@ -89,7 +87,7 @@
       };
     },
     created() {
-    // this.handleRandomRows();
+      // this.handleRandomRows();
     },
     methods: {
       getCellStyle() {
@@ -116,13 +114,12 @@
         this.randomRows.splice(
           0,
           this.randomRows.length,
-          ...new Array(Math.ceil(Math.random() * 900) + 100).fill('')
-            .map((_, index) => ({
-              ip: `${index}--192.168.0.x`,
-              source: `${index}_QQ`,
-              status: '创建中',
-              create_time: `2018-05-25 15:02:24.${index}`,
-            })),
+          ...new Array(Math.ceil(Math.random() * 900) + 100).fill('').map((_, index) => ({
+            ip: `${index}--192.168.0.x`,
+            source: `${index}_QQ`,
+            status: '创建中',
+            create_time: `2018-05-25 15:02:24.${index}`,
+          })),
         );
       },
       handleFixToTop() {

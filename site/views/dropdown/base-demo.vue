@@ -24,23 +24,23 @@
   import BkDropdown from '@bkui-vue/dropdown';
   import BkMessage from '@bkui-vue/message';
   const dropdownList = ref(['生产环境', '预发布环境', '测试环境', '正式环境', '开发环境', '调试环境']);
-  const popoverOptions =   { boundary: 'body' };
-  const handleClick = (item) => {
+  const popoverOptions = { boundary: 'body' };
+  const handleClick = item => {
     BkMessage(item);
   };
 </script>
 <style>
-.tool-box {
-  background: #fff;
-}
+  .tool-box {
+    background: #fff;
+  }
 
-.demo-box {
-  width: 100px;
-  height: 50px;
-  border: 1px solid #ccc;
-}
+  .demo-box {
+    width: 100px;
+    height: 50px;
+    border: 1px solid #ccc;
+  }
 
-.demo-box:hover .tool-box {
-  background: transparent;
-}
+  .demo-box:hover .tool-box {
+    background: transparent;
+  }
 </style>

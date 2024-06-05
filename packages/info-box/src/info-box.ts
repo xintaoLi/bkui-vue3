@@ -30,27 +30,27 @@ import RenderComponent, { genDefaultState } from './render-component';
 
 export interface Props {
   isShow?: boolean;
-  width?: string | number;
+  width?: number | string;
   extCls?: string | string[];
   class?: string | string[]; // extCls 改名 class 继续存在为兼容老版本
-  infoType?: 'success' | 'danger' | 'warning' | 'loading'; // infoType 改名 type 继续存在为兼容老版本
-  type?: 'success' | 'danger' | 'warning' | 'loading';
-  title?: string | (() => VNode | string) | VNode;
-  subTitle?: string | (() => VNode) | VNode; // subTitle 改名 subTitle 继续存在为兼容老版本
-  content?: string | (() => VNode) | VNode;
-  footer?: string | (() => VNode) | VNode;
-  headerAlign?: 'left' | 'center' | 'right';
-  footerAlign?: 'left' | 'center' | 'right';
-  contentAlign?: 'left' | 'center' | 'right';
+  infoType?: 'danger' | 'loading' | 'success' | 'warning'; // infoType 改名 type 继续存在为兼容老版本
+  type?: 'danger' | 'loading' | 'success' | 'warning';
+  title?: (() => VNode | string) | VNode | string;
+  subTitle?: (() => VNode) | VNode | string; // subTitle 改名 subTitle 继续存在为兼容老版本
+  content?: (() => VNode) | VNode | string;
+  footer?: (() => VNode) | VNode | string;
+  headerAlign?: 'center' | 'left' | 'right';
+  footerAlign?: 'center' | 'left' | 'right';
+  contentAlign?: 'center' | 'left' | 'right';
   showMask?: boolean;
   quickClose?: boolean;
   escClose?: boolean;
   closeIcon?: boolean;
-  confirmText?: string | (() => VNode) | VNode;
-  theme?: 'primary' | 'warning' | 'success' | 'danger'; // theme 改名 confirmButtonTheme 继续存在为兼容老版本
-  confirmButtonTheme?: 'primary' | 'warning' | 'success' | 'danger';
-  cancelText?: string | (() => VNode) | VNode;
-  beforeClose?: (action: string) => boolean | Promise<boolean>;
+  confirmText?: (() => VNode) | VNode | string;
+  theme?: 'danger' | 'primary' | 'success' | 'warning'; // theme 改名 confirmButtonTheme 继续存在为兼容老版本
+  confirmButtonTheme?: 'danger' | 'primary' | 'success' | 'warning';
+  cancelText?: (() => VNode) | VNode | string;
+  beforeClose?: (action: string) => Promise<boolean> | boolean;
   onConfirm?: () => void;
   onCancel?: () => void;
   onClose?: () => void; // onClose 改名 onConfirm， 继续存在为兼容老版本

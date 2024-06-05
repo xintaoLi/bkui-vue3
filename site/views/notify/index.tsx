@@ -29,12 +29,12 @@ import { defineComponent } from 'vue';
 import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
-import type { IPropsTableItem } from '../../typings';
-
 import Base from './demo/base.vue';
 import Close from './demo/close.vue';
 import Position from './demo/position.vue';
 import Theme from './demo/theme.vue';
+
+import type { IPropsTableItem } from '../../typings';
 
 const props: IPropsTableItem[] = [
   {
@@ -152,9 +152,9 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Notify 通知提示'
           desc='用来给用户推送通知提示信息，通知可配置为从界面的四个角出现'
           designLink='https://bkdesign.bk.tencent.com/design/142'
+          name='Notify 通知提示'
         />
         {demos.map(({ DemoComponent, ...demo }) => (
           <DemoBox {...demo}>
@@ -162,8 +162,8 @@ export default defineComponent({
           </DemoBox>
         ))}
         <PropsBox
-          subtitle=''
           propsData={props}
+          subtitle=''
         ></PropsBox>
       </div>
     );

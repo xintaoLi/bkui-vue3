@@ -25,8 +25,8 @@
  */
 import canUseDOM from './can-use-dom';
 
-let cachedScrollbarWidth: number | null = null;
-let cachedDevicePixelRatio: number | null = null;
+let cachedScrollbarWidth: null | number = null;
+let cachedDevicePixelRatio: null | number = null;
 
 if (canUseDOM()) {
   window.addEventListener('resize', () => {

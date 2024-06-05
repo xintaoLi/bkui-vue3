@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import DisabledDemo from './disable-demo.vue';
 import IconDemo from './icon-demo.vue';
@@ -78,43 +77,43 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Link 文字链接'
           desc='Link 文字超链接'
-          link='https://www.google.com.hk/'
           designLink='https://bkdesign.bk.tencent.com/design/143'
+          link='https://www.google.com.hk/'
+          name='Link 文字链接'
         />
 
         <DemoBox
-          title='基础用法'
-          desc='基础的文字链接用法'
           componentName='link'
           demoName='base-demo'
+          desc='基础的文字链接用法'
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
 
         <DemoBox
-          title='禁用状态和下划线'
-          desc='文字链接不可用状态，添加underline实现下划线'
           componentName='link'
           demoName='disable-demo'
+          desc='文字链接不可用状态，添加underline实现下划线'
+          title='禁用状态和下划线'
         >
           <DisabledDemo></DisabledDemo>
         </DemoBox>
 
         <DemoBox
-          title='支持设置图标'
-          desc='在 slot 中直接设置图标'
           componentName='link'
           demoName='icon-demo'
+          desc='在 slot 中直接设置图标'
+          title='支持设置图标'
         >
           <IconDemo></IconDemo>
         </DemoBox>
 
         <PropsBox
-          title='Link 属性'
-          subtitle=''
           propsData={linkPropsJson}
+          subtitle=''
+          title='Link 属性'
         />
       </div>
     );

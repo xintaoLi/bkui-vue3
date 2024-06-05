@@ -1,28 +1,28 @@
 <template>
   <bk-table
     ref="refTable"
-    :data="tableData"
     :checked="checked"
+    :data="tableData"
     :is-row-select-enable="isRowSelectEnable"
-    @selection-change="handleSelectionChange"
     @select-all="handleSelectAll"
+    @selection-change="handleSelectionChange"
   >
     <bk-table-column
+      :width="100"
       type="selection"
       sort
-      :width="100"
     />
     <bk-table-column
-      label="名称/内网IP"
       field="ip"
+      label="名称/内网IP"
     />
     <bk-table-column
-      label="来源"
       field="source"
+      label="来源"
     />
     <bk-table-column
-      label="创建时间"
       field="create_time"
+      label="创建时间"
     />
   </bk-table>
 </template>
@@ -31,10 +31,9 @@
   import { defineComponent } from 'vue';
 
   import { DATA_TABLE } from './options';
-  const DATA_ROWS = DATA_TABLE
-    .map(item => ({
-      ...item,
-    }));
+  const DATA_ROWS = DATA_TABLE.map(item => ({
+    ...item,
+  }));
   export default defineComponent({
     components: {},
     data() {
@@ -71,13 +70,13 @@
   });
 </script>
 <style scoped>
-.row {
-  display: flex;
-  width: 100%;
-}
+  .row {
+    display: flex;
+    width: 100%;
+  }
 
-.cell {
-  flex: 1;
-  margin: 0 5px 0 5px;
-}
+  .cell {
+    flex: 1;
+    margin: 0 5px 0 5px;
+  }
 </style>

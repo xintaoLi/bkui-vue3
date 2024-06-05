@@ -2,16 +2,16 @@
   <div class="cascader-wrapper">
     <bk-cascader
       v-model="area"
-      behavior="simplicity"
       :list="list"
+      behavior="simplicity"
       trigger="click"
     />
 
     <bk-cascader
       v-model="hoverArea"
       :list="list"
-      filterable
       trigger="hover"
+      filterable
     />
   </div>
 </template>
@@ -34,10 +34,12 @@
           disabled: true,
         },
       ],
-    }, {
+    },
+    {
       id: 'guangxi',
       name: '广西',
-    }, {
+    },
+    {
       id: 'yunnan',
       name: '云南',
       children: [
@@ -72,7 +74,6 @@
   ];
   const area = ref([]);
   const hoverArea = ref([]);
-
 </script>
 
 <style lang="less" scoped>
@@ -83,4 +84,4 @@
       margin-bottom: 20px;
     }
   }
-  </style>
+</style>

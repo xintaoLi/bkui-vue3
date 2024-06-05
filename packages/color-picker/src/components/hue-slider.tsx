@@ -119,8 +119,8 @@ export default defineComponent({
     return () => (
       <div
         ref={containerRef}
-        tabindex='0'
         class={`${resolveClassName('color-picker-hue')}`}
+        tabindex='0'
         onKeydown={handleArrowKeydown}
         onMousedown={(e: MouseEvent) => {
           e.stopPropagation();
@@ -129,8 +129,8 @@ export default defineComponent({
         }}
       >
         <div
-          class={`${resolveClassName('color-picker-hue-pointer')}`}
           style={pointerStyle.value}
+          class={`${resolveClassName('color-picker-hue-pointer')}`}
         >
           <div class={`${resolveClassName('color-picker-hue-rectangle')}`}></div>
         </div>

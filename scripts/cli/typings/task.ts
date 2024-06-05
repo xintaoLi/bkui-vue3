@@ -28,7 +28,7 @@ export type TaskRunner<T> = (options?: T) => Promise<void>;
 
 export class Task<TOptions> {
   options: TOptions = {} as any;
-  // eslint-disable-next-line no-useless-constructor
+
   constructor(
     public name: string,
     public runner: TaskRunner<TOptions>,
@@ -50,7 +50,7 @@ export interface ILibTaskOption {
 }
 
 export interface ITaskItem {
-  type: 'style' | 'script';
+  type: 'script' | 'style';
   url: string;
   newPath: string;
 }

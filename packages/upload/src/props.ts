@@ -24,8 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import type { PropType } from 'vue';
-
 import {
   APIResponse,
   EThemes,
@@ -38,6 +36,8 @@ import {
   UploadRawFile,
   UploadRequestHandler,
 } from './upload.type';
+
+import type { PropType } from 'vue';
 
 const themes = [EThemes.BUTTON, EThemes.DRAGGABLE, EThemes.PICTURE];
 
@@ -89,7 +89,7 @@ export default {
     default: 'post',
   },
   size: {
-    type: [Number, Object] as PropType<number | MaxSize>,
+    type: [Number, Object] as PropType<MaxSize | number>,
     default() {
       return {
         maxFileSize: 5,
@@ -111,7 +111,7 @@ export default {
     default: () => ({}),
   },
   header: {
-    type: [Array, Object] as PropType<HeaderDataAttr[] | HeaderDataAttr>,
+    type: [Array, Object] as PropType<HeaderDataAttr | HeaderDataAttr[]>,
     default: () => [],
   },
   tip: {
@@ -127,11 +127,11 @@ export default {
   },
   limit: Number,
   data: {
-    type: [Array, Object] as PropType<ExtraFormData[] | ExtraFormData>,
+    type: [Array, Object] as PropType<ExtraFormData | ExtraFormData[]>,
     default: () => [],
   },
   formDataAttributes: {
-    type: [Array, Object] as PropType<FormDataAttr[] | FormDataAttr>,
+    type: [Array, Object] as PropType<FormDataAttr | FormDataAttr[]>,
     default: () => [],
   },
   extCls: {

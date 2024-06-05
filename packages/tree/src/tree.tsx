@@ -130,7 +130,7 @@ export default defineComponent({
      * @param item Node item | Node Id
      * @param checked
      */
-    const setChecked = (item: any[] | any, checked = true) => {
+    const setChecked = (item: any | any[], checked = true) => {
       setNodeAction(resolveNodeItem(item), NODE_ATTRIBUTES.IS_CHECKED, checked);
     };
 
@@ -247,18 +247,18 @@ export default defineComponent({
 
     return () => (
       <VirtualRender
-        class={resolveClassName('tree')}
+        ref={root}
         style={getTreeStyle(null, props)}
-        list={renderData.value}
-        lineHeight={props.lineHeight}
         height={props.height}
-        enabled={props.virtualRender}
-        rowKey={NODE_ATTRIBUTES.UUID}
-        keepAlive={true}
+        class={resolveClassName('tree')}
         contentClassName={resolveClassName('container')}
+        enabled={props.virtualRender}
+        keepAlive={true}
+        lineHeight={props.lineHeight}
+        list={renderData.value}
+        rowKey={NODE_ATTRIBUTES.UUID}
         throttleDelay={0}
         onContentScroll={handleContentScroll}
-        ref={root}
       >
         {{
           default: (scoped: any) => renderTreeContent(scoped.data || []),

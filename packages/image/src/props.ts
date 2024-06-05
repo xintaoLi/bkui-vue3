@@ -28,9 +28,9 @@ import { toType } from 'vue-types';
 
 import { PropTypes } from '@bkui-vue/shared';
 enum FitEnum {
-  FILL = 'fill',
   CONTAIN = 'contain',
   COVER = 'cover',
+  FILL = 'fill',
   NONE = 'none',
   SCALE_DOWN = 'scale-down',
 }

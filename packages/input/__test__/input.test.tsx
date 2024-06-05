@@ -116,8 +116,8 @@ describe('Input', () => {
       render() {
         return (
           <Input
-            type='search'
             modelValue='hello'
+            type='search'
           ></Input>
         );
       },

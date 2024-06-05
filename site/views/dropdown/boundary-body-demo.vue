@@ -23,7 +23,7 @@
   import BkMessage from '@bkui-vue/message';
   const dropdownList = ref(['生产环境', '预发布环境', '测试环境', '正式环境', '开发环境', '调试环境']);
 
-  const handleClick = (item) => {
+  const handleClick = item => {
     BkMessage(item);
   };
 

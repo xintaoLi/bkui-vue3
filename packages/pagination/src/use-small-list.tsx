@@ -24,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import type { ComponentInternalInstance } from 'vue';
 import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
@@ -32,6 +31,7 @@ import { AngleLeft, AngleRight } from '@bkui-vue/icon';
 import Popover from '@bkui-vue/popover';
 
 import type { IPaginationInstance } from './type';
+import type { ComponentInternalInstance } from 'vue';
 
 export default () => {
   const { proxy } = getCurrentInstance() as ComponentInternalInstance & { proxy: IPaginationInstance };
@@ -167,12 +167,12 @@ export default () => {
         <AngleLeft />
       </div>
       <Popover
-        theme='light'
-        trigger='click'
-        arrow={false}
         width={56}
+        arrow={false}
         boundary='body'
         placement='bottom'
+        theme='light'
+        trigger='click'
       >
         {{
           default: () => (
@@ -185,10 +185,10 @@ export default () => {
               <span
                 ref={inputRef}
                 class={`${resolveClassName('pagination-editor')}`}
-                contenteditable
                 spellcheck='false'
-                onFocus={handlePageEditorFocus}
+                contenteditable
                 onBlur={handlePageEditorBlur}
+                onFocus={handlePageEditorFocus}
                 onInput={handlePageEditorInput}
                 onKeydown={handlePageEditorKeydown}
               >
@@ -202,11 +202,11 @@ export default () => {
             <div class={`${resolveClassName('pagination-picker-list')}`}>
               {list.value.map(item => (
                 <div
+                  key={item}
                   class={{
                     item: true,
                     'is-actived': item === localCurrent.value,
                   }}
-                  key={item}
                   onClick={() => handlePageChange(item)}
                 >
                   {item}

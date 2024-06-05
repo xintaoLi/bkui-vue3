@@ -4,23 +4,17 @@
       <bk-row>
         <bk-col :span="4">
           <div class="content">
-            <bk-timeline
-              :list="state.list"
-            />
+            <bk-timeline :list="state.list" />
           </div>
         </bk-col>
         <bk-col :span="4">
           <div class="content">
-            <bk-timeline
-              :list="state.list1"
-            />
+            <bk-timeline :list="state.list1" />
           </div>
         </bk-col>
         <bk-col :span="4">
           <div class="content">
-            <bk-timeline
-              :list="state.list2"
-            />
+            <bk-timeline :list="state.list2" />
           </div>
         </bk-col>
       </bk-row>
@@ -126,7 +120,6 @@
       };
     },
   });
-
 </script>
 <style lang="postcss">
   .wrapper {

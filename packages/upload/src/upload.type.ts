@@ -39,19 +39,19 @@ export const enum EThemes {
 export type Theme = Lowercase<keyof typeof EThemes>;
 
 export const enum EUploadStatus {
-  NEW = 'new',
-  UPLOADING = 'uploading',
-  SUCCESS = 'success',
   FAIL = 'fail',
+  NEW = 'new',
+  SUCCESS = 'success',
+  UPLOADING = 'uploading',
 }
 
 export type UploadStatus = Lowercase<keyof typeof EUploadStatus>;
 
-export type FormDataAttr = { name: string; value: string | Blob | [string | Blob, string] };
+export type FormDataAttr = { name: string; value: [Blob | string, string] | Blob | string };
 
 export type HeaderDataAttr = { name: string; value: string };
 
-export type ExtraFormData = Record<string, string | Blob | [string | Blob, string]>;
+export type ExtraFormData = Record<string, [Blob | string, string] | Blob | string>;
 
 export type UploadFiles = UploadFile[];
 
@@ -98,7 +98,7 @@ export interface UploadRequestOptions {
   formDataAttributes?: FormDataAttr | FormDataAttr[];
   filename: string;
   file: File;
-  headers?: Headers | Record<string, string | number | null | undefined>;
+  headers?: Headers | Record<string, null | number | string | undefined>;
   header?: HeaderDataAttr | HeaderDataAttr[];
   withCredentials: boolean;
   sliceUrl: string;
@@ -110,7 +110,7 @@ export interface UploadRequestOptions {
   onComplete: () => void;
 }
 
-export type UploadRequestHandler = (options: UploadRequestOptions) => XMLHttpRequest | Promise<unknown>;
+export type UploadRequestHandler = (options: UploadRequestOptions) => Promise<unknown> | XMLHttpRequest;
 
 export type HookHandler = (uploadFile: UploadFile, uploadFiles: UploadFiles) => void;
 

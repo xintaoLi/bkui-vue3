@@ -1,12 +1,12 @@
 <template>
   <div class="demo">
     <bk-select
-      v-model="selectedValue"
       class="bk-select"
+      v-model="selectedValue"
       multiple
       show-select-all
-      @select="handleSelect"
       @deselect="handleDeselect"
+      @select="handleSelect"
     >
       <bk-option
         v-for="(item, index) in datasource"
@@ -16,31 +16,31 @@
       />
     </bk-select>
     <bk-select
-      v-model="selectedValue"
-      class="bk-select"
-      multiple
       selected-style="checkbox"
-      show-select-all
-      show-all
+      class="bk-select"
+      v-model="selectedValue"
       all-option-id="all"
       filterable
+      multiple
+      show-all
+      show-select-all
     >
       <bk-option
         v-for="(item, index) in datasource"
+        :disabled="item.disabled"
         :id="item.value"
         :key="index"
         :name="item.label"
-        :disabled="item.disabled"
       />
     </bk-select>
     <bk-select
-      v-model="selectedValue"
       class="bk-select"
+      v-model="selectedValue"
+      multiple-mode="tag"
       filterable
       multiple
-      show-select-all
       show-all
-      multiple-mode="tag"
+      show-select-all
       @tag-remove="tagRemove"
     >
       <bk-option
@@ -51,14 +51,14 @@
       />
     </bk-select>
     <bk-select
-      v-model="listValue"
       class="bk-select"
+      v-model="listValue"
+      :list="datasourceList"
+      multiple-mode="tag"
+      collapse-tags
       filterable
       multiple
       show-select-all
-      multiple-mode="tag"
-      collapse-tags
-      :list="datasourceList"
     />
   </div>
 </template>
@@ -100,35 +100,34 @@
   const listValue = ref([1, 2, 3, 4, 5, 6, 7, 8]);
   const datasourceList = ref([]);
 
-  const tagRemove = (val) => {
+  const tagRemove = val => {
     console.log(val);
   };
 
-  const handleSelect = (v) => {
+  const handleSelect = v => {
     console.log('select', v);
   };
 
-  const handleDeselect = (v) => {
+  const handleDeselect = v => {
     console.log('deselect', v);
   };
 
   onBeforeMount(() => {
-    new Array(100).fill(0)
-      .forEach((item, index) => {
-        datasourceList.value.push({
-          value: index,
-          label: `list-${index}`,
-        });
+    new Array(100).fill(0).forEach((item, index) => {
+      datasourceList.value.push({
+        value: index,
+        label: `list-${index}`,
       });
+    });
   });
 </script>
 <style scoped>
-.demo {
-  display: flex;
-}
+  .demo {
+    display: flex;
+  }
 
-.bk-select {
-  width: 300px;
-  margin-right: 20px;
-}
+  .bk-select {
+    width: 300px;
+    margin-right: 20px;
+  }
 </style>

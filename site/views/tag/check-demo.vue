@@ -2,9 +2,9 @@
   <div>
     <bk-tag
       v-for="tag in tags"
+      :checked="checkedTags.includes(tag)"
       :key="tag"
       checkable
-      :checked="checkedTags.includes(tag)"
       @change="checked => handleCheckChange(checked, tag)"
     >
       {{ tag }}

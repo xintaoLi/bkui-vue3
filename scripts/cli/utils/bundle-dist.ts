@@ -24,20 +24,19 @@
  * IN THE SOFTWARE.
  */
 
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
 import glob from 'fast-glob';
 import { existsSync, readdirSync, rmdirSync, statSync, unlinkSync } from 'fs';
 import { basename, resolve } from 'path';
-import type { OutputOptions, RollupBuild } from 'rollup';
 import { rollup } from 'rollup';
 import esbuild from 'rollup-plugin-esbuild';
 import { build } from 'vite';
 
-import vue from '@vitejs/plugin-vue';
-import vueJsx from '@vitejs/plugin-vue-jsx';
-
-import { COMPONENT_URL, DIST_URL, LOCALE_URL } from '../compiler/helpers';
-
+import { COMPONENT_URL, DIST_URL, ENV_MAP, LOCALE_URL } from '../compiler/helpers';
 import { replaceThemeTovariable } from './bundle-components';
+
+import type { OutputOptions, RollupBuild } from 'rollup';
 
 const entry = resolve(COMPONENT_URL, './bkui-vue/dist.index.ts');
 // 删除目录
@@ -146,6 +145,9 @@ export const buildDistScript = async () =>
             },
           ],
         },
+      },
+      define: {
+        ...ENV_MAP,
       },
     }),
   ]);

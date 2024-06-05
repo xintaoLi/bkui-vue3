@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import ControllableDemo from './controllable-demo.vue';
 import CustomDemo from './custom-demo.vue';
@@ -119,80 +118,80 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Steps步骤条'
           desc='Steps步骤条，用于步骤类的场景组件'
-          link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/steps`}
           designLink='https://bkdesign.bk.tencent.com/design/148'
+          link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/steps`}
+          name='Steps步骤条'
         />
         <DemoBox
-          title='基础用法'
-          desc='不传值时：默认选中第一个节点，颜色为蓝鲸主题色'
           componentName='steps'
           demoName='base-demo'
+          desc='不传值时：默认选中第一个节点，颜色为蓝鲸主题色'
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
         <DemoBox
-          title='小尺寸'
-          desc='可以使用 size 属性来定义尺寸，可接受 small'
           componentName='steps'
           demoName='size-demo'
+          desc='可以使用 size 属性来定义尺寸，可接受 small'
+          title='小尺寸'
         >
           <SizeDemo />
         </DemoBox>
         <DemoBox
-          title='设置主题'
-          desc='可以通过 theme 属性来定义主题'
           componentName='steps'
           demoName='theme-demo'
+          desc='可以通过 theme 属性来定义主题'
+          title='设置主题'
         >
           <ThemeDemo />
         </DemoBox>
         <DemoBox
-          title='可点击'
-          desc='可以通过 controllable为true 属性来使组件每个步骤可点击'
           componentName='steps'
           demoName='controllable-demo'
+          desc='可以通过 controllable为true 属性来使组件每个步骤可点击'
+          title='可点击'
         >
           <ControllableDemo />
         </DemoBox>
 
         <DemoBox
-          title='垂直方向和实线'
-          desc='可以通过 direction属性来设置组件排列方式，可接受horizontal，vertical，默认为horizontal。指定 line-type 值为 solid 显示为实线'
           componentName='steps'
           demoName='direction-demo'
+          desc='可以通过 direction属性来设置组件排列方式，可接受horizontal，vertical，默认为horizontal。指定 line-type 值为 solid 显示为实线'
+          title='垂直方向和实线'
         >
           <DirectionDemo />
         </DemoBox>
 
         <DemoBox
-          title='错误和加载中状态'
-          desc='使用 status 属性设置当前步骤状态为错误或加载中，分别对应 error、loading 值，清空则还原为默认状态'
           componentName='steps'
           demoName='status-demo'
+          desc='使用 status 属性设置当前步骤状态为错误或加载中，分别对应 error、loading 值，清空则还原为默认状态'
+          title='错误和加载中状态'
         >
           <StatusDemo />
         </DemoBox>
 
         <DemoBox
-          title='自定义步骤内容'
-          desc='配置 steps 参数，具体内容参考下方属性表格'
           componentName='steps'
           demoName='custom-demo'
+          desc='配置 steps 参数，具体内容参考下方属性表格'
+          title='自定义步骤内容'
         >
           <CustomDemo />
         </DemoBox>
 
         <PropsBox
-          title='属性'
-          subtitle=''
           propsData={stepsProps}
+          subtitle=''
+          title='属性'
         />
         <PropsBox
-          title='事件'
-          subtitle=''
           propsData={stepsEvents}
+          subtitle=''
+          title='事件'
         />
       </div>
     );

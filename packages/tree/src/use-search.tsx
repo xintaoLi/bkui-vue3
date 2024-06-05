@@ -38,7 +38,7 @@ export default (props: TreePropTypes) => {
   const matchFn = (match: Function, args: any[]) => Reflect.apply(match, this, args);
   const isSearchDisabled = refSearch.value === undefined || refSearch.value === false;
 
-  const searchFn = (itemValue: string | number, item: any) => {
+  const searchFn = (itemValue: number | string, item: any) => {
     if (isSearchDisabled) {
       return true;
     }

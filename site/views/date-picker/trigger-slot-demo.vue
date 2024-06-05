@@ -1,22 +1,20 @@
 <template>
-  <div style="display: flex;">
+  <div style="display: flex">
     <div>
       <bk-date-picker
-        :value="dateValue"
         :open="open"
+        :value="dateValue"
         @change="handleChange"
         @clear="handleClear"
-        @pick-success="handleOk"
         @open-change="handleOpenChange"
+        @pick-success="handleOk"
       >
         <template #trigger>
           <a
             href="javascript:void(0)"
             @click="handleClick"
           >
-            <template v-if="dateValue === ''">
-              Select date
-            </template>
+            <template v-if="dateValue === ''"> Select date </template>
             <template v-else>
               {{ dateValue }}
             </template>
@@ -24,19 +22,18 @@
         </template>
       </bk-date-picker>
     </div>
-    <div style="margin-left: 40px;">
+    <div style="margin-left: 40px">
       <bk-date-picker
         v-model="dateValue2"
+        :open="open2"
+        :shortcuts="shortcutsRange"
+        format="yyyy-MM-dd HH:mm:ss"
         type="datetimerange"
         use-shortcut-text
-        format="yyyy-MM-dd HH:mm:ss"
-        :shortcuts="shortcutsRange"
-        :open="open2"
-
         @change="handleChange2"
         @clear="handleClear2"
-        @pick-success="handleOk2"
         @open-change="handleOpenChange2"
+        @pick-success="handleOk2"
       >
         <template #trigger="displayName">
           <a
@@ -58,7 +55,7 @@
 
   const open = ref(false);
 
-  const handleChange = (date) => {
+  const handleChange = date => {
     console.log('handleChange', date);
     dateValue.value = date;
   };
@@ -66,7 +63,7 @@
     console.log('handleClick');
     open.value = !open.value;
   };
-  const handleOpenChange = (isOpen) => {
+  const handleOpenChange = isOpen => {
     console.error('handleOpenChange');
     console.log(isOpen);
   };
@@ -88,7 +85,7 @@
         const start = new Date(end.getFullYear(), end.getMonth(), end.getDate());
         return [start, end];
       },
-      onClick: (picker) => {
+      onClick: picker => {
         console.log(picker);
       },
     },
@@ -100,7 +97,7 @@
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
         return [start, end];
       },
-      onClick: (picker) => {
+      onClick: picker => {
         console.log(picker);
       },
     },
@@ -112,7 +109,7 @@
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 15);
         return [start, end];
       },
-      onClick: (picker) => {
+      onClick: picker => {
         console.log(picker);
       },
     },
@@ -124,12 +121,12 @@
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
         return [start, end];
       },
-      onClick: (picker) => {
+      onClick: picker => {
         console.log(picker);
       },
     },
   ]);
-  const handleChange2 = (date) => {
+  const handleChange2 = date => {
     console.log('handleChange', date);
     dateValue2.value = date;
   };
@@ -137,7 +134,7 @@
     console.log('handleClick');
     open2.value = !open.value;
   };
-  const handleOpenChange2 = (isOpen) => {
+  const handleOpenChange2 = isOpen => {
     console.error('handleOpenChange');
     console.log(isOpen);
   };
@@ -149,5 +146,4 @@
     console.log('handleOK');
     open2.value = false;
   };
-
 </script>

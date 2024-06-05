@@ -95,16 +95,16 @@ const Circle = (_: any, { attrs, slots }) => {
 
   return (
     <div
-      class='progress-outer-circle'
       style={circleStyle}
+      class='progress-outer-circle'
     >
       <svg viewBox='0 0 100 100'>
         <path {...progressCircleTrail} />
         <path {...progressCirclePath} />
       </svg>
       <span
-        class='progress-circle-text'
         style={titleStyle}
+        class='progress-circle-text'
       >
         {slots?.default()}
       </span>

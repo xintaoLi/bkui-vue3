@@ -1,13 +1,11 @@
 <template>
   <div>
     <bk-dropdown
-      trigger="manual"
       :is-show="isShow"
+      trigger="manual"
       @show-change="handleShowChange"
     >
-      <bk-button @click="handleShow">
-        点击触发
-      </bk-button>
+      <bk-button @click="handleShow"> 点击触发 </bk-button>
       <template #content>
         <bk-dropdown-menu>
           <bk-dropdown-item
@@ -29,7 +27,7 @@
 
   const isShow = ref(false);
 
-  const handleShowChange = (val) => {
+  const handleShowChange = val => {
     BkMessage(`is-show: ${val}`);
   };
 

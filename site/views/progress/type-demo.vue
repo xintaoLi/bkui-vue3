@@ -2,19 +2,19 @@
   <div style="width: 100%">
     <div>
       <bk-progress
-        :text-inside="false"
-        type="dashboard"
         :percent="30"
+        :text-inside="false"
         bg-color="#3a84ff"
         color="#f56c6c"
+        type="dashboard"
       >
         <span>未开始</span>
       </bk-progress>
       <bk-progress
-        text-inside
-        type="circle"
         :percent="10"
         color="#f56c6c"
+        type="circle"
+        text-inside
       />
     </div>
   </div>
@@ -29,18 +29,16 @@
     components: {
       BkProgress,
     },
-    setup() {
-
-    },
+    setup() {},
   });
 </script>
 
 <style scoped>
-.mb10 {
-  margin-bottom: 10px;
-}
+  .mb10 {
+    margin-bottom: 10px;
+  }
 
-.bk-progress {
-  margin-right: 30px;
-}
+  .bk-progress {
+    margin-right: 30px;
+  }
 </style>

@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import SlotDemo from './slot-demo.vue';
 
@@ -95,40 +94,40 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Swiper 轮播'
           desc='在多个面板之间切换'
+          name='Swiper 轮播'
         />
 
         <DemoBox
-          title='基础用法'
-          subtitle=''
-          desc='通过传递 pics 或者 list 属性，来直接展示图片。通过 loop-time 控制轮播间隔时间。通过 height 控制轮播图高度'
           componentName='swiper'
           demoName='base-demo'
+          desc='通过传递 pics 或者 list 属性，来直接展示图片。通过 loop-time 控制轮播间隔时间。通过 height 控制轮播图高度'
+          subtitle=''
+          title='基础用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
 
         <DemoBox
-          title='通过 Slot 自定义显示内容'
-          subtitle=''
-          desc='通过传递 pics 或者 list 属性传递数据，通过 default 作用域插槽自定义显示内容'
           componentName='swiper'
           demoName='slot-demo'
+          desc='通过传递 pics 或者 list 属性传递数据，通过 default 作用域插槽自定义显示内容'
+          subtitle=''
+          title='通过 Slot 自定义显示内容'
         >
           <SlotDemo></SlotDemo>
         </DemoBox>
 
         <PropsBox
-          title='Swiper 属性'
-          subtitle=''
           propsData={swiperPropsJson}
+          subtitle=''
+          title='Swiper 属性'
         />
 
         <PropsBox
-          title='Swiper 事件'
-          subtitle=''
           propsData={swiperEventJson}
+          subtitle=''
+          title='Swiper 事件'
         />
       </div>
     );

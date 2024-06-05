@@ -31,17 +31,17 @@ import { PropTypes } from '@bkui-vue/shared';
 import { NodeContentActionEnum } from './constant';
 
 enum ColumnTypeEnum {
-  ONCE = 'once',
   EVERY = 'every',
+  ONCE = 'once',
 }
 enum TreeSearchMatchEnum {
-  FUZZY = 'fuzzy',
   FULL = 'full',
+  FUZZY = 'fuzzy',
 }
 
 enum TreeSearchResultEnum {
-  TREE = 'tree',
   LIST = 'list',
+  TREE = 'tree',
 }
 
 /**
@@ -272,7 +272,7 @@ export const treeProps = {
 
 type AsyncOption = {
   callback: (item, cb) => Promise<any>;
-  cache: Boolean;
+  cache: boolean;
   deepAutoOpen?: string;
 };
 
@@ -282,7 +282,7 @@ export type IIntersectionObserver = {
 };
 
 export type SearchOption = {
-  value: string | number | boolean;
+  value: boolean | number | string;
   match?: `${TreeSearchMatchEnum}` | Function;
   resultType?: `${TreeSearchResultEnum}`;
   showChildNodes?: boolean;

@@ -50,9 +50,9 @@ export default defineComponent({
     const type = computed(() => (props.list.length === 0 ? 'empty' : 'search-empty'));
     return () => (
       <Exception
+        description={localEmptyText.value}
         scene='part'
         type={type.value}
-        description={localEmptyText.value}
       />
     );
   },

@@ -1,13 +1,13 @@
 <template>
   <div>
     <bk-color-picker
-      v-model="color2"
       class="color-picker"
+      v-model="color2"
       size="large"
     />
     <bk-color-picker
-      v-model="color2"
       class="color-picker"
+      v-model="color2"
     />
     <bk-color-picker
       v-model="color2"
@@ -23,7 +23,7 @@
 </script>
 
 <style lang="postcss" scoped>
-.color-picker {
-  margin-right: 20px;
-}
+  .color-picker {
+    margin-right: 20px;
+  }
 </style>

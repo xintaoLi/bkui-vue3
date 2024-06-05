@@ -64,11 +64,11 @@ export default defineComponent({
     return () => (
       <div class={`${resolveClassName('color-picker-input-part')}`}>
         <input
-          type={props.info.name === 'HEX' ? 'text' : 'number'}
           class={colorPickerCls.value}
+          type={props.info.name === 'HEX' ? 'text' : 'number'}
           value={props.info.value}
-          onKeydown={handleTab}
           onInput={handleInput}
+          onKeydown={handleTab}
         />
         <span class={`${resolveClassName('color-picker-input-text')}`}>{props.info.name}</span>
       </div>

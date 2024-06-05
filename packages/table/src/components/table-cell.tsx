@@ -217,9 +217,9 @@ export default defineComponent({
     const hasExplain = props.headExplain || props.column.explain;
     return () => (
       <div
-        class={['cell', props.column.type, hasExplain ? 'explain' : '']}
-        style={cellStyle.value}
         ref={refRoot}
+        style={cellStyle.value}
+        class={['cell', props.column.type, hasExplain ? 'explain' : '']}
       >
         {slots.default?.()}
       </div>

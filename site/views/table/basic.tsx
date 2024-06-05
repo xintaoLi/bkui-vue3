@@ -1,4 +1,4 @@
-/* eslint-disable codecc/comment-ratio */
+import { defineComponent } from 'vue';
 
 /*
  * Tencent is pleased to support the open source community by making
@@ -26,7 +26,6 @@
  * IN THE SOFTWARE.
  */
 import { Table } from 'bkui-vue';
-import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'BaseTable',
@@ -34,7 +33,6 @@ export default defineComponent({
     // 渲染table
     return (
       <Table
-        virtualEnabled={true}
         columns={[
           {
             field: 'biz_id',
@@ -129,10 +127,10 @@ export default defineComponent({
             minWidth: 0,
             render: ({ cell }) => (
               <div
-                class={'flex-row align-items-center'}
                 style={{
                   height: '100%',
                 }}
+                class={'flex-row align-items-center'}
               >
                 {cell}
               </div>
@@ -317,6 +315,7 @@ export default defineComponent({
             _unique_metric_: '998',
           },
         ]}
+        virtualEnabled={true}
         onColumnSort={data => console.log(data)}
       ></Table>
     );

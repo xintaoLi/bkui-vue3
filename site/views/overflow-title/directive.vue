@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div style="width: 100px;margin-bottom: 20px;">
+    <div style="width: 100px; margin-bottom: 20px">
       <div
-        v-overflow-title
         class="text-ov"
+        v-overflow-title
       >
         222222222222222222222222
       </div>
@@ -11,16 +11,14 @@
   </div>
 </template>
 <script>
+  import { defineComponent } from 'vue';
 
   import { overflowTitle } from 'bkui-vue';
-  import { defineComponent } from 'vue';
 
   export default defineComponent({
     directives: {
       overflowTitle,
     },
-    setup() {
-    },
+    setup() {},
   });
-
 </script>

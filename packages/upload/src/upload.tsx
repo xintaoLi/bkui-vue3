@@ -53,7 +53,7 @@ export default defineComponent({
   setup(props, { slots, emit, expose }) {
     const { resolveClassName } = usePrefix();
 
-    const requests = shallowRef<Record<string, XMLHttpRequest | Promise<unknown>>>({});
+    const requests = shallowRef<Record<string, Promise<unknown> | XMLHttpRequest>>({});
 
     const isPhotowall = computed<boolean>(() => props.theme === EThemes.PICTURE);
     const isSinglePhoto = computed<boolean>(() => isPhotowall.value && !props.multiple);
@@ -252,10 +252,10 @@ export default defineComponent({
         )}
         {slots.tip ? slots.tip() : props.tip && <div class={`${resolveClassName(CLASS_PREFIX)}__tip`}>{props.tip}</div>}
         <UploadList
-          files={fileList.value}
-          theme={props.theme}
           disabled={props.disabled}
+          files={fileList.value}
           multiple={props.multiple}
+          theme={props.theme}
           onRemove={handleRemove}
           onRetry={handleRetry}
         >
@@ -264,8 +264,8 @@ export default defineComponent({
               isPhotowall.value && (
                 <UploadTrigger
                   {...triggerProps.value}
-                  file={file}
                   v-slots={slots}
+                  file={file}
                   onChange={handleFiles}
                   onRemove={handleRemove}
                 />

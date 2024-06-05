@@ -7,8 +7,9 @@
   </div>
 </template>
 <script>
-  import { Bk, Error } from 'bkui-vue/lib/icon';
   import { defineComponent, reactive } from 'vue';
+
+  import { Bk, Error } from 'bkui-vue/lib/icon';
 
   export default defineComponent({
     setup() {
@@ -44,7 +45,7 @@
       });
 
       // 改变当前选中值
-      const timeLineChanged = (data) => {
+      const timeLineChanged = data => {
         alert(`选择了：${data.tag}`);
       };
       return {
@@ -53,5 +54,4 @@
       };
     },
   });
-
 </script>

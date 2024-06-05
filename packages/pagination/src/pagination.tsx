@@ -24,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 
-import type { ExtractPropTypes } from 'vue';
 import { defineComponent, ref, toRefs, watch } from 'vue';
 
 import { useLocale, usePrefix } from '@bkui-vue/config-provider';
@@ -34,6 +33,8 @@ import useLimit from './use-limit';
 import useList from './use-list';
 import useSmallList from './use-small-list';
 import useTotal from './use-total';
+
+import type { ExtractPropTypes } from 'vue';
 
 export const paginationProps = {
   modelValue: PropTypes.number.def(1),

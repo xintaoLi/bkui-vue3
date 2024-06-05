@@ -34,9 +34,7 @@
       };
     },
   });
-
 </script>
-
 
 <style scoped>
   .bk-switcher {

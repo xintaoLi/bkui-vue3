@@ -1,17 +1,17 @@
 <template>
   <bk-select
-    v-model="selectedValue"
     class="bk-select"
-    filterable
+    v-model="selectedValue"
     :scroll-loading="scrollLoading"
+    filterable
     @scroll-end="handleScrollEnd"
   >
     <bk-option
-      v-for="(item) in datasource"
+      v-for="item in datasource"
+      :disabled="item.disabled"
       :id="item.value"
       :key="item.value"
       :name="item.label"
-      :disabled="item.disabled"
     />
   </bk-select>
 </template>
@@ -62,8 +62,7 @@
   };
 </script>
 <style scoped>
-.bk-select {
-  width: 300px;
-}
+  .bk-select {
+    width: 300px;
+  }
 </style>
-

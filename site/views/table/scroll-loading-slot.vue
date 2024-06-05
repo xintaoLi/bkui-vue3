@@ -7,12 +7,10 @@
       @scroll-bottom="handleScrollBottom"
     >
       <template #prepend>
-        <div style="background-color: red; width: 100%; color: #fff; opacity: 0.4;padding: 10px;">
-          Fixed TOP
-        </div>
+        <div style="background-color: red; width: 100%; color: #fff; opacity: 0.4; padding: 10px">Fixed TOP</div>
       </template>
       <template #fixedBottom>
-        <div style="background-color: red; width: 100%; color: #fff; opacity: 0.4;padding: 10px;">
+        <div style="background-color: red; width: 100%; color: #fff; opacity: 0.4; padding: 10px">
           {{ `Fixed Bottom` }}
         </div>
       </template>
@@ -46,13 +44,13 @@
   });
 </script>
 <style scoped>
-.row {
-  display: flex;
-  width: 100%;
-}
+  .row {
+    display: flex;
+    width: 100%;
+  }
 
-.cell {
-  flex: 1;
-  margin: 0 5px 0 5px;
-}
+  .cell {
+    flex: 1;
+    margin: 0 5px 0 5px;
+  }
 </style>

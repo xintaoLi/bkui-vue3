@@ -40,7 +40,7 @@ export default defineComponent({
     eventDelay: PropTypes.number.def(0),
   },
   setup(props) {
-    const resolveValToPix = (val: string | number) => {
+    const resolveValToPix = (val: number | string) => {
       if (/^\d+\.?\d*$/.test(`${val}`)) {
         return `${val}px`;
       }
@@ -107,9 +107,9 @@ export default defineComponent({
     const style = resolveContentStyle(this.$slots.default?.());
     return (
       <div
-        class={this.contentClassName}
-        style={style}
         ref='refContent'
+        style={style}
+        class={this.contentClassName}
       >
         {this.$slots.arrow?.() ?? ''}
         {this.$slots.default?.() ?? ''}

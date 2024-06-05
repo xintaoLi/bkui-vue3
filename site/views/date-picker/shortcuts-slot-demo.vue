@@ -3,50 +3,46 @@
     <div>
       <bk-date-picker
         v-model="dateValue"
+        :shortcut-selected-index="2"
+        :shortcuts="dateShortCut"
+        format="yyyy-MM-dd HH:mm:ss"
         type="datetime"
         use-shortcut-text
-        format="yyyy-MM-dd HH:mm:ss"
-        :shortcuts="dateShortCut"
-        :shortcut-selected-index="2"
         @change="change"
       />
     </div>
 
-    <div style="margin-top: 20px;">
+    <div style="margin-top: 20px">
       <bk-date-picker
         v-model="defaultValue"
+        :shortcut-selected-index="1"
+        :shortcuts="shortcutsRange"
+        format="yyyy-MM-dd HH:mm:ss"
         type="datetimerange"
         use-shortcut-text
-        format="yyyy-MM-dd HH:mm:ss"
-        :shortcuts="shortcutsRange"
-        :shortcut-selected-index="1"
         @change="change"
       />
     </div>
-    <div style="margin-top: 20px;">
+    <div style="margin-top: 20px">
       <bk-date-picker
         v-model="defaultValue"
+        format="yyyy-MM-dd HH:mm:ss"
         type="datetimerange"
         use-shortcut-text
-        format="yyyy-MM-dd HH:mm:ss"
         @change="change"
       >
         <template #shortcuts>
-          <div class="custom-shortcuts">
-            自定义插槽
-          </div>
+          <div class="custom-shortcuts">自定义插槽</div>
         </template>
       </bk-date-picker>
     </div>
-    <div style="margin-top: 20px;">
+    <div style="margin-top: 20px">
       <bk-date-picker
         v-model="dateValue1"
         @change="change"
       >
         <template #shortcuts>
-          <div class="custom-shortcuts">
-            自定义插槽
-          </div>
+          <div class="custom-shortcuts">自定义插槽</div>
         </template>
       </bk-date-picker>
     </div>
@@ -111,7 +107,7 @@
         const start = new Date(end.getFullYear(), end.getMonth(), end.getDate());
         return [start, end];
       },
-      onClick: (picker) => {
+      onClick: picker => {
         console.log(picker);
       },
     },
@@ -123,7 +119,7 @@
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
         return [start, end];
       },
-      onClick: (picker) => {
+      onClick: picker => {
         console.log(picker);
       },
     },
@@ -135,7 +131,7 @@
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 15);
         return [start, end];
       },
-      onClick: (picker) => {
+      onClick: picker => {
         console.log(picker);
       },
     },
@@ -147,15 +143,15 @@
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
         return [start, end];
       },
-      onClick: (picker) => {
+      onClick: picker => {
         console.log(picker);
       },
     },
   ]);
 </script>
 <style lang="postcss">
-.custom-shortcuts {
-  color: red;
-  text-align: center;
-}
+  .custom-shortcuts {
+    color: red;
+    text-align: center;
+  }
 </style>

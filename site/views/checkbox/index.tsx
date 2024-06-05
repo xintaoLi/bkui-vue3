@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import DemoCheckbox from './demo/checkbox.vue';
 import DemoCheckboxChecked from './demo/checkbox-checked.vue';
 import DemoCheckboxDisabled from './demo/checkbox-disabled.vue';
@@ -148,78 +147,78 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Checkbox'
           desc='表单-多选框，在一组选项中进行多选'
           designLink='https://bkdesign.bk.tencent.com/design/146'
+          name='Checkbox'
         />
         <DemoBox
-          title='基础用法'
-          desc='单独使用：选中时值为true'
           componentName='checkbox'
           demoName='/demo/checkbox'
+          desc='单独使用：选中时值为true'
+          title='基础用法'
         >
           <DemoCheckbox />
         </DemoBox>
         <DemoBox
-          title='多选框组'
-          subtitle='多个选项在同一个数组的场景'
-          desc='配合 bk-checkbox-grop 使用，label 配置选中时的值'
           componentName='checkbox'
           demoName='/demo/checkbox-group'
+          desc='配合 bk-checkbox-grop 使用，label 配置选中时的值'
+          subtitle='多个选项在同一个数组的场景'
+          title='多选框组'
         >
           <DemoCheckboxGroup />
         </DemoBox>
         <DemoBox
-          title='默认选中'
-          desc='配置 checked'
           componentName='checkbox'
           demoName='/demo/checkbox-checked'
+          desc='配置 checked'
+          title='默认选中'
         >
           <DemoCheckboxChecked />
         </DemoBox>
         <DemoBox
-          title='禁用'
-          desc='配置 disabled'
           componentName='checkbox'
           demoName='/demo/checkbox-disabled'
+          desc='配置 disabled'
+          title='禁用'
         >
           <DemoCheckboxDisabled />
         </DemoBox>
         <DemoBox
-          title='前置校验'
-          desc='配置 before-change'
           componentName='checkbox'
           demoName='/demo/checkbox-prechecked'
+          desc='配置 before-change'
+          title='前置校验'
         >
           <DemoCheckboxPrechecked />
         </DemoBox>
         <DemoBox
-          title='半选'
-          desc=''
           componentName='checkbox'
           demoName='/demo/checkbox-indeterminate'
+          desc=''
+          title='半选'
         >
           <DemoCheckboxIndeterminate />
         </DemoBox>
         <PropsBox
-          title='Checkbox 属性'
-          subtitle=''
           propsData={checkboxProps}
+          subtitle=''
+          title='Checkbox 属性'
         />
         <PropsBox
-          title='Checkbox 事件'
-          subtitle=''
           propsData={checkboxEvents}
+          subtitle=''
+          title='Checkbox 事件'
         />
         <PropsBox
-          title='Checkbox-Group 属性'
-          subtitle=''
           propsData={checkboxGroupProps}
+          subtitle=''
+          title='Checkbox-Group 属性'
         />
         <PropsBox
-          title='Checkbox-Group 事件'
-          subtitle=''
           propsData={checkboxGroupEvents}
+          subtitle=''
+          title='Checkbox-Group 事件'
         />
       </div>
     );

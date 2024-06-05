@@ -23,31 +23,31 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { PropType } from 'vue/dist/vue';
 import { string } from 'vue-types';
 
 import { PopoverPropTypes } from '@bkui-vue/popover';
 import { PropTypes } from '@bkui-vue/shared';
+import { PropType } from 'vue/dist/vue';
 
 export type TipsType = 'tips' | 'title';
-export type CalType = 'dom' | 'canvas';
+export type CalType = 'canvas' | 'dom';
 
 export enum PlacementEnum {
   AUTO = 'auto',
-  AUTO_START = 'auto-start',
   AUTO_END = 'auto-end',
-  TOP = 'top',
-  RIGHT = 'right',
+  AUTO_START = 'auto-start',
   BOTTOM = 'bottom',
-  LEFT = 'left',
-  TOP_START = 'top-start',
-  TOP_END = 'top-end',
-  BOTTOM_START = 'bottom-start',
   BOTTOM_END = 'bottom-end',
-  RIGHT_START = 'right-start',
-  RIGHT_END = 'right-end',
-  LEFT_START = 'left-start',
+  BOTTOM_START = 'bottom-start',
+  LEFT = 'left',
   LEFT_END = 'left-end',
+  LEFT_START = 'left-start',
+  RIGHT = 'right',
+  RIGHT_END = 'right-end',
+  RIGHT_START = 'right-start',
+  TOP = 'top',
+  TOP_END = 'top-end',
+  TOP_START = 'top-start',
 }
 
 export function placementType() {

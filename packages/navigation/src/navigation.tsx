@@ -30,7 +30,7 @@ import { usePrefix } from '@bkui-vue/config-provider';
 import { CollapseLeft } from '@bkui-vue/icon';
 
 import NavigationTitle from './navigation-title';
-export type BkNavigationType = 'top-bottom' | 'left-right';
+export type BkNavigationType = 'left-right' | 'top-bottom';
 const NavigationProps = {
   navWidth: {
     type: [Number, String],
@@ -157,8 +157,8 @@ export default defineComponent({
       <div class={`${this.resolveClassName('navigation')}`}>
         {this.navigationType === 'top-bottom' && (
           <div
-            class={`${this.resolveClassName('navigation-header')}`}
             style={{ flexBasis: `${this.headHeight}px` }}
+            class={`${this.resolveClassName('navigation-header')}`}
           >
             <NavigationTitle sideTitle={this.sideTitle}>
               {{
@@ -172,17 +172,17 @@ export default defineComponent({
         <div class={`${this.resolveClassName('navigation-wrapper')}`}>
           {this.needMenu && (
             <div
-              class='navigation-nav'
               style={{ width: !this.nav.click ? `${this.navWidth}px` : `${this.hoverWidth}px` }}
+              class='navigation-nav'
             >
               <div
-                class='nav-slider'
-                onMouseenter={this.handleMouseOver}
-                onMouseleave={this.handleMouseLeave}
                 style={{
                   width: !this.nav.hover ? `${this.navWidth}px` : `${this.hoverWidth}px`,
                   borderRight: this.navigationType !== 'top-bottom' ? 'none' : '1px solid #DCDEE5',
                 }}
+                class='nav-slider'
+                onMouseenter={this.handleMouseOver}
+                onMouseleave={this.handleMouseLeave}
               >
                 {this.navigationType !== 'top-bottom' && this.showSideNavTitle && (
                   <NavigationTitle
@@ -196,8 +196,8 @@ export default defineComponent({
                   </NavigationTitle>
                 )}
                 <div
-                  class='nav-slider-list'
                   style={{ height: `calc(100vh - ${+this.headHeight + 56}px)` }}
+                  class='nav-slider-list'
                 >
                   {this.$slots.menu?.()}
                 </div>
@@ -207,8 +207,8 @@ export default defineComponent({
                     onClick={this.handleClick}
                   >
                     <CollapseLeft
-                      class='footer-icon-svg'
                       style={{ transform: this.nav.click ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                      class='footer-icon-svg'
                     />
                   </div>
                 </div>
@@ -217,13 +217,13 @@ export default defineComponent({
             </div>
           )}
           <div
-            class='navigation-container'
             style={{ maxWidth: this.needMenu ? 'calc(100vw - 60px)' : '100vw' }}
+            class='navigation-container'
           >
             {this.navigationType !== 'top-bottom' && (
               <div
-                class='container-header'
                 style={{ flexBasis: `${this.headHeight}px` }}
+                class='container-header'
               >
                 {this.$slots.header?.() || [
                   <div class='container-header-title'>{this.headerTitle}</div>,
@@ -232,8 +232,8 @@ export default defineComponent({
               </div>
             )}
             <div
-              class='container-content'
               style={{ maxHeight: `calc(100vh - ${this.headHeight}px)` }}
+              class='container-content'
             >
               {this.$slots.default?.()}
               <div class='container-footer'>{this.$slots.footer?.()}</div>

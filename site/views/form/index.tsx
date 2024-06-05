@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import DemoComposeFormItem from './demo/compose-form-item.vue';
 import DemoForm from './demo/form.vue';
 import DemoFormDescription from './demo/form-description.vue';
@@ -212,74 +211,74 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Form'
           desc='由输入框、选择器、单选框、多选框等控件组成'
           designLink='https://bkdesign.bk.tencent.com/design/33'
+          name='Form'
         />
         <DemoBox
-          title='基础用法'
-          desc=''
           componentName='form'
           demoName='/demo/form'
+          desc=''
+          title='基础用法'
         >
           <DemoForm />
         </DemoBox>
         <DemoBox
-          title='label 描述'
-          desc='FormItem 组件配置 description'
           componentName='form'
           demoName='/demo/form-description'
+          desc='FormItem 组件配置 description'
+          title='label 描述'
         >
           <DemoFormDescription />
         </DemoBox>
         <DemoBox
-          title='顶部对齐'
-          desc=''
           componentName='form'
           demoName='/demo/form-vertical'
+          desc=''
+          title='顶部对齐'
         >
           <DemoFormVertical />
         </DemoBox>
         <DemoBox
-          title='表单验证'
-          desc=''
           componentName='form'
           demoName='/demo/form-validator'
+          desc=''
+          title='表单验证'
         >
           <DemoFormValidator />
         </DemoBox>
         <DemoBox
-          title='组合表单组件'
-          desc=''
           componentName='form'
           demoName='/demo/compose-form-item'
+          desc=''
+          title='组合表单组件'
         >
           <DemoComposeFormItem />
         </DemoBox>
         <PropsBox
-          title='Form 属性'
-          subtitle=''
           propsData={formProps}
+          subtitle=''
+          title='Form 属性'
         />
         <PropsBox
-          title='Form 实例方法'
-          subtitle=''
           propsData={formMethods}
+          subtitle=''
+          title='Form 实例方法'
         />
         <PropsBox
-          title='Form 事件'
-          subtitle=''
           propsData={formEvents}
+          subtitle=''
+          title='Form 事件'
         />
         <PropsBox
-          title='Form-Item 属性'
-          subtitle=''
           propsData={formItemProps}
+          subtitle=''
+          title='Form-Item 属性'
         />
         <PropsBox
-          title='Form-Item Slot'
-          subtitle=''
           propsData={formItemSlots}
+          subtitle=''
+          title='Form-Item Slot'
         />
       </div>
     );

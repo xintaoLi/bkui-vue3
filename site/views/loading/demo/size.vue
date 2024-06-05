@@ -1,18 +1,14 @@
 <template>
   <div>
-    <bk-radio-group
-      v-model="size"
-    >
+    <bk-radio-group v-model="size">
       <bk-radio label="mini" />
       <bk-radio label="small" />
-      <bk-radio label="">
-        normal
-      </bk-radio>
+      <bk-radio label=""> normal </bk-radio>
       <bk-radio label="large" />
     </bk-radio-group>
     <bk-loading
-      loading
       :size="size"
+      loading
     >
       <div style="width: 100%; height: 360px" />
     </bk-loading>

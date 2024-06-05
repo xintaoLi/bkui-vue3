@@ -13,8 +13,7 @@
         btnText: 'Edit',
       };
     },
-    unmounted() {
-    },
+    unmounted() {},
 
     methods: {},
   });

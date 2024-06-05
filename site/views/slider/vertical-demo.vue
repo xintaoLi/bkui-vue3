@@ -25,7 +25,6 @@
       };
     },
   });
-
 </script>
 <style scoped>
   .demo {

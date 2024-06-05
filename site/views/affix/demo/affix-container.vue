@@ -5,15 +5,12 @@
   >
     <div class="background">
       <bk-affix :target="'#affix-demo'">
-        <bk-button theme="primary">
-          固定在target容器顶部位置
-        </bk-button>
+        <bk-button theme="primary"> 固定在target容器顶部位置 </bk-button>
       </bk-affix>
     </div>
   </div>
 </template>
-<script setup>
-</script>
+<script setup></script>
 <style>
   #affix-demo.scrollable-container {
     height: 100px;

@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import BeforeCloseDemo from './before-close-demo.vue';
 import FullscreenDemo from './fullscreen-demo.vue';
@@ -236,77 +235,77 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Dialog 对话框'
           desc='对话框'
           designLink='https://bkdesign.bk.tencent.com/design/29'
+          name='Dialog 对话框'
         />
 
         <DemoBox
-          title='基本用法'
-          subtitle=''
-          desc='基本用法: isShow 控制 dialog 的显示隐藏'
           componentName='dialog'
           demoName='base-demo'
+          desc='基本用法: isShow 控制 dialog 的显示隐藏'
+          subtitle=''
+          title='基本用法'
         >
           <BaseDemo></BaseDemo>
         </DemoBox>
 
         <DemoBox
-          title='遮罩'
-          subtitle=''
-          desc='通过设置  showMask 属性来设置是否显示遮罩'
           componentName='dialog'
           demoName='mask-demo'
+          desc='通过设置  showMask 属性来设置是否显示遮罩'
+          subtitle=''
+          title='遮罩'
         >
           <MaskDemo />
         </DemoBox>
 
         <DemoBox
-          title='关闭前确认'
-          subtitle=''
-          desc='通过 beforeChange 属性关闭前确认。'
           componentName='dialog'
           demoName='before-close-demo'
+          desc='通过 beforeChange 属性关闭前确认。'
+          subtitle=''
+          title='关闭前确认'
         >
           <BeforeCloseDemo />
         </DemoBox>
 
         <DemoBox
-          title='全屏弹框'
-          subtitle=''
-          desc='通过 fullscreen 属性配置全屏弹框，当设置为全屏弹框时，draggable 配置不生效即弹框不能拖动。'
           componentName='dialog'
           demoName='fullscreen-demo'
+          desc='通过 fullscreen 属性配置全屏弹框，当设置为全屏弹框时，draggable 配置不生效即弹框不能拖动。'
+          subtitle=''
+          title='全屏弹框'
         >
           <FullscreenDemo></FullscreenDemo>
         </DemoBox>
 
         <DemoBox
-          title='嵌套弹框'
-          subtitle=''
-          desc='嵌套弹框'
           componentName='dialog'
           demoName='nested-demo'
+          desc='嵌套弹框'
+          subtitle=''
+          title='嵌套弹框'
         >
           <NestedDemo></NestedDemo>
         </DemoBox>
 
         <PropsBox
-          title='Dialog 属性'
-          subtitle=''
           propsData={dialogPropsJson}
+          subtitle=''
+          title='Dialog 属性'
         />
 
         <PropsBox
-          title='Dialog 插槽'
-          subtitle=''
           propsData={dialogSlotsJson}
+          subtitle=''
+          title='Dialog 插槽'
         />
 
         <PropsBox
-          title='Dialog 事件'
-          subtitle=''
           propsData={dialogChangeJson}
+          subtitle=''
+          title='Dialog 事件'
         />
       </div>
     );

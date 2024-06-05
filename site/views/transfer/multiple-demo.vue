@@ -1,12 +1,12 @@
 <template>
   <bk-transfer
     v-model:targetList="targetList"
-    :source-list="list"
     :display-key="'service_name'"
-    sort-key="service_name"
     :setting-key="'service_code'"
-    show-overflow-tips
+    :source-list="list"
+    sort-key="service_name"
     multiple
+    show-overflow-tips
     @change="change"
   />
 </template>

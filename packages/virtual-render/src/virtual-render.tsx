@@ -68,7 +68,7 @@ export default defineComponent({
   setup(props: VirtualRenderProps, ctx: SetupContext) {
     const { renderAs, contentAs } = props;
 
-    const resolvePropClassName = (prop: string | string[] | any[] | any) => {
+    const resolvePropClassName = (prop: any | any[] | string | string[]) => {
       if (typeof prop === 'string') {
         return [prop];
       }

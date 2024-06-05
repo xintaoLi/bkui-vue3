@@ -30,9 +30,9 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import DemoCollapse from './demo/collapse.vue';
 import DemoCollapseAccordion from './demo/collapse-accordion.vue';
+import DemoCollapseBlock from './demo/collapse-block.vue';
 import DemoCollapseCard from './demo/collapse-card.vue';
 import DemoCollapseClick from './demo/collapse-click.vue';
 import DemoCollapseDisabled from './demo/collapse-disabled.vue';
@@ -44,7 +44,6 @@ import DemoCollapseLine from './demo/collapse-line.vue';
 import DemoCollapsePanel from './demo/collapse-panel.vue';
 import DemoCollapseSlot from './demo/collapse-slot.vue';
 import DemoCollapseTitle from './demo/collapse-title.vue';
-import DemoCollapseBlock from './demo/collapse-block.vue';
 
 const collapseProps: IPropsTableItem[] = [
   {
@@ -212,155 +211,155 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Collapse 折叠面板'
           desc=''
           link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/collapse`}
+          name='Collapse 折叠面板'
         />
         <DemoBox
-          title='基础用法'
-          desc='v-model绑定默认激活的item项，idFiled作为唯一标识符,如果不填写默认为当前的item的index， list配置列表。'
           componentName='collapse'
           demoName='demo/collapse'
+          desc='v-model绑定默认激活的item项，idFiled作为唯一标识符,如果不填写默认为当前的item的index， list配置列表。'
+          title='基础用法'
         >
           <DemoCollapse />
         </DemoBox>
         <DemoBox
-          title='线条样式'
-          desc='通过配置has-header-border来使用线条样式效果。'
           componentName='collapse'
           demoName='demo/collapse-line'
+          desc='通过配置has-header-border来使用线条样式效果。'
+          title='线条样式'
         >
           <DemoCollapseLine />
         </DemoBox>
         <DemoBox
-          title='卡片样式'
-          desc='通过配置use-card-theme来使用卡片样式效果。'
           componentName='collapse'
           demoName='demo/collapse-card'
+          desc='通过配置use-card-theme来使用卡片样式效果。'
+          title='卡片样式'
         >
           <DemoCollapseCard />
         </DemoBox>
         <DemoBox
-          title='色块样式'
-          desc='通过配置use-block-theme来使用色块样式效果。'
           componentName='collapse'
           demoName='demo/collapse-card'
+          desc='通过配置use-block-theme来使用色块样式效果。'
+          title='色块样式'
         >
           <DemoCollapseBlock />
         </DemoBox>
         <DemoBox
-          title='自定义图标'
-          desc='通过配置header-icon来自定义图标。'
           componentName='collapse'
           demoName='demo/collapse-icon'
+          desc='通过配置header-icon来自定义图标。'
+          title='自定义图标'
         >
           <DemoCollapseIcon />
         </DemoBox>
         <DemoBox
-          title='图标位置'
-          desc='通过配置header-icon-align来控制图标位置。'
           componentName='collapse'
           demoName='demo/collapse-icon-align'
+          desc='通过配置header-icon-align来控制图标位置。'
+          title='图标位置'
         >
           <DemoCollapseIconAlign />
         </DemoBox>
         <DemoBox
-          title='是否使用手风琴模式'
-          desc='可以配置参数 accordion 来确定是否使用手风琴模式'
           componentName='collapse'
           demoName='demo/collapse-accordion'
+          desc='可以配置参数 accordion 来确定是否使用手风琴模式'
+          title='是否使用手风琴模式'
         >
           <DemoCollapseAccordion />
         </DemoBox>
         <DemoBox
-          title='插槽：自定义面板标题'
-          desc='通过配置默认插槽即可自定义标题内容'
           componentName='collapse'
           demoName='demo/collapse-title'
+          desc='通过配置默认插槽即可自定义标题内容'
+          title='插槽：自定义面板标题'
         >
           <DemoCollapseTitle />
         </DemoBox>
 
         <DemoBox
-          title='点击事件'
-          desc='通过配置默认插槽即可自定义标题内容'
           componentName='collapse'
           demoName='demo/collapse-click'
+          desc='通过配置默认插槽即可自定义标题内容'
+          title='点击事件'
         >
           <DemoCollapseClick />
         </DemoBox>
         <DemoBox
-          title='设置列表不可点击disabled'
-          desc='通过配置list字段disabled即可'
           componentName='collapse'
           demoName='demo/collapse-disabled'
+          desc='通过配置list字段disabled即可'
+          title='设置列表不可点击disabled'
         >
           <DemoCollapseDisabled />
         </DemoBox>
         <DemoBox
-          title='展开/收起 动画状态改变的回调事件'
-          desc='配置事件before-enter/after-leave'
           componentName='collapse'
           demoName='demo/collapse-enter-leave'
+          desc='配置事件before-enter/after-leave'
+          title='展开/收起 动画状态改变的回调事件'
         >
           <DemoCollapseEnterLeave />
         </DemoBox>
         <DemoBox
-          title='collapse-panel'
-          desc='collapse-panel'
           componentName='collapse'
           demoName='demo/collapse-panel'
+          desc='collapse-panel'
+          title='collapse-panel'
         >
           <DemoCollapsePanel />
         </DemoBox>
         <DemoBox
-          title='插槽：面板'
-          desc='传统用法，通过CollapsePanel配置内如'
           componentName='collapse'
           demoName='demo/collapse-slot'
+          desc='传统用法，通过CollapsePanel配置内如'
+          title='插槽：面板'
         >
           <DemoCollapseSlot />
         </DemoBox>
         <DemoBox
-          title='collapse jsx'
-          desc='tsx使用'
           componentName='collapse'
-          suffix='.tsx'
           demoName='demo/collapse-jsx'
+          desc='tsx使用'
+          suffix='.tsx'
+          title='collapse jsx'
         >
           <CollapseJsx />
         </DemoBox>
 
         <PropsBox
-          title='Collapse 属性'
-          subtitle=''
           propsData={collapseProps}
+          subtitle=''
+          title='Collapse 属性'
         />
         <PropsBox
-          title='Collapse-Panel 属性'
-          subtitle=''
           propsData={collapsePanelProps}
+          subtitle=''
+          title='Collapse-Panel 属性'
         />
 
         <PropsBox
-          title='Collapse 插槽'
-          subtitle=''
           propsData={collapseSlots}
+          subtitle=''
+          title='Collapse 插槽'
         />
         <PropsBox
-          title='CollapsePanel 插槽'
-          subtitle=''
           propsData={collapsePanelSlots}
+          subtitle=''
+          title='CollapsePanel 插槽'
         />
         <PropsBox
-          title='Collapse Events'
-          subtitle=''
           propsData={collapseEvents}
+          subtitle=''
+          title='Collapse Events'
         />
         <PropsBox
-          title='CollapsePanel Attributes'
-          subtitle=''
           propsData={collapsePanelEvents}
+          subtitle=''
+          title='CollapsePanel Attributes'
         />
       </div>
     );

@@ -23,10 +23,10 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import throttle from 'lodash/throttle';
 import { nextTick, onBeforeUnmount, onMounted, type Ref, ref, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
+import throttle from 'lodash/throttle';
 
 import type { ModalProps } from './modal';
 

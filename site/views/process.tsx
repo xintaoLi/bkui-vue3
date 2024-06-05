@@ -56,8 +56,8 @@ export default defineComponent({
         <BkProcess
           controllable={true}
           curProcess={this.state.curprocess}
-          onClick={this.processChanged}
           list={this.state.objectSteps}
+          onClick={this.processChanged}
         ></BkProcess>
       </div>
     );

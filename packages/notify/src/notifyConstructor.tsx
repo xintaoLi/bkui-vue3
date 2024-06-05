@@ -32,10 +32,10 @@ import { Close, Error, Info, Success, Warn } from '@bkui-vue/icon';
 import { bkZIndexManager, PropTypes } from '@bkui-vue/shared';
 
 enum NotifyThemeEnum {
-  PRIMARY = 'primary',
-  WARNING = 'warning',
-  SUCCESS = 'success',
   ERROR = 'error',
+  PRIMARY = 'primary',
+  SUCCESS = 'success',
+  WARNING = 'warning',
 }
 const notifyProps = {
   id: PropTypes.string.def(''),
@@ -135,9 +135,9 @@ export default defineComponent({
     return (
       <Transition name='bk-notify-fade'>
         <div
-          v-show={this.visible}
-          class={this.classNames}
           style={this.styles}
+          class={this.classNames}
+          v-show={this.visible}
         >
           <div class={`${this.resolveClassName('notify-content')}`}>
             <div class={`${this.resolveClassName('notify-icon')}`}>{renderIcon()}</div>

@@ -31,7 +31,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { resolvePropsToDesData } from '../utils';
-
 import DemoBase from './demo-base.vue';
 import DemoSelect from './demo-select.vue';
 import DemoSimple from './demo-simple.vue';
@@ -45,52 +44,52 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Popover 弹出框提示'
           desc='bkPopconfirm是基于bkPopover改造而来，继承了bkPopover所有属性，具体请参考bkPopover文档，本文主要列出bkPopconfirm独有或不同的属性。基础样式由标题、正文和按钮构成。'
           designLink='https://bkdesign.bk.tencent.com/design/45'
+          name='Popover 弹出框提示'
         />
         <DemoBox
-          title='基础用法'
-          desc='由标题+通知文本+按钮组成，例如提交表单，与 confirm 弹出的全屏居中模态对话框相比，在目标元素附近弹出浮层提示，询问用户。'
           componentName='pop-confirm'
           demoName='demo-base'
+          desc='由标题+通知文本+按钮组成，例如提交表单，与 confirm 弹出的全屏居中模态对话框相比，在目标元素附近弹出浮层提示，询问用户。'
+          title='基础用法'
         >
           <DemoBase />
         </DemoBox>
         <DemoBox
-          title='简单样式'
-          desc='由通知文本+按钮组成，比较轻量的交互模态，用于一句话承载的内容也相对较少，在目标元素附近弹出浮层提示，询问用户。'
           componentName='pop-confirm'
           demoName='demo-simple'
+          desc='由通知文本+按钮组成，比较轻量的交互模态，用于一句话承载的内容也相对较少，在目标元素附近弹出浮层提示，询问用户。'
+          title='简单样式'
         >
           <DemoSimple />
         </DemoBox>
         <DemoBox
-          title='插槽模式'
-          desc='自定义样式'
           componentName='pop-confirm'
           demoName='demo-slot'
+          desc='自定义样式'
+          title='插槽模式'
         >
           <DemoSlot />
         </DemoBox>
         <DemoBox
-          title='嵌入Select'
-          desc='嵌入Select组件'
           componentName='pop-confirm'
           demoName='demo-select'
+          desc='嵌入Select组件'
+          title='嵌入Select'
         >
           <DemoSelect />
         </DemoBox>
 
         <PropsBox
-          title='属性'
-          subtitle=''
           propsData={props}
+          subtitle=''
+          title='属性'
         ></PropsBox>
         <PropsBox
-          title='事件'
-          subtitle=''
           propsData={events}
+          subtitle=''
+          title='事件'
         ></PropsBox>
       </div>
     );

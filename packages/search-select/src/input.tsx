@@ -308,7 +308,7 @@ export default defineComponent({
         if (selection?.rangeCount > 0) {
           const range: Range = selection.getRangeAt(0);
           const startPos = range.startContainer;
-          let node: Node | HTMLSpanElement = startPos;
+          let node: HTMLSpanElement | Node = startPos;
           while (node && node.parentNode !== inputRef.value) {
             node = node.parentNode;
           }
@@ -400,7 +400,7 @@ export default defineComponent({
     // functions
     async function validateValues(searchItem?: ISearchItem, value?: ICommonItem[]) {
       if (typeof props.validateValues === 'function') {
-        let validateStr: string | boolean = '';
+        let validateStr: boolean | string = '';
         try {
           validateStr = await props.validateValues(searchItem ?? null, value);
         } catch {
@@ -680,33 +680,33 @@ export default defineComponent({
           'input-before': this.showInputBefore && !this.keyword?.length,
           'input-after': showInputAfter,
         }}
+        v-clickoutside={this.handleClickOutside}
         contenteditable={true}
         data-placeholder={!inputInnerHtml && !this.keyword ? this.placeholder : ''}
         data-tips={placeholder || ''}
         spellcheck='false'
-        v-clickoutside={this.handleClickOutside}
-        onPaste={this.handleInputPaste}
         onFocus={this.handleInputFocus}
         onInput={this.handleInputChange}
         onKeydown={this.handleInputKeyup}
+        onPaste={this.handleInputPaste}
       >
         {this.usingItem?.name &&
           (!this.usingItem.isSpecialType() ? (
             <span
+              key={this.usingItem.nameRenderkey}
+              style={{ color: '#979BA5' }}
+              contenteditable={false}
               data-key={this.usingItem.name}
               data-type={this.usingItem.type}
-              key={this.usingItem.nameRenderkey}
               onMousedown={e => e.preventDefault()}
-              contenteditable={false}
-              style={{ color: '#979BA5' }}
             >
               {this.usingItem.name}:&nbsp;
             </span>
           ) : (
             <span
+              key={this.usingItem.nameRenderkey}
               data-key={this.usingItem.name}
               data-type={this.usingItem.type}
-              key={this.usingItem.nameRenderkey}
             >
               {this.usingItem.name}
             </span>
@@ -714,10 +714,10 @@ export default defineComponent({
         {this.usingItem?.values?.map((item, index) => (
           <span
             key={index}
-            data-key={item.name}
-            data-type='value'
             data-id={item.id}
             data-index={index}
+            data-key={item.name}
+            data-type='value'
           >
             {item.name}
             {index < this.usingItem.values.length - 1 ? ` ${this.usingItem.logical} ` : ''}
@@ -753,18 +753,18 @@ export default defineComponent({
           class={this.resolveClassName('search-select-popover')}
         >
           <SearchSelectMenu
-            list={this.menuList}
-            keyword={this.keyword}
-            multiple={!!multiple}
-            hoverId={this.menuHoverId}
-            selected={values?.map(item => item.id) || []}
             conditions={showCondition ? this.conditions : []}
+            hoverId={this.menuHoverId}
+            keyword={this.keyword}
+            list={this.menuList}
             logical={this.usingItem?.logical}
+            multiple={!!multiple}
+            selected={values?.map(item => item.id) || []}
             showLogical={this.usingItem?.showLogical}
-            onUpdate:logical={this.handleLogicalChange}
-            onSelectItem={this.handleSelectItem}
-            onSelectCondition={this.handleSelectCondtionItem}
             onFooterClick={this.handleMenuFooterClick}
+            onSelectCondition={this.handleSelectCondtionItem}
+            onSelectItem={this.handleSelectItem}
+            onUpdate:logical={this.handleLogicalChange}
           />
         </div>
       ) : undefined;
@@ -772,12 +772,12 @@ export default defineComponent({
 
     return (
       <Popover
-        trigger='manual'
-        theme='light'
-        placement='bottom-start'
         arrow={false}
         disableOutsideClick={true}
         isShow={showPopover}
+        placement='bottom-start'
+        theme='light'
+        trigger='manual'
       >
         {{
           default: inputContent,

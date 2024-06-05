@@ -2,8 +2,8 @@
   <div>
     <bk-input
       class="mb8"
-      type="url"
       prefix="https://"
+      type="url"
     />
     <bk-input
       class="mb8"
@@ -16,7 +16,7 @@
             <angle-down
               class="toggle-indicator"
               :class="{
-                'opened': opened,
+                opened: opened,
               }"
             />
           </span>
@@ -36,19 +36,17 @@
     </bk-input>
     <bk-input
       class="mb8"
-      type="url"
       suffix="@qq.com"
+      type="url"
     />
   </div>
 </template>
 
 <script setup>
-  import { AngleDown } from 'bkui-vue/lib/icon';
   import { ref } from 'vue';
-  const dropdownList = [
-    'http://',
-    'https://',
-  ];
+
+  import { AngleDown } from 'bkui-vue/lib/icon';
+  const dropdownList = ['http://', 'https://'];
   const protocol = ref(dropdownList[0]);
   const opened = ref(false);
   function updateProtocol(item) {

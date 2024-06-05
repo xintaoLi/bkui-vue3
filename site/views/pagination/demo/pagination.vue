@@ -12,6 +12,4 @@
 
   const count = ref(100);
   const current = ref(1);
-
 </script>
-

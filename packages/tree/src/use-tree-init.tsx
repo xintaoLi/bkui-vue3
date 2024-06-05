@@ -24,8 +24,9 @@
  * IN THE SOFTWARE.
  */
 
-import { v4 as uuidv4 } from 'uuid';
 import { onMounted, reactive, watch } from 'vue';
+
+import { v4 as uuidv4 } from 'uuid';
 
 import { NODE_ATTRIBUTES, NODE_SOURCE_ATTRS } from './constant';
 import { TreePropTypes } from './props';

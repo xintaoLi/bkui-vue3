@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { IPropsTableItem } from '../../typings';
-
 import Badge from './badge.vue';
 import BadgeDemo from './badge-demo.vue';
 import BadgeDot from './badge-dot.vue';
@@ -108,34 +107,34 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Badge'
           desc='Badge 组件， 可以出现在任意 DOM 节点角上的数字或状态标记。'
           designLink='https://bkdesign.bk.tencent.com/design/37'
+          name='Badge'
         />
         <DemoBox
-          title='基础用法'
-          subtitle=''
-          desc='用默认配置初始化组件'
           componentName='badge'
           demoName='badge-demo'
+          desc='用默认配置初始化组件'
+          subtitle=''
+          title='基础用法'
         >
           <BadgeDemo />
         </DemoBox>
         <DemoBox
-          title='不包裹任何元素，独立使用'
-          subtitle=''
-          desc='可在不包裹任何元素情况下，独立使用 badge'
           componentName='badge'
           demoName='badge'
+          desc='可在不包裹任何元素情况下，独立使用 badge'
+          subtitle=''
+          title='不包裹任何元素，独立使用'
         >
           <Badge />
         </DemoBox>
         <DemoBox
-          title='无内容红点'
-          subtitle=''
-          desc='配置参数 dot'
           componentName='badge'
           demoName='badge-dot'
+          desc='配置参数 dot'
+          subtitle=''
+          title='无内容红点'
         >
           <BadgeDot />
         </DemoBox>

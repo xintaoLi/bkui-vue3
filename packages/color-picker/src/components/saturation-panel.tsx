@@ -127,9 +127,9 @@ export default defineComponent({
     return () => (
       <div
         ref={containerRef}
-        tabindex='0'
-        class={`${resolveClassName('color-picker-saturation')}`}
         style={backgroundStyle.value}
+        class={`${resolveClassName('color-picker-saturation')}`}
+        tabindex='0'
         onKeydown={handleArrowKeydown}
         onMousedown={e => {
           e.stopPropagation();
@@ -141,8 +141,8 @@ export default defineComponent({
         {/* 从上到下明度 value(brightness) 减小 */}
         <div class={`${resolveClassName('color-picker-saturation-black')}`}></div>
         <div
-          class={`${resolveClassName('color-picker-pointer')}`}
           style={pointerStyle.value}
+          class={`${resolveClassName('color-picker-pointer')}`}
         >
           <div class={`${resolveClassName('color-picker-circle')}`}></div>
         </div>

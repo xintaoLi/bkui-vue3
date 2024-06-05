@@ -6,12 +6,12 @@
     />
     <bk-select>
       <bk-option
-        value="1"
         label="本科以下"
+        value="1"
       />
       <bk-option
-        value="2"
         label="本科以上"
+        value="2"
       />
     </bk-select>
     <bk-input
@@ -19,8 +19,8 @@
       type="number"
     />
     <bk-tag-input
+      style="width: 100px"
       :list="list"
-      style="width: 100px;"
     />
     <bk-date-picker />
   </bk-compose-form-item>
@@ -43,5 +43,4 @@
     { id: 'taibei', name: '台北' },
     { id: 'haikou', name: '海口' },
   ]);
-
 </script>

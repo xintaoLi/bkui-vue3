@@ -70,11 +70,11 @@ export default defineComponent({
           <button onClick={() => this.handleIsShowChanged(true)}>显示Dialog</button>
           <button onClick={() => this.handleShowMaskChanged()}>ShowMask {`${this.showMask}`}</button>
           <BkDialog
+            width={600}
+            height={400}
             isShow={this.dialog1.isShow}
             showMask={this.showMask}
             onClosed={() => this.handleIsShowChanged(false)}
-            width={600}
-            height={400}
           >
             <p>【首部及导言】</p>
             <p>欢迎您使用腾讯蓝鲸智云软件及服务。</p>
@@ -116,8 +116,8 @@ export default defineComponent({
             <p>1.2【协议关系及冲突条款】</p>
 
             <BkPopover
-              trigger={this.trigger}
               isShow={this.popShow}
+              trigger={this.trigger}
             >
               {{
                 default: () => <p>1.2【协议关系及冲突条款】</p>,

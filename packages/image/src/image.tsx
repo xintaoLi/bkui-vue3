@@ -32,7 +32,6 @@ import { ImageViewer } from './index';
 import { propsImage as props } from './props';
 
 export default defineComponent({
-  // eslint-disable-next-line vue/no-reserved-component-names
   name: 'Image',
   props,
   emits: ['loaded', 'error', 'close', 'change'],
@@ -86,8 +85,8 @@ export default defineComponent({
             <div class={`${resolveClassName('image-placeholder')}`}>
               {props.fallback ? (
                 <img
-                  src={props.fallback}
                   alt='图片加载错误'
+                  src={props.fallback}
                 />
               ) : (
                 ''
@@ -112,12 +111,12 @@ export default defineComponent({
           {getContent()}
           {preview.value && isShowViewer.value ? (
             <ImageViewer
-              zIndex={props.zIndex}
-              maskClose={props.maskClose}
               is-show-title={props.isShowPreviewTitle}
+              maskClose={props.maskClose}
               url-list={props.urlList}
-              onClose={closeViewer}
+              zIndex={props.zIndex}
               onChange={change}
+              onClose={closeViewer}
             />
           ) : (
             ''

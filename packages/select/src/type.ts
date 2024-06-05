@@ -50,7 +50,7 @@ export interface ISelectContext {
   registerGroup(key: any, option: GroupInstanceType): any;
   unregisterGroup(key: any): any;
   handleOptionSelected(option: OptionInstanceType): void;
-  handleGetLabelByValue(value: any): string | number;
+  handleGetLabelByValue(value: any): number | string;
 }
 
 export interface IOptionGroupContext {
@@ -71,5 +71,5 @@ export interface IPopoverConfig {
 
 export interface ISelected {
   value: string;
-  label: string | number;
+  label: number | string;
 }

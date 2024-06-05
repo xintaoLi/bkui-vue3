@@ -1,28 +1,28 @@
 <template>
   <div style="display: flex">
     <bk-select
-      v-model="selectedValue"
       class="bk-select"
-      filterable
+      v-model="selectedValue"
       auto-focus
+      filterable
       @select="handleSelect"
     >
       <bk-option
         v-for="(item, index) in datasource"
+        :disabled="item.disabled"
         :id="item.value"
         :key="index"
         :name="item.label"
-        :disabled="item.disabled"
       />
     </bk-select>
     <bk-select
-      v-model="listValue"
+      style="margin-left: 10px"
       class="bk-select"
-      style="margin-left: 10px;"
+      v-model="listValue"
+      :list="datasourceList"
+      disable-focus-behavior
       filterable
       multiple
-      disable-focus-behavior
-      :list="datasourceList"
     />
   </div>
 </template>
@@ -95,22 +95,21 @@
     },
   ]);
 
-  const handleSelect = (v) => {
+  const handleSelect = v => {
     console.log(v);
   };
 
   onBeforeMount(() => {
-    new Array(100).fill(0)
-      .forEach((item, index) => {
-        datasourceList.value.push({
-          value: index,
-          label: `list-${index}`,
-        });
+    new Array(100).fill(0).forEach((item, index) => {
+      datasourceList.value.push({
+        value: index,
+        label: `list-${index}`,
       });
+    });
   });
 </script>
 <style scoped>
-.bk-select {
-  width: 300px;
-}
+  .bk-select {
+    width: 300px;
+  }
 </style>

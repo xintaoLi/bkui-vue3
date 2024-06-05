@@ -1,31 +1,31 @@
 <template>
   <div>
     <bk-input
-      v-model="val"
       class="mb8"
-      type="number"
+      v-model="val"
+      :max="100"
+      :min="1"
       size="small"
-      :min="1"
-      :max="100"
+      type="number"
       clearable
     />
     <bk-input
+      class="mb8"
       v-model="val1"
-      class="mb8"
-      type="number"
-      :min="1"
       :max="100"
+      :min="1"
+      type="number"
       clearable
     />
     <bk-input
-      v-model="val"
       class="mb8"
-      disabled
-      type="number"
-      size="large"
-      :min="1"
+      v-model="val"
       :max="100"
+      :min="1"
+      size="large"
+      type="number"
       clearable
+      disabled
     />
   </div>
 </template>

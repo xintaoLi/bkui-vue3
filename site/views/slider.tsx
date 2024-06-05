@@ -80,15 +80,15 @@ export default defineComponent({
         <div style={{ marginTop: '30px', color: '#2dcb56' }}>{value4.value}</div>
         <Slider
           v-model={value4.value}
-          showBetweenLabel
           maxValue={500}
+          showBetweenLabel
         ></Slider>
         <div style={{ marginTop: '30px', color: '#2dcb56' }}>{value5.value}</div>
         <Slider
           v-model={value5.value}
           step={5}
-          showInterval
           showButtonLabel
+          showInterval
         ></Slider>
         <div style={{ marginTop: '30px', color: '#2dcb56' }}>{value6.value}</div>
         <Slider
@@ -100,22 +100,22 @@ export default defineComponent({
         <div style={{ marginTop: '30px', color: '#2dcb56' }}>{value7.value}</div>
         <Slider
           v-model={value7.value}
+          formatterLabel={(value: number) => `${value}%`}
           step={10}
           showInterval
           showIntervalLabel
-          formatterLabel={(value: number) => `${value}%`}
         ></Slider>
         <div style={{ marginTop: '30px', color: '#2dcb56' }}>{value8.value}</div>
         <Slider
           v-model={value8.value}
-          showInput
           showButtonLabel
+          showInput
         ></Slider>
         <div style={{ marginTop: '30px', color: '#2dcb56' }}>{value9.value.join(',')}</div>
         <Slider
           v-model={value9.value}
-          showInput
           range
+          showInput
         ></Slider>
         <div style={{ marginTop: '30px', color: '#2dcb56' }}>{value10.value}</div>
         <Slider
@@ -125,11 +125,11 @@ export default defineComponent({
         <div style={{ marginTop: '30px', color: '#2dcb56' }}>{value11.value}</div>
         <Slider
           v-model={value11.value}
-          vertical
           formatterLabel={(value: number) => `${value}℃`}
-          showIntervalLabel
-          showInterval
           step={20}
+          showInterval
+          showIntervalLabel
+          vertical
         ></Slider>
         <div style={{ marginTop: '30px', color: '#2dcb56' }}>{value12.value}</div>
         <Slider

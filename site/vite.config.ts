@@ -24,12 +24,12 @@
  * IN THE SOFTWARE.
  */
 
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
-import vue from '@vitejs/plugin-vue';
-import vueJsx from '@vitejs/plugin-vue-jsx';
-
+import { ENV_MAP } from '../scripts/cli/compiler/helpers';
 import md from './vite-md';
 const base = process.env.PUBLIC_PATH || '/';
 export default defineConfig({
@@ -78,6 +78,9 @@ export default defineConfig({
         /\/(lodash|dayjs|normalize-wheel|json-formatter-js|clipboard|js-calendar|spark-md5|highlight\.js|diff2html|hogan\.js)\//,
       ],
     },
+  },
+  define: {
+    ...ENV_MAP,
   },
   optimizeDeps: {
     exclude: ['bkui-vue'],

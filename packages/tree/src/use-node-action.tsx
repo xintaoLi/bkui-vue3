@@ -88,7 +88,7 @@ export default (props: TreePropTypes, ctx, flatData: IFlatData, _renderData, ini
    * @param val
    * @returns
    */
-  const renderPrefixVal = (val: string | { node: string; className: string; text: string; style: any } | any) => {
+  const renderPrefixVal = (val: { node: string; className: string; text: string; style: any } | any | string) => {
     if (typeof val === 'string') {
       return val;
     }
@@ -250,9 +250,9 @@ export default (props: TreePropTypes, ctx, flatData: IFlatData, _renderData, ini
     return (
       <span onClick={handleNodeCheckboxClick}>
         <Checkbox
-          size='small'
-          modelValue={isNodeChecked(item)}
           indeterminate={isIndeterminate(item)}
+          modelValue={isNodeChecked(item)}
+          size='small'
           onChange={(val, event) => handleNodeItemCheckboxChange(item, !!val, event)}
         ></Checkbox>
       </span>
@@ -306,7 +306,7 @@ export default (props: TreePropTypes, ctx, flatData: IFlatData, _renderData, ini
    * @param autoOpenParents 如果是 isOpen = true，是否自动设置所有父级展开
    * @returns
    */
-  const setOpen = (item: any[] | any, isOpen = true, autoOpenParents = false) => {
+  const setOpen = (item: any | any[], isOpen = true, autoOpenParents = false) => {
     setNodeAttribute(item, NODE_ATTRIBUTES.IS_OPEN, isOpen, autoOpenParents && isOpen);
   };
 
@@ -320,7 +320,7 @@ export default (props: TreePropTypes, ctx, flatData: IFlatData, _renderData, ini
   const setNodeAttribute = (
     node: any,
     attrName: string | string[],
-    value: string | number | boolean | (string | number | boolean)[],
+    value: (boolean | number | string)[] | boolean | number | string,
     loopParent = false,
   ) => {
     const resolvedItem = resolveNodeItem(node);
@@ -539,8 +539,8 @@ export default (props: TreePropTypes, ctx, flatData: IFlatData, _renderData, ini
         // @ts-ignore:next-line
         .map((index: number) => (
           <span
-            class='node-virtual-line'
             style={getNodeLineStyle(maxDeep - index)}
+            class='node-virtual-line'
           ></span>
         ))
     );
@@ -578,13 +578,13 @@ export default (props: TreePropTypes, ctx, flatData: IFlatData, _renderData, ini
    */
   const renderTreeNode = (item: any, showTree = true) => (
     <div
-      data-tree-node={getNodeId(item)}
       key={getNodeId(item)}
       class={getNodeRowClass(item, flatData.schema)}
+      data-tree-node={getNodeId(item)}
     >
       <div
-        class={getNodeItemClass(item, flatData.schema, props, showTree)}
         style={getNodeItemStyle(item, props, flatData, showTree)}
+        class={getNodeItemClass(item, flatData.schema, props, showTree)}
         onClick={(e: MouseEvent) => handleNodeContentClick(item, e)}
       >
         <div

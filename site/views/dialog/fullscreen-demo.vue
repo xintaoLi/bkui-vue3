@@ -1,17 +1,17 @@
 <template>
   <div>
     <bk-button
-      text
       theme="primary"
+      text
       @click="() => (isShow = true)"
     >
       全屏弹框
     </bk-button>
     <bk-dialog
       v-model:is-show="isShow"
-      title="全屏弹框标题"
-      header-align="center"
       footer-align="center"
+      header-align="center"
+      title="全屏弹框标题"
       fullscreen
     >
       <p>【首部及导言】</p>
@@ -57,10 +57,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+  import { ref } from 'vue';
 
-import BkButton from '@bkui-vue/button';
-import BkDialog from '@bkui-vue/dialog';
+  import BkButton from '@bkui-vue/button';
+  import BkDialog from '@bkui-vue/dialog';
 
-const isShow = ref(false);
+  const isShow = ref(false);
 </script>

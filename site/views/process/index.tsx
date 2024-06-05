@@ -30,7 +30,6 @@ import DemoBox from '../../components/demo-box';
 import DemoTitle from '../../components/demo-title';
 import PropsBox from '../../components/props-box';
 import { type IPropsTableItem } from '../../typings';
-
 import BaseDemo from './base-demo.vue';
 import LoadingDemo from './loading-demo.vue';
 import StatusDemo from './status-demo.vue';
@@ -89,45 +88,45 @@ export default defineComponent({
     return (
       <div>
         <DemoTitle
-          name='Process 步骤'
           desc='Process 步骤组件'
           link={`${import.meta.env.VITE_APP_BASE_URL ?? ''}/process`}
+          name='Process 步骤'
         />
         <DemoBox
-          title='基础用法'
-          desc='默认配置list，配置 controllable 可控制 process 前后跳转'
           componentName='process'
           demoName='base-demo'
+          desc='默认配置list，配置 controllable 可控制 process 前后跳转'
+          title='基础用法'
         >
           <BaseDemo />
         </DemoBox>
         <DemoBox
-          title='loading状态'
-          desc='在 list 数据源中配置, 设置status 为 loading'
           componentName='process'
           demoName='loading-demo'
+          desc='在 list 数据源中配置, 设置status 为 loading'
+          title='loading状态'
         >
           <LoadingDemo />
         </DemoBox>
         <DemoBox
-          title='步骤状态、自定义icon配置'
-          desc='配置 steps 的不同状态, 使用 status 属性设置当前步骤状态，支持 default、done、loading、error。 同样也可以是用icon属性添加icon '
           componentName='process'
           demoName='status-demo'
+          desc='配置 steps 的不同状态, 使用 status 属性设置当前步骤状态，支持 default、done、loading、error。 同样也可以是用icon属性添加icon '
+          title='步骤状态、自定义icon配置'
         >
           <StatusDemo />
         </DemoBox>
 
         <PropsBox
-          title='属性'
-          subtitle=''
           propsData={processProps}
+          subtitle=''
+          title='属性'
         />
 
         <PropsBox
-          title='事件'
-          subtitle=''
           propsData={processEvents}
+          subtitle=''
+          title='事件'
         />
       </div>
     );

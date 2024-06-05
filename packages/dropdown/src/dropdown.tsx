@@ -24,12 +24,12 @@
  * IN THE SOFTWARE.
  */
 
-import merge from 'lodash/merge';
 import { defineComponent, ref } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import Popover, { PopoverPropTypes } from '@bkui-vue/popover';
 import { classes, placementType, PropTypes, triggerType } from '@bkui-vue/shared';
+import merge from 'lodash/merge';
 
 export default defineComponent({
   name: 'Dropdown',
@@ -96,8 +96,8 @@ export default defineComponent({
         <Popover
           ref='popoverRef'
           {...popoverOptions}
-          onAfterShow={this.afterShow}
           onAfterHidden={this.afterHidden}
+          onAfterShow={this.afterShow}
         >
           {{
             default: () => (

@@ -47,8 +47,8 @@ export default defineComponent({
       const fontIcon = !isAction ? rootFont : openFont;
       return (
         <span
-          class='custom-node'
           style='font-size: 8px; text-align: center;'
+          class='custom-node'
         >
           {fontIcon}
         </span>
@@ -62,11 +62,11 @@ export default defineComponent({
           <span>function 返回对象</span>
           <div class={'cell'}>
             <bk-tree
+              children='children'
               data={this.treeData}
+              label='name'
               levelLine={true}
               prefix-icon={this.getPrefixIcon}
-              label='name'
-              children='children'
             />
           </div>
         </div>

@@ -118,8 +118,8 @@ export default defineComponent({
 
     return (
       <ul
-        v-show={this.visible}
         class={groupClass}
+        v-show={this.visible}
       >
         <li
           class={groupLabelClass}
