@@ -32,12 +32,12 @@ import { CloseLine, CogShape } from '@bkui-vue/icon/';
 import Popover from '@bkui-vue/popover';
 
 import { createDefaultSizeList, SETTING_SIZE } from '../const';
-import { EMIT_EVENTS } from '../events';
 import { Settings, SizeItem, TablePropTypes } from '../props';
 import { resolvePropVal } from '../utils';
 import { UseColumns } from './use-columns';
+import { EMIT_EVENTS } from '../events';
 
-const useSettings = (props: TablePropTypes, context: SetupContext, columns: UseColumns) => {
+const useSettings = (props: TablePropTypes, ctx: SetupContext, columns: UseColumns) => {
   const t = useLocale('table');
   const { resolveClassName } = usePrefix();
   const defaultSizeList: SizeItem[] = createDefaultSizeList(t);
@@ -103,19 +103,19 @@ const useSettings = (props: TablePropTypes, context: SetupContext, columns: UseC
       checkedFields: checkedFields.value,
     });
 
-    const args = {
+    const result = {
       checked: checkedFields.value,
       size: activeSize.value,
       height: activeHeight.value,
       fields: unref(renderFields),
     };
 
-    Object.assign(options, args);
-    columns.setColumnAttributeBySettings(options as any, args.checked);
+    Object.assign(options, result);
+    columns.setColumnAttributeBySettings(options as any, result.checked);
     columns.setVisibleColumns();
-    context.emit(EMIT_EVENTS.SETTING_CHANGE, args);
 
     refSetting.value?.hide();
+    ctx.emit(EMIT_EVENTS.SETTING_CHANGE, result);
   };
 
   const handleCancelClick = () => {
@@ -288,7 +288,7 @@ const useSettings = (props: TablePropTypes, context: SetupContext, columns: UseC
                     </div>
                   ))}
                 </BkCheckboxGroup>
-                {context.slots.setting?.()}
+                {ctx.slots.setting?.()}
                 {showLineHeight.value ? (
                   <div class='setting-body-line-height'>
                     {t.value.setting.lineHeight.title}：{renderSize()}
