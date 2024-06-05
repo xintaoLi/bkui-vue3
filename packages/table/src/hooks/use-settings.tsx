@@ -23,46 +23,306 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { reactive } from 'vue';
+import { computed, reactive, ref, SetupContext, unref, watch } from 'vue';
 
-import { SETTING_SIZE } from '../const';
-import { Field, Settings, TablePropTypes } from '../props';
+import Button from '@bkui-vue/button';
+import Checkbox, { BkCheckboxGroup } from '@bkui-vue/checkbox';
+import { useLocale, usePrefix } from '@bkui-vue/config-provider';
+import { CloseLine, CogShape } from '@bkui-vue/icon/';
+import Popover from '@bkui-vue/popover';
 
-const useSettings = (props: TablePropTypes) => {
-  const getDefaultSettings = (settings?: Settings) => {
-    const { size, fields = [], checked = [] } = (settings ?? props.settings) as Settings;
-    const height = SETTING_SIZE[size] ?? props.rowHeight ?? SETTING_SIZE.small;
-    return { size, height, fields, checked };
+import { createDefaultSizeList, SETTING_SIZE } from '../const';
+import { EMIT_EVENTS } from '../events';
+import { Settings, SizeItem, TablePropTypes } from '../props';
+import { resolvePropVal } from '../utils';
+
+import { UseColumns } from './use-columns';
+
+const useSettings = (props: TablePropTypes, context: SetupContext, columns: UseColumns) => {
+  const t = useLocale('table');
+  const { resolveClassName } = usePrefix();
+  const defaultSizeList: SizeItem[] = createDefaultSizeList(t);
+  const checkAll = ref(false);
+  const resolvedColVal = (item, index) => resolvePropVal(item, ['id', 'field', 'type'], [item, index]);
+  const getDefaultSettings = () => {
+    return {
+      fields: props.columns.map((col: any) => Object.assign({}, col, { field: col.field || col.type })),
+      checked: [],
+      limit: 0,
+      size: 'small',
+      sizeList: defaultSizeList,
+      showLineHeight: true,
+      extCls: '',
+      trigger: 'manual',
+      height: SETTING_SIZE.small,
+    };
   };
 
+  const getSettings = settings => {
+    if (typeof settings === 'boolean') {
+      return getDefaultSettings();
+    }
+
+    return Object.assign({}, getDefaultSettings(), settings);
+  };
+
+  const refSetting = ref(null);
   const options = reactive(getDefaultSettings());
-  const updateSize = (size: string) => {
-    options.size = size;
+
+  const update = (settings: Settings | Boolean) => {
+    Object.assign(options, getSettings(settings));
   };
 
-  const updateHeight = (height: number) => {
-    options.height = height;
+  watch(
+    () => [props.settings],
+    () => {
+      update(props.settings);
+    },
+    { immediate: true, deep: true },
+  );
+
+  const activeSize = ref(options.size || 'small');
+  const activeHeight = ref(SETTING_SIZE.small);
+
+  const checkedFields = ref(options.checked || []);
+  const className = resolveClassName('table-settings');
+  const theme = `light ${className}`;
+  const renderFields = computed(() => options.fields || props.columns || []);
+
+  const cachedValue = {
+    checkAll: checkAll.value,
+    activeSize: activeSize.value,
+    activeHeight: activeHeight.value,
+    checkedFields: options.checked || [],
   };
 
-  const updateFields = (fields: Field[]) => {
-    options.fields = fields;
+  const handleSaveClick = () => {
+    Object.assign(cachedValue, {
+      checkAll: checkAll.value,
+      activeSize: activeSize.value,
+      activeHeight: activeHeight.value,
+      checkedFields: checkedFields.value,
+    });
+
+    const args = {
+      checked: checkedFields.value,
+      size: activeSize.value,
+      height: activeHeight.value,
+      fields: unref(renderFields),
+    };
+
+    Object.assign(options, args);
+    columns.setColumnAttributeBySettings(options as any, args.checked);
+    columns.setVisibleColumns();
+    context.emit(EMIT_EVENTS.SETTING_CHANGE, args);
+
+    refSetting.value?.hide();
   };
 
-  const updateChecked = (checked: string[]) => {
-    options.checked = checked;
+  const handleCancelClick = () => {
+    checkAll.value = cachedValue.checkAll;
+    activeSize.value = cachedValue.activeSize;
+    activeHeight.value = cachedValue.activeHeight;
+    checkedFields.value = cachedValue.checkedFields;
+    refSetting.value?.hide();
   };
 
-  const update = (settings: Settings) => {
-    Object.assign(options, getDefaultSettings(settings));
+  const handleSettingClick = () => {
+    if (options.trigger === 'manual') {
+      refSetting.value?.show();
+    }
+  };
+
+  const handleCheckAllClick = (e: MouseEvent) => {
+    e.stopImmediatePropagation();
+    e.stopPropagation();
+    e.preventDefault();
+
+    checkAll.value = !checkAll.value;
+    const fields = options.fields || props.columns || [];
+    const readonlyFields = fields
+      .filter((f, index) => f.disabled && checkedFields.value.includes(resolvedColVal(f, index)))
+      .map((item: any, index: number) => resolvedColVal(item, index));
+    if (checkAll.value) {
+      const allFields = fields.filter(f => !f.disabled).map((item: any, index: number) => resolvedColVal(item, index));
+      checkedFields.value.splice(0, checkedFields.value.length, ...allFields, ...readonlyFields);
+    } else {
+      checkedFields.value.splice(0, checkedFields.value.length, ...readonlyFields);
+    }
+  };
+
+  const isLimit = computed(() => (options.limit ?? 0) > 0);
+  const sizeList = options.sizeList || defaultSizeList;
+  const isFiledDisabled = computed(
+    () => isLimit.value && (options.limit ? options.limit : 0) <= checkedFields.value.length,
+  );
+
+  const isItemReadonly = (item: any, index: number) =>
+    item.disabled || (isFiledDisabled.value && !checkedFields.value.includes(resolvedColVal(item, index)));
+
+  const handleSizeItemClick = (item: SizeItem) => {
+    activeSize.value = item.value;
+    activeHeight.value = item.height;
+  };
+
+  const getItemClass = (item: SizeItem) => ({
+    'line-size': true,
+    'is-medium': activeSize.value === 'medium',
+    active: item.value === activeSize.value,
+  });
+
+  const buttonStyle = {
+    marginRight: '12px',
+  };
+
+  const renderSize = () =>
+    sizeList.map(item => (
+      <span
+        class={getItemClass(item)}
+        onClick={() => handleSizeItemClick(item)}
+      >
+        {item.label}
+      </span>
+    ));
+
+  const indeterminate = computed(
+    () => checkedFields.value.length > 0 && checkedFields.value.length < renderFields.value.length,
+  );
+
+  const showLineHeight = computed(() => (typeof options.showLineHeight === 'boolean' ? options.showLineHeight : true));
+
+  watch(
+    () => [checkedFields.value],
+    () => {
+      if (!checkedFields.value.length) {
+        checkAll.value = false;
+      }
+
+      if (
+        checkedFields.value.length &&
+        renderFields.value.every((field: any, index: number) =>
+          checkedFields.value.includes(resolvedColVal(field, index)),
+        )
+      ) {
+        checkAll.value = true;
+      }
+    },
+    { immediate: true, deep: true },
+  );
+
+  watch(
+    () => [(props.settings as Settings).checked],
+    () => {
+      checkedFields.value.splice(0, checkedFields.value.length, ...options.checked);
+    },
+    { immediate: true, deep: true },
+  );
+
+  const renderSettings = () => {
+    if (!props.settings) {
+      return null;
+    }
+
+    return (
+      <Popover
+        trigger={options.trigger ?? ('manual' as any)}
+        placement='bottom-end'
+        ref={refSetting}
+        arrow={true}
+        extCls={options.extCls}
+        {...{ theme }}
+      >
+        {{
+          default: () => (
+            <span
+              class='table-head-settings'
+              onClick={handleSettingClick}
+            >
+              <CogShape style='color: #c4c6cc;'></CogShape>
+            </span>
+          ),
+          content: () => (
+            <div class='setting-content'>
+              <div class='setting-head'>
+                <span class='head-title'>{t.value.setting.title}</span>
+                <CloseLine
+                  class='icon-close-action'
+                  onClick={handleCancelClick}
+                ></CloseLine>
+              </div>
+              <div class='setting-body'>
+                <div class='setting-body-title'>
+                  <div>
+                    <span class='field-setting-label'>{t.value.setting.fields.title}</span>
+                    {isLimit.value ? <span class='limit'>{t.value.setting.fields.subtitle(options.limit)}</span> : ''}
+                  </div>
+                  {isLimit.value ? (
+                    ''
+                  ) : (
+                    <span
+                      class='check-all'
+                      onClick={handleCheckAllClick}
+                    >
+                      <Checkbox
+                        label={t.value.setting.fields.selectAll}
+                        indeterminate={Boolean(indeterminate.value)}
+                        modelValue={checkedFields.value.length > 0}
+                      >
+                        {t.value.setting.fields.selectAll}
+                      </Checkbox>
+                    </span>
+                  )}
+                </div>
+                <BkCheckboxGroup
+                  class='setting-body-fields'
+                  v-model={checkedFields.value}
+                >
+                  {renderFields.value.map((item: any, index: number) => (
+                    <div class='field-item'>
+                      <Checkbox
+                        checked={checkedFields.value.includes(resolvedColVal(item, index))}
+                        label={resolvedColVal(item, index)}
+                        disabled={isItemReadonly(item, index)}
+                      >
+                        {resolvePropVal(item, ['name', 'label'], [item, index])}
+                      </Checkbox>
+                    </div>
+                  ))}
+                </BkCheckboxGroup>
+                {context.slots.setting?.()}
+                {showLineHeight.value ? (
+                  <div class='setting-body-line-height'>
+                    {t.value.setting.lineHeight.title}：{renderSize()}
+                  </div>
+                ) : (
+                  ''
+                )}
+              </div>
+              <div class='setting-footer'>
+                <Button
+                  theme='primary'
+                  style={buttonStyle}
+                  onClick={handleSaveClick}
+                >
+                  {t.value.setting.options.ok}
+                </Button>
+                <Button
+                  style={buttonStyle}
+                  onClick={handleCancelClick}
+                >
+                  {t.value.setting.options.cancel}
+                </Button>
+              </div>
+            </div>
+          ),
+        }}
+      </Popover>
+    );
   };
 
   return {
     options,
-    updateSize,
-    updateHeight,
-    updateFields,
-    updateChecked,
-    update,
+    renderSettings,
   };
 };
 export type UseSettings = ReturnType<typeof useSettings>;

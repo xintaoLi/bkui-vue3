@@ -133,7 +133,6 @@ const useRows = (props: TablePropTypes) => {
   };
 
   const getRowAttribute = (item: any | IEmptyObject, attrName: string) => {
-    // const row = getRawData(item);
     return tableRowSchema.get(item)?.[attrName];
   };
 
@@ -183,7 +182,7 @@ const useRows = (props: TablePropTypes) => {
       return tableRowList.value.every((row, index) => isRowChecked(row, index));
     }
 
-    return tableRowList.value.every((row, index) => isRowChecked(row, index));
+    return pageRowList.every((row, index) => isRowChecked(row, index));
   };
 
   /**
@@ -212,6 +211,14 @@ const useRows = (props: TablePropTypes) => {
     const checkedAll = isCheckedAll();
     setRowAttribute(CHECK_ALL_OBJ, TABLE_ROW_ATTRIBUTE.ROW_SELECTION, checkedAll);
     setRowAttribute(CHECK_ALL_OBJ, TABLE_ROW_ATTRIBUTE.ROW_SELECTION_INDETERMINATE, !checkedAll && hasCheckedRow());
+  };
+
+  const getRowIndeterminate = () => {
+    return getRowAttribute(CHECK_ALL_OBJ, TABLE_ROW_ATTRIBUTE.ROW_SELECTION_INDETERMINATE);
+  };
+
+  const getRowCheckedAllValue = () => {
+    return getRowAttribute(CHECK_ALL_OBJ, TABLE_ROW_ATTRIBUTE.ROW_SELECTION);
   };
 
   /**
@@ -272,6 +279,23 @@ const useRows = (props: TablePropTypes) => {
     tableRowList.value.forEach(row => setRowSelection(row, false));
   };
 
+  const changePageRowIndex = (sourceIndex, targetIndex) => {
+    const copy = pageRowList[sourceIndex];
+    pageRowList.splice(targetIndex, 0, copy);
+    const resolvedIndex = sourceIndex < targetIndex ? sourceIndex : sourceIndex + 1;
+    pageRowList.splice(resolvedIndex, 1);
+  };
+
+  const setAllRowExpand = (value?: boolean) => {
+    tableRowList.value.forEach(row => setRowExpand(row, value ?? true));
+  };
+
+  /**
+   * 获取选中行数据
+   */
+  const getRowSelection = () =>
+    tableRowList.value.filter(row => getRowAttribute(row, TABLE_ROW_ATTRIBUTE.ROW_SELECTION));
+
   return {
     setRowIndex,
     setRowExpand,
@@ -282,8 +306,14 @@ const useRows = (props: TablePropTypes) => {
     toggleRowSelection,
     setRowSelectionAll,
     setRowSelection,
+    setAllRowExpand,
     setTableIsNeedRowSpan,
     getRowAttribute,
+    getRowSelection,
+    getRowIndeterminate,
+    getRowCheckedAllValue,
+    changePageRowIndex,
+    toggleAllSelection,
     tableRowList,
     pageRowList,
   };

@@ -127,7 +127,6 @@ export default defineComponent({
         start = start < 0 ? 0 : start;
       }
 
-      console.log('start:', start, end, total);
       const value = localList.value.slice(start, end);
       calcList.value = value;
       if (event) {

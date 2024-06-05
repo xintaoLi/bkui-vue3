@@ -23,13 +23,15 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { computed, Ref, ref } from 'vue';
+import { debounce } from 'lodash';
+import { computed, onMounted, reactive, Ref, ref } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { classes } from '@bkui-vue/shared';
 import VirtualRender from '@bkui-vue/virtual-render';
 
-import { DEF_COLOR, IHeadColor } from '../const';
+import { DEF_COLOR, IHeadColor, LINE_HEIGHT } from '../const';
+import { EMIT_EVENTS } from '../events';
 import { TablePropTypes } from '../props';
 import { resolveHeadConfig, resolveNumberOrStringToPix, resolvePropBorderToClassStr, resolvePropVal } from '../utils';
 
@@ -38,6 +40,14 @@ export default (props: TablePropTypes, ctx) => {
   const refHead = ref(null);
   const refBody = ref(null);
   const refFooter = ref(null);
+  const translateX = ref(0);
+  const translateY = ref(0);
+  const preBottom = ref(0);
+  const dragOffsetX = ref(-1000);
+  const offsetRight = ref(0);
+  const layout: { bottom?: number } = reactive({});
+  const fixedColumns = reactive([]);
+  const lineHeight = ref(props.rowHeight ?? LINE_HEIGHT);
 
   const { resolveClassName } = usePrefix();
 
@@ -61,9 +71,24 @@ export default (props: TablePropTypes, ctx) => {
     }),
   );
 
+  const setTranslateX = (val: number) => {
+    translateX.value = val;
+  };
+
+  const setTranslateY = (val: number) => {
+    translateY.value = val;
+  };
+
+  const setDragOffsetX = (val: number) => {
+    dragOffsetX.value = val;
+  };
+
   const config = resolveHeadConfig(props);
+
   const headStyle = computed(() => ({
     '--row-height': `${resolvePropVal(config, 'height', ['thead'])}px`,
+    '--scroll-head-left': `-${translateX.value}px`,
+    '--scroll-left': `${translateX.value}px`,
     '--background-color': DEF_COLOR[props.thead?.color ?? IHeadColor.DEF1],
   }));
 
@@ -85,6 +110,27 @@ export default (props: TablePropTypes, ctx) => {
     display: 'none' as const,
   };
 
+  const dragOffsetXStyle = {
+    position: 'absolute' as const,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    width: '1px',
+    backgroundColor: '#3785FF',
+    transform: 'translateX(-50%)',
+  };
+
+  const resizeColumnStyle = computed(() => ({
+    ...dragOffsetXStyle,
+    transform: `translate3d(${dragOffsetX.value + 3}px, ${translateY.value}px, 0)`,
+  }));
+
+  const resizeHeadColStyle = computed(() => ({
+    ...dragOffsetXStyle,
+    width: '6px',
+    transform: `translateX(${dragOffsetX.value}px)`,
+  }));
+
   const renderContainer = childrend => {
     return (
       <div
@@ -97,14 +143,19 @@ export default (props: TablePropTypes, ctx) => {
       </div>
     );
   };
-  const renderHeader = (childrend?) => {
+  const renderHeader = (childrend?, settings?) => {
     return (
       <div
         ref={refHead}
         class={headClass.value}
         style={headStyle.value}
       >
-        {childrend}
+        {childrend?.()}
+        <div
+          class='col-resize-drag'
+          style={resizeHeadColStyle.value}
+        ></div>
+        {settings?.()}
       </div>
     );
   };
@@ -144,27 +195,93 @@ export default (props: TablePropTypes, ctx) => {
     footHeight.value = height;
   };
 
-  const renderBody = (list, childrend?) => {
+  const emitScrollBottom = debounce((...args) => {
+    ctx.emit(EMIT_EVENTS.SCROLL_BOTTOM, { ...args });
+  });
+
+  const setOffsetRight = () => {
+    const scrollWidth = refBody.value?.refRoot?.scrollWidth ?? 0;
+    const offsetWidth = refBody.value?.refRoot?.offsetWidth ?? 0;
+    offsetRight.value = scrollWidth - offsetWidth - translateX?.value ?? 0;
+  };
+
+  const setLineHeight = (val: number) => {
+    lineHeight.value = val;
+  };
+
+  const handleScrollChanged = (args: any[]) => {
+    preBottom.value = layout.bottom ?? 0;
+    const pagination = args[1];
+    const { translateX, translateY, pos = {} } = pagination;
+    setTranslateX(translateX);
+    setTranslateY(translateY);
+    setOffsetRight();
+    Object.assign(layout, pos || {});
+    const { bottom } = pos;
+    if (bottom <= 2 && preBottom.value > bottom) {
+      emitScrollBottom({ ...pos, translateX, translateY });
+    }
+  };
+
+  const resizeColumnClass = {
+    column_drag_line: true,
+    'offset-x': true,
+  };
+
+  const fixedWrapperClass = computed(() => [
+    resolveClassName('table-fixed'),
+    {
+      'shadow-right': offsetRight.value > 0,
+      'shadow-left': translateX.value > 0,
+    },
+  ]);
+
+  const fixedBottomRow = resolveClassName('table-fixed-bottom');
+
+  const fixedWrapperStyle = computed(() => ({
+    transform: `translate3d(${translateX.value}px, ${translateY.value}px, 0)`,
+  }));
+
+  onMounted(() => {
+    setOffsetRight();
+  });
+
+  const renderBody = (list, childrend?, fixedRows?, loadingRow?) => {
     return (
       <VirtualRender
         ref={refBody}
         class={bodyClass}
         enabled={props.virtualEnabled}
+        lineHeight={lineHeight.value}
         throttleDelay={120}
         scrollEvent={true}
         rowKey={props.rowKey}
         height={bodyHeight.value}
         list={list}
-        scrollbar={{ enabled: true }}
+        scrollbar={{ enabled: props.scrollbar }}
+        onContentScroll={handleScrollChanged}
       >
         {{
           beforeContent: () => renderPrepend(),
           default: (scope: any) => childrend?.(scope.data),
           afterSection: () => [
-            // <div
-            //   class={resizeColumnClass}
-            //   style={resizeColumnStyle.value}
-            // ></div>,
+            <div
+              class={resizeColumnClass}
+              style={resizeColumnStyle.value}
+            ></div>,
+            <div
+              class={fixedWrapperClass.value}
+              style={fixedWrapperStyle.value}
+            >
+              {fixedRows?.()}
+            </div>,
+            <div>{ctx.slots.appendBottom?.()}</div>,
+            <div
+              class={fixedBottomRow}
+              style={fixedWrapperStyle.value}
+            >
+              {loadingRow?.()}
+            </div>,
           ],
         }}
       </VirtualRender>
@@ -182,6 +299,11 @@ export default (props: TablePropTypes, ctx) => {
     );
   };
 
+  const setFixedColumns = (values: any[]) => {
+    fixedColumns.length = 0;
+    fixedColumns.push(...values);
+  };
+
   return {
     renderContainer,
     renderHeader,
@@ -189,6 +311,11 @@ export default (props: TablePropTypes, ctx) => {
     renderFooter,
     setBodyHeight,
     setFootHeight,
+    setTranslateX,
+    setDragOffsetX,
+    setFixedColumns,
+    setOffsetRight,
+    setLineHeight,
     refRoot,
     refHead,
     refBody,

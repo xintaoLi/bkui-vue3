@@ -44,7 +44,14 @@ const usePagination = (props: TablePropTypes) => {
   const isEnabled = ref(true);
 
   const setPagination = (option: Record<string, any>) => {
-    Object.assign(pagination, { enabled: true }, option);
+    Object.assign(pagination, { enabled: !!props.pagination }, option);
+
+    /**
+     * 如果分页组件启用了前端分页，则重置分页组件数据
+     */
+    if (pagination.current * pagination.limit >= pagination.count) {
+      pagination.current = 1;
+    }
   };
 
   const disabledPagination = (disable = true) => {

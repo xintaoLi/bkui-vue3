@@ -25,33 +25,68 @@
  */
 import { debounce } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
-import { computed, reactive, unref, watch } from 'vue';
+import { computed, isRef, reactive, ref, watch } from 'vue';
 
 import { useLocale } from '@bkui-vue/config-provider';
 
-import { COL_MIN_WIDTH, COLUMN_ATTRIBUTE, IEmptyObject, SORT_OPTION } from '../const';
-import { EMIT_EVENTS } from '../events';
-import HeadFilter from '../plugins/head-filter';
-import HeadSort from '../plugins/head-sort';
-import { Column, IColSortBehavior, Settings, TablePropTypes } from '../props';
+import { COL_MIN_WIDTH, COLUMN_ATTRIBUTE, IEmptyObject } from '../const';
+import { Column, IColSortBehavior, IFilterShape, Settings, TablePropTypes } from '../props';
 import {
-  getNextSortType,
-  getSortFn,
+  getRowText,
   isColumnHidden,
   resolveColumnFilterProp,
   resolveColumnSortProp,
   resolveColumnSpan,
-  resolveHeadConfig,
   resolvePropVal,
 } from '../utils';
 
-const useColumns = (props: TablePropTypes, context) => {
+const useColumns = (props: TablePropTypes) => {
   const t = useLocale('table');
   const tableColumnSchema = reactive(new WeakMap());
   const tableColumnList = reactive([]);
   const uuid = uuidv4();
+  const sortColumns = reactive([]);
+  const filterColumns = reactive([]);
 
-  const visibleColumns = computed(() => tableColumnList.filter(col => !isHiddenColumn(col)));
+  /**
+   * 用来记录列的排序状态
+   * @param col
+   * @param sortOption
+   * @returns
+   */
+  const setSortColumns = (col: Column, sortOption = {}) => {
+    sortColumns.forEach(item => (item.active = false));
+    const target = sortColumns.find(item => item.col === col);
+    if (target) {
+      Object.assign(target, sortOption, { active: true });
+      return;
+    }
+
+    sortColumns.push({ col, ...sortOption, active: true });
+  };
+
+  /**
+   * 用来记录列的过滤状态
+   * @param col
+   * @param filterOption
+   * @returns
+   */
+  const setFilterColumns = (col: Column, filterOption = {}) => {
+    const target = filterColumns.find(item => item.col === col);
+    if (target) {
+      Object.assign(target, filterOption);
+      return;
+    }
+
+    filterColumns.push({ col, ...filterOption });
+  };
+
+  const visibleColumns = reactive([]);
+  const setVisibleColumns = () => {
+    visibleColumns.length = 0;
+    visibleColumns.push(...tableColumnList.filter(col => !isHiddenColumn(col)));
+  };
+
   const headHeight = computed(() => {
     if (props.showHead) {
       return props.headHeight;
@@ -135,95 +170,32 @@ const useColumns = (props: TablePropTypes, context) => {
     }, {});
   };
 
-  /**
-   * 点击排序事件
-   * @param sortFn 排序函数
-   * @param type 排序类型
-   */
-  const handleSortClick = (column, index, args?) => {
-    const { isCancel, type = getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_SORT_TYPE) } = args ?? {};
-    const nextType = isCancel ? SORT_OPTION.NULL : getNextSortType(type);
+  const resolveFilterFn = (col: Column) => {
+    if (!col.filter) {
+      return null;
+    }
 
-    const execFn = getSortFn(column, nextType, props.sortValFormat);
-    setColumnAttribute(column, COLUMN_ATTRIBUTE.COL_SORT_TYPE, type);
-    setColumnAttribute(column, COLUMN_ATTRIBUTE.COL_SORT_FN, execFn);
-    setColumnSortActive(column, nextType === SORT_OPTION.NULL);
+    const getRegExp = (val: string | number | boolean, flags = 'ig') =>
+      new RegExp(`${val}`.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), flags);
 
-    context.emit(EMIT_EVENTS.COLUMN_SORT, { column, index, type });
-  };
+    const defaultFilterFn = (checked: string[], row: any) => {
+      const { match } = col.filter as IFilterShape;
+      const matchText = getRowText(row, resolvePropVal(col, 'field', [col, row]));
+      if (match !== 'fuzzy') {
+        return checked.includes(matchText);
+      }
 
-  /**
-   * 获取排序设置表头
-   * @param column 当前渲染排序列
-   * @param index 排序列所在index
-   * @returns
-   */
-  const getSortCell = (column: Column, index: number) => {
-    // 如果是独立的，则只高亮当前排序
-    return (
-      <HeadSort
-        column={column as Column}
-        onChange={args => handleSortClick(column, index, args)}
-        sortValFormat={props.sortValFormat}
-        defaultSort={getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_SORT_TYPE)}
-        active={getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_SORT_ACTIVE)}
-      />
-    );
-  };
-
-  const getFilterCell = (column: Column, index: number) => {
-    const handleFilterChange = (checked: any[], filterFn: Function) => {
-      const filterFn0 = (row: any, index: number) => filterFn(checked, row, index);
-      setColumnAttribute(column, COLUMN_ATTRIBUTE.COL_FILTER_FN, filterFn0);
-      context.emit(EMIT_EVENTS.COLUMN_FILTER, { checked, column: unref(column), index });
+      return checked.some((str: string) => getRegExp(str, 'img').test(matchText));
     };
 
-    const filterSave = (values: any[]) => {
-      context.emit(EMIT_EVENTS.COLUMN_FILTER_SAVE, { column, values });
-    };
+    const filterFn =
+      typeof (col.filter as IFilterShape).filterFn === 'function'
+        ? // eslint-disable-next-line max-len
+          (checked: string[], row: any, index: number, data: any[]) =>
+            (col.filter as IFilterShape).filterFn(checked, row, col, index, data)
+        : (checked: string[], row: any) => (checked.length ? defaultFilterFn(checked, row) : true);
 
-    return (
-      <HeadFilter
-        column={column as Column}
-        height={props.headHeight}
-        onChange={handleFilterChange}
-        onFilterSave={filterSave}
-      />
-    );
-  };
-
-  const config = resolveHeadConfig(props);
-  const { cellFn } = config;
-  const getHeadCellText = (column, index) => {
-    if (typeof cellFn === 'function') {
-      return cellFn(column, index);
-    }
-
-    if (typeof column.renderHead === 'function') {
-      return column.renderHead(column, index);
-    }
-
-    return resolvePropVal(column, 'label', [column, index]);
-  };
-
-  const getHeadCellRender = (column: Column, index: number) => {
-    const cells = [];
-    if (column.sort) {
-      cells.push(getSortCell(column, index));
-    }
-
-    if (column.filter) {
-      cells.push(getFilterCell(column, index));
-    }
-
-    const cellText = getHeadCellText(column, index);
-    cells.unshift(<span class='head-text'>{cellText}</span>);
-
-    const showTitle = typeof cellText === 'string' ? cellText : undefined;
-
-    const headClass = { 'has-sort': !!column.sort, 'has-filter': !!column.filter };
-
-    return { cells, showTitle, headClass };
+    return filterFn;
   };
 
   /**
@@ -240,30 +212,54 @@ const useColumns = (props: TablePropTypes, context) => {
 
       skipColNum = skipColumnNum;
       if (!tableColumnSchema.has(col)) {
-        const { type, fn, scope, active } = resolveColumnSortProp(col, props);
+        const { type, fn, scope, active, enabled } = resolveColumnSortProp(col, props);
+        const filterFn = resolveFilterFn(col);
         const settings = (props.settings ?? {}) as Settings;
         const filterObj = resolveColumnFilterProp(col);
+
+        if (filterObj.enabled) {
+          setFilterColumns(col, {
+            [COLUMN_ATTRIBUTE.COL_FILTER_FN]: filterFn,
+            [COLUMN_ATTRIBUTE.COL_FILTER_VALUES]: filterObj.checked ?? [],
+          });
+        }
+
+        if (enabled) {
+          setSortColumns(col, {
+            [COLUMN_ATTRIBUTE.COL_SORT_TYPE]: type,
+            [COLUMN_ATTRIBUTE.COL_SORT_FN]: fn,
+            [COLUMN_ATTRIBUTE.COL_SORT_SCOPE]: scope,
+          });
+        }
 
         tableColumnSchema.set(col, {
           [COLUMN_ATTRIBUTE.CALC_WIDTH]: undefined,
           [COLUMN_ATTRIBUTE.RESIZE_WIDTH]: undefined,
+          [COLUMN_ATTRIBUTE.COL_RECT]: reactive({
+            width: null,
+            left: null,
+            right: null,
+            height: null,
+          }),
           [COLUMN_ATTRIBUTE.COL_MIN_WIDTH]: resolveMinWidth(col),
           [COLUMN_ATTRIBUTE.LISTENERS]: new Map(),
           [COLUMN_ATTRIBUTE.WIDTH]: col.width,
           [COLUMN_ATTRIBUTE.IS_HIDDEN]: isColumnHidden(settings.fields ?? [], col, settings.checked ?? []),
-          [COLUMN_ATTRIBUTE.COL_SORT_TYPE]: type,
+          [COLUMN_ATTRIBUTE.COL_SORT_TYPE]: ref(type),
           [COLUMN_ATTRIBUTE.COL_SORT_FN]: fn,
           [COLUMN_ATTRIBUTE.COL_FILTER_OBJ]: filterObj,
-          [COLUMN_ATTRIBUTE.COL_FILTER_FN]: undefined,
+          [COLUMN_ATTRIBUTE.COL_FILTER_FN]: filterFn,
           [COLUMN_ATTRIBUTE.COL_FILTER_SCOPE]: undefined,
           [COLUMN_ATTRIBUTE.COL_SORT_SCOPE]: scope,
-          [COLUMN_ATTRIBUTE.COL_SORT_ACTIVE]: active,
+          [COLUMN_ATTRIBUTE.COL_SORT_ACTIVE]: ref(active),
           [COLUMN_ATTRIBUTE.COL_IS_DRAG]: false,
           [COLUMN_ATTRIBUTE.COL_SPAN]: { skipCol, skipColumnNum, skipColLen },
           [COLUMN_ATTRIBUTE.COL_UID]: uuidv4(),
           [COLUMN_ATTRIBUTE.SELECTION_DISABLED]: false,
           [COLUMN_ATTRIBUTE.SELECTION_INDETERMINATE]: false,
           [COLUMN_ATTRIBUTE.SELECTION_VAL]: false,
+          [COLUMN_ATTRIBUTE.COL_RESIZEABLE]: col.resizable !== false,
+          [COLUMN_ATTRIBUTE.COL_FIXED_STYLE]: reactive({}),
         });
       }
 
@@ -274,10 +270,36 @@ const useColumns = (props: TablePropTypes, context) => {
     });
   };
 
+  const setFixedStyle = (column: Column, style: any) => {
+    setColumnAttribute(column, COLUMN_ATTRIBUTE.COL_FIXED_STYLE, style);
+  };
+
+  const getFixedStlye = (column: Column) => {
+    return getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_FIXED_STYLE) ?? {};
+  };
+
+  const getColumnRect = (column: Column) => {
+    return getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_RECT);
+  };
+
+  type ColumnRect = { left?: number; right?: number; width?: number; height?: number };
+  const setColumnRect = (col, { left, right, width, height }: ColumnRect) => {
+    const source = getColumnRect(col);
+    const target = {
+      left: left ?? source.left,
+      right: right ?? source.right,
+      width: width ?? source.width,
+      height: height ?? source.height,
+    };
+    setColumnAttribute(col, COLUMN_ATTRIBUTE.COL_RECT, target);
+  };
+
   const debounceUpdateColumns = debounce(columns => {
     tableColumnList.length = 0;
     tableColumnList.push(...columns);
     formatColumns();
+
+    setVisibleColumns();
   });
 
   const setColumnIsHidden = (column: Column, value = false) => {
@@ -327,8 +349,9 @@ const useColumns = (props: TablePropTypes, context) => {
    * @returns
    */
   const getColumnOrderWidth = (col: Column, orders = ORDER_LIST): number => {
-    const target = tableColumnSchema.get(col) ?? {};
-    return target[orders[0]] ?? target[orders[1]] ?? target[orders[2]];
+    return (
+      getColumnAttribute(col, orders[0]) ?? getColumnAttribute(col, orders[1]) ?? getColumnAttribute(col, orders[2])
+    );
   };
 
   /**
@@ -336,7 +359,7 @@ const useColumns = (props: TablePropTypes, context) => {
    * @param col
    */
   const isHiddenColumn = (col: Column) => {
-    return tableColumnSchema.get(col)?.[COLUMN_ATTRIBUTE.IS_HIDDEN] ?? false;
+    return getColumnAttribute(col, COLUMN_ATTRIBUTE.IS_HIDDEN) ?? false;
   };
 
   /**
@@ -344,7 +367,19 @@ const useColumns = (props: TablePropTypes, context) => {
    * @param col
    */
   const getColumnId = (col: Column) => {
-    return tableColumnSchema.get(col)?.[COLUMN_ATTRIBUTE.COL_UID];
+    return getColumnAttribute(col, COLUMN_ATTRIBUTE.COL_UID);
+  };
+
+  const beforeAttributeChange = (column: Column, attrName: string, attrValue: any) => {
+    const sortAttrs = [COLUMN_ATTRIBUTE.COL_SORT_FN, COLUMN_ATTRIBUTE.COL_SORT_SCOPE, COLUMN_ATTRIBUTE.COL_SORT_TYPE];
+    if (sortAttrs.includes(attrName)) {
+      setSortColumns(column, { [attrName]: attrValue });
+    }
+
+    const filterAttrs = [COLUMN_ATTRIBUTE.COL_FILTER_FN, COLUMN_ATTRIBUTE.COL_FILTER_VALUES];
+    if (filterAttrs.includes(attrName)) {
+      setFilterColumns(column, { [attrName]: attrValue });
+    }
   };
 
   /**
@@ -356,15 +391,27 @@ const useColumns = (props: TablePropTypes, context) => {
   const setColumnAttribute = (
     col: Column,
     attrName: string,
-    attrValue: ((...args) => boolean | number | void | string) | string | boolean | number,
+    attrValue:
+      | ((...args) => boolean | number | void | string)
+      | string
+      | boolean
+      | number
+      | any[]
+      | Record<string, any>,
   ) => {
+    beforeAttributeChange(col, attrName, attrValue);
     const target = tableColumnSchema.get(col);
     if (target && Object.prototype.hasOwnProperty.call(target, attrName)) {
+      if (isRef(target[attrName])) {
+        target[attrName].value = attrValue;
+        return;
+      }
+
       target[attrName] = attrValue;
     }
   };
 
-  const setColumnAttributeBySettings = (settings: Settings, checkedVal?: string[]) => {
+  const setColumnAttributeBySettings = (settings: any, checkedVal?: string[]) => {
     const checked = checkedVal || settings.checked || [];
     const settingFields = settings.fields || [];
 
@@ -379,6 +426,15 @@ const useColumns = (props: TablePropTypes, context) => {
    * @param attributeName
    */
   const getColumnAttribute = (col: Column | IEmptyObject, attributeName: string) => {
+    const target = tableColumnSchema.get(col)?.[attributeName];
+    if (isRef(target)) {
+      return target.value;
+    }
+
+    return target;
+  };
+
+  const getColumnRefAttribute = (col: Column | IEmptyObject, attributeName: string) => {
     return tableColumnSchema.get(col)?.[attributeName];
   };
 
@@ -434,6 +490,17 @@ const useColumns = (props: TablePropTypes, context) => {
     { immediate: true },
   );
 
+  /**
+   * 清理列排序
+   * @param reset 是否重置表格数据
+   */
+  const clearColumnSort = () => {
+    tableColumnList.forEach(col => {
+      setColumnAttribute(col, COLUMN_ATTRIBUTE.COL_SORT_ACTIVE, false);
+      setColumnAttribute(col, COLUMN_ATTRIBUTE.COL_FILTER_FN, undefined);
+    });
+  };
+
   return {
     needColSpan,
     needRowSpan,
@@ -442,16 +509,20 @@ const useColumns = (props: TablePropTypes, context) => {
     tableColumnList,
     visibleColumns,
     debounceUpdateColumns,
+    sortColumns,
+    filterColumns,
+    clearColumnSort,
     formatColumns,
     isHiddenColumn,
-    handleSortClick,
     getColumnId,
     getColumnOrderWidth,
     getColumnAttribute,
     getHeadColumnClass,
     getColumnClass,
+    getFixedStlye,
+    getColumnRect,
     getColumnCustomClass,
-    getHeadCellRender,
+    getColumnRefAttribute,
     resolveEventListener,
     setColumnIsHidden,
     setColumnResizeWidth,
@@ -460,6 +531,9 @@ const useColumns = (props: TablePropTypes, context) => {
     setColumnAttributeBySettings,
     setColumnAttribute,
     setColumnSortActive,
+    setFixedStyle,
+    setColumnRect,
+    setVisibleColumns,
   };
 };
 

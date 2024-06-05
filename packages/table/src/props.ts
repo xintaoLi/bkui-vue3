@@ -221,15 +221,16 @@ export type LabelFunctionString =
   | number
   | boolean;
 export const LabelFunctionStringType = toType<LabelFunctionString>('LabelFunctionStringType', {});
+export type HeadRenderArgs = {
+  cell?: any;
+  data?: any[];
+  row?: any;
+  column: Column;
+  index: number;
+  rows?: any[];
+};
 
-export type RenderFunctionString = ({
-  cell,
-  data,
-  row,
-  column,
-  index,
-  rows,
-}) => string | number | boolean | JSX.Element;
+export type RenderFunctionString = (args: HeadRenderArgs) => string | number | boolean | JSX.Element;
 export const RenderFunctionStringType = toType<RenderFunctionString>('RenderFunctionStringType', {});
 
 export type SpanFunctionString = (({ column, colIndex, row, rowIndex }) => number) | Number;
@@ -629,4 +630,9 @@ export const tableProps = {
    * 是否支持shift键多行选择
    */
   shiftMultiChecked: PropTypes.bool.def(false),
+
+  /**
+   * 启用Scrollbar
+   */
+  scrollbar: PropTypes.bool.def(true),
 };

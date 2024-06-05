@@ -32,12 +32,11 @@ import { useLocale } from '@bkui-vue/config-provider';
 import { DownShape, GragFill, RightShape } from '@bkui-vue/icon';
 import Pagination from '@bkui-vue/pagination';
 
+import BodyEmpty from '../components/body-empty';
 import TableCell from '../components/table-cell';
 import TableRow from '../components/table-row';
-import { COLUMN_ATTRIBUTE, DEF_COLOR, IHeadColor, TABLE_ROW_ATTRIBUTE } from '../const';
+import { COLUMN_ATTRIBUTE, TABLE_ROW_ATTRIBUTE } from '../const';
 import { EMIT_EVENTS } from '../events';
-import BodyEmpty from '../plugins/body-empty';
-import useShiftKey from '../plugins/use-shift-key';
 import { Column, TablePropTypes } from '../props';
 import {
   formatPropAsArray,
@@ -52,9 +51,11 @@ import {
 } from '../utils';
 
 import { UseColumns } from './use-columns';
+import useHead from './use-head';
 import { UsePagination } from './use-pagination';
 import { UseRows } from './use-rows';
 import { UseSettings } from './use-settings';
+import useShiftKey from './use-shift-key';
 type RenderType = {
   props: TablePropTypes;
   ctx: SetupContext;
@@ -67,6 +68,9 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
   const t = useLocale('table');
 
   const uuid = uuidv4();
+
+  let dragEvents = {};
+
   /**
    * 渲染table colgroup
    * @returns
@@ -74,7 +78,7 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
   const renderColgroup = () => {
     return (
       <colgroup>
-        {(columns.visibleColumns.value || []).map((column: Column, _index: number) => {
+        {(columns.visibleColumns || []).map((column: Column, _index: number) => {
           const width: string | number = `${resolveWidth(columns.getColumnOrderWidth(column))}`.replace(/px$/i, '');
 
           const minWidth = columns.getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_MIN_WIDTH);
@@ -86,87 +90,6 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
           );
         })}
       </colgroup>
-    );
-  };
-
-  const renderHeadCheckboxColumn = (colmun: Column) => {
-    const handleChecked = value => {
-      columns.setColumnAttribute(colmun, COLUMN_ATTRIBUTE.SELECTION_VAL, value);
-      columns.setColumnAttribute(colmun, COLUMN_ATTRIBUTE.SELECTION_INDETERMINATE, false);
-      ctx.emit(EMIT_EVENTS.ROW_SELECT_ALL, { checked: value, data: props.data });
-    };
-
-    const isDisabled = columns.getColumnAttribute(colmun, COLUMN_ATTRIBUTE.SELECTION_DISABLED);
-    const isChecked = columns.getColumnAttribute(colmun, COLUMN_ATTRIBUTE.SELECTION_VAL);
-    const indeterminate = columns.getColumnAttribute(colmun, COLUMN_ATTRIBUTE.SELECTION_INDETERMINATE);
-
-    return (
-      <Checkbox
-        onChange={handleChecked}
-        disabled={isDisabled}
-        modelValue={isChecked}
-        indeterminate={indeterminate as boolean}
-      />
-    );
-  };
-
-  /**
-   * table head cell render
-   * @param column
-   * @param index
-   * @returns
-   */
-  const renderHeadCell = (column: Column, index: number) => {
-    if (column.type === 'selection') {
-      return [renderHeadCheckboxColumn(column)];
-    }
-
-    const { headClass, showTitle, cells } = columns.getHeadCellRender(column, index);
-
-    return (
-      <TableCell
-        class={headClass}
-        title={showTitle}
-        observerResize={props.observerResize}
-        resizerWay={props.resizerWay}
-        isHead={true}
-        column={column as Column}
-        parentSetting={props.showOverflowTooltip}
-        headExplain={resolvePropVal(column.explain, 'head', [column])}
-      >
-        {cells}
-      </TableCell>
-    );
-  };
-
-  /**
-   * 点击选中一列事件
-   * @param index 当前选中列Index
-   * @param column 当前选中列
-   */
-  const handleColumnHeadClick = (index: number, column: Column) => {
-    if (columns.getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_IS_DRAG)) {
-      return;
-    }
-
-    if (column.sort && !column.filter) {
-      columns.handleSortClick(column, index);
-    }
-  };
-
-  const getTH = (column, classList, style, index) => {
-    return (
-      <th
-        colspan={1}
-        rowspan={1}
-        data-id={columns.getColumnId(column)}
-        class={classList}
-        style={style}
-        onClick={() => handleColumnHeadClick(index, column)}
-        {...columns.resolveEventListener(column)}
-      >
-        {renderHeadCell(column, index)}
-      </th>
     );
   };
 
@@ -187,20 +110,9 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
         <thead style={rowStyle}>
           <TableRow>
             <tr>
-              {columns.visibleColumns.value.map((column, index: number) => {
-                const headStyle = Object.assign(
-                  {},
-                  {
-                    '--background-color': DEF_COLOR[props.thead?.color ?? IHeadColor.DEF1],
-                  },
-                );
-
-                const classList = [
-                  columns.getHeadColumnClass(column, index),
-                  columns.getColumnCustomClass(column),
-                  column.align || props.headerAlign || props.align,
-                ];
-                return getTH(column, classList, headStyle, index);
+              {columns.visibleColumns.map((column, index: number) => {
+                const { getTH } = useHead({ props, ctx, columns, column, index, rows });
+                return getTH();
               })}
             </tr>
           </TableRow>
@@ -253,6 +165,10 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
     }
 
     return resolvePropVal(props, 'rowHeight', ['tbody', row, rowIndex]);
+  };
+
+  const setDragEvents = (events: Record<string, Function>) => {
+    dragEvents = events;
   };
 
   /**
@@ -378,17 +294,11 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
   };
 
   const { isShiftKeyDown, getStore, setStore, setStoreStart, clearStoreStart } = useShiftKey(props);
-  const renderCheckboxColumn = (row: any, index: number | null, isAll = false) => {
+  const renderCheckboxColumn = (row: any, index: number | null, column: Column) => {
     const handleChecked = (value: boolean, event: Event) => {
       event.stopImmediatePropagation();
       event.preventDefault();
       event.stopPropagation();
-
-      if (isAll) {
-        rows.setRowSelectionAll(value);
-        ctx.emit(EMIT_EVENTS.ROW_SELECT_ALL, { checked: value, data: props.data });
-        return;
-      }
 
       if (!isShiftKeyDown.value) {
         if (value) {
@@ -399,12 +309,16 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
       }
 
       rows.setRowSelection(row, value);
+
+      columns.setColumnAttribute(column, COLUMN_ATTRIBUTE.SELECTION_INDETERMINATE, rows.getRowIndeterminate());
+      columns.setColumnAttribute(column, COLUMN_ATTRIBUTE.SELECTION_VAL, rows.getRowCheckedAllValue());
+
       ctx.emit(EMIT_EVENTS.ROW_SELECT, { row, index, checked: value, data: props.data });
       ctx.emit(EMIT_EVENTS.ROW_SELECT_CHANGE, { row, index, checked: value, data: props.data });
     };
 
     const beforeRowChange = () => {
-      if (isShiftKeyDown.value && !isAll) {
+      if (isShiftKeyDown.value) {
         const result = setStore(row, index);
         if (result) {
           const { start, end } = getStore();
@@ -434,7 +348,7 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
 
     const indeterminate = rows.getRowAttribute(row, TABLE_ROW_ATTRIBUTE.ROW_SELECTION_INDETERMINATE);
     const isChecked = rows.getRowAttribute(row, TABLE_ROW_ATTRIBUTE.ROW_SELECTION);
-    const isEnable = isRowSelectEnable(props, { row, index, isCheckAll: isAll });
+    const isEnable = isRowSelectEnable(props, { row, index, isCheckAll: false });
 
     return (
       <Checkbox
@@ -487,7 +401,7 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
 
     const renderFn = {
       expand: (row, column, index, rowList) => (isChild ? '' : renderExpandColumn(row, column, index, rowList)),
-      selection: (row, _column, index, _rows) => renderCheckboxColumn(row, index),
+      selection: (row, column, index, _rows) => renderCheckboxColumn(row, index, column),
       drag: renderDraggableCell,
     };
 
@@ -550,10 +464,11 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
           onMouseenter={e => handleRowEnter(e, row, rowIndex, rowList)}
           onMouseleave={e => handleRowLeave(e, row, rowIndex, rowList)}
           draggable={!!props.rowDraggable}
+          {...dragEvents}
         >
-          {columns.visibleColumns.value.map((column: Column, index: number) => {
+          {columns.visibleColumns.map((column: Column, index: number) => {
             const cellStyle = [
-              // resolveFixedColumnStyle(column),
+              columns.getFixedStlye(column),
               ...formatPropAsArray(props.cellStyle, [column, index, row, rowIndex]),
             ];
 
@@ -646,7 +561,7 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
         <TableRow key={rowKey}>
           <tr class={resovledClass}>
             <td
-              colspan={columns.visibleColumns.value.length}
+              colspan={columns.visibleColumns.length}
               rowspan={1}
             >
               {ctx.slots.expandRow?.(row) ?? <div class='expand-cell-ctx'>Expand Row</div>}
@@ -692,5 +607,6 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
     renderColumns,
     renderTBody,
     renderTFoot,
+    setDragEvents,
   };
 };

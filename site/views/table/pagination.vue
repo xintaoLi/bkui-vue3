@@ -6,10 +6,10 @@
       :data="tableData"
       :pagination="pagination"
       :pagination-heihgt="60"
-      @selection-change="handleSelectionChange"
       show-overflow-tooltip
       shift-multi-checked
       height="100%"
+      @selection-change="handleSelectionChange"
     />
   </div>
 </template>
@@ -34,5 +34,5 @@
   const refTable = ref(null);
   const handleSelectionChange = (args) => {
     console.log('handleSelectionChange', args, refTable.value?.getSelection());
-  }
+  };
 </script>

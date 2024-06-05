@@ -420,9 +420,10 @@ export const skipThisColumn = (columns: Column[], colIndex: number, row: any, ro
 export const getSortFn = (column, sortType, format = []) => {
   const fieldName = column.field as string;
   const getVal = (row: any) => getRowText(row, fieldName, format);
-  const sortFn0 = (a: any, b: any) => {
-    const val0 = getVal(a) ?? '';
-    const val1 = getVal(b) ?? '';
+  const isIndexCol = column.type === 'index';
+  const sortFn0 = (a: any, b: any, rowIndex0: number, rowIndex1: number) => {
+    const val0 = isIndexCol ? rowIndex0 : getVal(a) ?? '';
+    const val1 = isIndexCol ? rowIndex1 : getVal(b) ?? '';
     if (typeof val0 === 'number' && typeof val1 === 'number') {
       return val0 - val1;
     }
@@ -434,7 +435,7 @@ export const getSortFn = (column, sortType, format = []) => {
 
   return sortType === SORT_OPTION.NULL
     ? (_a, _b) => true
-    : (_a, _b) => sortFn(_a, _b) * (sortType === SORT_OPTION.DESC ? -1 : 1);
+    : (_a, _b, index0, index1) => sortFn(_a, _b, index0, index1) * (sortType === SORT_OPTION.DESC ? -1 : 1);
 };
 
 export const getNextSortType = (sortType: string) => {
@@ -523,6 +524,7 @@ export const resolveColumnFilterProp = (col: Column) => {
 
   return {
     enabled: !!col.filter,
+    checked: [],
   };
 };
 

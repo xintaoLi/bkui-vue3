@@ -59,6 +59,9 @@ export default defineComponent({
       ([val]) => {
         sortType.value = val;
       },
+      {
+        immediate: true,
+      },
     );
 
     const setNextSortType = (type: SORT_OPTION) => {
@@ -74,22 +77,6 @@ export default defineComponent({
       e.stopImmediatePropagation();
       e.stopPropagation();
       e.preventDefault();
-
-      // let currentSort = type;
-      // if (type === SORT_OPTION.NULL) {
-      //   currentSort = getNextSortType(type);
-      // }
-
-      // // 第二次点击取消当前排序
-      // if (sortType.value === type) {
-      //   currentSort = SORT_OPTION.NULL;
-      // }
-      // const execFn = getSortFn(props.column, currentSort, props.sortValFormat);
-      // const sort = resolveSort(props.column.sort, props.column, props.sortValFormat);
-      // if (sort?.value === 'custom') {
-      //   emit('change', sort?.sortFn ?? execFn, currentSort);
-      //   return;
-      // }
 
       emit('change', { type, isCancel: type === sortType.value });
     };
