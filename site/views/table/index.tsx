@@ -247,20 +247,6 @@ export default defineComponent({
       },
       {
         attrs: {
-          title: 'flex 布局，中间自适应',
-          subtitle: '虚拟滚动暂不建议开启',
-          desc: 'props: is-flex',
-          componentName: 'table',
-          demoName: 'flex-layout',
-        },
-        /**
-         * Table
-         * @returns
-         */
-        component: () => <flex-layout></flex-layout>,
-      },
-      {
-        attrs: {
           title: 'Pagination - Remote',
           subtitle: '分页配置: remote-pagination = true',
           desc: 'props: pagination',

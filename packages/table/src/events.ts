@@ -29,45 +29,46 @@ import { SORT_OPTION } from './const';
 import { Column, IColumnActive } from './props';
 
 export const enum EVENTS {
-  ON_FILTER_CLICK = 'onFilterClick',
-  ON_ROW_CHECK = 'onRowCheck',
-  ON_ROW_EXPAND_CLICK = 'onRowExpandClick',
-
-  ON_SETTING_CHANGE = 'onSettingChange',
   /** 点击排序事件 */
   ON_SORT_BY_CLICK = 'onSortByClick',
+  ON_FILTER_CLICK = 'onFilterClick',
+  ON_SETTING_CHANGE = 'onSettingChange',
+
+  ON_ROW_EXPAND_CLICK = 'onRowExpandClick',
+  ON_ROW_CHECK = 'onRowCheck',
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const enum EMIT_EVENTS {
-  CELL_CLICK = 'cellClick',
-  CELL_DBL_CLICK = 'cellDblclick',
+  COLUMN_PICK = 'columnPick',
+  COLUMN_SORT = 'columnSort',
   COLUMN_FILTER = 'columnFilter',
   COLUMN_FILTER_SAVE = 'colFilterSave',
 
-  COLUMN_PICK = 'columnPick',
-  COLUMN_SORT = 'columnSort',
-  DRAG_END = 'dragend',
-  NATIVE_CLICK = 'click',
-  NATIVE_DBL_CLICK = 'dblclick',
-
-  PAGE_LIMIT_CHANGE = 'pageLimitChange',
-  PAGE_VALUE_CHANGE = 'pageValueChange',
-
   ROW_CLICK = 'rowClick',
-
   ROW_DBL_CLICK = 'rowDblclick',
-
   ROW_EXPAND_CLICK = 'rowExpand',
   ROW_MOUSE_ENTER = 'rowMouseEnter',
   ROW_MOUSE_LEAVE = 'rowMouseLeave',
 
-  ROW_SELECT = 'select',
-  ROW_SELECT_ALL = 'selectAll',
-
-  ROW_SELECT_CHANGE = 'selectionChange',
-  SCROLL_BOTTOM = 'scrollBottom',
+  PAGE_LIMIT_CHANGE = 'pageLimitChange',
+  PAGE_VALUE_CHANGE = 'pageValueChange',
 
   SETTING_CHANGE = 'settingChange',
+
+  SCROLL_BOTTOM = 'scrollBottom',
+
+  ROW_SELECT = 'select',
+  ROW_SELECT_ALL = 'selectAll',
+  ROW_SELECT_CHANGE = 'selectionChange',
+
+  CELL_CLICK = 'cellClick',
+  CELL_DBL_CLICK = 'cellDblclick',
+
+  NATIVE_CLICK = 'click',
+  NATIVE_DBL_CLICK = 'dblclick',
+
+  DRAG_END = 'dragend',
 }
 
 export const EVENT_COL_PICK = (_cols: IColumnActive[]) => true;
@@ -77,15 +78,15 @@ export const EVENT_COL_SORT = (_args: { column: Column; index: number; type: SOR
 
 export const EVENT_MOUSE_FN = (_e: MouseEvent, _row: any, _index: number, _rows: any[], _this: any) => true;
 
-export const EVENT_EXPAND_FN = (_args: { row: any; column: Column; index: number; rows: any[]; e: MouseEvent }) => true;
+export const EVENT_EXPAND_FN = (_args: { row: any; column: Column; index: Number; rows: any[]; e: MouseEvent }) => true;
 
-export const EVENT_ROW_SELECT_FN = (_args: { row: any; index: number; checked: string; data: any[] }) => true;
+export const EVENT_ROW_SELECT_FN = (_args: { row: any; index: Number; checked: string; data: any[] }) => true;
 
 export const EVENT_ROW_SELECT_ALL_FN = (_args: { checked: string; data: any[] }) => true;
 
 export const EVENT_ROW_SELECT_CHANGE_FN = (_args: {
   row: any;
-  index: number;
+  index: Number;
   checked: string;
   data: any[];
   isAll: boolean;

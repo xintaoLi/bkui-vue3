@@ -23,62 +23,37 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { reactive, watch } from 'vue';
+import { computed, defineComponent } from 'vue';
 
-import { debounce } from 'lodash';
+import { useLocale } from '@bkui-vue/config-provider';
+import Exception from '@bkui-vue/exception';
+import { PropTypes } from '@bkui-vue/shared';
 
-import { SORT_OPTION } from './const';
-import useColumnTemplate from './plugins/use-column-template';
-import { IColSortBehavior, ISortShape, TablePropTypes } from './props';
+export default defineComponent({
+  name: 'BodyEmpty',
+  props: {
+    list: PropTypes.array.def([]),
+    filterList: PropTypes.array.def([]),
+    emptyText: PropTypes.string,
+  },
+  emits: ['change'],
 
-/**
- * 渲染column settings
- * @param props: TablePropTypes
- * @param targetColumns 解析之后的column配置（主要用来处理通过<bk-column>配置的数据结构）
- */
-export default (props: TablePropTypes) => {
-  const resolvedColumns = reactive(props.columns ?? []);
-  const throttleUpdate = debounce(instance => {
-    const { resolveColumns } = useColumnTemplate();
+  setup(props) {
+    const t = useLocale('table');
+    const localEmptyText = computed(() => {
+      if (props.emptyText === undefined) {
+        return t.value.emptyText;
+      }
+      return props.emptyText;
+    });
 
-    resolvedColumns.length = 0;
-    resolvedColumns.push(...resolveColumns(instance));
-  });
-
-  /**
-   * 初始化Column配置
-   * @param column 传入
-   * @param remove 是否移除当前列
-   */
-  const initColumns = tableInstance => {
-    throttleUpdate(tableInstance);
-  };
-
-  watch(
-    () => [props.columns],
-    () => {
-      resolvedColumns.length = 0;
-      resolvedColumns.push(...props.columns);
-    },
-  );
-
-  const getColumns = () => {
-    return resolvedColumns;
-  };
-
-  const getActiveColumn = () => {
-    if (props.colSortBehavior === IColSortBehavior.independent) {
-      const filters = [SORT_OPTION.ASC, SORT_OPTION.DESC];
-      // @ts-ignore
-      return getColumns().filter(col => filters.includes((col.sort as ISortShape)?.value))?.[0];
-    }
-    return null;
-  };
-
-  return {
-    initColumns,
-    getColumns,
-    getActiveColumn,
-    columns: resolvedColumns,
-  };
-};
+    const type = computed(() => (props.list.length === 0 ? 'empty' : 'search-empty'));
+    return () => (
+      <Exception
+        scene='part'
+        type={type.value}
+        description={localEmptyText.value}
+      />
+    );
+  },
+});

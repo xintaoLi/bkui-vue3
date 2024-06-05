@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { computed, defineComponent, nextTick, reactive, ref, watch } from 'vue';
+import { computed, defineComponent, reactive, ref, watch } from 'vue';
 
 import Button from '@bkui-vue/button';
 import Checkbox, { BkCheckboxGroup } from '@bkui-vue/checkbox';
@@ -35,7 +35,6 @@ import { classes, PropTypes, RenderType } from '@bkui-vue/shared';
 import VirtualRender from '@bkui-vue/virtual-render';
 
 import { Column, IColumnType, IFilterShape } from '../props';
-import { getRowText, resolvePropVal } from '../utils';
 
 type IHeadFilterPropType = {
   column: Column;
@@ -50,12 +49,11 @@ export default defineComponent({
     column: IColumnType,
     height: PropTypes.number.def(ROW_HEIGHT),
   },
-  emits: ['change', 'filterSave'],
+  emits: ['change', 'filterSave', 'reset'],
 
   setup(props: IHeadFilterPropType, { emit }) {
     const { resolveClassName } = usePrefix();
     const t = useLocale('table');
-    const { column } = props;
     const filter = computed(() => props.column?.filter);
     const checked = computed(() => (filter.value as IFilterShape)?.checked ?? []);
     const searchValue = ref('');
@@ -119,24 +117,8 @@ export default defineComponent({
       return defaultMin;
     });
 
-    const getRegExp = (val: boolean | number | string, flags = 'ig') =>
+    const getRegExp = (val: string | number | boolean, flags = 'ig') =>
       new RegExp(`${val}`.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), flags);
-
-    const defaultFilterFn = (checked: string[], row: any) => {
-      const { match } = filter.value as IFilterShape;
-      const matchText = getRowText(row, resolvePropVal(column, 'field', [column, row]));
-      if (match !== 'fuzzy') {
-        return checked.includes(matchText);
-      }
-
-      return checked.some((str: string) => getRegExp(str, 'img').test(matchText));
-    };
-
-    const filterFn =
-      typeof (filter.value as IFilterShape).filterFn === 'function'
-        ? (checked: string[], row: any, index: number, data: any[]) =>
-            (filter.value as IFilterShape).filterFn(checked, row, props.column, index, data)
-        : (checked: string[], row: any) => (checked.length ? defaultFilterFn(checked, row) : true);
 
     const handleBtnSaveClick = () => {
       handleFilterChange(true);
@@ -153,8 +135,7 @@ export default defineComponent({
           state.isOpen = false;
           return;
         }
-        (filter.value as IFilterShape).checked = state.checked;
-        emit('change', state.checked, filterFn);
+        emit('change', state.checked);
       }
     };
 
@@ -162,11 +143,12 @@ export default defineComponent({
       if (state.checked.length) {
         state.checked.length = 0;
         state.isOpen = false;
-        nextTick(() => emit('change', state.checked, filterFn));
+        emit('change', state.checked);
+        emit('reset', state.checked);
       }
     };
 
-    const resolveBtnOption = (opt: boolean | string, defText: string) => {
+    const resolveBtnOption = (opt: string | boolean, defText: string) => {
       const disabled = opt === 'disabled' || opt === false;
       const text = typeof opt === 'string' ? opt : defText;
       return { disabled, text };
@@ -182,9 +164,9 @@ export default defineComponent({
 
       return (
         <Button
-          style='width: 56px; margin-right: 8px;'
-          size='small'
           theme='primary'
+          size='small'
+          style='width: 56px; margin-right: 8px;'
           onClick={handleBtnSaveClick}
         >
           {text}
@@ -201,8 +183,8 @@ export default defineComponent({
       return (
         <Button
           style='width: 56px;'
-          disabled={state.checked.length === 0}
           size='small'
+          disabled={state.checked.length === 0}
           onClick={handleBtnResetClick}
         >
           {text}
@@ -227,13 +209,13 @@ export default defineComponent({
       if (scope.data.length) {
         return scope.data.map((item: any) => (
           <div
-            key={item.value}
             class='list-item'
+            key={item.value}
           >
             <Checkbox
-              checked={state.checked.includes(item.value)}
-              immediateEmitChange={false}
               label={item.value}
+              immediateEmitChange={false}
+              checked={state.checked.includes(item.value)}
               modelValue={state.checked.includes(item.value)}
               onChange={val => handleValueChange(val, item)}
             >
@@ -248,15 +230,15 @@ export default defineComponent({
 
     return () => (
       <Popover
-        arrow={false}
+        trigger='click'
         isShow={state.isOpen}
-        offset={0}
         placement='bottom-start'
         renderType={RenderType.SHOWN}
-        trigger='click'
+        arrow={false}
+        offset={0}
         {...{ theme }}
-        onAfterHidden={() => handlePopShow(false)}
         onAfterShow={() => handlePopShow(true)}
+        onAfterHidden={() => handlePopShow(false)}
       >
         {{
           default: () => <Funnel class={headClass.value} />,
@@ -267,15 +249,15 @@ export default defineComponent({
               </div>
               <BkCheckboxGroup class='content-list'>
                 <VirtualRender
-                  ref={refVirtualRender}
-                  height={height.value}
-                  className='content-items'
-                  lineHeight={32}
-                  list={localData.value}
                   maxHeight={maxHeight.value}
                   minHeight={minHeight.value}
-                  scrollEvent={true}
+                  height={height.value}
+                  lineHeight={32}
+                  list={localData.value}
                   throttleDelay={0}
+                  scrollEvent={true}
+                  ref={refVirtualRender}
+                  className='content-items'
                 >
                   {{
                     default: renderFilterList,

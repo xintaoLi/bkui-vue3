@@ -121,7 +121,7 @@ export default defineComponent({
       let end = (pagination.endIndex + props.preloadItemCount) * props.groupItemCount;
       const total = localList.value.length;
       if (total < end) {
-        calcList.value = localList.value.slice(start, total);
+        // calcList.value = localList.value.slice(start, total);
         end = total;
         start = end - Math.floor(refContent.value.offsetHeight / props.lineHeight);
         start = start < 0 ? 0 : start;

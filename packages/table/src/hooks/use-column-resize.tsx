@@ -23,24 +23,24 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { computed, type Ref, ref } from 'vue';
-
 import isElement from 'lodash/isElement';
 import throttle from 'lodash/throttle';
+import { ref, watch } from 'vue';
 
 import { COLUMN_ATTRIBUTE } from '../const';
 import { Column } from '../props';
-import { ITableResponse } from '../use-attributes';
 
-export default (tableResp: ITableResponse, immediate = true, head: Ref<HTMLElement>) => {
-  const { formatData, getColumnAttribute, getColumnOrderWidth, setColumnAttribute } = tableResp;
+import { UseColumns } from './use-columns';
+
+export default (columns: UseColumns) => {
+  const { getColumnAttribute, getColumnOrderWidth, setColumnAttribute } = columns;
   const getColListener = (col: Column) => getColumnAttribute(col, COLUMN_ATTRIBUTE.LISTENERS) as Map<string, any>;
 
   const pluginName = 'HeadColumnResize';
   const enum EVENTS {
-    MOUSE_DOWN = 'onMousedown',
     MOUSE_MOVE = 'onMousemove',
     MOUSE_OUT = 'onMouseout',
+    MOUSE_DOWN = 'onMousedown',
   }
   let isInDragSection = false;
   let isMouseDown = false;
@@ -71,16 +71,12 @@ export default (tableResp: ITableResponse, immediate = true, head: Ref<HTMLEleme
     const minWidth = getColumnOrderWidth(dragColumn, [COLUMN_ATTRIBUTE.COL_MIN_WIDTH]);
     setColumnAttribute(dragColumn, COLUMN_ATTRIBUTE.RESIZE_WIDTH, resolveWidth > minWidth ? resolveWidth : minWidth);
 
-    setTimeout(() => tableResp.setAllColumnAttribute(COLUMN_ATTRIBUTE.COL_IS_DRAG, false));
     document.removeEventListener('mouseup', handleMouseUp);
     document.removeEventListener('mousemove', handleMouseMove);
 
     startX = 0;
     dragOffsetX.value = -1000;
     dragColumn = null;
-
-    const targetTable = head.value?.querySelector('table');
-    targetTable?.querySelectorAll('th').forEach((th: HTMLElement) => th.style.setProperty('user-select', 'inherit'));
   };
 
   const updateOffsetX = (e: MouseEvent) =>
@@ -95,10 +91,11 @@ export default (tableResp: ITableResponse, immediate = true, head: Ref<HTMLEleme
     }, 60);
 
   const handleMouseMove = (e: MouseEvent) => {
+    stopDefaultEvent(e);
+
     const bodyStyle = document.body.style;
     bodyStyle.setProperty('cursor', '');
     updateOffsetX(e)();
-    stopDefaultEvent(e);
   };
 
   const setChildrenNodeCursor = (root: HTMLElement, cursor: string) => {
@@ -117,8 +114,8 @@ export default (tableResp: ITableResponse, immediate = true, head: Ref<HTMLEleme
       }
       isMouseDown = true;
       const target = (e.target as HTMLElement).closest('th');
-      tableResp.setColumnAttribute(column, COLUMN_ATTRIBUTE.COL_IS_DRAG, true);
-      tableResp.setColumnAttribute(column, COLUMN_ATTRIBUTE.CALC_WIDTH, target.scrollWidth);
+      setColumnAttribute(column, COLUMN_ATTRIBUTE.COL_IS_DRAG, true);
+      setColumnAttribute(column, COLUMN_ATTRIBUTE.CALC_WIDTH, target.scrollWidth);
 
       const bodyStyle = document.body.style;
       bodyStyle.setProperty('cursor', 'col-resize');
@@ -174,8 +171,8 @@ export default (tableResp: ITableResponse, immediate = true, head: Ref<HTMLEleme
   const getEventName = (event: string) => `${pluginName}_${event}`;
 
   const registerResizeEvent = () => {
-    formatData.columns.forEach(col => {
-      if (col.resizable !== false) {
+    columns.tableColumnList.forEach(col => {
+      if (columns.getColumnAttribute(col, COLUMN_ATTRIBUTE.COL_RESIZEABLE)) {
         const target = getColListener(col);
         Object.keys(handler).forEach((event: string) => {
           const name = getEventName(event);
@@ -191,7 +188,7 @@ export default (tableResp: ITableResponse, immediate = true, head: Ref<HTMLEleme
   };
 
   const resetResizeEvents = () => {
-    formatData.columns.forEach(col => {
+    columns.tableColumnList.forEach(col => {
       const target = getColListener(col);
       Object.keys(handler).forEach((event: string) => {
         const name = getEventName(event);
@@ -203,39 +200,16 @@ export default (tableResp: ITableResponse, immediate = true, head: Ref<HTMLEleme
     });
   };
 
-  if (immediate) {
-    registerResizeEvent();
-  }
-
-  const dragOffsetXStyle = {
-    position: 'absolute' as const,
-    top: 0,
-    bottom: 0,
-    left: 0,
-    width: '1px',
-    backgroundColor: '#3785FF',
-    transform: 'translateX(-50%)',
-  };
-
-  const layout = computed(() => tableResp.formatData.layout);
-
-  const resizeColumnStyle = computed(() => ({
-    ...dragOffsetXStyle,
-    transform: `translate(${dragOffsetX.value + 3}px, ${layout.value.translateY}px)`,
-  }));
-
-  const resizeHeadColStyle = computed(() => ({
-    ...dragOffsetXStyle,
-    width: '6px',
-    transform: `translateX(${dragOffsetX.value}px)`,
-  }));
+  watch(
+    () => [columns.tableColumnList],
+    () => {
+      resetResizeEvents();
+      registerResizeEvent();
+    },
+    { immediate: true, deep: true },
+  );
 
   return {
-    registerResizeEvent,
-    resetResizeEvents,
     dragOffsetX,
-    dragOffsetXStyle,
-    resizeColumnStyle,
-    resizeHeadColStyle,
   };
 };

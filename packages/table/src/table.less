@@ -13,7 +13,7 @@
 .@{bk-prefix}-table {
   position: relative;
   width: 100%;
-  height: auto;
+  height: 100%;
   overflow: hidden;
 
   &-flex {
@@ -35,7 +35,7 @@
   .@{bk-prefix}-table-body {
     position: relative;
     overflow: hidden;
-    border-bottom: 1px solid @table-border-color;
+    // border-bottom: 1px solid @table-border-color;
 
     .prepend-row {
       transform: translateX(var(--prepend-left));
@@ -287,6 +287,7 @@
               td {
                 &:not(.empty-cell) {
                   background: @table-row-hover-bg-color;
+                  border-right: @table-row-hover-bg-color;
                 }
               }
             }
@@ -448,32 +449,27 @@
     position: absolute;
     top: 0;
     right: 0;
-    bottom: var(--footer-height);
+    bottom: 0;
     left: 0;
     pointer-events: none;
+
+    &.shadow-left {
+      .column_fixed_left {
+        box-shadow: 0 0 10px rgb(0 0 0 / 12%);
+      }
+    }
+
+    &.shadow-right {
+      .column_fixed_right {
+        box-shadow: 0 0 10px rgb(0 0 0 / 12%);
+      }
+    }
 
     .column_fixed {
       position: absolute;
       z-index: 2;
-
-      &.column_fixed_left {
-        top: 0;
-        left: 0;
-
-        &.shadow {
-          box-shadow: 0 0 10px rgb(0 0 0 / 12%);
-        }
-      }
-
-      &.column_fixed_right {
-        top: 0;
-        right: 0;
-
-
-        &.shadow {
-          box-shadow: 0 0 10px rgb(0 0 0 / 12%);
-        }
-      }
+      bottom: 0;
+      top: 0;
     }
 
     .scroll-loading {
@@ -489,6 +485,12 @@
     }
   }
 
+  .@{bk-prefix}-table-fixed-bottom {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
   colgroup {
     col {
       background: @table-bg-color;

@@ -23,17 +23,16 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { ComponentInternalInstance, isVNode, reactive, ref, unref } from 'vue';
-
 import { v4 as uuidv4 } from 'uuid';
+import { ComponentInternalInstance, getCurrentInstance, isVNode, unref } from 'vue';
 
 import { ITableColumn } from '../components/table-column';
 
 export default () => {
-  const columns = reactive([]);
-  const columnIndex = ref(0);
+  const columns = [];
+  let columnIndex = 0;
   const columnCache = new WeakMap();
-  const copyProps = (props: { [key: string]: any } | ITableColumn) => {
+  const copyProps = (props: ITableColumn | { [key: string]: any }) => {
     return Object.keys(props ?? {}).reduce((result, key) => {
       const target = key.replace(/-(\w)/g, (_, letter) => letter.toUpperCase());
       return Object.assign(result, { [target]: props[key] });
@@ -54,7 +53,7 @@ export default () => {
     }
 
     if (node.type?.name === 'TableColumn') {
-      const resolveProp = Object.assign({ index: columnIndex.value }, copyProps(node.props), {
+      const resolveProp = Object.assign({ index: columnIndex }, copyProps(node.props), {
         field: node.props.prop || node.props.field,
         render: node.props.render ?? node.children?.default,
         uniqueId: getNodeCtxUid(node),
@@ -62,7 +61,7 @@ export default () => {
 
       if (!columns.some(col => col.uniqueId === resolveProp.uniqueId)) {
         columns.push(unref(resolveProp));
-        columnIndex.value = columnIndex.value + 1;
+        columnIndex = columnIndex + 1;
       }
 
       return;
@@ -89,8 +88,11 @@ export default () => {
     }
   };
 
-  const resolveColumns = (instance: ComponentInternalInstance) => {
+  const resolveColumns = (target?: ComponentInternalInstance) => {
+    const instance = target ?? getCurrentInstance();
     columns.length = 0;
+    columnIndex = 0;
+
     const children = instance.slots?.default?.() ?? [];
     children.forEach(resolveChildNode);
     columns.sort((col1, col2) => col1.index - col2.index);
@@ -100,6 +102,5 @@ export default () => {
   return {
     resolveColumns,
     setNodeInstanceId,
-    columns,
   };
 };
