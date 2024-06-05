@@ -23,8 +23,9 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { v4 as uuidv4 } from 'uuid';
 import { ComponentInternalInstance, getCurrentInstance, isVNode, unref } from 'vue';
+
+import { v4 as uuidv4 } from 'uuid';
 
 import { ITableColumn } from '../components/table-column';
 
@@ -32,7 +33,7 @@ export default () => {
   const columns = [];
   let columnIndex = 0;
   const columnCache = new WeakMap();
-  const copyProps = (props: ITableColumn | { [key: string]: any }) => {
+  const copyProps = (props: { [key: string]: any } | ITableColumn) => {
     return Object.keys(props ?? {}).reduce((result, key) => {
       const target = key.replace(/-(\w)/g, (_, letter) => letter.toUpperCase());
       return Object.assign(result, { [target]: props[key] });

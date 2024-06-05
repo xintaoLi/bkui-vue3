@@ -34,7 +34,6 @@ import HeadFilter from '../plugins/head-filter';
 import HeadSort from '../plugins/head-sort';
 import { Column, TablePropTypes } from '../props';
 import { getNextSortType, getSortFn, resolveHeadConfig, resolvePropVal } from '../utils';
-
 import { UseColumns } from './use-columns';
 import { UseRows } from './use-rows';
 export default ({
@@ -83,11 +82,11 @@ export default ({
     // 如果是独立的，则只高亮当前排序
     return (
       <HeadSort
-        column={column as Column}
-        onChange={handleSortClick}
-        sortValFormat={props.sortValFormat}
-        defaultSort={sortType.value}
         active={sortActive.value}
+        column={column as Column}
+        defaultSort={sortType.value}
+        sortValFormat={props.sortValFormat}
+        onChange={handleSortClick}
       />
     );
   };
@@ -109,11 +108,11 @@ export default ({
 
     return (
       <HeadFilter
-        column={column as Column}
         height={props.headHeight}
+        column={column as Column}
         onChange={handleFilterChange}
-        onReset={handleResetFilter}
         onFilterSave={filterSave}
+        onReset={handleResetFilter}
       />
     );
   };
@@ -167,10 +166,10 @@ export default ({
 
     return (
       <Checkbox
-        onChange={handleChecked}
         disabled={isDisabled}
-        modelValue={isChecked}
         indeterminate={indeterminate as boolean}
+        modelValue={isChecked}
+        onChange={handleChecked}
       />
     );
   };
@@ -191,13 +190,13 @@ export default ({
     return (
       <TableCell
         class={headClass}
-        title={showTitle}
-        observerResize={props.observerResize}
-        resizerWay={props.resizerWay}
-        isHead={true}
         column={column as Column}
-        parentSetting={props.showOverflowTooltip}
         headExplain={resolvePropVal(column.explain, 'head', [column])}
+        isHead={true}
+        observerResize={props.observerResize}
+        parentSetting={props.showOverflowTooltip}
+        resizerWay={props.resizerWay}
+        title={showTitle}
       >
         {cells}
       </TableCell>
@@ -234,11 +233,11 @@ export default ({
   const getTH = () => {
     return (
       <th
-        colspan={1}
-        rowspan={1}
-        data-id={columns.getColumnId(column)}
-        class={classList}
         style={headStyle}
+        class={classList}
+        colspan={1}
+        data-id={columns.getColumnId(column)}
+        rowspan={1}
         onClick={() => handleColumnHeadClick()}
         {...columns.resolveEventListener(column)}
       >

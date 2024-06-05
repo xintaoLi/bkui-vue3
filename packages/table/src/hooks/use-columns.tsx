@@ -23,11 +23,11 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { debounce } from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
 import { computed, isRef, reactive, ref, watch } from 'vue';
 
 import { useLocale } from '@bkui-vue/config-provider';
+import { debounce } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 
 import { COL_MIN_WIDTH, COLUMN_ATTRIBUTE, IEmptyObject } from '../const';
 import { Column, IColSortBehavior, IFilterShape, Settings, TablePropTypes } from '../props';
@@ -175,7 +175,7 @@ const useColumns = (props: TablePropTypes) => {
       return null;
     }
 
-    const getRegExp = (val: string | number | boolean, flags = 'ig') =>
+    const getRegExp = (val: boolean | number | string, flags = 'ig') =>
       new RegExp(`${val}`.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), flags);
 
     const defaultFilterFn = (checked: string[], row: any) => {
@@ -190,8 +190,7 @@ const useColumns = (props: TablePropTypes) => {
 
     const filterFn =
       typeof (col.filter as IFilterShape).filterFn === 'function'
-        ? // eslint-disable-next-line max-len
-          (checked: string[], row: any, index: number, data: any[]) =>
+        ? (checked: string[], row: any, index: number, data: any[]) =>
             (col.filter as IFilterShape).filterFn(checked, row, col, index, data)
         : (checked: string[], row: any) => (checked.length ? defaultFilterFn(checked, row) : true);
 
@@ -392,12 +391,12 @@ const useColumns = (props: TablePropTypes) => {
     col: Column,
     attrName: string,
     attrValue:
-      | ((...args) => boolean | number | void | string)
-      | string
+      | ((...args) => boolean | number | string | void)
+      | Record<string, any>
+      | any[]
       | boolean
       | number
-      | any[]
-      | Record<string, any>,
+      | string,
   ) => {
     beforeAttributeChange(col, attrName, attrValue);
     const target = tableColumnSchema.get(col);

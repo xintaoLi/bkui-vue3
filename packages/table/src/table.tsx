@@ -24,8 +24,9 @@
  * IN THE SOFTWARE.
  */
 
-import { isElement } from 'lodash';
 import { computed, defineComponent, getCurrentInstance, nextTick, provide, ref, SetupContext, watch } from 'vue';
+
+import { isElement } from 'lodash';
 
 import { COLUMN_ATTRIBUTE, PROVIDE_KEY_INIT_COL, TABLE_ROW_ATTRIBUTE } from './const';
 import { EMIT_EVENT_TYPES } from './events';
@@ -44,7 +45,6 @@ import useSettings from './hooks/use-settings';
 import { tableProps } from './props';
 
 export default defineComponent({
-  // eslint-disable-next-line vue/no-reserved-component-names
   name: 'Table',
   props: tableProps,
   emits: EMIT_EVENT_TYPES,

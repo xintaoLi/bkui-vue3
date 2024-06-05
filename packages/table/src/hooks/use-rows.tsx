@@ -23,8 +23,9 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { v4 as uuidv4 } from 'uuid';
 import { computed, reactive, watch } from 'vue';
+
+import { v4 as uuidv4 } from 'uuid';
 
 import { CHECK_ALL_OBJ, IEmptyObject, NEED_COL_ROW_SPAN, TABLE_ROW_ATTRIBUTE } from '../const';
 import { TablePropTypes } from '../props';
@@ -132,7 +133,7 @@ const useRows = (props: TablePropTypes) => {
     };
   };
 
-  const getRowAttribute = (item: any | IEmptyObject, attrName: string) => {
+  const getRowAttribute = (item: IEmptyObject | any, attrName: string) => {
     return tableRowSchema.get(item)?.[attrName];
   };
 
@@ -227,7 +228,7 @@ const useRows = (props: TablePropTypes) => {
    * @param attrName
    * @param attrValue
    */
-  const setRowAttribute = (item: any, attrName: string, attrValue: string | boolean | number) => {
+  const setRowAttribute = (item: any, attrName: string, attrValue: boolean | number | string) => {
     const row = getRawData(item);
     const target = tableRowSchema.get(row);
     if (target && Object.prototype.hasOwnProperty.call(target, attrName)) {
