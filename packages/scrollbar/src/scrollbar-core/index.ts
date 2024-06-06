@@ -24,7 +24,8 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { debounce, throttle } from 'lodash';
+import { debounce } from 'lodash';
+import { Cancellable, throttle } from '@bkui-vue/shared';
 
 import canUseDOM from './can-use-dom';
 import * as helpers from './helpers';
@@ -287,7 +288,7 @@ export default class BkScrollbarCore {
    */
   wrapperScrollMap = {};
 
-  onMouseMove: (() => void) | DebouncedFunc<any> = () => {};
+  onMouseMove: (() => void) | Cancellable<any> = () => {};
   onWindowResize: (() => void) | DebouncedFunc<any> = () => {};
   onStopScrolling: (() => void) | DebouncedFunc<any> = () => {};
   onMouseEntered: (() => void) | DebouncedFunc<any> = () => {};
@@ -334,10 +335,10 @@ export default class BkScrollbarCore {
       throw new Error(`Argument passed to SimpleBar must be an HTML element instead of ${this.el}`);
     }
 
-    this.onMouseMove = throttle(this.mOnMouseMove, 64);
-    this.onWindowResize = debounce(this.mOnWindowResize, 64, { leading: true });
-    this.onStopScrolling = debounce(this.mOnStopScrolling, this.stopScrollDelay);
-    this.onMouseEntered = debounce(this.mOnMouseEntered, this.stopScrollDelay);
+    this.onMouseMove = throttle(this.mOnMouseMove);
+    this.onWindowResize = throttle(this.mOnWindowResize);
+    this.onStopScrolling = throttle(this.mOnStopScrolling);
+    this.onMouseEntered = throttle(this.mOnMouseEntered);
     this.mouseWheelInstance = resolveWheelEvent(this.mOnMouseWheel);
 
     this.init();
@@ -399,6 +400,7 @@ export default class BkScrollbarCore {
   }
 
   initListeners() {
+    console.log('initListeners');
     const elWindow = getElementWindow(this.el);
     // Event listeners
 
@@ -1094,7 +1096,7 @@ export default class BkScrollbarCore {
 
       this.mouseWeelTimer = setTimeout(() => {
         this.hideScrollbar('y');
-        this.showScrollbar('x');
+        this.hideScrollbar('x');
       }, 200);
     }
   };

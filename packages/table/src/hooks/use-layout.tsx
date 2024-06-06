@@ -242,6 +242,10 @@ export default (props: TablePropTypes, ctx) => {
     transform: `translate3d(${translateX.value}px, ${translateY.value}px, 0)`,
   }));
 
+  const fixedBottomLoadingStyle = computed(() => ({
+    transform: `translate3d(${translateX.value}px, ${translateY.value}px, 0)`,
+    minHeight: `${lineHeight.value}px`,
+  }));
   onMounted(() => {
     setOffsetRight();
   });
@@ -275,9 +279,9 @@ export default (props: TablePropTypes, ctx) => {
             >
               {fixedRows?.()}
             </div>,
-            <div>{ctx.slots.appendBottom?.()}</div>,
+            <div class={fixedBottomRow}>{ctx.slots.appendBottom?.()}</div>,
             <div
-              style={fixedWrapperStyle.value}
+              style={fixedBottomLoadingStyle.value}
               class={fixedBottomRow}
             >
               {loadingRow?.()}

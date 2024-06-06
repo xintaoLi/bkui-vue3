@@ -296,6 +296,7 @@ export const DATA_FIX_COLUMNS = [
   {
     label: '来源',
     field: 'source',
+    fixed: true,
     filter: {
       list: [
         { text: '1_QQ', value: '1_QQ' },
