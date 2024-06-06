@@ -37,7 +37,7 @@ import { resolvePropVal } from '../utils';
 import { UseColumns } from './use-columns';
 import { EMIT_EVENTS } from '../events';
 
-const useSettings = (props: TablePropTypes, ctx: SetupContext, columns: UseColumns) => {
+const useSettings = (props: TablePropTypes, ctx: SetupContext, columns: UseColumns, afterSetting) => {
   const t = useLocale('table');
   const { resolveClassName } = usePrefix();
   const defaultSizeList: SizeItem[] = createDefaultSizeList(t);
@@ -113,7 +113,7 @@ const useSettings = (props: TablePropTypes, ctx: SetupContext, columns: UseColum
     Object.assign(options, result);
     columns.setColumnAttributeBySettings(options as any, result.checked);
     columns.setVisibleColumns();
-
+    afterSetting?.(result.checked);
     refSetting.value?.hide();
     ctx.emit(EMIT_EVENTS.SETTING_CHANGE, result);
   };

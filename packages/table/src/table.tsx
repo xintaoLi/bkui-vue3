@@ -43,6 +43,7 @@ import useRows from './hooks/use-rows';
 import useScrollLoading from './hooks/use-scroll-loading';
 import useSettings from './hooks/use-settings';
 import { tableProps } from './props';
+import { getNumberOrPercentValue } from './utils';
 
 export default defineComponent({
   name: 'Table',
@@ -52,28 +53,6 @@ export default defineComponent({
     const columns = useColumns(props);
     const rows = useRows(props);
     const pagination = usePagination(props);
-    const settings = useSettings(props, ctx, columns);
-    const dragEvents = useDraggable(props, rows, ctx);
-
-    const { renderColumns, renderTBody, renderTFoot, setDragEvents } = useRender({
-      props,
-      ctx,
-      columns,
-      rows,
-      pagination,
-      settings,
-    });
-    setDragEvents(dragEvents);
-
-    const { dragOffsetX } = useColumnResize(columns);
-    const { resolveColumns } = useColumnTemplate();
-
-    const instance = getCurrentInstance();
-    const initTableColumns = () => {
-      columns.debounceUpdateColumns(resolveColumns(instance));
-    };
-
-    provide(PROVIDE_KEY_INIT_COL, initTableColumns);
 
     const {
       renderContainer,
@@ -84,35 +63,60 @@ export default defineComponent({
       setFootHeight,
       setDragOffsetX,
       setOffsetRight,
+      refBody,
       refRoot,
-      refHead,
     } = useLayout(props, ctx);
+
+    /**
+     * 设置字段结束，展示字段改变，设置表格偏移量为0
+     * 避免太长横向滚动导致数据不可见
+     * @param fields
+     */
+    const afterSetting = fields => {
+      if (fields?.length > 0) {
+        refBody.value.scrollTo(0, 0);
+      }
+    };
+
+    const settings = useSettings(props, ctx, columns, afterSetting);
+    const dragEvents = useDraggable(props, rows, ctx);
+
+    const { renderColumns, renderTBody, renderTFoot, setDragEvents } = useRender({
+      props,
+      ctx,
+      columns,
+      rows,
+      pagination,
+      settings,
+    });
+
+    setDragEvents(dragEvents);
+
+    const { resolveColumns } = useColumnTemplate();
+
+    const instance = getCurrentInstance();
+    const initTableColumns = () => {
+      columns.debounceUpdateColumns(resolveColumns(instance));
+    };
+
+    provide(PROVIDE_KEY_INIT_COL, initTableColumns);
 
     const { renderFixedRows, resolveFixedColumnStyle } = useFixedColumn(props, columns);
     const { renderScrollLoading } = useScrollLoading(props, ctx);
 
-    const isResizeBodyHeight = ref(false);
-
+    /**
+     * Column配置改变或者容器Resize之后，根据Columns配置
+     * 计算每一列的实际宽度
+     */
     const computedColumnRect = () => {
-      if (isElement(refHead?.value ?? null)) {
-        columns.visibleColumns.forEach(col => {
-          const id = columns.getColumnId(col);
-          const query = `[data-id="${id}"]`;
-
-          const target = refHead?.value?.querySelector(query) as HTMLElement;
-          if (isElement(target)) {
-            columns.setColumnRect(col, {
-              width: target.offsetWidth,
-              height: target.offsetHeight,
-              left: null,
-              right: null,
-            });
-          }
-        });
-
-        resolveFixedColumnStyle();
-      }
+      const width = refRoot.value?.offsetWidth ?? 0;
+      columns.resolveColsCalcWidth(width);
+      resolveFixedColumnStyle();
     };
+
+    const { dragOffsetX } = useColumnResize(columns, { afterResize: resolveFixedColumnStyle });
+
+    const isResizeBodyHeight = ref(false);
 
     /**
      * table 渲染行
@@ -188,6 +192,7 @@ export default defineComponent({
           return;
         }
         const tableHeight = refRoot.value.offsetHeight;
+
         const bodyHeight = tableHeight - columns.headHeight.value - footHeight.value;
         isResizeBodyHeight.value = true;
 

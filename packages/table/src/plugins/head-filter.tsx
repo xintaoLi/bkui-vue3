@@ -101,7 +101,10 @@ export default defineComponent({
     const theme = `light ${resolveClassName('table-head-filter')}`;
     const localData = computed(() => {
       const { list = [] } = filter.value as IFilterShape;
-      const filterList = list.filter(l => getRegExp(searchValue.value).test(l.value));
+      const filterList = list.filter(l => {
+        const reg = getRegExp(searchValue.value);
+        return reg.test(l.label) || reg.test(l.value);
+      });
       return filterList;
     });
 

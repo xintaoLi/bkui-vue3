@@ -32,8 +32,8 @@ import { COLUMN_ATTRIBUTE } from '../const';
 import { Column } from '../props';
 import { UseColumns } from './use-columns';
 
-export default (columns: UseColumns) => {
-  const { getColumnAttribute, getColumnOrderWidth, setColumnAttribute } = columns;
+export default (columns: UseColumns, { afterResize }) => {
+  const { getColumnAttribute, getColumnOrderWidth, setColumnAttribute, setColumnRect } = columns;
   const getColListener = (col: Column) => getColumnAttribute(col, COLUMN_ATTRIBUTE.LISTENERS) as Map<string, any>;
 
   const pluginName = 'HeadColumnResize';
@@ -69,7 +69,9 @@ export default (columns: UseColumns) => {
 
     const resolveWidth = getColumnOrderWidth(dragColumn, ORDER_LIST) + diff;
     const minWidth = getColumnOrderWidth(dragColumn, [COLUMN_ATTRIBUTE.COL_MIN_WIDTH]);
-    setColumnAttribute(dragColumn, COLUMN_ATTRIBUTE.RESIZE_WIDTH, resolveWidth > minWidth ? resolveWidth : minWidth);
+    const calcWidth = resolveWidth > minWidth ? resolveWidth : minWidth;
+    setColumnAttribute(dragColumn, COLUMN_ATTRIBUTE.RESIZE_WIDTH, calcWidth);
+    setColumnAttribute(dragColumn, COLUMN_ATTRIBUTE.CALC_WIDTH, calcWidth);
 
     document.removeEventListener('mouseup', handleMouseUp);
     document.removeEventListener('mousemove', handleMouseMove);
@@ -77,6 +79,8 @@ export default (columns: UseColumns) => {
     startX = 0;
     dragOffsetX.value = -1000;
     dragColumn = null;
+
+    afterResize?.();
   };
 
   const updateOffsetX = (e: MouseEvent) =>
@@ -101,9 +105,6 @@ export default (columns: UseColumns) => {
   const setChildrenNodeCursor = (root: HTMLElement, cursor: string) => {
     if (isElement(root)) {
       root.style?.setProperty('cursor', cursor);
-      if (root.childNodes?.length > 0) {
-        root.childNodes.forEach(node => setChildrenNodeCursor(node as HTMLElement, cursor));
-      }
     }
   };
 
