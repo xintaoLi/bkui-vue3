@@ -88,7 +88,7 @@ export default (columns: UseColumns) => {
       if (minWidth < resolveWidth) {
         dragOffsetX.value = e.clientX - startX + dragStartOffsetX;
       }
-    }, 60);
+    });
 
   const handleMouseMove = (e: MouseEvent) => {
     stopDefaultEvent(e);
