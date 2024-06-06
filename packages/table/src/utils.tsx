@@ -183,7 +183,7 @@ export const observerResize = (
       callbackFn();
     }
   };
-  const execFn = resizerWay === 'debounce' ? debounce(resolveCallbackFn, delay) : throttle(resolveCallbackFn, delay);
+  const execFn = resizerWay === 'debounce' ? debounce(resolveCallbackFn, delay) : throttle(resolveCallbackFn);
   const callFn = () => Reflect.apply(execFn, this, []);
 
   const resizeObserver = new ResizeObserver(() => {
