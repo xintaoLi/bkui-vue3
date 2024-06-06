@@ -28,7 +28,7 @@ import { isProxy, toRaw } from 'vue';
 
 import debounce from 'lodash/debounce';
 import objGet from 'lodash/get';
-import throttle from 'lodash/throttle';
+import { throttle } from '@bkui-vue/shared';
 import ResizeObserver from 'resize-observer-polyfill';
 import { v4 as uuidv4 } from 'uuid';
 
