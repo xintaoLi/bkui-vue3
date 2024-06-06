@@ -536,3 +536,21 @@ export const getRawData = data => {
 
   return data;
 };
+
+/**
+ * 转换 px | % 为实际数值
+ * @param val
+ * @param parentVal
+ * @returns
+ */
+export const getNumberOrPercentValue = (val: string | number, parentVal?: number) => {
+  if (/^\d+\.?\d+(px)?$/.test(`${val}`)) {
+    return Number(`${val}`.replace(/px/, ''));
+  }
+
+  if (/^\d+\.?\d+%$/.test(`${val}`)) {
+    return (Number(`${val}`.replace(/%/, '')) / 100) * (parentVal ?? 1);
+  }
+
+  return null;
+};

@@ -399,7 +399,6 @@ export default class BkScrollbarCore {
   }
 
   initListeners() {
-    console.log('initListeners');
     const elWindow = getElementWindow(this.el);
     // Event listeners
 
@@ -480,8 +479,8 @@ export default class BkScrollbarCore {
     const wrapperScrollHeight = this.getWrapperElScrollSize('scrollHeight'); // this.wrapperEl.scrollHeight;
     const wrapperScrollWidth = this.getWrapperElScrollSize('scrollWidth'); // this.wrapperEl.scrollWidth;
 
-    this.axis.x.isOverflowing = wrapperOffsetWidth !== 0 && wrapperScrollWidth > wrapperOffsetWidth;
-    this.axis.y.isOverflowing = wrapperScrollHeight > wrapperOffsetHeight;
+    this.axis.x.isOverflowing = wrapperOffsetWidth !== 0 && wrapperScrollWidth - wrapperOffsetWidth > 2;
+    this.axis.y.isOverflowing = wrapperScrollHeight - wrapperOffsetHeight > 2;
 
     this.axis.x.forceVisible = this.options.forceVisible === 'x' || this.options.forceVisible === true;
     this.axis.y.forceVisible = this.options.forceVisible === 'y' || this.options.forceVisible === true;

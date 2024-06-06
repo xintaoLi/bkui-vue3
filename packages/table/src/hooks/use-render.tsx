@@ -83,8 +83,10 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
           const minWidth = columns.getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_MIN_WIDTH);
           return (
             <col
-              style={{ minWidth: resolveNumberOrStringToPix(minWidth as string, 'auto') }}
-              width={width}
+              style={{
+                width: resolveNumberOrStringToPix(width, 'auto'),
+                minWidth: resolveNumberOrStringToPix(minWidth as string, 'auto'),
+              }}
             ></col>
           );
         })}

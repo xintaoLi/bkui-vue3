@@ -15,7 +15,6 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-collapse: separate;
   border-spacing: 0;
 
   &-flex {
@@ -37,7 +36,6 @@
   .@{bk-prefix}-table-body {
     position: relative;
     overflow: hidden;
-    // border-bottom: 1px solid @table-border-color;
 
     .prepend-row {
       transform: translateX(var(--prepend-left));
@@ -100,7 +98,8 @@
 
     table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+
       transform: translateZ(0);
       table-layout: fixed;
       align-self: flex-start;
@@ -228,18 +227,6 @@
             }
           }
 
-          &.column_fixed {
-            &::after {
-              position: absolute;
-              content: '';
-              right: -2px;
-              top: 0;
-              bottom: 0;
-              width: 2px;
-              background-color: @table-head-bg-color;
-            }
-          }
-
           .cell {
             display: flex;
             align-items: center;
@@ -251,12 +238,6 @@
           &:hover {
             cursor: pointer;
             background: @table-row-active-bg-color;
-
-            &.column_fixed {
-              &::after {
-                background-color: @table-row-hover-bg-color;
-              }
-            }
           }
 
           &.column_fixed {
@@ -290,18 +271,6 @@
                 cursor: move;
               }
             }
-
-            &.column_fixed {
-              &::after {
-                position: absolute;
-                content: '';
-                right: -2px;
-                top: 0;
-                bottom: 0;
-                width: 2px;
-                background-color: @table-bg-color;
-              }
-            }
           }
 
           &:hover {
@@ -310,12 +279,6 @@
                 &:not(.empty-cell) {
                   background: @table-row-hover-bg-color;
                   border-right-color: @table-row-hover-bg-color;
-                }
-
-                &.column_fixed {
-                  &::after {
-                    background-color: @table-row-hover-bg-color;
-                  }
                 }
               }
             }
@@ -434,13 +397,8 @@
 
   &.bordered-col {
     th {
-      border-right: 1px solid @table-border-color;
+      border-right: 1px solid var(--background-color);
 
-      &.column_fixed {
-        &::after {
-          border-left: solid 1px @table-border-color;
-        }
-      }
       &:last-child {
         border-right: none;
       }
@@ -451,12 +409,6 @@
         tr {
           td {
             border-right-color: @table-border-color;
-
-            &.column_fixed {
-              &::after {
-                border-left: solid 1px @table-border-color;
-              }
-            }
           }
         }
       }

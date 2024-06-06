@@ -61,7 +61,9 @@ export default (props: TablePropTypes, ctx) => {
   );
 
   const tableStyle = computed(() => ({
-    height: resolveNumberOrStringToPix(props.height, '100%'),
+    height: resolveNumberOrStringToPix(props.height),
+    maxHeight: resolveNumberOrStringToPix(props.maxHeight),
+    minHeight: resolveNumberOrStringToPix(props.minHeight),
   }));
 
   const headClass = computed(() =>
@@ -199,6 +201,10 @@ export default (props: TablePropTypes, ctx) => {
     ctx.emit(EMIT_EVENTS.SCROLL_BOTTOM, { ...args });
   });
 
+  /**
+   * 设置横向滚动条距离右侧距离
+   * 用于判定fix column的显示样式
+   */
   const setOffsetRight = () => {
     const scrollWidth = refBody.value?.refRoot?.scrollWidth ?? 0;
     const offsetWidth = refBody.value?.refRoot?.offsetWidth ?? 0;

@@ -65,6 +65,72 @@ const useColumns = (props: TablePropTypes) => {
     sortColumns.push({ col, ...sortOption, active: true });
   };
 
+  const setColumnCalcWidth = (col: Column, attrName: string, width: number) => {
+    let colWidth = 0;
+    if (/^\d+\.?\d*(px)?$/.test(`${col[attrName]}`)) {
+      colWidth = Number(`${col[attrName]}`.replace(/px/, ''));
+      setColumnAttribute(col, COLUMN_ATTRIBUTE.CALC_WIDTH, colWidth);
+      setColumnRect(col, {
+        width: colWidth,
+        left: null,
+        right: null,
+      });
+    }
+
+    if (/^\d+\.?\d*%$/.test(`${col[attrName]}`)) {
+      colWidth = (Number(`${col[attrName]}`.replace(/%/, '')) / 100) * width;
+      setColumnAttribute(col, COLUMN_ATTRIBUTE.CALC_WIDTH, colWidth);
+      setColumnRect(col, {
+        width: colWidth,
+        left: null,
+        right: null,
+      });
+    }
+
+    return colWidth;
+  };
+
+  /**
+   * 根据表格外层宽度和表格列配置
+   * 计算每一列的宽度
+   * @param width
+   */
+  const resolveColsCalcWidth = (width: number) => {
+    let diffWidth = width;
+    let minColWidth = COL_MIN_WIDTH;
+
+    const resolveColWidth = (colList: Column[], attrName = 'width') => {
+      const filterList: Column[] = [];
+      colList.forEach(col => {
+        const calcWidth = setColumnCalcWidth(col, attrName, width);
+        diffWidth = diffWidth - calcWidth;
+
+        if ([undefined, null, 'auto', 'undefined', 'null', ''].includes(col[attrName] as string)) {
+          filterList.push(col);
+        }
+      });
+
+      if (diffWidth > 0 && filterList.length) {
+        minColWidth = diffWidth / filterList.length;
+      }
+
+      return filterList;
+    };
+
+    const minWidthList = resolveColWidth(visibleColumns);
+    const autoWidthList = resolveColWidth(minWidthList, 'minWidth');
+
+    autoWidthList.forEach(col => {
+      const calcWidth = minColWidth > COL_MIN_WIDTH ? minColWidth : COL_MIN_WIDTH;
+      setColumnAttribute(col, COLUMN_ATTRIBUTE.CALC_WIDTH, calcWidth);
+      setColumnRect(col, {
+        width: calcWidth,
+        left: null,
+        right: null,
+      });
+    });
+  };
+
   /**
    * 用来记录列的过滤状态
    * @param col
@@ -81,7 +147,7 @@ const useColumns = (props: TablePropTypes) => {
     filterColumns.push({ col, ...filterOption });
   };
 
-  const visibleColumns = reactive([]);
+  const visibleColumns: Column[] = reactive([]);
   const setVisibleColumns = () => {
     visibleColumns.length = 0;
     visibleColumns.push(...tableColumnList.filter(col => !isHiddenColumn(col)));
@@ -279,6 +345,10 @@ const useColumns = (props: TablePropTypes) => {
 
   const getColumnRect = (column: Column) => {
     return getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_RECT);
+  };
+
+  const getColumnCalcWidth = (column: Column) => {
+    return getColumnAttribute(column, COLUMN_ATTRIBUTE.CALC_WIDTH);
   };
 
   type ColumnRect = { left?: number; right?: number; width?: number; height?: number };
@@ -522,6 +592,7 @@ const useColumns = (props: TablePropTypes) => {
     getColumnRect,
     getColumnCustomClass,
     getColumnRefAttribute,
+    getColumnCalcWidth,
     resolveEventListener,
     setColumnIsHidden,
     setColumnResizeWidth,
@@ -533,6 +604,7 @@ const useColumns = (props: TablePropTypes) => {
     setFixedStyle,
     setColumnRect,
     setVisibleColumns,
+    resolveColsCalcWidth,
   };
 };
 

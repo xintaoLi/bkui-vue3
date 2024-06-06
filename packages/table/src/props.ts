@@ -109,6 +109,7 @@ export const fixedType = string<`${FixedEnum}`>();
 export type IOverflowTooltipOption = {
   content: ((col: Column, row: any) => string) | string;
   disabled?: ((col: Column, row: any) => boolean) | boolean;
+  allowHtml?: boolean;
   watchCellResize?: boolean;
   mode?: `${OverflowModeEnum}`;
   popoverOption?: any;
@@ -390,9 +391,9 @@ export const tableProps = {
 
   /**
    * 设置表格最小高度
-   * 默认：300
+   * 默认：LINE_HEIGHT * 4
    */
-  minHeight: StringNumberType(LINE_HEIGHT * 2),
+  minHeight: StringNumberType(LINE_HEIGHT * 4),
 
   /**
    * 设置表格最d大高度
