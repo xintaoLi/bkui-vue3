@@ -86,9 +86,10 @@ export default (props: TablePropTypes, ctx) => {
   };
 
   const config = resolveHeadConfig(props);
+  const headHeight = computed(() => resolvePropVal(config, 'height', ['thead']));
 
   const headStyle = computed(() => ({
-    '--row-height': `${resolvePropVal(config, 'height', ['thead'])}px`,
+    '--row-height': `${headHeight.value}px`,
     '--scroll-head-left': `-${translateX.value}px`,
     '--scroll-left': `${translateX.value}px`,
     '--background-color': DEF_COLOR[props.thead?.color ?? IHeadColor.DEF1],
@@ -185,6 +186,16 @@ export default (props: TablePropTypes, ctx) => {
   };
 
   const bodyHeight: Ref<number | string> = ref('auto');
+
+  const bodyMaxHeight = computed(() => {
+    if (/^\d+\.?\d*(px|%)$/.test(`${tableStyle.value.maxHeight}`)) {
+      const headerHeight = props.showHead ? headHeight.value : 0;
+      return `calc(${tableStyle.value.maxHeight} - ${footHeight.value}px - ${headerHeight}px)`;
+    }
+
+    return null;
+  });
+
   const setBodyHeight = (height: number | string) => {
     bodyHeight.value = height;
   };
@@ -252,11 +263,14 @@ export default (props: TablePropTypes, ctx) => {
     transform: `translate3d(${translateX.value}px, ${translateY.value}px, 0)`,
     minHeight: `${lineHeight.value}px`,
   }));
+
   onMounted(() => {
     setOffsetRight();
   });
 
   const renderBody = (list, childrend?, fixedRows?, loadingRow?) => {
+    console.log('renderBody');
+
     return (
       <VirtualRender
         ref={refBody}
@@ -268,6 +282,7 @@ export default (props: TablePropTypes, ctx) => {
         rowKey={props.rowKey}
         scrollEvent={true}
         scrollbar={{ enabled: props.scrollbar }}
+        maxHeight={bodyMaxHeight.value}
         throttleDelay={120}
         onContentScroll={handleScrollChanged}
       >

@@ -415,7 +415,7 @@ export const tableProps = {
   /**
    * 是否显示Head
    */
-  showHead: PropTypes.bool.def(true),
+  showHead: PropTypes.bool.def(false),
 
   /**
    * 排序时对需要排序的字符串数值进行格式化

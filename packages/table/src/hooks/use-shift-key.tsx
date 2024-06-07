@@ -23,11 +23,11 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { onUnmounted, ref } from 'vue';
 
+import { ref } from 'vue';
 import { TablePropTypes } from '../props';
 
-export default (props: TablePropTypes) => {
+const multiShiftKey = (props: TablePropTypes) => {
   const isShiftKeyDown = ref(false);
   const store = {
     start: null,
@@ -77,12 +77,12 @@ export default (props: TablePropTypes) => {
 
   const getStore = () => store;
 
-  onUnmounted(() => {
+  const removeMultiCheckedEvents = () => {
     if (props.shiftMultiChecked) {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     }
-  });
+  };
 
   return {
     isShiftKeyDown,
@@ -91,5 +91,9 @@ export default (props: TablePropTypes) => {
     clearStore,
     setStoreStart,
     clearStoreStart,
+    removeMultiCheckedEvents,
   };
 };
+
+export type UseMultiShiftKey = ReturnType<typeof multiShiftKey>;
+export default multiShiftKey;

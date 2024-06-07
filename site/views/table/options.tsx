@@ -326,6 +326,7 @@ export const DATA_FIX_COLUMNS = [
   {
     label: '操作',
     render: ({ data }) => {
+      console.log('render, render, ernder');
       return <bk-input v-model={data.status}></bk-input>;
     },
     width: 180,

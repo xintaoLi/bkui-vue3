@@ -203,6 +203,8 @@ export default defineComponent({
       }
 
       computedColumnRect();
+      refBody.value.scrollTo(0, 0);
+      setOffsetRight();
     });
 
     watch(
@@ -260,7 +262,7 @@ export default defineComponent({
 
     return () =>
       renderContainer([
-        renderHeader(renderColumns, settings.renderSettings),
+        // renderHeader(renderColumns, settings.renderSettings),
         renderBody(rows.pageRowList, renderTBody, renderFixedRows, renderScrollLoading),
         renderFooter(renderTFoot()),
       ]);

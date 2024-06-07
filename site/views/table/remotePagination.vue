@@ -1,7 +1,7 @@
 <template>
   <div>
     <bk-table :columns="columns" :data="tableData" :pagination="pagination" border="horizontal" remote-pagination
-      @column-sort="handleColumnSort" @page-limit-change="handlePageLimitChange"
+      @column-sort="handleColumnSort" @page-limit-change="handlePageLimitChange" maxHeight="400"
       @page-value-change="handlePageValueChange" />
   </div>
 </template>
@@ -17,7 +17,7 @@ export default defineComponent({
     return {
       tableData: [],
       columns: [...DATA_FIX_COLUMNS],
-      pagination: { count: 100, limit: 10, current: 1 },
+      pagination: { count: 0, current: 1, limit: 50 },
     };
   },
   mounted() {
@@ -27,6 +27,8 @@ export default defineComponent({
     setCurrentData() {
       const start = (this.pagination.current - 1) * this.pagination.limit;
       setTimeout(() => {
+        this.pagination.count = 100;
+        this.pagination.current = 1;
         this.tableData = new Array(this.pagination.limit).fill('').map((_, index) => ({
           ip: `${start + index}--192.168.0.x`,
           source: `${start + index}_QQ`,

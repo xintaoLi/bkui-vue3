@@ -70,7 +70,7 @@ export const virtualRenderProps = {
   minHeight: PropTypes.number.def(30),
 
   /** 整体最大高度 */
-  maxHeight: PropTypes.number,
+  maxHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
   /**
    * 整体高度
