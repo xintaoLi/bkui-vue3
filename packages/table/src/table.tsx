@@ -173,7 +173,10 @@ export default defineComponent({
 
     const setTableData = () => {
       const filterOrderList = getFilterAndSortList();
-      pagination.setPagination({ count: filterOrderList.length });
+      if (!props.remotePagination) {
+        pagination.setPagination({ count: filterOrderList.length });
+      }
+
       const renderList = getRenderRowList(filterOrderList);
       rows.setPageRowList(renderList);
 

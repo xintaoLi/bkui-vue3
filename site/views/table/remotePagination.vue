@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 400px;">
+  <div>
     <bk-table :columns="columns" :data="tableData" :pagination="pagination" border="horizontal" remote-pagination
       @column-sort="handleColumnSort" @page-limit-change="handlePageLimitChange"
       @page-value-change="handlePageValueChange" />
