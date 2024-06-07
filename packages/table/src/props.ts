@@ -382,7 +382,7 @@ export const tableProps = {
    * 默认：auto 根据行数自动填充高度
    * 100%，依赖初始化时父级容器高度
    */
-  height: StringNumberType('100%'),
+  height: StringNumberType('auto'),
 
   /**
    * 是否为斑马纹 Table
