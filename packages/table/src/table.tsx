@@ -43,7 +43,6 @@ import useRows from './hooks/use-rows';
 import useScrollLoading from './hooks/use-scroll-loading';
 import useSettings from './hooks/use-settings';
 import { tableProps } from './props';
-import { getNumberOrPercentValue } from './utils';
 
 export default defineComponent({
   name: 'Table',
