@@ -71,7 +71,7 @@ const usePagination = (props: TablePropTypes) => {
        */
       pagination.enabled = isEnabled.value && !!props.pagination;
     },
-    { immediate: true },
+    { immediate: true, deep: true },
   );
 
   watch(
