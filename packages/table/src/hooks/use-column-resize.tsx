@@ -25,15 +25,15 @@
  */
 import { ref, watch } from 'vue';
 
-import isElement from 'lodash/isElement';
 import { throttle } from '@bkui-vue/shared';
+import isElement from 'lodash/isElement';
 
 import { COLUMN_ATTRIBUTE } from '../const';
 import { Column } from '../props';
 import { UseColumns } from './use-columns';
 
 export default (columns: UseColumns, { afterResize }) => {
-  const { getColumnAttribute, getColumnOrderWidth, setColumnAttribute, setColumnRect } = columns;
+  const { getColumnAttribute, getColumnOrderWidth, setColumnAttribute } = columns;
   const getColListener = (col: Column) => getColumnAttribute(col, COLUMN_ATTRIBUTE.LISTENERS) as Map<string, any>;
 
   const pluginName = 'HeadColumnResize';
