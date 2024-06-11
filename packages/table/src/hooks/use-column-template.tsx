@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { ComponentInternalInstance, getCurrentInstance, isVNode, unref } from 'vue';
+import { VNode, isVNode, unref } from 'vue';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -89,12 +89,10 @@ export default () => {
     }
   };
 
-  const resolveColumns = (target?: ComponentInternalInstance) => {
-    const instance = target ?? getCurrentInstance();
+  const resolveColumns = (children: VNode[]) => {
     columns.length = 0;
     columnIndex = 0;
 
-    const children = instance.slots?.default?.() ?? [];
     children.forEach(resolveChildNode);
     columns.sort((col1, col2) => col1.index - col2.index);
     return columns;

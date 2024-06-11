@@ -55,6 +55,7 @@ export default defineComponent({
 
     const {
       renderContainer,
+      renderFixedBottom,
       renderBody,
       renderHeader,
       renderFooter,
@@ -73,7 +74,7 @@ export default defineComponent({
      */
     const afterSetting = fields => {
       if (fields?.length > 0) {
-        refBody.value.scrollTo(0, 0);
+        refBody.value?.scrollTo(0, 0);
       }
     };
 
@@ -95,13 +96,13 @@ export default defineComponent({
 
     const instance = getCurrentInstance();
     const initTableColumns = () => {
-      columns.debounceUpdateColumns(resolveColumns(instance));
+      const children = instance.subTree?.children ?? [];
+      columns.debounceUpdateColumns(resolveColumns(children as any));
     };
 
     provide(PROVIDE_KEY_INIT_COL, initTableColumns);
 
     const { renderFixedRows, resolveFixedColumnStyle } = useFixedColumn(props, columns);
-    const { renderScrollLoading } = useScrollLoading(props, ctx);
 
     /**
      * Column配置改变或者容器Resize之后，根据Columns配置
@@ -203,7 +204,7 @@ export default defineComponent({
       }
 
       computedColumnRect();
-      refBody.value.scrollTo(0, 0);
+      refBody.value?.scrollTo(0, 0);
       setOffsetRight();
     });
 
@@ -263,7 +264,8 @@ export default defineComponent({
     return () =>
       renderContainer([
         renderHeader(renderColumns, settings.renderSettings, renderFixedRows),
-        renderBody(rows.pageRowList, renderTBody, renderFixedRows, renderScrollLoading),
+        renderBody(rows.pageRowList, renderTBody, renderFixedRows),
+        renderFixedBottom(),
         renderFooter(renderTFoot()),
       ]);
   },
