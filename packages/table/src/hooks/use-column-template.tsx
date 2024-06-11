@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { ComponentInternalInstance, VNode, VNodeNormalizedChildren, getCurrentInstance, isVNode, unref } from 'vue';
+import { VNode, isVNode, unref } from 'vue';
 
 import { v4 as uuidv4 } from 'uuid';
 
