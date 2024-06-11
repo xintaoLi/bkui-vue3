@@ -24,7 +24,7 @@
  * IN THE SOFTWARE.
  */
 
-import { computed, nextTick, reactive, ref, toRaw, watch } from 'vue';
+import { computed, reactive, ref, toRaw, watch } from 'vue';
 
 import { TablePropTypes } from '../props';
 const usePagination = (props: TablePropTypes) => {
