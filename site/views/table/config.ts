@@ -311,6 +311,19 @@ export default [
         desc: '是否开启shift键多选功能',
         optional: [],
       },
+      {
+        name: 'fixed-bottom',
+        type: 'FixedBottomOption | null',
+        default: 'null',
+        desc: '固定在底部的配置项',
+        optional: [
+          ` {
+          position: 'absolute' | 'relative';
+          height: number;
+          loading?: boolean;
+        }`,
+        ],
+      },
     ],
   },
   {
@@ -719,8 +732,11 @@ export default [
         desc: '<bk-column />模板使用自定义显示默认插槽, 这里面参数 data & row 在使用时要注意，data是原始数据，在组件中没有被代理监听，这个数据主要是回传给调用方使用，例如接口调用；如果要绑定数据实现实时更新请使用 row，row是组件内被监听数据，包含一些组件内置属性和方法',
         params: '{ cell, data, row, column, index, rows }',
       },
-      { name: '#fixedBottom', desc: '底部加载插槽,此插槽内容会一直固定在底部', params: '' },
-      { name: '#appendBottom', desc: '追加到最后，此插槽内容会追加到最后一行数据后面，会跟随滚动条滚动', params: '' },
+      {
+        name: '#fixedBottom',
+        desc: '底部加载插槽,此插槽内容会一直固定在底部, 可以结合 props.fixedBottom 进行详细配置',
+        params: '',
+      },
       { name: '#setting', desc: '表格设置中间自定义插槽', params: '' },
     ],
   },

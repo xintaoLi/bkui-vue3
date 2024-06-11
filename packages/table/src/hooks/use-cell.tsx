@@ -30,7 +30,7 @@ import { getRowText, isRowSelectEnable, resolvePropVal } from '../utils';
 import { COLUMN_ATTRIBUTE, TABLE_ROW_ATTRIBUTE } from '../const';
 import { SetupContext, unref } from 'vue';
 import { EMIT_EVENTS } from '../events';
-import useShiftKey, { UseMultiShiftKey } from './use-shift-key';
+import { UseMultiShiftKey } from './use-shift-key';
 import Checkbox from '@bkui-vue/checkbox';
 import { UseRows } from './use-rows';
 import { UseColumns } from './use-columns';

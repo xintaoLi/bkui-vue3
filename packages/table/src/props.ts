@@ -353,6 +353,12 @@ export enum IColSortBehavior {
   interdependent = 'interdependent',
 }
 
+export type FixedBottomOption = {
+  position: 'absolute' | 'relative';
+  height: number;
+  loading?: boolean;
+};
+
 export const tableProps = {
   /**
    * 渲染列表
@@ -636,4 +642,11 @@ export const tableProps = {
    * 启用Scrollbar
    */
   scrollbar: PropTypes.bool.def(true),
+
+  /**
+   * 固定在底部的配置项
+   */
+  fixedBottom: toType<FixedBottomOption>('FixedBottomOption', {
+    default: { position: 'relative', height: LINE_HEIGHT },
+  }).def(null),
 };
