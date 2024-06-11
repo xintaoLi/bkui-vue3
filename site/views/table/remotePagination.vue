@@ -24,11 +24,11 @@ export default defineComponent({
     this.setCurrentData();
   },
   methods: {
-    setCurrentData() {
+    setCurrentData(current = 1) {
       const start = (this.pagination.current - 1) * this.pagination.limit;
       setTimeout(() => {
         this.pagination.count = 100;
-        this.pagination.current = 1;
+        this.pagination.current = current;
         this.tableData = new Array(this.pagination.limit).fill('').map((_, index) => ({
           ip: `${start + index}--192.168.0.x`,
           source: `${start + index}_QQ`,
@@ -40,7 +40,7 @@ export default defineComponent({
     handlePageValueChange(value) {
       this.pagination.current = value;
       console.log('handlePageValueChange', value);
-      this.setCurrentData();
+      this.setCurrentData(value);
     },
     handlePageLimitChange(limit) {
       this.pagination.limit = limit;

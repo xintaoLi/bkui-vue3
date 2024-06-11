@@ -24,7 +24,7 @@
  * IN THE SOFTWARE.
  */
 
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, nextTick, reactive, ref, toRaw, watch } from 'vue';
 
 import { TablePropTypes } from '../props';
 const usePagination = (props: TablePropTypes) => {
@@ -42,6 +42,7 @@ const usePagination = (props: TablePropTypes) => {
    * 如果手动禁用分页，则禁用前端分页，否则启用前端分页
    */
   const isEnabled = ref(true);
+  const totalPage = computed(() => Math.ceil(pagination.count / pagination.limit));
 
   const setPagination = (option: Record<string, any>) => {
     Object.assign(pagination, { enabled: !!props.pagination }, option);
@@ -49,7 +50,7 @@ const usePagination = (props: TablePropTypes) => {
     /**
      * 如果分页组件启用了前端分页，则重置分页组件数据
      */
-    if (pagination.current * pagination.limit >= pagination.count) {
+    if (pagination.current > totalPage.value) {
       pagination.current = 1;
     }
   };
@@ -62,7 +63,7 @@ const usePagination = (props: TablePropTypes) => {
     () => [props.pagination],
     () => {
       if (typeof props.pagination === 'object') {
-        setPagination(props.pagination);
+        setPagination(toRaw(props.pagination));
       }
 
       /**

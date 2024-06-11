@@ -85,16 +85,16 @@ export default (props: TablePropTypes, ctx) => {
   const setFixedColumnShawdow = () => {
     const rightShawdow = offsetRight.value > 0 ? '0 0 10px rgb(0 0 0 / 12%)' : null;
     const leftShawdow = translateX.value > 0 ? '0 0 10px rgb(0 0 0 / 12%)' : null;
-    refRoot.value.style.setProperty('--shadow-right', rightShawdow);
-    refRoot.value.style.setProperty('--shadow-left', leftShawdow);
+    refRoot.value?.style?.setProperty('--shadow-right', rightShawdow);
+    refRoot.value?.style?.setProperty('--shadow-left', leftShawdow);
   };
 
   const setRootStyleVars = throttle(() => {
-    refRoot.value.style.setProperty('--drag-offset-x', `${dragOffsetX.value}px`);
-    refRoot.value.style.setProperty('--drag-offset-h-x', `${dragOffsetX.value - 2}px`);
-    refRoot.value.style.setProperty('--translate-y', `${translateY.value}px`);
-    refRoot.value.style.setProperty('--translate-x', `${translateX.value}px`);
-    refRoot.value.style.setProperty('--translate-x-1', `-${translateX.value}px`);
+    refRoot.value?.style?.setProperty('--drag-offset-x', `${dragOffsetX.value}px`);
+    refRoot.value?.style?.setProperty('--drag-offset-h-x', `${dragOffsetX.value - 2}px`);
+    refRoot.value?.style?.setProperty('--translate-y', `${translateY.value}px`);
+    refRoot.value?.style?.setProperty('--translate-x', `${translateX.value}px`);
+    refRoot.value?.style?.setProperty('--translate-x-1', `-${translateX.value}px`);
     setFixedColumnShawdow();
   });
 
@@ -109,11 +109,11 @@ export default (props: TablePropTypes, ctx) => {
   };
 
   const initRootStyleVars = () => {
-    refRoot.value.style.setProperty('--drag-offset-x', '-1000px');
-    refRoot.value.style.setProperty('--drag-offset-h-x', '-1000px');
-    refRoot.value.style.setProperty('--translate-y', '0px');
-    refRoot.value.style.setProperty('--translate-x', '0px');
-    refRoot.value.style.setProperty('--translate-x-1', '0px');
+    refRoot.value?.style?.setProperty('--drag-offset-x', '-1000px');
+    refRoot.value?.style?.setProperty('--drag-offset-h-x', '-1000px');
+    refRoot.value?.style?.setProperty('--translate-y', '0px');
+    refRoot.value?.style?.setProperty('--translate-x', '0px');
+    refRoot.value?.style?.setProperty('--translate-x-1', '0px');
   };
 
   const setDragOffsetX = (val: number) => {

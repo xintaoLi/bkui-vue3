@@ -24,7 +24,7 @@
  * IN THE SOFTWARE.
  */
 
-import { computed, CSSProperties, onUnmounted, SetupContext, unref, watch } from 'vue';
+import { computed, CSSProperties, onUnmounted, SetupContext } from 'vue';
 
 import { useLocale } from '@bkui-vue/config-provider';
 import Pagination from '@bkui-vue/pagination';
