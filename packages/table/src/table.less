@@ -27,12 +27,6 @@
     }
   }
 
-  &.has-scroll-y {
-    .@{bk-prefix}-table-head {
-      padding-right: 4px;
-    }
-  }
-
   .@{bk-prefix}-table-body {
     position: relative;
     overflow: hidden;
@@ -62,19 +56,19 @@
     }
   }
 
-  .@{bk-prefix}-fixed-bottom-border {
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    z-index: 1;
-    width: 100%;
-    border-top: 1px solid @table-border-color;
-    transform: translateX(var(--scroll-head-left));
+  // .@{bk-prefix}-fixed-bottom-border {
+  //   position: sticky;
+  //   bottom: 0;
+  //   left: 0;
+  //   z-index: 1;
+  //   width: 100%;
+  //   border-top: 1px solid @table-border-color;
+  //   transform: translateX(var(--scroll-head-left));
 
-    &._is-empty {
-      display: none;
-    }
-  }
+  //   &._is-empty {
+  //     display: none;
+  //   }
+  // }
 
   .@{bk-prefix}-table-head,
   .@{bk-prefix}-table-body {
@@ -241,7 +235,7 @@
           }
 
           &.column_fixed {
-            transform: translateX(var(--scroll-left));
+            transform: translateX(var(--translate-x));
           }
         }
       }
@@ -303,16 +297,23 @@
     .col-resize-drag {
       position: absolute;
       top: 0;
-      right: 0;
+      left: 0;
       bottom: 0;
       z-index: 1;
       width: 6px;
       background-color: #3785ff;
-      transform: translateX(-50%);
+      transform: translate3d(var(--drag-offset-h-x), 0, 0);
+      &:hover {
+        cursor: ew-resize !important;
+      }
+    }
+
+    .@{bk-prefix}-table-fixed {
+      transform: translate3d(0, 0, 0);
     }
 
     thead {
-      transform: translateX(var(--scroll-head-left));
+      transform: translate3d(var(--translate-x-1), 0, 0);
     }
 
     .table-head-settings {
@@ -437,17 +438,14 @@
     bottom: 0;
     left: 0;
     pointer-events: none;
+    transform: translate3d(var(--translate-x), var(--translate-y), 0);
 
-    &.shadow-left {
-      .column_fixed_left {
-        box-shadow: 0 0 10px rgb(0 0 0 / 12%);
-      }
+    .column_fixed_right {
+      box-shadow: var(--shadow-right);
     }
 
-    &.shadow-right {
-      .column_fixed_right {
-        box-shadow: 0 0 10px rgb(0 0 0 / 12%);
-      }
+    .column_fixed_left {
+      box-shadow: var(--shadow-left);
     }
 
     .column_fixed {
@@ -476,6 +474,7 @@
     bottom: 0;
     left: 0;
     text-align: center;
+    transform: translate3d(var(--translate-x), var(--translate-y), 0);
   }
   colgroup {
     col {

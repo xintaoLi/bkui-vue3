@@ -24,11 +24,9 @@
  * IN THE SOFTWARE.
  */
 
-import { computed, CSSProperties, SetupContext, unref } from 'vue';
+import { computed, CSSProperties, onUnmounted, SetupContext, unref, watch } from 'vue';
 
-import Checkbox from '@bkui-vue/checkbox';
 import { useLocale } from '@bkui-vue/config-provider';
-import { DownShape, GragFill, RightShape } from '@bkui-vue/icon';
 import Pagination from '@bkui-vue/pagination';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -40,8 +38,6 @@ import { EMIT_EVENTS } from '../events';
 import { Column, TablePropTypes } from '../props';
 import {
   formatPropAsArray,
-  getRowText,
-  isRowSelectEnable,
   resolveCellSpan,
   resolveColumnSpan,
   resolveHeadConfig,
@@ -54,6 +50,7 @@ import useHead from './use-head';
 import { UsePagination } from './use-pagination';
 import { UseRows } from './use-rows';
 import { UseSettings } from './use-settings';
+import useCell from './use-cell';
 import useShiftKey from './use-shift-key';
 type RenderType = {
   props: TablePropTypes;
@@ -69,6 +66,8 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
   const uuid = uuidv4();
 
   let dragEvents = {};
+
+  const multiShiftKey = useShiftKey(props);
 
   /**
    * 渲染table colgroup
@@ -240,175 +239,6 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
     ctx.emit(EMIT_EVENTS.ROW_MOUSE_LEAVE, e, row, index, rows);
   };
 
-  const renderCellCallbackFn = (row: any, column: Column, index: number, rows: any[]) => {
-    const cell = getRowText(row, resolvePropVal(column, 'field', [column, row]));
-    const data = row;
-    return (column.render as Function)({ cell, data, row, column, index, rows });
-  };
-
-  const getExpandCell = (row: any) => {
-    const isExpand = rows.getRowAttribute(row, TABLE_ROW_ATTRIBUTE.ROW_EXPAND);
-    const icon = isExpand ? <DownShape></DownShape> : <RightShape></RightShape>;
-
-    return <span>{[icon, ctx.slots.expandContent?.(row) ?? '']}</span>;
-  };
-
-  const handleRowExpandClick = (row: any, column: Column, index: number, rowList: any[], e: MouseEvent) => {
-    rows.setRowExpand(row, !rows.getRowAttribute(row, TABLE_ROW_ATTRIBUTE.ROW_EXPAND));
-    ctx.emit(EMIT_EVENTS.ROW_EXPAND_CLICK, { row, column, index, rows: rowList, e });
-  };
-
-  const renderExpandColumn = (row: any, column: Column, index: number, rows: any[]) => {
-    const renderExpandSlot = () => {
-      if (typeof column.render === 'function') {
-        return renderCellCallbackFn(row, column, index, rows);
-      }
-
-      return ctx.slots.expandCell?.({ row, column, index, rows }) ?? getExpandCell(row);
-    };
-
-    return (
-      <span
-        class='expand-btn-action'
-        onClick={(e: MouseEvent) => handleRowExpandClick(row, column, index, rows, e)}
-      >
-        {renderExpandSlot()}
-      </span>
-    );
-  };
-
-  const renderDraggableCell = (row, column, index, rows) => {
-    const renderFn = props.rowDraggable?.render ?? props.rowDraggable;
-    if (typeof renderFn === 'function') {
-      return renderFn(row, column, index, rows);
-    }
-
-    const fontSize = props.rowDraggable?.fontSize ?? '14px';
-    const fontIcon = props.rowDraggable?.icon ?? (
-      <GragFill
-        style={`'--font-size: ${fontSize};'`}
-        class='drag-cell'
-      ></GragFill>
-    );
-
-    return fontIcon;
-  };
-
-  const { isShiftKeyDown, getStore, setStore, setStoreStart, clearStoreStart } = useShiftKey(props);
-  const renderCheckboxColumn = (row: any, index: null | number, column: Column) => {
-    const handleChecked = (value: boolean, event: Event) => {
-      event.stopImmediatePropagation();
-      event.preventDefault();
-      event.stopPropagation();
-
-      if (!isShiftKeyDown.value) {
-        if (value) {
-          setStoreStart(row, index);
-        } else {
-          clearStoreStart();
-        }
-      }
-
-      rows.setRowSelection(row, value);
-
-      columns.setColumnAttribute(column, COLUMN_ATTRIBUTE.SELECTION_INDETERMINATE, rows.getRowIndeterminate());
-      columns.setColumnAttribute(column, COLUMN_ATTRIBUTE.SELECTION_VAL, rows.getRowCheckedAllValue());
-
-      ctx.emit(EMIT_EVENTS.ROW_SELECT, { row, index, checked: value, data: props.data });
-      ctx.emit(EMIT_EVENTS.ROW_SELECT_CHANGE, { row, index, checked: value, data: props.data });
-    };
-
-    const beforeRowChange = () => {
-      if (isShiftKeyDown.value) {
-        const result = setStore(row, index);
-        if (result) {
-          const { start, end } = getStore();
-          const startIndex = start.index < end.index ? start.index : end.index;
-          const endIndex = start.index < end.index ? end.index : start.index;
-
-          (rows.pageRowList.slice(startIndex, endIndex + 1) ?? []).forEach(item => {
-            const isRowEnabled = isRowSelectEnable(props, { row, index, isCheckAll: false });
-            isRowEnabled && rows.setRowSelection(item, true);
-          });
-        }
-
-        ctx.emit(EMIT_EVENTS.ROW_SELECT, { row, index, checked: true, data: props.data, isShiftKeyDown: true });
-        ctx.emit(EMIT_EVENTS.ROW_SELECT_CHANGE, {
-          row,
-          index,
-          checked: true,
-          data: props.data,
-          isShiftKeyDown: true,
-        });
-
-        return Promise.resolve(!result);
-      }
-
-      return Promise.resolve(true);
-    };
-
-    const indeterminate = rows.getRowAttribute(row, TABLE_ROW_ATTRIBUTE.ROW_SELECTION_INDETERMINATE);
-    const isChecked = rows.getRowAttribute(row, TABLE_ROW_ATTRIBUTE.ROW_SELECTION);
-    const isEnable = isRowSelectEnable(props, { row, index, isCheckAll: false });
-
-    return (
-      <Checkbox
-        beforeChange={beforeRowChange}
-        disabled={!isEnable}
-        indeterminate={indeterminate as boolean}
-        modelValue={isChecked}
-        onChange={handleChecked}
-      />
-    );
-  };
-
-  /**
-   * 渲染表格Cell内容
-   * @param row 当前行
-   * @param column 当前列
-   * @param index 当前列
-   * @param rows 当前列
-   * @returns
-   */
-  const renderCell = (row: any, column: Column, index: number, rowList: any[], isChild = false) => {
-    const defaultFn = () => {
-      const type = resolvePropVal(column, 'type', [column, row]);
-      if (type === 'index') {
-        return rows.getRowAttribute(row, TABLE_ROW_ATTRIBUTE.ROW_INDEX);
-      }
-
-      const key = resolvePropVal(column, 'field', [column, row]);
-      const cell = getRowText(row, key);
-      if (typeof column.render === 'function') {
-        return renderCellCallbackFn(row, column, index, rowList);
-      }
-      if (typeof cell === 'boolean') {
-        return String(cell);
-      }
-      if (!cell && typeof cell !== 'number') {
-        const { emptyCellText } = props;
-        if (emptyCellText) {
-          if (typeof emptyCellText === 'function') {
-            return emptyCellText(row, column, index, rowList);
-          }
-          return emptyCellText;
-        }
-      }
-      if (typeof cell === 'object') {
-        return JSON.stringify(unref(cell));
-      }
-      return cell;
-    };
-
-    const renderFn = {
-      expand: (row, column, index, rowList) => (isChild ? '' : renderExpandColumn(row, column, index, rowList)),
-      selection: (row, column, index, _rows) => renderCheckboxColumn(row, index, column),
-      drag: renderDraggableCell,
-    };
-
-    return renderFn[column.type]?.(row, column, index, rows) ?? defaultFn();
-  };
-
   const getRowSpanConfig = (row: any, rowIndex, preRow: any, col: Column, store: WeakMap<Object, any>) => {
     if (!store.has(row)) {
       store.set(row, new WeakMap());
@@ -499,13 +329,17 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
                 },
               ];
 
+              const columnKey = `${rowId}_${index}`;
+              const cellKey = `${rowId}_${index}_cell`;
+              const { renderCell } = useCell({ props, rows, ctx, columns, row, index, column, isChild, multiShiftKey });
+
               const handleEmit = (event, type: string) => {
                 const args = {
                   event,
                   row,
                   column,
                   cell: {
-                    getValue: () => renderCell(row, column, rowIndex, rowList, isChild),
+                    getValue: () => renderCell(),
                   },
                   rowIndex,
                   columnIndex: index,
@@ -513,8 +347,6 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
                 ctx.emit(type, args);
               };
 
-              const columnKey = `${rowId}_${index}`;
-              const cellKey = `${rowId}_${index}_cell`;
               return (
                 <td
                   key={columnKey}
@@ -522,18 +354,20 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
                   class={cellClass}
                   colspan={colspan}
                   rowspan={rowspan}
+                  data-id={columnKey}
                   onClick={event => handleEmit(event, EMIT_EVENTS.CELL_CLICK)}
                   onDblclick={event => handleEmit(event, EMIT_EVENTS.CELL_DBL_CLICK)}
                 >
                   <TableCell
                     key={cellKey}
+                    data-id={cellKey}
                     class={tdCtxClass}
                     column={column}
                     observerResize={props.observerResize}
                     parentSetting={props.showOverflowTooltip}
                     row={row}
                   >
-                    {renderCell(row, column, rowIndex, rowList, isChild)}
+                    {renderCell()}
                   </TableCell>
                 </td>
               );
@@ -603,6 +437,10 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
       );
     }
   };
+
+  onUnmounted(() => {
+    multiShiftKey.removeMultiCheckedEvents();
+  });
 
   return {
     renderColumns,
