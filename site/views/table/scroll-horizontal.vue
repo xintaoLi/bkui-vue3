@@ -25,7 +25,6 @@ export default defineComponent({
         field: `col_${index + 1}`,
         minWidth: 200,
         render: ({ row }) => {
-          console.log('xxxxxxx');
           return row[`col_${index + 1}`]
         }
       })),

@@ -26,7 +26,7 @@
 import { computed, onMounted, reactive, Ref, ref } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
-import { classes } from '@bkui-vue/shared';
+import { classes, throttle } from '@bkui-vue/shared';
 import VirtualRender from '@bkui-vue/virtual-render';
 import { debounce } from 'lodash';
 
@@ -36,14 +36,15 @@ import { TablePropTypes } from '../props';
 import { resolveHeadConfig, resolveNumberOrStringToPix, resolvePropBorderToClassStr, resolvePropVal } from '../utils';
 
 export default (props: TablePropTypes, ctx) => {
-  const refRoot = ref(null);
-  const refHead = ref(null);
+  const refRoot: Ref<HTMLElement> = ref(null);
+  const refHead: Ref<HTMLElement> = ref(null);
+
   const refBody = ref(null);
   const refFooter = ref(null);
   const translateX = ref(0);
   const translateY = ref(0);
   const preBottom = ref(0);
-  const dragOffsetX = ref(-1000);
+  const dragOffsetX = ref(-10000);
   const offsetRight = ref(0);
   const layout: { bottom?: number } = reactive({});
   const fixedColumns = reactive([]);
@@ -73,16 +74,43 @@ export default (props: TablePropTypes, ctx) => {
     }),
   );
 
+  const setFixedColumnShawdow = () => {
+    const rightShawdow = offsetRight.value > 0 ? '0 0 10px rgb(0 0 0 / 12%)' : null;
+    const leftShawdow = translateX.value > 0 ? '0 0 10px rgb(0 0 0 / 12%)' : null;
+    refRoot.value.style.setProperty('--shadow-right', rightShawdow);
+    refRoot.value.style.setProperty('--shadow-left', leftShawdow);
+  };
+
+  const setRootStyleVars = throttle(() => {
+    refRoot.value.style.setProperty('--drag-offset-x', `${dragOffsetX.value}px`);
+    refRoot.value.style.setProperty('--drag-offset-h-x', `${dragOffsetX.value - 3}px`);
+    refRoot.value.style.setProperty('--translate-y', `${translateY.value}px`);
+    refRoot.value.style.setProperty('--translate-x', `${translateX.value}px`);
+    refRoot.value.style.setProperty('--translate-x-1', `-${translateX.value}px`);
+    setFixedColumnShawdow();
+  });
+
   const setTranslateX = (val: number) => {
     translateX.value = val;
+    setRootStyleVars();
   };
 
   const setTranslateY = (val: number) => {
     translateY.value = val;
+    setRootStyleVars();
+  };
+
+  const initRootStyleVars = () => {
+    refRoot.value.style.setProperty('--drag-offset-x', '-1000px');
+    refRoot.value.style.setProperty('--drag-offset-h-x', '-1000px');
+    refRoot.value.style.setProperty('--translate-y', '0px');
+    refRoot.value.style.setProperty('--translate-x', '0px');
+    refRoot.value.style.setProperty('--translate-x-1', '0px');
   };
 
   const setDragOffsetX = (val: number) => {
     dragOffsetX.value = val;
+    setRootStyleVars();
   };
 
   const config = resolveHeadConfig(props);
@@ -90,8 +118,6 @@ export default (props: TablePropTypes, ctx) => {
 
   const headStyle = computed(() => ({
     '--row-height': `${headHeight.value}px`,
-    '--scroll-head-left': `-${translateX.value}px`,
-    '--scroll-left': `${translateX.value}px`,
     '--background-color': DEF_COLOR[props.thead?.color ?? IHeadColor.DEF1],
   }));
 
@@ -125,13 +151,7 @@ export default (props: TablePropTypes, ctx) => {
 
   const resizeColumnStyle = computed(() => ({
     ...dragOffsetXStyle,
-    transform: `translate3d(${dragOffsetX.value + 3}px, ${translateY.value}px, 0)`,
-  }));
-
-  const resizeHeadColStyle = computed(() => ({
-    ...dragOffsetXStyle,
-    width: '6px',
-    transform: `translateX(${dragOffsetX.value}px)`,
+    transform: `translate3d(var(--drag-offset-x), var(--translate-y), 0)`,
   }));
 
   const renderContainer = childrend => {
@@ -146,7 +166,7 @@ export default (props: TablePropTypes, ctx) => {
       </div>
     );
   };
-  const renderHeader = (childrend?, settings?) => {
+  const renderHeader = (childrend?, settings?, fixedRows?) => {
     return (
       <div
         ref={refHead}
@@ -154,10 +174,8 @@ export default (props: TablePropTypes, ctx) => {
         class={headClass.value}
       >
         {childrend?.()}
-        <div
-          style={resizeHeadColStyle.value}
-          class='col-resize-drag'
-        ></div>
+        <div class='col-resize-drag'></div>
+        <div class={fixedWrapperClass}>{fixedRows?.()}</div>
         {settings?.()}
       </div>
     );
@@ -245,32 +263,20 @@ export default (props: TablePropTypes, ctx) => {
     'offset-x': true,
   };
 
-  const fixedWrapperClass = computed(() => [
-    resolveClassName('table-fixed'),
-    {
-      'shadow-right': offsetRight.value > 0,
-      'shadow-left': translateX.value > 0,
-    },
-  ]);
+  const fixedWrapperClass = resolveClassName('table-fixed');
 
   const fixedBottomRow = resolveClassName('table-fixed-bottom');
 
-  const fixedWrapperStyle = computed(() => ({
-    transform: `translate3d(${translateX.value}px, ${translateY.value}px, 0)`,
-  }));
-
   const fixedBottomLoadingStyle = computed(() => ({
-    transform: `translate3d(${translateX.value}px, ${translateY.value}px, 0)`,
     minHeight: `${lineHeight.value}px`,
   }));
 
   onMounted(() => {
     setOffsetRight();
+    initRootStyleVars();
   });
 
   const renderBody = (list, childrend?, fixedRows?, loadingRow?) => {
-    console.log('renderBody');
-
     return (
       <VirtualRender
         ref={refBody}
@@ -294,12 +300,7 @@ export default (props: TablePropTypes, ctx) => {
               style={resizeColumnStyle.value}
               class={resizeColumnClass}
             ></div>,
-            <div
-              style={fixedWrapperStyle.value}
-              class={fixedWrapperClass.value}
-            >
-              {fixedRows?.()}
-            </div>,
+            <div class={fixedWrapperClass}>{fixedRows?.()}</div>,
             <div class={fixedBottomRow}>{ctx.slots.appendBottom?.()}</div>,
             <div
               style={fixedBottomLoadingStyle.value}
@@ -341,6 +342,7 @@ export default (props: TablePropTypes, ctx) => {
     setFixedColumns,
     setOffsetRight,
     setLineHeight,
+    initRootStyleVars,
     refRoot,
     refHead,
     refBody,

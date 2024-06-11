@@ -262,7 +262,7 @@ export default defineComponent({
 
     return () =>
       renderContainer([
-        // renderHeader(renderColumns, settings.renderSettings),
+        renderHeader(renderColumns, settings.renderSettings, renderFixedRows),
         renderBody(rows.pageRowList, renderTBody, renderFixedRows, renderScrollLoading),
         renderFooter(renderTFoot()),
       ]);
