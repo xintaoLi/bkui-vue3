@@ -244,6 +244,7 @@ export default defineComponent({
       () => [pagination.options.count, pagination.options.limit, pagination.options.current, props.data],
       () => {
         setTableData();
+        refBody.value?.scrollTo(0, 0);
       },
       { immediate: true },
     );
