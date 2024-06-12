@@ -30,6 +30,7 @@ import canUseDOM from './can-use-dom';
 import * as helpers from './helpers';
 import resolveWheelEvent from './mouse-wheel';
 import scrollbarWidth from './scrollbar-width';
+import { debounce } from 'lodash';
 
 interface DebouncedFunc<T extends (...args: any[]) => any> {
   /**
@@ -335,10 +336,10 @@ export default class BkScrollbarCore {
     }
 
     this.onMouseMove = throttle(this.mOnMouseMove);
-    this.onWindowResize = throttle(this.mOnWindowResize);
-    this.onStopScrolling = throttle(this.mOnStopScrolling);
-    this.onMouseEntered = throttle(this.mOnMouseEntered);
-    this.mouseWheelInstance = resolveWheelEvent(this.mOnMouseWheel);
+    this.onWindowResize = debounce(this.mOnWindowResize, 64);
+    this.onStopScrolling = debounce(this.mOnStopScrolling, 64);
+    this.onMouseEntered = debounce(this.mOnMouseEntered, 64);
+    this.mouseWheelInstance = resolveWheelEvent(throttle(this.mOnMouseWheel));
 
     this.init();
   }

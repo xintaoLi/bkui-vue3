@@ -1,7 +1,7 @@
 <template>
   <section>
     <bk-table :data="tableData">
-      <bk-table-column :label="'数量'" :sort="sort" field="count" />
+      <bk-table-column :label="'数量'" :sort="sort" field="count" :filter="{ list: statusFilters }" />
       <template v-for="column in columns" :key="column.label">
         <bk-table-column :field="column.field" :index="column.index" :label="column.label" :type="column.type" />
       </template>
@@ -22,7 +22,12 @@ import { reactive, ref } from 'vue';
 import { DATA_TABLE } from './options';
 const sort = reactive({ sortScope: 'all' });
 const tableData = reactive(DATA_TABLE.map((d, index) => ({ ...d, count: index })));
-const showOptionColumn = ref(true)
+const showOptionColumn = ref(true);
+const t = str => str;
+const statusFilters = reactive([
+  { text: t('已启用'), value: 'enabled' },
+  { text: t('未启用'), value: 'disabled' },
+]);
 const columns = reactive([
   {
     label: '序号',
