@@ -210,7 +210,7 @@ export default (props: TablePropTypes, ctx) => {
   });
 
   const setBodyHeight = (height: number) => {
-    bodyHeight.value = height - fixedBottomHeight.value;
+    bodyHeight.value = height - headHeight.value - fixedBottomHeight.value - footHeight.value;
   };
 
   const footHeight = ref(0);

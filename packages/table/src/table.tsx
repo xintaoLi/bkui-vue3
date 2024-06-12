@@ -169,6 +169,9 @@ export default defineComponent({
 
     const setTableFootHeight = () => {
       setFootHeight(footHeight.value);
+      if (/^\d+\.?\d*(px)?$/.test(`${props.height}`)) {
+        setBodyHeight(Number(`${props.height}`.replace('px', '')));
+      }
     };
 
     const setTableData = () => {
@@ -194,11 +197,9 @@ export default defineComponent({
           return;
         }
         const tableHeight = refRoot.value.offsetHeight;
-
-        const bodyHeight = tableHeight - columns.headHeight.value - footHeight.value;
         isResizeBodyHeight.value = true;
 
-        setBodyHeight(bodyHeight);
+        setBodyHeight(tableHeight);
         setOffsetRight();
       }
 
@@ -244,7 +245,9 @@ export default defineComponent({
       () => [pagination.options.count, pagination.options.limit, pagination.options.current, props.data],
       () => {
         setTableData();
-        refBody.value?.scrollTo(0, 0);
+        nextTick(() => {
+          refBody.value?.scrollTo(0, 1);
+        });
       },
       { immediate: true },
     );
