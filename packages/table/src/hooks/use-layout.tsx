@@ -136,7 +136,7 @@ export default (props: TablePropTypes, ctx) => {
   const footerClass = computed(() =>
     classes({
       [resolveClassName('table-footer')]: true,
-      ['is-hidden']: !props.pagination || !props.data.length,
+      ['is-hidden']: footHeight.value === 0,
     }),
   );
 

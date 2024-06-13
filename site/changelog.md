@@ -1,5 +1,35 @@
 ## 更新日志
 
+### 2.0.1-beta.20
+
+* **[feat]**:
+    - bugfix(radio|checkbox): beforeChange问题修复
+
+
+### 2.0.1-beta.19
+
+* **[feat]**:
+    - bugfix(select): 修复select虚拟滚动底部空白问题 & 修改虚拟滚动 preloadItemCount 逻辑
+
+
+### 2.0.1-beta.18
+
+* **[feat]**:
+    - bugfix(datepicker): 修复编辑后值没有改变的问题
+
+
+### 2.0.1-beta.17
+
+* **[feat]**:
+    - bugfix(datetimepicker): 修复 range 时，切换下一月的问题
+
+
+### 2.0.1-beta.16
+
+* **[feat]**:
+    - bugfix(datetimepicker): 选择下一年bug
+
+
 ### 2.0.1-beta.15
 
 * **[feat]**:
@@ -35,6 +65,7 @@
 
 * **[feat]**:
     - 修复 Cascader, Tree 组件部分样式无 prefix 设置的问题
+
 
 ### 2.0.1-beta.7
 
@@ -94,7 +125,6 @@
 * **[update]**:
     - perf(dialog|sideslider|infobox): 代码调整
     - 恢复 sideslider extCls 属性
-
 
 
 ### 1.0.3-beta.68
@@ -192,6 +222,25 @@
 
 * **[feat]**:
     - fix(datepicker): datepicker monthrange 支持 disabled-date
+
+
+### 1.0.3-beta.50
+
+* **[feat]**:
+    - fix(timeline): 修复样式没有构建加载问题 #1724
+
+
+### 1.0.3-beta.49
+
+* **[feat]**:
+    - bugfix(dialog): 样式修复
+
+
+### 1.0.3-beta.48
+
+* **[feat]**:
+    - bugfix(pop-confirm): 与Select组件一起使用时，Change事件会导致整个pop-confirm一起关闭
+    - bugfix(dialog): 样式修复
 
 
 ### 1.0.3-beta.50
