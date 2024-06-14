@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { VNode, isVNode, unref } from 'vue';
+import { VNode, isVNode, unref, toRaw, isRef } from 'vue';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -33,10 +33,19 @@ export default () => {
   const columns = [];
   let columnIndex = 0;
   const columnCache = new WeakMap();
+
+  const getPropRawData = prop => {
+    if (isRef(prop)) {
+      return unref(prop);
+    }
+
+    return toRaw(prop);
+  };
+
   const copyProps = (props: { [key: string]: any } | ITableColumn) => {
     return Object.keys(props ?? {}).reduce((result, key) => {
       const target = key.replace(/-(\w)/g, (_, letter) => letter.toUpperCase());
-      return Object.assign(result, { [target]: props[key] });
+      return Object.assign(result, { [target]: getPropRawData(props[key]) });
     }, {});
   };
 
@@ -68,6 +77,10 @@ export default () => {
       return;
     }
 
+    if (Array.isArray(node)) {
+      node.forEach(resolveChildNode);
+    }
+
     if (Array.isArray(node?.children)) {
       node.children.forEach(resolveChildNode);
     }
@@ -83,23 +96,20 @@ export default () => {
     return;
   };
 
-  const setNodeInstanceId = (column: any, uniqueId: string) => {
-    if (!columnCache.has(column)) {
-      columnCache.set(columnCache, { uniqueId, column });
-    }
-  };
-
   const resolveColumns = (children: VNode[]) => {
     columns.length = 0;
     columnIndex = 0;
 
-    children.forEach(resolveChildNode);
+    const GhostBody = children.find(node => (node.type as any)?.name === 'GhostBody');
+    if (GhostBody) {
+      ((GhostBody.children as { [key: string]: any })?.default?.() ?? []).forEach(resolveChildNode);
+    }
+
     columns.sort((col1, col2) => col1.index - col2.index);
     return columns;
   };
 
   return {
     resolveColumns,
-    setNodeInstanceId,
   };
 };

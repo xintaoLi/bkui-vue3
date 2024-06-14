@@ -260,6 +260,7 @@ const useColumns = (props: TablePropTypes) => {
    * @param columns
    */
   const formatColumns = () => {
+    sortColumns.length = 0;
     resolveDraggableColumn();
     let skipColNum = 0;
     (tableColumnList || []).forEach((col, index) => {

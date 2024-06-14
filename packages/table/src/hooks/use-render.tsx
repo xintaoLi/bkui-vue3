@@ -413,7 +413,7 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
   };
 
   const handlePageChange = (current: number) => {
-    if (typeof props.pagination === 'object' && current !== props.pagination.current) {
+    if (typeof props.pagination === 'object' && current !== pagination.options.current) {
       pagination.setPagination({ current, value: current });
       ctx.emit(EMIT_EVENTS.PAGE_VALUE_CHANGE, current);
       return;
