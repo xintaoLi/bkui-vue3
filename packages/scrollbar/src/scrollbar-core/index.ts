@@ -339,7 +339,7 @@ export default class BkScrollbarCore {
     this.onWindowResize = debounce(this.mOnWindowResize, 64);
     this.onStopScrolling = debounce(this.mOnStopScrolling, 64);
     this.onMouseEntered = debounce(this.mOnMouseEntered, 64);
-    this.mouseWheelInstance = resolveWheelEvent(throttle(this.mOnMouseWheel));
+    this.mouseWheelInstance = resolveWheelEvent(this.mOnMouseWheel);
 
     this.init();
   }
@@ -780,7 +780,8 @@ export default class BkScrollbarCore {
     this.draggedAxis = axis;
 
     addClasses(this.el, this.classNames.dragging);
-
+    document.body.setAttribute('data-user-select', this.el.style.getPropertyValue('user-select'));
+    document.body.style.setProperty('user-select', 'none');
     elDocument.addEventListener('mousemove', this.drag, true);
     elDocument.addEventListener('mouseup', this.onEndDrag, true);
     if (this.removePreventClickId === null) {
@@ -935,6 +936,9 @@ export default class BkScrollbarCore {
     e.stopPropagation();
 
     removeClasses(this.el, this.classNames.dragging);
+
+    document.body.style.setProperty('user-select', this.el.getAttribute('data-user-select'));
+
     this.onStopScrolling();
 
     elDocument.removeEventListener('mousemove', this.drag, true);
