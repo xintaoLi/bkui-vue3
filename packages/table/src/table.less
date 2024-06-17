@@ -16,20 +16,14 @@
   height: 100%;
   overflow: hidden;
   border-spacing: 0;
-
-  &-flex {
-    display: flex;
-    flex-direction: column;
-    max-height: fit-content;
-    .@{bk-prefix}-table-body {
-      flex: 1;
-      overflow: auto;
-    }
-  }
+  display: flex;
+  flex-direction: column;
+  max-height: fit-content;
 
   .@{bk-prefix}-table-body {
     position: relative;
     overflow: hidden;
+    flex: 1;
 
     .prepend-row {
       transform: translate3d(var(--translate-x), 0, 0);
@@ -53,7 +47,7 @@
           tr {
             &:nth-child(even) {
               td {
-                background-color: #fafbfd;
+                background-color: @table-strip-color;
               }
             }
 
@@ -137,6 +131,9 @@
           &.selection {
             padding: 0;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
 
           &.expand-cell {
@@ -253,7 +250,7 @@
             .cell {
               display: block;
               width: 100%;
-              line-height: calc(var(--row-height) - 2px);
+              line-height: calc(var(--row-height) - 4px);
               box-sizing: border-box;
 
               &.drag {
@@ -289,6 +286,7 @@
     z-index: 2;
     overflow: hidden;
     background-color: var(--background-color);
+    height: var(--row-height);
 
     .col-resize-drag {
       position: absolute;
@@ -369,18 +367,11 @@
     border-top: 1px solid @table-border-color;
     border-right: 1px solid @table-border-color;
     border-left: 1px solid @table-border-color;
-
-    .@{bk-prefix}-table-footer {
-      border-bottom: 1px solid @table-border-color;
-    }
   }
 
   &.bordered-horizontal {
     border-top: 1px solid @table-border-color;
-
-    .@{bk-prefix}-table-footer {
-      border-bottom: 1px solid @table-border-color;
-    }
+    border-bottom: 1px solid @table-border-color;
   }
 
   &.bordered-outer,
@@ -394,7 +385,7 @@
 
   &.bordered-col {
     th {
-      border-right: 1px solid var(--background-color);
+      border-right: 1px solid @table-border-color;
 
       &:last-child {
         border-right: none;

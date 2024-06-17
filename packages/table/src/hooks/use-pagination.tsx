@@ -92,11 +92,7 @@ const usePagination = (props: TablePropTypes) => {
    * 判定条件：启用了分页组件 & 分页总数 > 1
    */
   const isShowPagination = computed(() => {
-    if (pagination.enabled) {
-      return pagination.count > pagination.limit;
-    }
-
-    return false;
+    return pagination.enabled;
   });
 
   return {

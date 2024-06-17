@@ -35,6 +35,7 @@ import { EMIT_EVENTS } from '../events';
 import { TablePropTypes } from '../props';
 import { resolveHeadConfig, resolveNumberOrStringToPix, resolvePropBorderToClassStr, resolvePropVal } from '../utils';
 import useScrollLoading from './use-scroll-loading';
+import GhostBody from '../components/ghost-body';
 
 export default (props: TablePropTypes, ctx) => {
   const refRoot: Ref<HTMLElement> = ref(null);
@@ -140,13 +141,6 @@ export default (props: TablePropTypes, ctx) => {
     }),
   );
 
-  const columnGhostStyle = {
-    zIndex: -1,
-    width: 0,
-    height: 0,
-    display: 'none' as const,
-  };
-
   const renderContainer = childrend => {
     return (
       <div
@@ -155,7 +149,7 @@ export default (props: TablePropTypes, ctx) => {
         class={tableClass.value}
       >
         {childrend}
-        <div style={columnGhostStyle}>{ctx.slots.default?.()}</div>
+        <GhostBody>{ctx.slots.default?.()}</GhostBody>
       </div>
     );
   };
@@ -259,6 +253,13 @@ export default (props: TablePropTypes, ctx) => {
     'resize-column': true,
   };
 
+  const scrollContentClass = computed(() => {
+    return {
+      [resolveClassName('table-body-content')]: true,
+      [resolveClassName('stripe')]: props.stripe,
+    };
+  });
+
   const fixedWrapperClass = resolveClassName('table-fixed');
 
   const fixedBottomRow = resolveClassName('table-fixed-bottom');
@@ -296,6 +297,7 @@ export default (props: TablePropTypes, ctx) => {
         ref={refBody}
         height={bodyHeight.value}
         class={bodyClass}
+        contentClassName={scrollContentClass.value}
         enabled={props.virtualEnabled}
         lineHeight={lineHeight.value}
         list={list}

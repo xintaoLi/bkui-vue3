@@ -23,34 +23,18 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { PropTypes, renderDirectiveType } from '@bkui-vue/shared';
-import { func } from 'vue-types';
+import { defineComponent } from 'vue';
 
-export const propsMixin = {
-  // 是否显示弹框
-  isShow: PropTypes.bool.def(false),
-  width: PropTypes.oneOfType([String, Number]),
-  // 是否全屏
-  fullscreen: PropTypes.bool.def(false),
-  // 是否允许出现遮罩
-  showMask: PropTypes.bool.def(true),
-  // 是否显示右上角的关闭 icon
-  closeIcon: PropTypes.bool.def(true),
-  // 是否允许 esc 按键关闭弹框
-  escClose: PropTypes.bool.def(true),
-  // 是否允许点击遮罩关闭弹窗
-  quickClose: PropTypes.bool.def(true),
-  // 是否显示在body内（即与id#app同级
-  transfer: PropTypes.oneOfType([Boolean, String, HTMLElement]).def(true),
-  // 弹出层z-index，实际显示的值会自动+1。为了抱证在遮罩上正常显示
-  zIndex: PropTypes.oneOfType([String, Number]),
-  // 动画类型
-  animateType: PropTypes.string.def('slide'),
-  // 弹框的渲染方式
-  renderDirective: renderDirectiveType(),
-  // 关闭前回调
-  beforeClose: func<() => Promise<boolean> | boolean>().def(() => true),
-  left: PropTypes.string,
-  top: PropTypes.string,
-  extCls: PropTypes.string,
-};
+export default defineComponent({
+  name: 'GhostBody',
+  setup(_, ctx) {
+    const columnGhostStyle = {
+      zIndex: -1,
+      width: 0,
+      height: 0,
+      display: 'none' as const,
+    };
+
+    return () => <div style={columnGhostStyle}>{ctx.slots.default?.()}</div>;
+  },
+});

@@ -33,7 +33,7 @@ import { v4 as uuidv4 } from 'uuid';
 import BodyEmpty from '../components/body-empty';
 import TableCell from '../components/table-cell';
 import TableRow from '../components/table-row';
-import { COLUMN_ATTRIBUTE, TABLE_ROW_ATTRIBUTE } from '../const';
+import { COLUMN_ATTRIBUTE, LINE_HEIGHT, TABLE_ROW_ATTRIBUTE } from '../const';
 import { EMIT_EVENTS } from '../events';
 import { Column, TablePropTypes } from '../props';
 import {
@@ -159,12 +159,16 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
   };
 
   const getRowHeight = (row?: any, rowIndex?: number) => {
-    const { size, height } = settings.options;
-    if (height !== null && height !== undefined) {
+    if (typeof props.rowHeight === 'function' || /^\d+/.test(`${props.rowHeight}`)) {
+      return resolvePropVal(props, 'rowHeight', ['tbody', row, rowIndex]);
+    }
+
+    const { size, height, enabled } = settings.options;
+    if (enabled && height !== null && height !== undefined) {
       return resolvePropVal(settings.options, 'height', ['tbody', row, rowIndex, size]);
     }
 
-    return resolvePropVal(props, 'rowHeight', ['tbody', row, rowIndex]);
+    return LINE_HEIGHT;
   };
 
   const setDragEvents = (events: Record<string, Function>) => {
@@ -413,7 +417,7 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
   };
 
   const handlePageChange = (current: number) => {
-    if (typeof props.pagination === 'object' && current !== props.pagination.current) {
+    if (typeof props.pagination === 'object' && current !== pagination.options.current) {
       pagination.setPagination({ current, value: current });
       ctx.emit(EMIT_EVENTS.PAGE_VALUE_CHANGE, current);
       return;
