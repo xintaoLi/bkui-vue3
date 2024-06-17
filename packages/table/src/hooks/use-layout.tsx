@@ -253,6 +253,8 @@ export default (props: TablePropTypes, ctx) => {
     'resize-column': true,
   };
 
+  const scrollContentClass = resolveClassName('table-content');
+
   const fixedWrapperClass = resolveClassName('table-fixed');
 
   const fixedBottomRow = resolveClassName('table-fixed-bottom');
@@ -290,6 +292,7 @@ export default (props: TablePropTypes, ctx) => {
         ref={refBody}
         height={bodyHeight.value}
         class={bodyClass}
+        contentClassName={scrollContentClass}
         enabled={props.virtualEnabled}
         lineHeight={lineHeight.value}
         list={list}

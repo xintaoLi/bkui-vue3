@@ -45,6 +45,7 @@ const useSettings = (props: TablePropTypes, ctx: SetupContext, columns: UseColum
   const resolvedColVal = (item, index) => resolvePropVal(item, ['id', 'field', 'type'], [item, index]);
   const getDefaultSettings = () => {
     return {
+      enabled: true,
       fields: props.columns.map((col: any) => Object.assign({}, col, { field: col.field || col.type })),
       checked: [],
       limit: 0,
@@ -58,8 +59,14 @@ const useSettings = (props: TablePropTypes, ctx: SetupContext, columns: UseColum
   };
 
   const getSettings = settings => {
-    if (typeof settings === 'boolean') {
+    if (typeof settings === 'boolean' && settings !== false) {
       return getDefaultSettings();
+    }
+
+    if (!settings) {
+      return {
+        enabled: false,
+      };
     }
 
     return Object.assign({}, getDefaultSettings(), settings);
