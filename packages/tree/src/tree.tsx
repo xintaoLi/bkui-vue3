@@ -129,6 +129,17 @@ export default defineComponent({
       );
     }
 
+    if (props.virtualRender) {
+      watch(
+        () => [renderData.value],
+        () => {
+          nextTick(() => {
+            scrollToTop();
+          });
+        },
+      );
+    }
+
     /**
      * 设置指定节点是否选中
      * @param item Node item | Node Id
