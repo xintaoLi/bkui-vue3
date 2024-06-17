@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { computed, defineComponent, nextTick, reactive, ref, watch } from 'vue';
+import { computed, defineComponent, nextTick, onMounted, reactive, ref, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { debounce } from '@bkui-vue/shared';
@@ -129,16 +129,13 @@ export default defineComponent({
       );
     }
 
-    if (props.virtualRender) {
-      watch(
-        () => [renderData.value],
-        () => {
-          nextTick(() => {
-            scrollToTop();
-          });
-        },
-      );
-    }
+    onMounted(() => {
+      if (props.virtualRender) {
+        nextTick(() => {
+          scrollToTop();
+        });
+      }
+    });
 
     /**
      * 设置指定节点是否选中
