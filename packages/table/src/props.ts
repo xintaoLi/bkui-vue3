@@ -399,7 +399,7 @@ export const tableProps = {
    * 设置表格最小高度
    * 默认：LINE_HEIGHT * 4
    */
-  minHeight: StringNumberType(LINE_HEIGHT * 4),
+  minHeight: StringNumberType(LINE_HEIGHT * 3),
 
   /**
    * 设置表格最d大高度
@@ -411,7 +411,7 @@ export const tableProps = {
    * 行高，可以为固定数值类型
    * 可以是函数，返回当前行的高度，返回值为数值类型
    */
-  rowHeight: RowHeightFunctionNumberType.def(LINE_HEIGHT),
+  rowHeight: RowHeightFunctionNumberType,
 
   /**
    * Thead行高，可以为固定数值类型
