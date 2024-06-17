@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <bk-table max-height="464" :data="projectTable" height="300" :fixedBottom="fixedBottom" show-overflow-tooltip
+    <bk-table max-height="464" :data="projectTable" height="300" stripe :fixedBottom="fixedBottom" show-overflow-tooltip
       :pagination="pagination">
       <bk-table-column type="selection" :min-width="30" width="30" align="center" />
       <bk-table-column label="用户组" prop="groupName" :sort="true" />

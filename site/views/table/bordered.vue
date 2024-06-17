@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; height: 320px">
+  <div style="width: 100%; ">
     <div style="display: flex; padding: 15px 0; align-items: center">
       <bk-checkbox-group v-model="border">
         <bk-checkbox label="none" />
@@ -12,8 +12,9 @@
         清空表格数据
       </bk-button>
     </div>
-    <bk-table :height="300" :border="border" :columns="columns" :data="tableData" />
+
   </div>
+  <bk-table :border="border" :columns="columns" :data="tableData" />
 </template>
 
 <script>

@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { computed, defineComponent, reactive, ref, watch } from 'vue';
+import { computed, defineComponent, nextTick, reactive, ref, watch } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { debounce } from '@bkui-vue/shared';
@@ -112,6 +112,10 @@ export default defineComponent({
         }
 
         setNodeAttribute(item, [NODE_ATTRIBUTES.IS_MATCH], [isMatch], isTreeUI.value && isMatch);
+      });
+
+      nextTick(() => {
+        scrollToTop();
       });
     });
 
