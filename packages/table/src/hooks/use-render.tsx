@@ -45,12 +45,12 @@ import {
   resolvePropVal,
   resolveWidth,
 } from '../utils';
+import useCell from './use-cell';
 import { UseColumns } from './use-columns';
 import useHead from './use-head';
 import { UsePagination } from './use-pagination';
 import { UseRows } from './use-rows';
 import { UseSettings } from './use-settings';
-import useCell from './use-cell';
 import useShiftKey from './use-shift-key';
 type RenderType = {
   props: TablePropTypes;
@@ -357,16 +357,16 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
                   style={cellStyle}
                   class={cellClass}
                   colspan={colspan}
-                  rowspan={rowspan}
                   data-id={columnKey}
+                  rowspan={rowspan}
                   onClick={event => handleEmit(event, EMIT_EVENTS.CELL_CLICK)}
                   onDblclick={event => handleEmit(event, EMIT_EVENTS.CELL_DBL_CLICK)}
                 >
                   <TableCell
                     key={cellKey}
-                    data-id={cellKey}
                     class={tdCtxClass}
                     column={column}
+                    data-id={cellKey}
                     observerResize={props.observerResize}
                     parentSetting={props.showOverflowTooltip}
                     row={row}

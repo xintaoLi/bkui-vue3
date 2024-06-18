@@ -1,5 +1,5 @@
 <template>
-  <bk-table ref="refTable" height="100%" pagination :data="tableData">
+  <bk-table ref="refTable" pagination :data="tableData">
     <bk-table-column :width="100" type="selection" sort />
     <bk-table-column field="ip" label="名称/内网IP" />
     <bk-table-column field="source" label="来源" />
