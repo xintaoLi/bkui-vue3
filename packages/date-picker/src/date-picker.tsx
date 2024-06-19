@@ -376,7 +376,8 @@ export default defineComponent({
       if (visualValue?.value) {
         state.showClose = true;
       }
-      state.internalValue = state.tmpValue;
+      // state.internalValue = state.tmpValue;
+      // console.error('enterenterenterenterenterenterenterenter', e, state.internalValue);
     };
 
     const handleInputMouseleave = _e => {
