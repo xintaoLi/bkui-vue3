@@ -24,22 +24,24 @@
  * IN THE SOFTWARE.
  */
 
+import { SetupContext, unref } from 'vue';
+
+import Checkbox from '@bkui-vue/checkbox';
 import { DownShape, GragFill, RightShape } from '@bkui-vue/icon';
+
+import { COLUMN_ATTRIBUTE, TABLE_ROW_ATTRIBUTE } from '../const';
+import { EMIT_EVENTS } from '../events';
 import { Column, TablePropTypes } from '../props';
 import { getRowText, isRowSelectEnable, resolvePropVal } from '../utils';
-import { COLUMN_ATTRIBUTE, TABLE_ROW_ATTRIBUTE } from '../const';
-import { SetupContext, unref } from 'vue';
-import { EMIT_EVENTS } from '../events';
-import { UseMultiShiftKey } from './use-shift-key';
-import Checkbox from '@bkui-vue/checkbox';
-import { UseRows } from './use-rows';
 import { UseColumns } from './use-columns';
+import { UseRows } from './use-rows';
+import { UseMultiShiftKey } from './use-shift-key';
 type CellRenderArgsType = {
   props: TablePropTypes;
   rows: UseRows;
   ctx: SetupContext;
   columns: UseColumns;
-  row: any;
+  row: Record<string, object>;
   index: number;
   column: Column;
   isChild: boolean;
@@ -174,7 +176,7 @@ export default ({
   const renderCellCallbackFn = () => {
     const cell = getRowText(row, resolvePropVal(column, 'field', [column, row]));
     const data = row;
-    return (column.render as Function)({ cell, data, row, column, index, rows: rows.tableRowList.value });
+    return (column.render as (...args) => void)({ cell, data, row, column, index, rows: rows.tableRowList.value });
   };
 
   const getExpandCell = () => {
