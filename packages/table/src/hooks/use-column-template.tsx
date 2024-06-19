@@ -93,9 +93,9 @@ export default () => {
       return node();
     }
 
-    if (Array.isArray(node?.subTree)) {
-      node.subTree.forEach(resolveChildNode);
-    }
+    // if (Array.isArray(node?.subTree)) {
+    //   node.subTree.forEach(resolveChildNode);
+    // }
 
     return;
   };
