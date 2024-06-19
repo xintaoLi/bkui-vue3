@@ -94,7 +94,7 @@ export default () => {
     }
 
     if (node.type.functional) {
-      node?.ctx.subTree.forEach(resolveChildNode);
+      node.ctx?.subTree?.forEach(resolveChildNode);
     }
 
     return;
