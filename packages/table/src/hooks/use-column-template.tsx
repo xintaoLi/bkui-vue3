@@ -93,8 +93,8 @@ export default () => {
       return node();
     }
 
-    if (node.type?.functional) {
-      [node.ctx?.subTree ?? {}].forEach(resolveChildNode);
+    if (node?.component?.subTree) {
+      resolveChildNode(node?.component?.subTree);
     }
 
     return;
