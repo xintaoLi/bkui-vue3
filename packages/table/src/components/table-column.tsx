@@ -23,9 +23,10 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { defineComponent, ExtractPropTypes, inject, onUnmounted, toRaw, watch } from 'vue';
+import { defineComponent, ExtractPropTypes, inject, onUnmounted, watch, toRaw } from 'vue';
 
 import { PropTypes } from '@bkui-vue/shared';
+import { isEqual } from 'lodash';
 
 import { COL_MIN_WIDTH, PROVIDE_KEY_INIT_COL } from '../const';
 import {
@@ -41,7 +42,6 @@ import {
   StringNumberType,
   TableAlign,
 } from '../props';
-import { isEqual } from 'lodash';
 
 const TableColumnProp = {
   label: LabelFunctionStringType,
@@ -71,12 +71,14 @@ export default defineComponent({
   props: TableColumnProp,
   setup(props: ITableColumn, { slots }) {
     const initTableColumns = inject(PROVIDE_KEY_INIT_COL, () => {});
+    const lastPropsVal = {};
 
     watch(
       () => [props],
-      (oldVal, newVal) => {
-        if (!isEqual(toRaw(oldVal?.[0]), toRaw(newVal?.[0] ?? {}))) {
+      () => {
+        if (!isEqual(lastPropsVal, toRaw(props))) {
           initTableColumns();
+          Object.assign(lastPropsVal, toRaw(props));
         }
       },
       { immediate: true, deep: true },

@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { VNode, isVNode, unref, toRaw, isRef } from 'vue';
+import { VNode, isVNode, unref, toRaw, isRef, RendererNode } from 'vue';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -57,7 +57,7 @@ export default () => {
     return columnCache.get(ctx);
   };
 
-  const resolveChildNode = (node: any) => {
+  const resolveChildNode = (node: RendererNode) => {
     if (!node || node.type?.name === 'Table') {
       return;
     }
@@ -93,8 +93,8 @@ export default () => {
       return node();
     }
 
-    if (Array.isArray(node?.subTree)) {
-      node.subTree.forEach(resolveChildNode);
+    if (node?.component?.subTree) {
+      resolveChildNode(node?.component?.subTree);
     }
 
     return;
@@ -104,9 +104,9 @@ export default () => {
     columns.length = 0;
     columnIndex = 0;
 
-    const ghostBody = children.find(node => (node.type as any)?.name === 'GhostBody');
+    const ghostBody = children.find(node => (node.type as RendererNode)?.name === 'GhostBody');
     if (ghostBody) {
-      ((ghostBody.children as { [key: string]: any })?.default?.() ?? []).forEach(resolveChildNode);
+      ((ghostBody.children as { [key: string]: () => VNode[] })?.default?.() ?? []).forEach(resolveChildNode);
     }
 
     columns.sort((col1, col2) => col1.index - col2.index);
