@@ -1,5 +1,12 @@
 ## 更新日志
 
+### 2.0.1-beta.27
+
+* **[feat]**:
+    - bugfix: 修复subtree读取逻辑
+    - feat(scroll-bar): 滚动条样式规范优化
+
+
 ### 2.0.1-beta.26
 
 * **[feat]**:

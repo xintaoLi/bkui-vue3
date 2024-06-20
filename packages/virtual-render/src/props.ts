@@ -35,7 +35,7 @@ const EventProps = {
 
 export type IScrollbarOption = {
   enabled: boolean;
-  size: 'normal' | 'small';
+  size?: 'normal' | 'small';
 };
 
 export const virtualRenderProps = {

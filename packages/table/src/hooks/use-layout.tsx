@@ -30,12 +30,12 @@ import { classes, throttle } from '@bkui-vue/shared';
 import VirtualRender from '@bkui-vue/virtual-render';
 import { debounce } from 'lodash';
 
+import GhostBody from '../components/ghost-body';
 import { DEF_COLOR, IHeadColor, LINE_HEIGHT } from '../const';
 import { EMIT_EVENTS } from '../events';
 import { TablePropTypes } from '../props';
 import { resolveHeadConfig, resolveNumberOrStringToPix, resolvePropBorderToClassStr, resolvePropVal } from '../utils';
 import useScrollLoading from './use-scroll-loading';
-import GhostBody from '../components/ghost-body';
 
 export default (props: TablePropTypes, ctx) => {
   const refRoot: Ref<HTMLElement> = ref(null);
@@ -301,10 +301,10 @@ export default (props: TablePropTypes, ctx) => {
         enabled={props.virtualEnabled}
         lineHeight={lineHeight.value}
         list={list}
+        maxHeight={bodyMaxHeight.value}
         rowKey={props.rowKey}
         scrollEvent={true}
         scrollbar={{ enabled: props.scrollbar }}
-        maxHeight={bodyMaxHeight.value}
         throttleDelay={120}
         onContentScroll={handleScrollChanged}
       >
