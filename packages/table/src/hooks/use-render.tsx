@@ -45,12 +45,12 @@ import {
   resolvePropVal,
   resolveWidth,
 } from '../utils';
+import useCell from './use-cell';
 import { UseColumns } from './use-columns';
 import useHead from './use-head';
 import { UsePagination } from './use-pagination';
 import { UseRows } from './use-rows';
 import { UseSettings } from './use-settings';
-import useCell from './use-cell';
 import useShiftKey from './use-shift-key';
 type RenderType = {
   props: TablePropTypes;
@@ -171,7 +171,7 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
     return LINE_HEIGHT;
   };
 
-  const setDragEvents = (events: Record<string, Function>) => {
+  const setDragEvents = (events: Record<string, () => void>) => {
     dragEvents = events;
   };
 
@@ -243,7 +243,7 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
     ctx.emit(EMIT_EVENTS.ROW_MOUSE_LEAVE, e, row, index, rows);
   };
 
-  const getRowSpanConfig = (row: any, rowIndex, preRow: any, col: Column, store: WeakMap<Object, any>) => {
+  const getRowSpanConfig = (row: any, rowIndex, preRow: any, col: Column, store: WeakMap<object, any>) => {
     if (!store.has(row)) {
       store.set(row, new WeakMap());
     }
@@ -335,7 +335,17 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
 
               const columnKey = `${rowId}_${index}`;
               const cellKey = `${rowId}_${index}_cell`;
-              const { renderCell } = useCell({ props, rows, ctx, columns, row, index, column, isChild, multiShiftKey });
+              const { renderCell } = useCell({
+                props,
+                rows,
+                ctx,
+                columns,
+                row,
+                index: rowIndex,
+                column,
+                isChild,
+                multiShiftKey,
+              });
 
               const handleEmit = (event, type: string) => {
                 const args = {
@@ -357,16 +367,16 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
                   style={cellStyle}
                   class={cellClass}
                   colspan={colspan}
-                  rowspan={rowspan}
                   data-id={columnKey}
+                  rowspan={rowspan}
                   onClick={event => handleEmit(event, EMIT_EVENTS.CELL_CLICK)}
                   onDblclick={event => handleEmit(event, EMIT_EVENTS.CELL_DBL_CLICK)}
                 >
                   <TableCell
                     key={cellKey}
-                    data-id={cellKey}
                     class={tdCtxClass}
                     column={column}
+                    data-id={cellKey}
                     observerResize={props.observerResize}
                     parentSetting={props.showOverflowTooltip}
                     row={row}

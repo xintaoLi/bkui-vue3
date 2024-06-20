@@ -1,9 +1,21 @@
 ## 更新日志
 
+### 2.0.1-beta.26
+
+* **[feat]**:
+    - bugfix(datepicker): 修复粘贴厚偶发值没有改变的问题
+
+
+### 2.0.1-beta.25
+
+* **[feat]**:
+    - Hotfix/column render index
+
+
 ### 2.0.1-beta.24
 
 * **[feat]**:
-    - eat(table): 梳理 & 重构table渲染逻辑 & 样式优化
+    - feat(table): 梳理 & 重构table渲染逻辑 & 样式优化
 
 
 ### 2.0.1-beta.23

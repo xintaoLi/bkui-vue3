@@ -89,7 +89,7 @@ export default defineComponent({
       settings,
     });
 
-    setDragEvents(dragEvents);
+    setDragEvents(dragEvents as Record<string, () => void>);
 
     const { resolveColumns } = useColumnTemplate();
 

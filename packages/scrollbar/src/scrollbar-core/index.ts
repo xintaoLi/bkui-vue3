@@ -24,13 +24,12 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { Cancellable, throttle } from '@bkui-vue/shared';
+import { debounce, throttle } from 'lodash';
 
 import canUseDOM from './can-use-dom';
 import * as helpers from './helpers';
 import resolveWheelEvent from './mouse-wheel';
 import scrollbarWidth from './scrollbar-width';
-import { debounce } from 'lodash';
 
 interface DebouncedFunc<T extends (...args: any[]) => any> {
   /**
@@ -73,6 +72,7 @@ export interface Options {
   autoHide: boolean;
   useSystemScrollXBehavior?: boolean;
   useSystemScrollYBehavior?: boolean;
+  size: 'default' | 'small';
   scrollDelegate: {
     scrollHeight?: number;
     scrollWidth?: number;
@@ -80,7 +80,7 @@ export interface Options {
   onScrollCallback?: (args: { x: number; y: number }) => void;
 }
 
-export type SimpleBarOptions = Partial<Options>;
+export type BkScrollBarOptions = Partial<Options>;
 
 type ClassNames = {
   contentEl: string;
@@ -149,6 +149,7 @@ export default class BkScrollbarCore {
     scrollbarMinSize: 25,
     scrollbarMaxSize: 0,
     ariaLabel: 'scrollable content',
+    size: 'default',
     classNames: {
       contentEl: 'bk-content',
       wrapper: 'bk-wrapper',
@@ -288,7 +289,7 @@ export default class BkScrollbarCore {
    */
   wrapperScrollMap = {};
 
-  onMouseMove: (() => void) | Cancellable<any> = () => {};
+  onMouseMove: (() => void) | DebouncedFunc<any> = () => {};
   onWindowResize: (() => void) | DebouncedFunc<any> = () => {};
   onStopScrolling: (() => void) | DebouncedFunc<any> = () => {};
   onMouseEntered: (() => void) | DebouncedFunc<any> = () => {};
@@ -335,11 +336,11 @@ export default class BkScrollbarCore {
       throw new Error(`Argument passed to SimpleBar must be an HTML element instead of ${this.el}`);
     }
 
-    this.onMouseMove = throttle(this.mOnMouseMove);
+    this.onMouseMove = throttle(this.mOnMouseMove, 64);
     this.onWindowResize = debounce(this.mOnWindowResize, 64);
     this.onStopScrolling = debounce(this.mOnStopScrolling, 64);
     this.onMouseEntered = debounce(this.mOnMouseEntered, 64);
-    this.mouseWheelInstance = resolveWheelEvent(this.mOnMouseWheel);
+    this.mouseWheelInstance = resolveWheelEvent(throttle(this.mOnMouseWheel, 64));
 
     this.init();
   }
