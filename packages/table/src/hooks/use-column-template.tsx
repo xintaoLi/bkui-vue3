@@ -77,27 +77,29 @@ export default () => {
       return;
     }
 
-    if (Array.isArray(node)) {
-      node.forEach(resolveChildNode);
-    }
-
-    if (Array.isArray(node?.children)) {
-      node.children.forEach(resolveChildNode);
-    }
-
-    if (isVNode(node) && node?.children && typeof node?.children === 'object') {
-      Object.keys(node.children).forEach(key => resolveChildNode(node.children[key]));
+    if (node?.component?.subTree) {
+      resolveChildNode(node?.component?.subTree);
+      return;
     }
 
     if (typeof node === 'function') {
       return node();
     }
 
-    if (node?.component?.subTree) {
-      resolveChildNode(node?.component?.subTree);
+    if (Array.isArray(node)) {
+      node.forEach(resolveChildNode);
+      return;
     }
 
-    return;
+    if (Array.isArray(node?.children)) {
+      node.children.forEach(resolveChildNode);
+      return;
+    }
+
+    if (isVNode(node) && node?.children && typeof node?.children === 'object') {
+      Object.keys(node.children).forEach(key => resolveChildNode(node.children[key]));
+      return;
+    }
   };
 
   const resolveColumns = (children: VNode[]) => {
@@ -106,7 +108,11 @@ export default () => {
 
     const ghostBody = children.find(node => (node.type as RendererNode)?.name === 'GhostBody');
     if (ghostBody) {
-      ((ghostBody.children as { [key: string]: () => VNode[] })?.default?.() ?? []).forEach(resolveChildNode);
+      if (ghostBody.component?.subTree) {
+        resolveChildNode(ghostBody.component?.subTree);
+      } else {
+        ((ghostBody.children as { [key: string]: () => VNode[] })?.default?.() ?? []).forEach(resolveChildNode);
+      }
     }
 
     columns.sort((col1, col2) => col1.index - col2.index);

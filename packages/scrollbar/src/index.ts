@@ -54,6 +54,7 @@ export default class BkScrollBar extends BkScrollbarCore {
       const scrollbar = document.createElement('div');
 
       addClasses(track, this.classNames.track);
+
       addClasses(scrollbar, this.classNames.scrollbar);
 
       track.appendChild(scrollbar);

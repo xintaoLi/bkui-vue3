@@ -67,8 +67,8 @@ export default defineComponent({
     loading: PropTypes.bool.def(false),
     filterable: PropTypes.bool.def(true), // 是否支持搜索
     remoteMethod: PropTypes.func,
-    scrollHeight: PropTypes.number.def(204),// 最大高度
-    minHeight: PropTypes.number,// 最小高度
+    scrollHeight: PropTypes.number.def(204), // 最大高度
+    minHeight: PropTypes.number, // 最小高度
     showAll: PropTypes.bool.def(false), // 全部
     allOptionId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // 全部选项ID
     showSelectAll: PropTypes.bool.def(false), // 全选
@@ -248,8 +248,8 @@ export default defineComponent({
       isRemoteSearch.value
         ? list.value
         : list.value.filter(item => {
-          return defaultSearchMethod(curSearchValue.value, String(item[displayKey.value]), item);
-        }),
+            return defaultSearchMethod(curSearchValue.value, String(item[displayKey.value]), item);
+          }),
     );
     // select组件是否禁用
     const isDisabled = computed(() => disabled.value || loading.value);
@@ -306,9 +306,7 @@ export default defineComponent({
       return false;
     });
     // 预加载滚动数据
-    const preloadItemCount = computed(
-      () => Math.ceil(virtualHeight.value / virtualLineHeight.value),
-    );
+    const preloadItemCount = computed(() => Math.ceil(virtualHeight.value / virtualLineHeight.value));
     // 当前空状态时显示文案
     const curContentText = computed(() => {
       if (searchLoading.value) {
@@ -861,9 +859,11 @@ export default defineComponent({
           />
         );
       }
-      return this.$slots?.suffix 
-        ? <span class='angle-down'>{this.$slots?.suffix?.() }</span>
-        : <AngleDown class='angle-down' />;
+      return this.$slots?.suffix ? (
+        <span class='angle-down'>{this.$slots?.suffix?.()}</span>
+      ) : (
+        <AngleDown class='angle-down' />
+      );
     };
 
     const renderPrefix = () => {
@@ -983,6 +983,7 @@ export default defineComponent({
           lineHeight={this.virtualLineHeight}
           list={this.filterList}
           preloadItemCount={this.preloadItemCount}
+          scrollbar={{ enabled: true, size: 'small' }}
         >
           {{
             default: ({ data }) => {
@@ -991,9 +992,7 @@ export default defineComponent({
                 <Option
                   id={item[this.idKey]}
                   key={item[this.idKey]}
-                  v-slots={
-                    typeof optionRender === 'function' ? { default: () => optionRender({ item }) } : null
-                  }
+                  v-slots={typeof optionRender === 'function' ? { default: () => optionRender({ item }) } : null}
                   name={item[this.displayKey]}
                 />
               ));
@@ -1005,14 +1004,12 @@ export default defineComponent({
           <Option
             id={item[this.idKey]}
             key={item[this.idKey]}
-            v-slots={
-              this.$slots?.optionRender ? { default: () => this.$slots?.optionRender?.({ item }) } : null
-            }
+            v-slots={this.$slots?.optionRender ? { default: () => this.$slots?.optionRender?.({ item }) } : null}
             name={item[this.displayKey]}
           />
         ))
-      )
-    }
+      );
+    };
     // 渲染内容
     const renderSelectContent = () => (
       <div
@@ -1055,9 +1052,7 @@ export default defineComponent({
             class={this.isEnableVirtualRender ? '' : this.resolveClassName('select-dropdown')}
             onScroll={this.handleScroll}
           >
-            <ul
-              class={this.resolveClassName('select-options')}
-            >
+            <ul class={this.resolveClassName('select-options')}>
               {renderSelectAll()}
               {renderList()}
               {this.$slots?.default?.()}
