@@ -340,7 +340,7 @@ export default class BkScrollbarCore {
     this.onWindowResize = debounce(this.mOnWindowResize, 64);
     this.onStopScrolling = debounce(this.mOnStopScrolling, 64);
     this.onMouseEntered = debounce(this.mOnMouseEntered, 64);
-    this.mouseWheelInstance = resolveWheelEvent(throttle(this.mOnMouseWheel, 64));
+    this.mouseWheelInstance = resolveWheelEvent(throttle(this.mOnMouseWheel, 16));
 
     this.init();
   }
