@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { VNode, isVNode, unref, toRaw, isRef, RendererNode } from 'vue';
+import { VNode, isVNode, unref, toRaw, isRef, RendererNode, VNodeNormalizedChildren } from 'vue';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -102,11 +102,11 @@ export default () => {
     }
   };
 
-  const resolveColumns = (children: VNode[]) => {
+  const resolveColumns = (children: VNode[] | VNodeNormalizedChildren) => {
     columns.length = 0;
     columnIndex = 0;
 
-    const ghostBody = children.find(node => (node.type as RendererNode)?.name === 'GhostBody');
+    const ghostBody = (children as VNode[])?.find(node => (node.type as RendererNode)?.name === 'GhostBody');
     if (ghostBody) {
       if (ghostBody.component?.subTree) {
         resolveChildNode(ghostBody.component?.subTree);

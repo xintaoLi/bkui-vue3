@@ -96,7 +96,7 @@ export default defineComponent({
     const instance = getCurrentInstance();
     const initTableColumns = () => {
       const children = instance.subTree?.children ?? [];
-      columns.debounceUpdateColumns(resolveColumns(children as any));
+      columns.debounceUpdateColumns(resolveColumns(children));
     };
 
     provide(PROVIDE_KEY_INIT_COL, initTableColumns);
@@ -120,7 +120,7 @@ export default defineComponent({
     /**
      * table 渲染行
      */
-    const getRenderRowList = (list: any[]) => {
+    const getRenderRowList = (list: Record<string, object>[]) => {
       if (!pagination.isShowPagination.value || props.remotePagination) {
         return list;
       }
@@ -245,11 +245,8 @@ export default defineComponent({
       () => [pagination.options.count, pagination.options.limit, pagination.options.current, props.data],
       () => {
         setTableData();
-        nextTick(() => {
-          refBody.value?.scrollTo(0, 1);
-        });
       },
-      { immediate: true },
+      { immediate: true, deep: true },
     );
 
     ctx.expose({

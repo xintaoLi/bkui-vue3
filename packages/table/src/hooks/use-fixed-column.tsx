@@ -49,7 +49,7 @@ export default (_props: TablePropTypes, columns: UseColumns) => {
     const { length } = fixedRightColumns.value;
     for (let i = length - 1; i >= 0; i--) {
       const col = fixedRightColumns.value[i];
-      const width = columns.getColumnCalcWidth(col);
+      const width = columns.getColumnWidth(col);
       columns.setColumnRect(col, { right, width });
       columns.setFixedStyle(col, { right: `${right}px` });
       right = right + width;
@@ -57,7 +57,7 @@ export default (_props: TablePropTypes, columns: UseColumns) => {
 
     let left = 0;
     fixedLeftColumns.value.forEach(col => {
-      const width = columns.getColumnCalcWidth(col);
+      const width = columns.getColumnWidth(col);
       columns.setColumnRect(col, { left, width });
       columns.setFixedStyle(col, { left: `${left}px` });
       left = left + width;

@@ -92,11 +92,11 @@ export default ({
   };
 
   const getFilterCell = () => {
-    const handleFilterChange = (checked: any[]) => {
+    const handleFilterChange = (checked: string[]) => {
       ctx.emit(EMIT_EVENTS.COLUMN_FILTER, { checked, column: unref(column), index });
     };
 
-    const filterSave = (values: any[]) => {
+    const filterSave = (values: string[]) => {
       columns.setColumnAttribute(column, COLUMN_ATTRIBUTE.COL_FILTER_VALUES, values);
       ctx.emit(EMIT_EVENTS.COLUMN_FILTER_SAVE, { values });
     };

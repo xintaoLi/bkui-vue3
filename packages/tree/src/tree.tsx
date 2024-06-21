@@ -73,7 +73,7 @@ export default defineComponent({
     const { searchFn, isSearchActive, refSearch, isSearchDisabled, isTreeUI, showChildNodes } = useSearch(props);
     const matchedNodePath = reactive([]);
 
-    const filterFn = (item: any) => {
+    const filterFn = (item: Record<string, object>) => {
       if (isSearchActive.value) {
         if (showChildNodes) {
           return (
@@ -105,17 +105,13 @@ export default defineComponent({
 
     const handleSearch = debounce(120, () => {
       matchedNodePath.length = 0;
-      flatData.data.forEach((item: any) => {
+      flatData.data.forEach((item: Record<string, object>) => {
         const isMatch = searchFn(getLabel(item, props), item);
         if (isMatch) {
           matchedNodePath.push(getNodePath(item));
         }
 
         setNodeAttribute(item, [NODE_ATTRIBUTES.IS_MATCH], [isMatch], isTreeUI.value && isMatch);
-      });
-
-      nextTick(() => {
-        scrollToTop();
       });
     });
 
@@ -142,11 +138,11 @@ export default defineComponent({
      * @param item Node item | Node Id
      * @param checked
      */
-    const setChecked = (item: any | any[], checked = true) => {
+    const setChecked = (item: Record<string, object> | Record<string, object>[], checked = true) => {
       setNodeAction(resolveNodeItem(item), NODE_ATTRIBUTES.IS_CHECKED, checked);
     };
 
-    onSelected((newData: any) => {
+    onSelected((newData: Record<string, object>) => {
       setSelect(newData, true, props.autoOpenParentNode);
     });
 
@@ -223,7 +219,7 @@ export default defineComponent({
 
     const { renderEmpty } = useEmpty(props);
     useNodeDrag(props, ctx, root, flatData);
-    const renderTreeContent = (scopedData: any[]) => {
+    const renderTreeContent = (scopedData: Record<string, object>[]) => {
       if (scopedData.length) {
         return scopedData.map(d => renderTreeNode(d, !isSearchActive.value || isTreeUI.value));
       }
@@ -273,7 +269,7 @@ export default defineComponent({
         onContentScroll={handleContentScroll}
       >
         {{
-          default: (scoped: any) => renderTreeContent(scoped.data || []),
+          default: (scoped: { data: Record<string, object>[] }) => renderTreeContent(scoped.data || []),
         }}
       </VirtualRender>
     );

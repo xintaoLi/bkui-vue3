@@ -26,15 +26,16 @@
 import { ref, watch } from 'vue';
 
 import { throttle } from '@bkui-vue/shared';
+import { debounce } from 'lodash';
 
 import { COLUMN_ATTRIBUTE } from '../const';
 import { Column } from '../props';
 import { UseColumns } from './use-columns';
-import { debounce } from 'lodash';
 
 export default (columns: UseColumns, { afterResize }) => {
-  const { getColumnAttribute, getColumnOrderWidth, setColumnAttribute } = columns;
-  const getColListener = (col: Column) => getColumnAttribute(col, COLUMN_ATTRIBUTE.LISTENERS) as Map<string, any>;
+  const { getColumnAttribute, getColumnOrderWidth, setColumnAttribute, setNextColumnWidth } = columns;
+  const getColListener = (col: Column) =>
+    getColumnAttribute(col, COLUMN_ATTRIBUTE.LISTENERS) as Map<string, ((...args) => void)[]>;
 
   const pluginName = 'HeadColumnResize';
   const enum EVENTS {
@@ -49,7 +50,7 @@ export default (columns: UseColumns, { afterResize }) => {
   let dragColumn: Column = null;
   let dragStartOffsetX = 0;
   const dragOffsetX = ref(-1000);
-  const ORDER_LIST = [COLUMN_ATTRIBUTE.RESIZE_WIDTH, COLUMN_ATTRIBUTE.CALC_WIDTH];
+  const ORDER_LIST = [COLUMN_ATTRIBUTE.WIDTH];
 
   const stopDefaultEvent = (e: MouseEvent) => {
     e.stopImmediatePropagation();
@@ -68,8 +69,8 @@ export default (columns: UseColumns, { afterResize }) => {
     const resolveWidth = getColumnOrderWidth(dragColumn, ORDER_LIST) + diff;
     const minWidth = getColumnOrderWidth(dragColumn, [COLUMN_ATTRIBUTE.COL_MIN_WIDTH]);
     const calcWidth = resolveWidth > minWidth ? resolveWidth : minWidth;
-    setColumnAttribute(dragColumn, COLUMN_ATTRIBUTE.RESIZE_WIDTH, calcWidth);
-    setColumnAttribute(dragColumn, COLUMN_ATTRIBUTE.CALC_WIDTH, calcWidth);
+    setNextColumnWidth(dragColumn, calcWidth);
+    setColumnAttribute(dragColumn, COLUMN_ATTRIBUTE.WIDTH, calcWidth);
 
     document.removeEventListener('mouseup', handleMouseUp);
     document.removeEventListener('mousemove', handleMouseMove);
@@ -109,7 +110,7 @@ export default (columns: UseColumns, { afterResize }) => {
   const removeCursor = (target: HTMLElement) => {
     setNodeCursor.cancel();
 
-    target.style?.removeProperty('cursor');
+    target?.style?.removeProperty('cursor');
     target?.classList.remove('col-resize-hover');
   };
 
@@ -122,7 +123,6 @@ export default (columns: UseColumns, { afterResize }) => {
       isMouseDown = true;
       const target = (e.target as HTMLElement).closest('th');
       setColumnAttribute(column, COLUMN_ATTRIBUTE.COL_IS_DRAG, true);
-      setColumnAttribute(column, COLUMN_ATTRIBUTE.CALC_WIDTH, target.scrollWidth);
       setNodeCursor(target);
 
       dragColumn = column;
@@ -134,6 +134,8 @@ export default (columns: UseColumns, { afterResize }) => {
 
       document.addEventListener('mouseup', handleMouseUp);
       document.addEventListener('mousemove', handleMouseMove);
+
+      target?.classList.remove('col-resize-hover');
     },
     [EVENTS.MOUSE_MOVE]: (e: MouseEvent, _column: Column) => {
       if (isMouseDown && !isDraging) {

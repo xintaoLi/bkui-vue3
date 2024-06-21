@@ -157,6 +157,7 @@ export default defineComponent({
       disableFocusBehavior,
     } = toRefs(props);
 
+    const virtualRenderRef = ref(null);
     const localNoDataText = computed(() => {
       if (props.noDataText === undefined) {
         return t.value.noData;
@@ -766,6 +767,11 @@ export default defineComponent({
       });
     });
 
+    const handlePopoverShown = () => {
+      console.log('handlePopoverShown');
+      virtualRenderRef.value?.scrollTo(0, 1);
+    };
+
     return {
       t,
       selected,
@@ -823,9 +829,11 @@ export default defineComponent({
       localSelectAllText,
       resolveClassName,
       handleCreateCustomOption,
+      handlePopoverShown,
       virtualLineHeight,
       isEnableVirtualRender,
       preloadItemCount,
+      virtualRenderRef,
     };
   },
   render() {
@@ -979,6 +987,7 @@ export default defineComponent({
     const renderList = () => {
       return this.isEnableVirtualRender ? (
         <VirtualRender
+          ref='virtualRenderRef'
           height={this.virtualHeight}
           lineHeight={this.virtualLineHeight}
           list={this.filterList}
@@ -1086,6 +1095,7 @@ export default defineComponent({
             default: () => renderSelectTrigger(),
             content: () => renderSelectContent(),
           }}
+          onAfterShow={this.handlePopoverShown}
           onClickoutside={this.handleClickOutside}
         />
       </div>

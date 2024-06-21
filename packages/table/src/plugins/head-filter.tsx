@@ -202,7 +202,7 @@ export default defineComponent({
 
     const renderFilterList = scope => {
       if (scope.data.length) {
-        return scope.data.map((item: any) => (
+        return scope.data.map((item: { value: string; text: string }) => (
           <div
             key={item.value}
             class='list-item'

@@ -171,7 +171,7 @@ export const SORT_OPTIONS = [SORT_OPTION.ASC, SORT_OPTION.DESC, SORT_OPTION.NULL
  */
 export const COL_MIN_WIDTH = 80;
 
-export type IEmptyObject = {};
+export type IEmptyObject = Record<string, never>;
 
 /**
  * 全选对象

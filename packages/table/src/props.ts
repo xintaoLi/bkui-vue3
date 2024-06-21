@@ -107,12 +107,12 @@ export enum FixedEnum {
 export const fixedType = string<`${FixedEnum}`>();
 
 export type IOverflowTooltipOption = {
-  content: ((col: Column, row: any) => string) | string;
-  disabled?: ((col: Column, row: any) => boolean) | boolean;
+  content: ((col: Column, row: Record<string, object>) => string) | string;
+  disabled?: ((col: Column, row: Record<string, object>) => boolean) | boolean;
   allowHtml?: boolean;
   watchCellResize?: boolean;
   mode?: `${OverflowModeEnum}`;
-  popoverOption?: any;
+  popoverOption?: Record<string, object>;
   resizerWay?: ResizerWay;
   showHead?: boolean;
 };
@@ -136,7 +136,7 @@ export const ISortType = toType<ISortPropShape>('ISortPropShape', {
 });
 
 export type ISortShape = {
-  sortFn?: Function;
+  sortFn?: (...args) => boolean;
   sortScope?: SortScope;
   value?: SORT_OPTION;
 };
@@ -144,10 +144,10 @@ export type ISortShape = {
 export type ISortPropShape = ISortShape | boolean | string;
 
 export type IFilterShape = {
-  list: any[];
-  filterFn?: Function;
+  list: { label: string; value: string }[];
+  filterFn?: (...args) => boolean;
   match?: FullEnum;
-  checked?: any[];
+  checked?: string[];
   filterScope?: SortScope;
   btnSave?: boolean | string;
   btnReset?: boolean | string;
@@ -223,12 +223,12 @@ export type LabelFunctionString =
   | string;
 export const LabelFunctionStringType = toType<LabelFunctionString>('LabelFunctionStringType', {});
 export type HeadRenderArgs = {
-  cell?: any;
-  data?: any[];
-  row?: any;
+  cell?: Record<string, object>;
+  data?: Record<string, object>[];
+  row?: Record<string, object>;
   column: Column;
   index: number;
-  rows?: any[];
+  rows?: Record<string, object>[];
 };
 
 export type RenderFunctionString = (args: HeadRenderArgs) => JSX.Element | boolean | number | string;
@@ -237,13 +237,15 @@ export const RenderFunctionStringType = toType<RenderFunctionString>('RenderFunc
 export type SpanFunctionString = (({ column, colIndex, row, rowIndex }) => number) | number;
 export const SpanFunctionStringType = toType<SpanFunctionString>('SpanFunctionStringType', {});
 
-export type RowClassFunctionString = ((row: any) => string) | string;
+export type RowClassFunctionString = ((row: Record<string, object>) => string) | string;
 export const RowClassFunctionStringType = toType<RowClassFunctionString>('RowClassFunctionStringType', {});
 
-export type RowHeightFunctionNumber = ((_type: string, _row: any, _rowIndex: number, _size?) => number) | number;
+export type RowHeightFunctionNumber =
+  | ((type: string, row: Record<string, object>, rowIndex: number, size?) => number)
+  | number;
 export const RowHeightFunctionNumberType = toType<RowHeightFunctionNumber>('RowHeightFunctionNumberType', {});
 
-type FunctionNumber = Function | number;
+type FunctionNumber = ((...args) => void) | number;
 export const FunctionNumberType = toType<FunctionNumber>('FunctionNumberType', {});
 
 type StringNumber = number | string;
@@ -302,7 +304,7 @@ export const IColumnProp = toType<Column>('IColumnPropType', {
 export type Thead = {
   height?: number;
   isShow?: boolean;
-  cellFn?: Function;
+  cellFn?: (...args) => void;
   color?: IHeadColor | string;
 };
 
@@ -313,7 +315,7 @@ export type GroupColumn = {
   calcWidth?: number;
   resizeWidth?: number;
   isHidden?: boolean;
-  listeners?: Map<string, any>;
+  listeners?: Map<string, (...args) => void>;
 } & Column;
 
 export type IColumnActive = {
@@ -323,22 +325,22 @@ export type IColumnActive = {
 
 export type IReactiveProp = {
   activeColumns: IColumnActive[];
-  rowActions: Record<string, any>;
+  rowActions: Record<string, object>;
   scrollTranslateY: number;
   scrollTranslateX: number;
-  pos: Record<string, any>;
+  pos: Record<string, object>;
   settings: Settings | boolean;
   setting: {
     size: string;
     height: number;
   };
-  defaultSort: Record<string, any>;
+  defaultSort: Record<string, object>;
 };
 
 export type Colgroups = Column & {
   calcWidth: number;
   resizeWidth: number;
-  listeners: Map<string, Function>;
+  listeners: Map<string, (...args) => void>;
 };
 
 export enum IColSortBehavior {
