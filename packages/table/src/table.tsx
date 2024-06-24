@@ -109,17 +109,8 @@ export default defineComponent({
      */
     const computedColumnRect = () => {
       const width = refRoot.value?.offsetWidth - (props.scrollbar ? 1 : SCROLLY_WIDTH) ?? 0;
-      console.log('computedColumnRect - root', width);
       columns.resolveColsCalcWidth(width);
       resolveFixedColumnStyle();
-
-      let computedWidth = 0;
-      columns.visibleColumns.forEach((item, index) => {
-        computedWidth = computedWidth + columns.getColumnWidth(item);
-        console.log('computedColumnRect - computed' + index, columns.getColumnWidth(item));
-      });
-
-      console.log('computedColumnRect - computed - all', computedWidth);
     };
 
     const { dragOffsetX } = useColumnResize(columns, { afterResize: resolveFixedColumnStyle });

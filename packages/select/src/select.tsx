@@ -768,7 +768,6 @@ export default defineComponent({
     });
 
     const handlePopoverShown = () => {
-      console.log('handlePopoverShown');
       virtualRenderRef.value?.scrollTo(0, 1);
     };
 
