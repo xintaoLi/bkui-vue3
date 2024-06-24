@@ -404,6 +404,9 @@
   }
 
   &.bordered-col {
+    .@{bk-prefix}-table-head {
+      border-right: 1px solid @table-border-color;
+    }
     th {
       border-right: 1px solid @table-border-color;
 
@@ -412,11 +415,26 @@
       }
     }
 
-    .bk-table-body {
+    .@{bk-prefix}-table-body {
+      border-right: 1px solid @table-border-color;
       tbody {
         tr {
           td {
             border-right-color: @table-border-color;
+
+            &:last-child {
+              border-right: none;
+            }
+          }
+
+          &:hover {
+            &.hover-highlight {
+              td {
+                &:not(.empty-cell) {
+                  border-right-color: @table-border-color;
+                }
+              }
+            }
           }
         }
       }

@@ -28,7 +28,7 @@ import { computed, defineComponent, getCurrentInstance, nextTick, provide, ref, 
 
 import { isElement } from 'lodash';
 
-import { COLUMN_ATTRIBUTE, PROVIDE_KEY_INIT_COL, TABLE_ROW_ATTRIBUTE } from './const';
+import { COLUMN_ATTRIBUTE, PROVIDE_KEY_INIT_COL, SCROLLY_WIDTH, TABLE_ROW_ATTRIBUTE } from './const';
 import { EMIT_EVENT_TYPES } from './events';
 import useColumnResize from './hooks/use-column-resize';
 import useColumnTemplate from './hooks/use-column-template';
@@ -108,9 +108,18 @@ export default defineComponent({
      * 计算每一列的实际宽度
      */
     const computedColumnRect = () => {
-      const width = refRoot.value?.offsetWidth ?? 0;
+      const width = refRoot.value?.offsetWidth - (props.scrollbar ? 1 : SCROLLY_WIDTH) ?? 0;
+      console.log('computedColumnRect - root', width);
       columns.resolveColsCalcWidth(width);
       resolveFixedColumnStyle();
+
+      let computedWidth = 0;
+      columns.visibleColumns.forEach((item, index) => {
+        computedWidth = computedWidth + columns.getColumnWidth(item);
+        console.log('computedColumnRect - computed' + index, columns.getColumnWidth(item));
+      });
+
+      console.log('computedColumnRect - computed - all', computedWidth);
     };
 
     const { dragOffsetX } = useColumnResize(columns, { afterResize: resolveFixedColumnStyle });
@@ -188,24 +197,34 @@ export default defineComponent({
       });
     };
 
-    useObserverResize(refRoot, () => {
-      if ((props.height === '100%' || props.virtualEnabled) && isElement(refRoot.value)) {
-        if (isResizeBodyHeight.value) {
-          setTimeout(() => {
-            isResizeBodyHeight.value = false;
-          });
-          return;
-        }
-        const tableHeight = refRoot.value.offsetHeight;
-        isResizeBodyHeight.value = true;
+    const observerResizing = ref(false);
+    let observerResizingTimer = null;
 
-        setBodyHeight(tableHeight);
+    useObserverResize(refRoot, () => {
+      if (!observerResizing.value) {
+        observerResizing.value = true;
+        if ((props.height === '100%' || props.virtualEnabled) && isElement(refRoot.value)) {
+          if (isResizeBodyHeight.value) {
+            setTimeout(() => {
+              isResizeBodyHeight.value = false;
+            });
+            return;
+          }
+          const tableHeight = refRoot.value.offsetHeight;
+          isResizeBodyHeight.value = true;
+          setBodyHeight(tableHeight);
+          setOffsetRight();
+        }
+        computedColumnRect();
         setOffsetRight();
+        refBody.value?.scrollTo(0, 0);
+        return;
       }
 
-      computedColumnRect();
-      refBody.value?.scrollTo(0, 0);
-      setOffsetRight();
+      observerResizingTimer && clearTimeout(observerResizingTimer);
+      observerResizingTimer = setTimeout(() => {
+        observerResizing.value = false;
+      });
     });
 
     watch(

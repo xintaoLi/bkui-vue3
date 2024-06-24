@@ -31,7 +31,7 @@ import VirtualRender from '@bkui-vue/virtual-render';
 import { debounce } from 'lodash';
 
 import GhostBody from '../components/ghost-body';
-import { DEF_COLOR, IHeadColor, LINE_HEIGHT } from '../const';
+import { DEF_COLOR, IHeadColor, LINE_HEIGHT, SCROLLY_WIDTH } from '../const';
 import { EMIT_EVENTS } from '../events';
 import { Column, TablePropTypes } from '../props';
 import { resolveHeadConfig, resolveNumberOrStringToPix, resolvePropBorderToClassStr, resolvePropVal } from '../utils';
@@ -128,6 +128,7 @@ export default (props: TablePropTypes, ctx) => {
   const headStyle = computed(() => ({
     '--row-height': `${headHeight.value}px`,
     '--background-color': DEF_COLOR[props.thead?.color ?? IHeadColor.DEF1],
+    paddingRight: props.scrollbar ? null : `${SCROLLY_WIDTH}px`,
   }));
 
   const bodyClass = {
