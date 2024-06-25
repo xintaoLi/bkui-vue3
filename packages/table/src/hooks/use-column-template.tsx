@@ -58,30 +58,7 @@ export default () => {
     return columnCache.get(ctx);
   };
 
-  const resolveChildNode = (node: RendererNode, parent?: Column) => {
-    let rootNode = parent;
-    if (!node || node.type?.name === 'Table') {
-      return;
-    }
-
-    if (node.type?.name === 'TableColumn') {
-      const resolveProp = Object.assign({ index: columnIndex }, copyProps(node.props), {
-        field: node.props.prop || node.props.field,
-        render: node.props.render ?? node.children?.default,
-        uniqueId: getNodeCtxUid(node),
-        children: [],
-      });
-
-      const targetColumns = parent?.children ?? columns;
-      if (!targetColumns.some(col => col.uniqueId === resolveProp.uniqueId)) {
-        targetColumns.push(resolveProp);
-
-        columnIndex = columnIndex + 1;
-        resolveChildNode(node?.children, resolveProp);
-        return;
-      }
-    }
-
+  const resolveNodeChilren = (node: RendererNode, rootNode?: Column) => {
     if (node?.component?.subTree) {
       resolveChildNode(node?.component?.subTree, rootNode);
       return;
@@ -105,6 +82,36 @@ export default () => {
       Object.keys(node.children).forEach(key => resolveChildNode(node.children[key], rootNode));
       return;
     }
+  };
+
+  const resolveChildNode = (node: RendererNode, parent?: Column) => {
+    let rootNode = parent;
+    if (!node || node.type?.name === 'Table') {
+      return;
+    }
+
+    if (node.type?.name === 'TableColumn') {
+      const resolveProp = Object.assign({ index: columnIndex }, copyProps(node.props), {
+        field: node.props.prop || node.props.field,
+        render: node.props.render ?? node.children?.default,
+        uniqueId: getNodeCtxUid(node),
+        children: [],
+      });
+
+      const targetColumns = parent?.children ?? columns;
+      if (!targetColumns.some(col => col.uniqueId === resolveProp.uniqueId)) {
+        targetColumns.push(resolveProp);
+
+        columnIndex = columnIndex + 1;
+        if (node.children) {
+          resolveNodeChilren(node, resolveProp);
+        }
+      }
+
+      return;
+    }
+
+    resolveNodeChilren(node, rootNode);
   };
 
   const resolveColumns = (children: VNode[] | VNodeNormalizedChildren) => {

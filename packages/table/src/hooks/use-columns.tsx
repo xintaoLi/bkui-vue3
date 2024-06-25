@@ -661,6 +661,7 @@ const useColumns = (props: TablePropTypes) => {
     sortColumns,
     filterColumns,
     columnGroup,
+    columnGroupMap,
     clearColumnSort,
     formatColumns,
     flatColumnTemplate,

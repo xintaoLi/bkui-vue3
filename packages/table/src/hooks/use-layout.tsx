@@ -81,6 +81,7 @@ export default (props: TablePropTypes, ctx) => {
     classes({
       [resolveClassName('table-head')]: true,
       'has-settings': !!props.settings,
+      'has-group': headerRowCount.value > 1,
     }),
   );
 

@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { ref, SetupContext, unref } from 'vue';
+import { ref, SetupContext, toRaw, unref } from 'vue';
 
 import Checkbox from '@bkui-vue/checkbox';
 
@@ -53,6 +53,9 @@ export default ({
 }) => {
   const sortType = ref(columns.getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_SORT_TYPE));
   const sortActive = ref(columns.getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_SORT_ACTIVE));
+
+  const rawColumn = toRaw(column);
+
   /**
    * 点击排序事件
    * @param sortFn 排序函数
@@ -224,28 +227,35 @@ export default ({
     '--background-color': DEF_COLOR[props.thead?.color ?? IHeadColor.DEF1],
   });
 
-  const group = columns.getGroupAttribute(column);
-
   const classList = [
     columns.getHeadColumnClass(column, index),
     columns.getColumnCustomClass(column),
     column.align || props.headerAlign || props.align,
-    {
-      'is-head-group': group?.isGroup,
-      'is-head-group-child': !!group?.parent,
-    },
   ];
+
+  const getGroupClass = () => {
+    const group = columns.getGroupAttribute(rawColumn);
+
+    return classList.concat([
+      {
+        'is-head-group': group?.isGroup,
+        'is-head-group-child': !!group?.parent,
+      },
+    ]);
+  };
 
   const getGroupRender = () => {
     return resolvePropVal(column, 'label', [index, column]);
   };
 
   const getTH = () => {
+    const group = columns.getGroupAttribute(rawColumn);
+
     if (group?.isGroup) {
       return (
         <th
           style={headStyle}
-          class={classList}
+          class={getGroupClass()}
           colspan={group?.thColspan}
           rowspan={group?.thRowspan}
         >
