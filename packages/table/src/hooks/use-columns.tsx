@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { computed, isRef, reactive, ref, watch } from 'vue';
+import { computed, isRef, reactive, ref } from 'vue';
 
 import { useLocale } from '@bkui-vue/config-provider';
 import { debounce } from 'lodash';
@@ -47,6 +47,11 @@ const useColumns = (props: TablePropTypes) => {
   const uuid = uuidv4();
   const sortColumns = reactive([]);
   const filterColumns = reactive([]);
+  const columnGroup: Column[][] = reactive([]);
+  const columnGroupMap = new WeakMap<
+    Column,
+    { thColspan: number; thRowspan: number; isGroup: boolean; parent?: Column }
+  >();
 
   /**
    * 用来记录列的排序状态
@@ -256,6 +261,71 @@ const useColumns = (props: TablePropTypes) => {
   };
 
   /**
+   * 格式化Column嵌套配置，支持多表头设置
+   * @param cols
+   */
+  const flatColumnTemplate = (cols: Column[]) => {
+    columnGroup.length = 0;
+    let maxDepth = 0;
+    const targetColumns = [];
+
+    const getMaxDepth = (root: Column[], depth = 1) => {
+      if (root.length && maxDepth < depth) {
+        maxDepth = depth;
+      }
+
+      root.forEach(col => getMaxDepth(col.children ?? [], depth + 1));
+    };
+
+    getMaxDepth(cols);
+
+    const updateParentThColspan = (col: Column, count: number) => {
+      if (col) {
+        const colMap = columnGroupMap.get(col);
+        colMap.thColspan = colMap.thColspan + count;
+        updateParentThColspan(colMap.parent, count);
+      }
+    };
+
+    const foreachAllColumns = (col: Column, depth: number, parent?: Column) => {
+      if (columnGroup[depth] === undefined) {
+        columnGroup[depth] = [];
+      }
+
+      const isGroup = !!(col.children?.length ?? false);
+      if (!(col.children?.length ?? false)) {
+        targetColumns.push(col);
+      }
+
+      if (!columnGroupMap.has(col)) {
+        columnGroupMap.set(col, { thColspan: 1, thRowspan: 1, isGroup });
+      }
+
+      const colMap = columnGroupMap.get(col);
+
+      const thColspan = col.children?.length ?? 1;
+      const thRowspan = (col.children?.length ?? 0) > 0 ? 1 : maxDepth - depth;
+
+      Object.assign(colMap, { thColspan: thColspan > 0 ? thColspan : 1, parent, thRowspan });
+      columnGroup[depth].push(col);
+
+      if (thColspan > 1) {
+        updateParentThColspan(parent, thColspan - 1);
+      }
+
+      col.children?.forEach(c => foreachAllColumns(c, depth + 1, col));
+    };
+
+    cols.forEach(col => {
+      foreachAllColumns(col, 0);
+    });
+
+    return targetColumns;
+  };
+
+  const getGroupAttribute = (group: Column) => columnGroupMap.get(group);
+
+  /**
    * Format columns
    * @param columns
    */
@@ -360,12 +430,13 @@ const useColumns = (props: TablePropTypes) => {
     setColumnAttribute(col, COLUMN_ATTRIBUTE.COL_RECT, target);
   };
 
-  const debounceUpdateColumns = debounce(columns => {
+  const debounceUpdateColumns = debounce((columns, onComplete?) => {
     tableColumnList.length = 0;
-    tableColumnList.push(...columns);
+    tableColumnList.push(...flatColumnTemplate(columns));
     formatColumns();
 
     setVisibleColumns();
+    onComplete?.();
   });
 
   const setColumnIsHidden = (column: Column, value = false) => {
@@ -569,14 +640,6 @@ const useColumns = (props: TablePropTypes) => {
     setColumnAttribute(column, COLUMN_ATTRIBUTE.COL_SORT_ACTIVE, active);
   };
 
-  watch(
-    () => [props.columns],
-    () => {
-      debounceUpdateColumns(props.columns);
-    },
-    { immediate: true },
-  );
-
   /**
    * 清理列排序
    * @param reset 是否重置表格数据
@@ -597,8 +660,10 @@ const useColumns = (props: TablePropTypes) => {
     debounceUpdateColumns,
     sortColumns,
     filterColumns,
+    columnGroup,
     clearColumnSort,
     formatColumns,
+    flatColumnTemplate,
     isHiddenColumn,
     getColumnId,
     getColumnOrderWidth,
@@ -611,6 +676,7 @@ const useColumns = (props: TablePropTypes) => {
     getColumnRefAttribute,
     getColumnCalcWidth,
     getColumnWidth,
+    getGroupAttribute,
     resolveEventListener,
     setColumnIsHidden,
     setColumnResizeWidth,

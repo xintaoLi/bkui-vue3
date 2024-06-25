@@ -51,6 +51,7 @@ export default (props: TablePropTypes, ctx) => {
   const layout: { bottom?: number } = reactive({});
   const fixedColumns = reactive([]);
   const lineHeight = ref(props.rowHeight ?? LINE_HEIGHT);
+  const headerRowCount = ref(1);
 
   const fixedBottomHeight = computed(() => {
     return props.fixedBottom?.position === 'relative'
@@ -104,6 +105,10 @@ export default (props: TablePropTypes, ctx) => {
     setRootStyleVars();
   };
 
+  const setHeaderRowCount = (val: number) => {
+    headerRowCount.value = val;
+  };
+
   const setTranslateY = (val: number) => {
     translateY.value = val;
     setRootStyleVars();
@@ -123,7 +128,7 @@ export default (props: TablePropTypes, ctx) => {
   };
 
   const config = resolveHeadConfig(props);
-  const headHeight = computed(() => resolvePropVal(config, 'height', ['thead']));
+  const headHeight = computed(() => resolvePropVal(config, 'height', ['thead']) * headerRowCount.value);
 
   const headStyle = computed(() => ({
     '--row-height': `${headHeight.value}px`,
@@ -366,6 +371,7 @@ export default (props: TablePropTypes, ctx) => {
     setFixedColumns,
     setOffsetRight,
     setLineHeight,
+    setHeaderRowCount,
     initRootStyleVars,
     refRoot,
     refHead,

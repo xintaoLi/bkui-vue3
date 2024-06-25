@@ -291,6 +291,7 @@ export type Column = {
   prop?: LabelFunctionString;
   index?: number;
   explain?: IColumnExplain;
+  children?: Column[];
 };
 
 export const IColumnProp = toType<Column>('IColumnPropType', {

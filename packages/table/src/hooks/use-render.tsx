@@ -108,14 +108,14 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
     return (
       <>
         <thead style={rowStyle}>
-          <TableRow>
+          {columns.columnGroup.map(cols => (
             <tr>
-              {columns.visibleColumns.map((column, index: number) => {
+              {cols.map((column, index: number) => {
                 const { getTH } = useHead({ props, ctx, columns, column, index, rows });
                 return getTH();
               })}
             </tr>
-          </TableRow>
+          ))}
         </thead>
       </>
     );

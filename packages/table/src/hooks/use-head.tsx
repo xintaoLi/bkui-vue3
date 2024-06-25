@@ -191,7 +191,7 @@ export default ({
       <TableCell
         class={headClass}
         column={column as Column}
-        headExplain={resolvePropVal(column.explain, 'head', [column])}
+        headExplain={resolvePropVal(column.explain as Record<string, unknown>, 'head', [column])}
         isHead={true}
         observerResize={props.observerResize}
         parentSetting={props.showOverflowTooltip}
@@ -224,20 +224,43 @@ export default ({
     '--background-color': DEF_COLOR[props.thead?.color ?? IHeadColor.DEF1],
   });
 
+  const group = columns.getGroupAttribute(column);
+
   const classList = [
     columns.getHeadColumnClass(column, index),
     columns.getColumnCustomClass(column),
     column.align || props.headerAlign || props.align,
+    {
+      'is-head-group': group.isGroup,
+      'is-head-group-child': !!group.parent,
+    },
   ];
 
+  const getGroupRender = () => {
+    return resolvePropVal(column, 'label', [index, column]);
+  };
+
   const getTH = () => {
+    if (group.isGroup) {
+      return (
+        <th
+          style={headStyle}
+          class={classList}
+          colspan={group.thColspan}
+          rowspan={group.thRowspan}
+        >
+          {getGroupRender()}
+        </th>
+      );
+    }
+
     return (
       <th
         style={headStyle}
         class={classList}
-        colspan={1}
+        colspan={group.thColspan}
         data-id={columns.getColumnId(column)}
-        rowspan={1}
+        rowspan={group.thRowspan}
         onClick={() => handleColumnHeadClick()}
         {...columns.resolveEventListener(column)}
       >
