@@ -231,8 +231,8 @@ export default ({
     columns.getColumnCustomClass(column),
     column.align || props.headerAlign || props.align,
     {
-      'is-head-group': group.isGroup,
-      'is-head-group-child': !!group.parent,
+      'is-head-group': group?.isGroup,
+      'is-head-group-child': !!group?.parent,
     },
   ];
 
@@ -241,13 +241,13 @@ export default ({
   };
 
   const getTH = () => {
-    if (group.isGroup) {
+    if (group?.isGroup) {
       return (
         <th
           style={headStyle}
           class={classList}
-          colspan={group.thColspan}
-          rowspan={group.thRowspan}
+          colspan={group?.thColspan}
+          rowspan={group?.thRowspan}
         >
           {getGroupRender()}
         </th>
@@ -258,9 +258,9 @@ export default ({
       <th
         style={headStyle}
         class={classList}
-        colspan={group.thColspan}
+        colspan={group?.thColspan}
         data-id={columns.getColumnId(column)}
-        rowspan={group.thRowspan}
+        rowspan={group?.thRowspan}
         onClick={() => handleColumnHeadClick()}
         {...columns.resolveEventListener(column)}
       >
