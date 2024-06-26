@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { computed, reactive, watch } from 'vue';
+import { reactive, ref } from 'vue';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -37,7 +37,7 @@ const useRows = (props: TablePropTypes) => {
   /**
    * 全量数据
    */
-  const tableRowList = computed(() => props.data ?? []);
+  const tableRowList = ref([]);
 
   /**
    * 分页数据
@@ -116,14 +116,6 @@ const useRows = (props: TablePropTypes) => {
       [TABLE_ROW_ATTRIBUTE.ROW_SELECTION_INDETERMINATE]: hasSelectedRow && hasUnSelectedRow,
     });
   };
-
-  watch(
-    () => [tableRowList],
-    () => {
-      formatDataSchema();
-    },
-    { immediate: true },
-  );
 
   const getSelectionRowArgs = (row, index?) => {
     return {
@@ -297,11 +289,18 @@ const useRows = (props: TablePropTypes) => {
   const getRowSelection = () =>
     tableRowList.value.filter(row => getRowAttribute(row, TABLE_ROW_ATTRIBUTE.ROW_SELECTION));
 
+  const setTableRowList = (data: unknown[]) => {
+    tableRowList.value.length = 0;
+    tableRowList.value.push(...data);
+    formatDataSchema();
+  };
+
   return {
     setRowIndex,
     setRowExpand,
     isRowChecked,
     setPageRowList,
+    setTableRowList,
     clearSelection,
     formatDataSchema,
     toggleRowSelection,
@@ -316,6 +315,7 @@ const useRows = (props: TablePropTypes) => {
     changePageRowIndex,
     toggleAllSelection,
     tableRowList,
+    tableRowSchema,
     pageRowList,
   };
 };

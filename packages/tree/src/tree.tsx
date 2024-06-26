@@ -30,7 +30,7 @@ import { debounce } from '@bkui-vue/shared';
 import VirtualRender from '@bkui-vue/virtual-render';
 
 import { EVENTS, NODE_ATTRIBUTES, TreeEmitEventsType } from './constant';
-import { treeProps, TreePropTypes as defineTypes } from './props';
+import { treeProps, TreePropTypes as defineTypes, TreeNode } from './props';
 import useEmpty from './use-empty';
 import useIntersectionObserver from './use-intersection-observer';
 import useNodeAction from './use-node-action';
@@ -73,7 +73,7 @@ export default defineComponent({
     const { searchFn, isSearchActive, refSearch, isSearchDisabled, isTreeUI, showChildNodes } = useSearch(props);
     const matchedNodePath = reactive([]);
 
-    const filterFn = (item: Record<string, object>) => {
+    const filterFn = (item: TreeNode) => {
       if (isSearchActive.value) {
         if (showChildNodes) {
           return (
@@ -105,7 +105,7 @@ export default defineComponent({
 
     const handleSearch = debounce(120, () => {
       matchedNodePath.length = 0;
-      flatData.data.forEach((item: Record<string, object>) => {
+      flatData.data.forEach((item: TreeNode) => {
         const isMatch = searchFn(getLabel(item, props), item);
         if (isMatch) {
           matchedNodePath.push(getNodePath(item));
@@ -138,11 +138,11 @@ export default defineComponent({
      * @param item Node item | Node Id
      * @param checked
      */
-    const setChecked = (item: Record<string, object> | Record<string, object>[], checked = true) => {
+    const setChecked = (item: TreeNode | TreeNode[], checked = true) => {
       setNodeAction(resolveNodeItem(item), NODE_ATTRIBUTES.IS_CHECKED, checked);
     };
 
-    onSelected((newData: Record<string, object>) => {
+    onSelected((newData: TreeNode) => {
       setSelect(newData, true, props.autoOpenParentNode);
     });
 
@@ -188,7 +188,7 @@ export default defineComponent({
         return;
       }
 
-      const id = getNodeId(option);
+      const id = getNodeId(option as TreeNode);
       if (id) {
         root.value.fixToTop({
           index: renderData.value.findIndex(node => getNodeId(node) === id) + 1,
@@ -219,7 +219,7 @@ export default defineComponent({
 
     const { renderEmpty } = useEmpty(props);
     useNodeDrag(props, ctx, root, flatData);
-    const renderTreeContent = (scopedData: Record<string, object>[]) => {
+    const renderTreeContent = (scopedData: TreeNode[]) => {
       if (scopedData.length) {
         return scopedData.map(d => renderTreeNode(d, !isSearchActive.value || isTreeUI.value));
       }
@@ -269,7 +269,7 @@ export default defineComponent({
         onContentScroll={handleContentScroll}
       >
         {{
-          default: (scoped: { data: Record<string, object>[] }) => renderTreeContent(scoped.data || []),
+          default: (scoped: { data: TreeNode[] }) => renderTreeContent(scoped.data || []),
         }}
       </VirtualRender>
     );
