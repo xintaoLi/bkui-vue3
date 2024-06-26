@@ -108,10 +108,10 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
     return (
       <>
         <thead style={rowStyle}>
-          {columns.columnGroup.map(cols => (
+          {columns.columnGroup.map((cols, rowIndex) => (
             <tr>
               {cols.map((column, index: number) => {
-                const { getTH } = useHead({ props, ctx, columns, column, index, rows });
+                const { getTH } = useHead({ props, ctx, columns, column, index, rows, rowIndex });
                 return getTH();
               })}
             </tr>

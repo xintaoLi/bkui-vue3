@@ -58,7 +58,7 @@ export default () => {
     return columnCache.get(ctx);
   };
 
-  const resolveNodeChilren = (node: RendererNode, rootNode?: Column) => {
+  const resolveNodeChilren = (node: RendererNode, rootNode?: Column, isColumnRoot?) => {
     if (node?.component?.subTree) {
       resolveChildNode(node?.component?.subTree, rootNode);
       return;
@@ -78,7 +78,7 @@ export default () => {
       return;
     }
 
-    if (isVNode(node) && node?.children && typeof node?.children === 'object') {
+    if (!isColumnRoot && isVNode(node) && node?.children && typeof node?.children === 'object') {
       Object.keys(node.children).forEach(key => resolveChildNode(node.children[key], rootNode));
       return;
     }
@@ -104,7 +104,7 @@ export default () => {
 
         columnIndex = columnIndex + 1;
         if (node.children) {
-          resolveNodeChilren(node, resolveProp);
+          resolveNodeChilren(node, resolveProp, true);
         }
       }
 

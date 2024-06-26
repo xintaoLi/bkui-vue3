@@ -23,14 +23,14 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { computed, isRef, reactive, ref } from 'vue';
+import { computed, isRef, reactive, ref, toRaw } from 'vue';
 
 import { useLocale } from '@bkui-vue/config-provider';
 import { debounce } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
 import { COL_MIN_WIDTH, COLUMN_ATTRIBUTE, IEmptyObject } from '../const';
-import { Column, IColSortBehavior, IFilterShape, Settings, TablePropTypes } from '../props';
+import { Column, IColSortBehavior, IFilterShape, IHeadGroup, Settings, TablePropTypes } from '../props';
 import {
   getRowText,
   isColumnHidden,
@@ -48,10 +48,7 @@ const useColumns = (props: TablePropTypes) => {
   const sortColumns = reactive([]);
   const filterColumns = reactive([]);
   const columnGroup: Column[][] = reactive([]);
-  const columnGroupMap = new WeakMap<
-    Column,
-    { thColspan: number; thRowspan: number; isGroup: boolean; parent?: Column }
-  >();
+  const columnGroupMap = new WeakMap<Column, IHeadGroup>();
 
   /**
    * 用来记录列的排序状态
@@ -283,11 +280,14 @@ const useColumns = (props: TablePropTypes) => {
       if (col) {
         const colMap = columnGroupMap.get(col);
         colMap.thColspan = colMap.thColspan + count;
+        colMap.offsetLeft = colMap.offsetLeft + count;
         updateParentThColspan(colMap.parent, count);
       }
     };
 
-    const foreachAllColumns = (col: Column, depth: number, parent?: Column) => {
+    const foreachAllColumns = (column: Column, depth: number, parent?: Column, left?: number) => {
+      const col = toRaw(column);
+      let leftColumnCount = left;
       if (columnGroup[depth] === undefined) {
         columnGroup[depth] = [];
       }
@@ -298,26 +298,32 @@ const useColumns = (props: TablePropTypes) => {
       }
 
       if (!columnGroupMap.has(col)) {
-        columnGroupMap.set(col, { thColspan: 1, thRowspan: 1, isGroup });
+        columnGroupMap.set(col, { thColspan: 1, thRowspan: 1, isGroup, offsetLeft: left });
       }
 
       const colMap = columnGroupMap.get(col);
 
+      const childLength = col.children?.length ?? 0;
       const thColspan = col.children?.length ?? 1;
-      const thRowspan = (col.children?.length ?? 0) > 0 ? 1 : maxDepth - depth;
+      const thRowspan = childLength > 0 ? 1 : maxDepth - depth;
+      const offsetLeft = leftColumnCount + (childLength > 0 ? childLength - 1 : 0);
 
-      Object.assign(colMap, { thColspan: thColspan > 0 ? thColspan : 1, parent, thRowspan });
+      Object.assign(colMap, { thColspan: thColspan > 0 ? thColspan : 1, parent, thRowspan, offsetLeft });
       columnGroup[depth].push(col);
 
       if (thColspan > 1) {
         updateParentThColspan(parent, thColspan - 1);
       }
 
-      col.children?.forEach(c => foreachAllColumns(c, depth + 1, col));
+      col.children?.forEach((c, index) => {
+        leftColumnCount = leftColumnCount + foreachAllColumns(c, depth + 1, col, leftColumnCount + index);
+      });
+      return childLength > 0 ? childLength - 1 : 0;
     };
 
-    cols.forEach(col => {
-      foreachAllColumns(col, 0);
+    let leftColumnCount = 0;
+    cols.forEach((col, index) => {
+      leftColumnCount = leftColumnCount + foreachAllColumns(col, 0, null, leftColumnCount + index);
     });
 
     return targetColumns;

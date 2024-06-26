@@ -1,12 +1,16 @@
 <template>
+  <h2>bk-table-column 模板模式：</h2>
   <bk-table :data="projectTable" :height="500" :pagination="pagination">
-    <bk-table-column type="index" width="80"></bk-table-column>
+    <bk-table-column type="index" label='序号' width="80"></bk-table-column>
     <bk-table-column label="用户组" prop="groupName">
       <bk-table-column label="用户描述" prop="groupDesc" />
       <bk-table-column label="有效期" prop="validityPeriod" />
     </bk-table-column>
 
     <bk-table-column label="加入时间" prop="joinedTime" />
+  </bk-table>
+  <h2>props.columns 绑定模式：</h2>
+  <bk-table :data="projectTable" :columns="columns" :height="500" :pagination="pagination">
   </bk-table>
 </template>
 
@@ -17,10 +21,10 @@ const columns = reactive([
   {
     label: '序号',
     type: 'index',
+    width: 80
   },
   {
     label: '用户组',
-    field: 'groupName',
     children: [
       {
         label: '操作员1',
@@ -46,10 +50,6 @@ const columns = reactive([
   },
 ]);
 
-const fixedBottom = reactive({
-  position: 'relative',
-  height: 42,
-});
 const projectTable = ref([
   {
     groupId: 1,

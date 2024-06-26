@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { ref, SetupContext, toRaw, unref } from 'vue';
+import { computed, ref, SetupContext, toRaw, unref } from 'vue';
 
 import Checkbox from '@bkui-vue/checkbox';
 
@@ -36,6 +36,7 @@ import { Column, TablePropTypes } from '../props';
 import { getNextSortType, getSortFn, resolveHeadConfig, resolvePropVal } from '../utils';
 import { UseColumns } from './use-columns';
 import { UseRows } from './use-rows';
+
 export default ({
   props,
   columns,
@@ -50,6 +51,7 @@ export default ({
   column: Column;
   index: number;
   rows: UseRows;
+  rowIndex: number;
 }) => {
   const sortType = ref(columns.getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_SORT_TYPE));
   const sortActive = ref(columns.getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_SORT_ACTIVE));
@@ -227,35 +229,36 @@ export default ({
     '--background-color': DEF_COLOR[props.thead?.color ?? IHeadColor.DEF1],
   });
 
-  const classList = [
+  const group = columns.getGroupAttribute(rawColumn);
+
+  const classList = computed(() => [
     columns.getHeadColumnClass(column, index),
     columns.getColumnCustomClass(column),
     column.align || props.headerAlign || props.align,
-  ];
+    {
+      'is-last-child': group?.offsetLeft + 1 === columns.visibleColumns.length,
+    },
+  ]);
 
-  const getGroupClass = () => {
-    const group = columns.getGroupAttribute(rawColumn);
-
-    return classList.concat([
+  const groupClass = computed(() =>
+    classList.value.concat([
       {
         'is-head-group': group?.isGroup,
         'is-head-group-child': !!group?.parent,
       },
-    ]);
-  };
+    ]),
+  );
 
   const getGroupRender = () => {
     return resolvePropVal(column, 'label', [index, column]);
   };
 
   const getTH = () => {
-    const group = columns.getGroupAttribute(rawColumn);
-
     if (group?.isGroup) {
       return (
         <th
           style={headStyle}
-          class={getGroupClass()}
+          class={groupClass.value}
           colspan={group?.thColspan}
           rowspan={group?.thRowspan}
         >
@@ -267,7 +270,7 @@ export default ({
     return (
       <th
         style={headStyle}
-        class={classList}
+        class={classList.value}
         colspan={group?.thColspan}
         data-id={columns.getColumnId(column)}
         rowspan={group?.thRowspan}
