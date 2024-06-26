@@ -176,12 +176,12 @@ export default (
 
   const getSourceNodeByUID = (uid: string) => flatData.data.find(item => getNodeId(item) === uid);
 
-  const getParentNodeData = (node: TreeNode) => {
+  const getParentNodeData = (node: TreeNode | string) => {
     if (isRootNode(node)) {
       return { [props.children]: props.data };
     }
 
-    return getParentNode(node);
+    return getParentNode(node as TreeNode);
   };
 
   /**

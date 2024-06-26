@@ -89,7 +89,7 @@ export default (props: TreePropTypes, ctx, flatData: IFlatData, _renderData, ini
    * @returns
    */
   const renderPrefixVal = (
-    val: { node: string; className: string; text: boolean | number | string; style: CSSStyleValue } | string,
+    val: { node: string; className: string; text: boolean | number | string; style: Record<string, string> } | string,
   ) => {
     if (typeof val === 'string') {
       return val;
