@@ -309,6 +309,20 @@
     background-color: var(--background-color);
     height: var(--row-height);
 
+    &.has-group {
+      .is-head-group {
+        border-bottom: 1px solid @table-border-color;
+      }
+
+      th {
+        border-right: 1px solid @table-border-color;
+
+        &.is-last-child {
+          border-right: none;
+        }
+      }
+    }
+
     .col-resize-drag {
       position: absolute;
       top: 0;
@@ -407,6 +421,9 @@
   &.bordered-col {
     .@{bk-prefix}-table-head {
       border-right: 1px solid @table-border-color;
+      .is-head-group {
+        border-bottom: 1px solid @table-border-color;
+      }
     }
     th {
       border-right: 1px solid @table-border-color;

@@ -23,8 +23,9 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { PropTypes, renderDirectiveType } from '@bkui-vue/shared';
 import { func } from 'vue-types';
+
+import { PropTypes, renderDirectiveType } from '@bkui-vue/shared';
 
 export const propsMixin = {
   // 是否显示弹框
@@ -53,4 +54,5 @@ export const propsMixin = {
   left: PropTypes.string,
   top: PropTypes.string,
   extCls: PropTypes.string,
+  backgroundColor: PropTypes.string.def(''),
 };

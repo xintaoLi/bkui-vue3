@@ -26,9 +26,9 @@
 
 import { isProxy, toRaw } from 'vue';
 
+import { throttle } from '@bkui-vue/shared';
 import debounce from 'lodash/debounce';
 import objGet from 'lodash/get';
-import { throttle } from '@bkui-vue/shared';
 import ResizeObserver from 'resize-observer-polyfill';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -42,7 +42,7 @@ import { Column, GroupColumn, ISortPropShape, TablePropTypes } from './props';
  * @param args 如果是函数，传递参数
  * @returns
  */
-export const resolvePropVal = (prop: any, key: string | string[], args: any[]) => {
+export const resolvePropVal = (prop: Record<string, unknown>, key: string | string[], args: unknown[]) => {
   if (prop === undefined || prop === null) {
     return undefined;
   }
@@ -50,7 +50,7 @@ export const resolvePropVal = (prop: any, key: string | string[], args: any[]) =
   if (typeof key === 'string') {
     if (Object.prototype.hasOwnProperty.call(prop, key)) {
       if (typeof prop[key] === 'function') {
-        return prop[key].call(this, ...args);
+        return (prop[key] as (...args) => unknown).call(this, ...args);
       }
 
       return prop[key];
@@ -62,7 +62,7 @@ export const resolvePropVal = (prop: any, key: string | string[], args: any[]) =
   if (Array.isArray(key)) {
     return key
       .map((_key: string) => resolvePropVal(prop, _key, args))
-      .filter((val: any) => val !== undefined)
+      .filter((val: unknown) => val !== undefined)
       .at(0);
   }
 };
@@ -543,7 +543,7 @@ export const getRawData = data => {
  * @param parentVal
  * @returns
  */
-export const getNumberOrPercentValue = (val: string | number, parentVal?: number) => {
+export const getNumberOrPercentValue = (val: number | string, parentVal?: number) => {
   if (/^\d+\.?\d+(px)?$/.test(`${val}`)) {
     return Number(`${val}`.replace(/px/, ''));
   }

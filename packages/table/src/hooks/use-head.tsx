@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { ref, SetupContext, unref } from 'vue';
+import { computed, ref, SetupContext, toRaw, unref } from 'vue';
 
 import Checkbox from '@bkui-vue/checkbox';
 
@@ -36,6 +36,7 @@ import { Column, TablePropTypes } from '../props';
 import { getNextSortType, getSortFn, resolveHeadConfig, resolvePropVal } from '../utils';
 import { UseColumns } from './use-columns';
 import { UseRows } from './use-rows';
+
 export default ({
   props,
   columns,
@@ -50,9 +51,13 @@ export default ({
   column: Column;
   index: number;
   rows: UseRows;
+  rowIndex: number;
 }) => {
   const sortType = ref(columns.getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_SORT_TYPE));
   const sortActive = ref(columns.getColumnAttribute(column, COLUMN_ATTRIBUTE.COL_SORT_ACTIVE));
+
+  const rawColumn = toRaw(column);
+
   /**
    * 点击排序事件
    * @param sortFn 排序函数
@@ -191,7 +196,7 @@ export default ({
       <TableCell
         class={headClass}
         column={column as Column}
-        headExplain={resolvePropVal(column.explain, 'head', [column])}
+        headExplain={resolvePropVal(column.explain as Record<string, unknown>, 'head', [column])}
         isHead={true}
         observerResize={props.observerResize}
         parentSetting={props.showOverflowTooltip}
@@ -224,20 +229,51 @@ export default ({
     '--background-color': DEF_COLOR[props.thead?.color ?? IHeadColor.DEF1],
   });
 
-  const classList = [
+  const group = columns.getGroupAttribute(rawColumn);
+
+  const classList = computed(() => [
     columns.getHeadColumnClass(column, index),
     columns.getColumnCustomClass(column),
     column.align || props.headerAlign || props.align,
-  ];
+    {
+      'is-last-child': group?.offsetLeft + 1 === columns.visibleColumns.length,
+    },
+  ]);
+
+  const groupClass = computed(() =>
+    classList.value.concat([
+      {
+        'is-head-group': group?.isGroup,
+        'is-head-group-child': !!group?.parent,
+      },
+    ]),
+  );
+
+  const getGroupRender = () => {
+    return resolvePropVal(column, 'label', [index, column]);
+  };
 
   const getTH = () => {
+    if (group?.isGroup) {
+      return (
+        <th
+          style={headStyle}
+          class={groupClass.value}
+          colspan={group?.thColspan}
+          rowspan={group?.thRowspan}
+        >
+          {getGroupRender()}
+        </th>
+      );
+    }
+
     return (
       <th
         style={headStyle}
-        class={classList}
-        colspan={1}
+        class={classList.value}
+        colspan={group?.thColspan}
         data-id={columns.getColumnId(column)}
-        rowspan={1}
+        rowspan={group?.thRowspan}
         onClick={() => handleColumnHeadClick()}
         {...columns.resolveEventListener(column)}
       >

@@ -269,8 +269,17 @@ export type IDraggableRowOption = {
   width?: number;
 };
 
+export type IHeadGroup = {
+  thColspan: number;
+  thRowspan: number;
+  isGroup: boolean;
+  parent?: IHeadGroup;
+  label?: string;
+  offsetLeft?: number;
+};
+
 export type Column = {
-  label: LabelFunctionString;
+  label?: LabelFunctionString;
   field?: LabelFunctionString;
   render?: RenderFunctionString;
   renderHead?: RenderFunctionString;
@@ -291,6 +300,7 @@ export type Column = {
   prop?: LabelFunctionString;
   index?: number;
   explain?: IColumnExplain;
+  children?: Column[];
 };
 
 export const IColumnProp = toType<Column>('IColumnPropType', {

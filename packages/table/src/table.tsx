@@ -62,6 +62,7 @@ export default defineComponent({
       setFootHeight,
       setDragOffsetX,
       setOffsetRight,
+      setHeaderRowCount,
       refBody,
       refRoot,
     } = useLayout(props, ctx);
@@ -96,7 +97,9 @@ export default defineComponent({
     const instance = getCurrentInstance();
     const initTableColumns = () => {
       const children = instance.subTree?.children ?? [];
-      columns.debounceUpdateColumns(resolveColumns(children));
+      columns.debounceUpdateColumns(resolveColumns(children), () => {
+        setHeaderRowCount(columns.columnGroup.length);
+      });
     };
 
     provide(PROVIDE_KEY_INIT_COL, initTableColumns);
@@ -218,6 +221,16 @@ export default defineComponent({
         observerResizing.value = false;
       });
     });
+
+    watch(
+      () => [props.columns],
+      () => {
+        columns.debounceUpdateColumns(props.columns, () => {
+          setHeaderRowCount(columns.columnGroup.length);
+        });
+      },
+      { immediate: true },
+    );
 
     watch(
       () => [dragOffsetX.value],

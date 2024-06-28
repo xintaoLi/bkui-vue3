@@ -28,6 +28,7 @@ import { VNode, isVNode, unref, toRaw, isRef, RendererNode, VNodeNormalizedChild
 import { v4 as uuidv4 } from 'uuid';
 
 import { ITableColumn } from '../components/table-column';
+import { Column } from '../props';
 
 export default () => {
   const columns = [];
@@ -46,7 +47,7 @@ export default () => {
     return Object.keys(props ?? {}).reduce((result, key) => {
       const target = key.replace(/-(\w)/g, (_, letter) => letter.toUpperCase());
       return Object.assign(result, { [target]: getPropRawData(props[key]) });
-    }, {});
+    }, {}) as Column;
   };
 
   const getNodeCtxUid = ctx => {
@@ -57,7 +58,34 @@ export default () => {
     return columnCache.get(ctx);
   };
 
-  const resolveChildNode = (node: RendererNode) => {
+  const resolveNodeChilren = (node: RendererNode, rootNode?: Column, isColumnRoot?) => {
+    if (node?.component?.subTree) {
+      resolveChildNode(node?.component?.subTree, rootNode);
+      return;
+    }
+
+    if (typeof node === 'function') {
+      return node();
+    }
+
+    if (Array.isArray(node)) {
+      node.forEach(c => resolveChildNode(c, rootNode));
+      return;
+    }
+
+    if (Array.isArray(node?.children)) {
+      node.children.forEach(c => resolveChildNode(c, rootNode));
+      return;
+    }
+
+    if (!isColumnRoot && isVNode(node) && node?.children && typeof node?.children === 'object') {
+      Object.keys(node.children).forEach(key => resolveChildNode(node.children[key], rootNode));
+      return;
+    }
+  };
+
+  const resolveChildNode = (node: RendererNode, parent?: Column) => {
+    let rootNode = parent;
     if (!node || node.type?.name === 'Table') {
       return;
     }
@@ -67,39 +95,23 @@ export default () => {
         field: node.props.prop || node.props.field,
         render: node.props.render ?? node.children?.default,
         uniqueId: getNodeCtxUid(node),
+        children: [],
       });
 
-      if (!columns.some(col => col.uniqueId === resolveProp.uniqueId)) {
-        columns.push(unref(resolveProp));
+      const targetColumns = parent?.children ?? columns;
+      if (!targetColumns.some(col => col.uniqueId === resolveProp.uniqueId)) {
+        targetColumns.push(resolveProp);
+
         columnIndex = columnIndex + 1;
+        if (node.children) {
+          resolveNodeChilren(node, resolveProp, true);
+        }
       }
 
       return;
     }
 
-    if (node?.component?.subTree) {
-      resolveChildNode(node?.component?.subTree);
-      return;
-    }
-
-    if (typeof node === 'function') {
-      return node();
-    }
-
-    if (Array.isArray(node)) {
-      node.forEach(resolveChildNode);
-      return;
-    }
-
-    if (Array.isArray(node?.children)) {
-      node.children.forEach(resolveChildNode);
-      return;
-    }
-
-    if (isVNode(node) && node?.children && typeof node?.children === 'object') {
-      Object.keys(node.children).forEach(key => resolveChildNode(node.children[key]));
-      return;
-    }
+    resolveNodeChilren(node, rootNode);
   };
 
   const resolveColumns = (children: VNode[] | VNodeNormalizedChildren) => {
@@ -111,7 +123,7 @@ export default () => {
       if (ghostBody.component?.subTree) {
         resolveChildNode(ghostBody.component?.subTree);
       } else {
-        ((ghostBody.children as { [key: string]: () => VNode[] })?.default?.() ?? []).forEach(resolveChildNode);
+        ((ghostBody.children as { [key: string]: () => VNode[] })?.default?.() ?? []).forEach(c => resolveChildNode(c));
       }
     }
 
