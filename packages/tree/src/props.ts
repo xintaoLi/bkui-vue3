@@ -216,6 +216,9 @@ export const treeProps = {
    */
   showCheckbox: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(false),
 
+  /**
+   * 默认选中的节点id，selectable为false时无效
+   */
   checked: PropTypes.arrayOf(PropTypes.any).def([]),
 
   /**
@@ -226,7 +229,7 @@ export const treeProps = {
   /**
    * 默认选中的节点id，selectable为false时无效
    */
-  selected: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
+  // selected: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
 
   /**
    * 是否自动检查当前节点是否有子节点

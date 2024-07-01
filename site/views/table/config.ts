@@ -1,4 +1,3 @@
-/* eslint-disable */
 /*
  * Tencent is pleased to support the open source community by making
  * 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition) available.
@@ -312,6 +311,14 @@ export default [
         optional: [],
       },
       {
+        name: 'scrollbar',
+        type: 'Boolean',
+        default: 'true',
+        desc: '是否启用自定义滚动条，默认开启自定义滚动条，实现不同环境下面一致的用户体验, 注意：如果禁用，会自动启用系统默认滚动条，表格会有8px的占位，以防止滚动条出现时内容出现抖动, 可以通过样式覆盖设置 overflow: auto; 实现按需展示',
+        optional: [],
+      },
+
+      {
         name: 'fixed-bottom',
         type: 'FixedBottomOption | null',
         default: 'null',
@@ -417,6 +424,13 @@ export default [
         type: 'Boolean | IColumnExplain',
         default: 'false',
         desc: '解释说明: 当表格中的字段或数据需要做解释说明时，可增加 [下划线] 提示，hover 可查看解释说明的 tooltips',
+        optional: [],
+      },
+      {
+        name: 'children',
+        type: 'IColumn[]',
+        default: '[]',
+        desc: '嵌套实现多表头，如果是多表头分组，可以只设置 label 属性',
         optional: [],
       },
     ],
