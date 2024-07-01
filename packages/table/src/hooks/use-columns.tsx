@@ -657,6 +657,17 @@ const useColumns = (props: TablePropTypes) => {
     });
   };
 
+  /**
+   * 清理表头全选操作
+   */
+  const clearSelectionAll = () => {
+    const col = visibleColumns.find(item => item.type === 'selection');
+    if (col) {
+      setColumnAttribute(col, COLUMN_ATTRIBUTE.SELECTION_VAL, false);
+      setColumnAttribute(col, COLUMN_ATTRIBUTE.SELECTION_INDETERMINATE, false);
+    }
+  };
+
   return {
     needColSpan,
     needRowSpan,
@@ -669,6 +680,7 @@ const useColumns = (props: TablePropTypes) => {
     columnGroup,
     columnGroupMap,
     clearColumnSort,
+    clearSelectionAll,
     formatColumns,
     flatColumnTemplate,
     isHiddenColumn,

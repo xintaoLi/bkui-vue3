@@ -1,7 +1,8 @@
 <template>
+  <bk-button @click="clearSelection">取消全选</bk-button>
   <div style="display: grid;">
     <div>
-      <bk-table max-height="464" :data="projectTable" height="300" stripe :fixedBottom="fixedBottom"
+      <bk-table ref="refTable" max-height="464" :data="projectTable" height="300" stripe :fixedBottom="fixedBottom"
         show-overflow-tooltip :pagination="pagination">
         <bk-table-column type="selection" :min-width="30" width="30" align="center" />
         <bk-table-column label="用户组" prop="groupName" :sort="true" />
@@ -21,8 +22,11 @@
 <script setup>
 
 import { ref, reactive } from 'vue'
+const refTable = ref(null);
 const pagination = ref({ count: 11, limit: 10, current: 1 });
-
+const clearSelection = () => {
+  refTable.value.clearSelection();
+};
 const fixedBottom = reactive({
   position: 'relative',
   height: 42

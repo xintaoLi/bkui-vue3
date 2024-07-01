@@ -283,7 +283,10 @@ export default defineComponent({
     ctx.expose({
       setRowExpand: rows.setRowExpand,
       setAllRowExpand: rows.setAllRowExpand,
-      clearSelection: rows.clearSelection,
+      clearSelection: () => {
+        rows.clearSelection();
+        columns.clearSelectionAll();
+      },
       toggleAllSelection: rows.toggleAllSelection,
       toggleRowSelection: rows.toggleRowSelection,
       getSelection: rows.getRowSelection,
