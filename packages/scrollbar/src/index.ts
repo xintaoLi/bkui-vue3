@@ -1,12 +1,12 @@
 /*
  * Tencent is pleased to support the open source community by making
- * 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition) available.
+ * 蓝鲸智云PaaS平台 (BlueKing PaaS) available.
  *
  * Copyright (C) 2021 THL A29 Limited, a Tencent company.  All rights reserved.
  *
- * 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition) is licensed under the MIT License.
+ * 蓝鲸智云PaaS平台 (BlueKing PaaS) is licensed under the MIT License.
  *
- * License for 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition):
+ * License for 蓝鲸智云PaaS平台 (BlueKing PaaS):
  *
  * ---------------------------------------------------
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -23,78 +23,392 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import BkScrollbarCore, { Options } from './scrollbar-core';
 
-const { addClasses, classNamesToQuery } = BkScrollbarCore.helpers;
+import clickRail from './handlers/click-rail';
+import dragThumb from './handlers/drag-thumb';
+import keyboard from './handlers/keyboard';
+import wheel from './handlers/mouse-wheel';
+import touch from './handlers/touch';
+import cls from './helper/class-names';
+import * as CSS from './helper/css';
+import * as DOM from './helper/dom';
+import EventManager from './helper/event-manager';
+import { toInt, outerWidth } from './helper/util';
+import processScrollDiff from './process-scroll-diff';
+import updateGeometry from './update-geometry';
 
-export default class BkScrollBar extends BkScrollbarCore {
-  static globalObserver: MutationObserver;
+// 默认配置
+const defaultSettings = () => ({
+  handlers: ['click-rail', 'drag-thumb', 'keyboard', 'wheel', 'touch'],
+  maxScrollbarLength: null,
+  minScrollbarLength: null,
+  scrollingThreshold: 1000,
+  scrollXMarginOffset: 0,
+  scrollYMarginOffset: 0,
+  suppressScrollX: false,
+  suppressScrollY: false,
+  swipeEasing: true,
+  useBothWheelAxes: false,
+  wheelPropagation: true,
+  wheelSpeed: 1,
+});
 
-  static instances = new WeakMap();
+// 处理器集合
+const handlers = {
+  'click-rail': clickRail,
+  'drag-thumb': dragThumb,
+  keyboard,
+  wheel,
+  touch,
+};
 
-  static removeObserver() {
-    BkScrollBar.globalObserver?.disconnect();
+// 配置类型定义
+
+/**
+ * 滚动条配置项类型定义
+ * @property {string[]} handlers - 需要启用的处理器名称列表
+ * @property {number | null} maxScrollbarLength - 滚动条的最大长度，单位像素
+ * @property {number | null} minScrollbarLength - 滚动条的最小长度，单位像素
+ * @property {number} scrollingThreshold - 滚动事件的节流时间，单位毫秒
+ * @property {number} scrollXMarginOffset - 水平滚动条的边距偏移量，单位像素
+ * @property {number} scrollYMarginOffset - 垂直滚动条的边距偏移量，单位像素
+ * @property {boolean} suppressScrollX - 是否禁用水平滚动条
+ * @property {boolean} suppressScrollY - 是否禁用垂直滚动条
+ * @property {boolean} swipeEasing - 是否启用触控滑动时的缓动效果
+ * @property {boolean} useBothWheelAxes - 是否在滚动时同时滚动两个轴
+ * @property {boolean} wheelPropagation - 是否启用滚轮事件传播
+ * @property {number} wheelSpeed - 滚轮滚动速度
+ */
+export type ISettingPropType = {
+  handlers: string[];
+  maxScrollbarLength: null | number;
+  minScrollbarLength: null | number;
+  scrollingThreshold: number;
+  scrollXMarginOffset: number;
+  scrollYMarginOffset: number;
+  suppressScrollX: boolean;
+  suppressScrollY: boolean;
+  swipeEasing: boolean;
+  useBothWheelAxes: boolean;
+  wheelPropagation: boolean;
+  wheelSpeed: number;
+};
+
+export type VirtualElementOptions = {
+  offsetWidth: number;
+  offsetHeight: number;
+  scrollHeight: number;
+  scrollWidth: number;
+  clientWidth: number;
+  scrollTop: number;
+  scrollLeft: number;
+  className: string;
+  delegateElement: Element;
+};
+
+export class VirtualElement {
+  isVirtualElement = true;
+  offsetWidth: number;
+  offsetHeight: number;
+  scrollHeight: number;
+  scrollWidth: number;
+  clientWidth: number;
+  scrollTop: number;
+  scrollLeft: number;
+  className: string;
+  delegateElement: Element;
+  constructor({
+    offsetWidth,
+    offsetHeight,
+    scrollHeight,
+    scrollWidth,
+    delegateElement,
+    clientWidth,
+    scrollTop,
+    scrollLeft,
+    className,
+  }: Partial<VirtualElementOptions>) {
+    this.offsetWidth = offsetWidth;
+    this.offsetHeight = offsetHeight;
+    this.scrollHeight = scrollHeight;
+    this.scrollWidth = scrollWidth;
+    this.clientWidth = clientWidth;
+    this.scrollTop = scrollTop;
+    this.scrollLeft = scrollLeft;
+    this.className = className;
+    this.delegateElement = delegateElement;
+
+    return new Proxy(this, {
+      get: (target, prop) => {
+        if (target[prop] !== undefined) {
+          return target[prop];
+        }
+
+        if (prop in delegateElement) {
+          return delegateElement[prop];
+        }
+      },
+      set: (target, prop, value) => {
+        if (prop in delegateElement) {
+          delegateElement[prop] = value;
+        }
+
+        target[prop] = value;
+        return true;
+      },
+    });
   }
+}
 
-  constructor(...args: ConstructorParameters<typeof BkScrollbarCore>) {
-    super(...args);
+// 自定义滚动条类
+export default class PerfectScrollbar {
+  element: Element | VirtualElement;
+  containerWidth: number;
+  containerHeight: number;
+  contentWidth: number;
+  settings: ISettingPropType;
+  contentHeight: number;
+  isRtl: boolean;
+  isNegativeScroll: boolean;
+  negativeScrollAdjustment: number;
+  event: EventManager;
+  ownerDocument: Document;
+  scrollbarXRail: HTMLDivElement;
+  scrollbarX: HTMLDivElement;
+  scrollbarXActive: boolean;
+  scrollbarXWidth: number;
+  scrollbarXLeft: number;
+  scrollbarXBottom: number;
+  isScrollbarXUsingBottom: boolean;
+  scrollbarXTop: number;
+  railBorderXWidth: number;
+  railXMarginWidth: number;
+  railXWidth: number;
+  railXRatio: number;
+  scrollbarYRail: HTMLDivElement;
+  scrollbarY: HTMLDivElement;
+  scrollbarYActive: boolean;
+  scrollbarYHeight: number;
+  scrollbarYTop: number;
+  scrollbarYRight: number;
+  isScrollbarYUsingRight: boolean;
+  scrollbarYLeft: number;
+  scrollbarYOuterWidth: number;
+  railBorderYWidth: number;
+  railYMarginHeight: number;
+  railYHeight: number;
+  railYRatio: number;
+  reach: { x: string; y: string };
+  isAlive: boolean;
+  lastScrollTop: number;
+  lastScrollLeft: number;
 
-    // Save a reference to the instance, so we know this DOM node has already been instancied
-    BkScrollBar.instances.set(args[0], this);
-  }
-
-  initDOM() {
-    this.wrapperEl = this.options.wrapperNode ?? this.createScrollElement(this.classNames.wrapper);
-    this.contentEl = this.options.contentNode ?? this.createScrollElement(this.classNames.contentEl);
-    this.delegateXContent = this.options.delegateXContent;
-    this.delegateYContent = this.options.delegateYContent;
-
-    if (!this.axis.x.track.el || !this.axis.y.track.el) {
-      const track = document.createElement('div');
-      const scrollbar = document.createElement('div');
-
-      addClasses(track, this.classNames.track);
-
-      addClasses(scrollbar, this.classNames.scrollbar);
-
-      track.appendChild(scrollbar);
-
-      this.axis.x.track.el = track.cloneNode(true) as HTMLElement;
-      addClasses(this.axis.x.track.el, this.classNames.horizontal);
-
-      this.axis.y.track.el = track.cloneNode(true) as HTMLElement;
-      addClasses(this.axis.y.track.el, this.classNames.vertical);
-
-      this.el.appendChild(this.axis.x.track.el);
-      this.el.appendChild(this.axis.y.track.el);
+  /**
+   * 构造函数
+   * @param {Element | string} element - 滚动条元素或选择器字符串
+   * @param {Partial<ISettingPropType>} userSettings - 用户配置
+   */
+  constructor(
+    element: (Element & { isVirtualElement?: boolean }) | string,
+    userSettings: Partial<ISettingPropType> = {},
+  ) {
+    if (typeof element === 'string') {
+      element = document.querySelector(element);
     }
 
-    BkScrollbarCore.prototype.initDOM.call(this);
-  }
+    if (!element?.nodeName && !element?.isVirtualElement) {
+      throw new Error('no element is specified to initialize PerfectScrollbar');
+    }
 
-  unMount() {
-    BkScrollbarCore.prototype.unMount.call(this);
-    BkScrollBar.instances.delete(this.el);
-  }
+    this.element = element;
 
-  scrollTo({ left = 0, top = 0 }) {
-    this.scrollToAxisPosition(left, 'x');
-    this.scrollToAxisPosition(top, 'y');
-  }
+    element.classList.add(cls.main);
 
-  setOptions(options: Partial<Options>) {
-    Object.assign(this.options, options);
-  }
+    this.settings = { ...defaultSettings(), ...userSettings };
 
-  private createScrollElement(className: string): HTMLElement {
-    const createEl = () => {
-      const el = document.createElement('div');
-      addClasses(el, className);
-      return el;
+    this.containerWidth = null;
+    this.containerHeight = null;
+    this.contentWidth = null;
+    this.contentHeight = null;
+
+    const focus = () => element.classList.add(cls.state.focus);
+    const blur = () => element.classList.remove(cls.state.focus);
+
+    this.isRtl = CSS.get(element).direction === 'rtl';
+    if (this.isRtl) {
+      element.classList.add(cls.rtl);
+    }
+
+    this.isNegativeScroll = (() => {
+      const originalScrollLeft = element.scrollLeft;
+      let result = null;
+      element.scrollLeft = -1;
+      result = element.scrollLeft < 0;
+      element.scrollLeft = originalScrollLeft;
+      return result;
+    })();
+
+    this.negativeScrollAdjustment = this.isNegativeScroll ? element.scrollWidth - element.clientWidth : 0;
+    this.event = new EventManager();
+    this.ownerDocument = element.ownerDocument || document;
+
+    this.scrollbarXRail = DOM.div(cls.element.rail('x'));
+    element.appendChild(this.scrollbarXRail);
+    this.scrollbarX = DOM.div(cls.element.thumb('x'));
+    this.scrollbarXRail.appendChild(this.scrollbarX);
+    this.scrollbarX.setAttribute('tabindex', '0');
+    this.event.bind(this.scrollbarX, 'focus', focus);
+    this.event.bind(this.scrollbarX, 'blur', blur);
+    this.scrollbarXActive = null;
+    this.scrollbarXWidth = null;
+    this.scrollbarXLeft = null;
+
+    const railXStyle = CSS.get(this.scrollbarXRail);
+    this.scrollbarXBottom = parseInt(railXStyle.bottom, 10);
+    if (isNaN(this.scrollbarXBottom)) {
+      this.isScrollbarXUsingBottom = false;
+      this.scrollbarXTop = toInt(railXStyle.top);
+    } else {
+      this.isScrollbarXUsingBottom = true;
+    }
+
+    this.railBorderXWidth = toInt(railXStyle.borderLeftWidth) + toInt(railXStyle.borderRightWidth);
+    CSS.set(this.scrollbarXRail, { display: 'block' });
+    this.railXMarginWidth = toInt(railXStyle.marginLeft) + toInt(railXStyle.marginRight);
+    CSS.set(this.scrollbarXRail, { display: '' });
+    this.railXWidth = null;
+    this.railXRatio = null;
+
+    this.scrollbarYRail = DOM.div(cls.element.rail('y'));
+    element.appendChild(this.scrollbarYRail);
+    this.scrollbarY = DOM.div(cls.element.thumb('y'));
+    this.scrollbarYRail.appendChild(this.scrollbarY);
+    this.scrollbarY.setAttribute('tabindex', '0');
+    this.event.bind(this.scrollbarY, 'focus', focus);
+    this.event.bind(this.scrollbarY, 'blur', blur);
+    this.scrollbarYActive = null;
+    this.scrollbarYHeight = null;
+    this.scrollbarYTop = null;
+
+    const railYStyle = CSS.get(this.scrollbarYRail);
+    this.scrollbarYRight = parseInt(railYStyle.right, 10);
+    if (isNaN(this.scrollbarYRight)) {
+      this.isScrollbarYUsingRight = false;
+      this.scrollbarYLeft = toInt(railYStyle.left);
+    } else {
+      this.isScrollbarYUsingRight = true;
+    }
+
+    this.scrollbarYOuterWidth = this.isRtl ? outerWidth(this.scrollbarY) : null;
+    this.railBorderYWidth = toInt(railYStyle.borderTopWidth) + toInt(railYStyle.borderBottomWidth);
+    CSS.set(this.scrollbarYRail, { display: 'block' });
+    this.railYMarginHeight = toInt(railYStyle.marginTop) + toInt(railYStyle.marginBottom);
+    CSS.set(this.scrollbarYRail, { display: '' });
+    this.railYHeight = null;
+    this.railYRatio = null;
+
+    this.reach = {
+      x:
+        element.scrollLeft <= 0
+          ? 'start'
+          : element.scrollLeft >= (this.contentWidth ?? 0) - this.containerWidth
+            ? 'end'
+            : null,
+      y:
+        element.scrollTop <= 0
+          ? 'start'
+          : element.scrollTop >= (this.contentHeight ?? 0) - this.containerHeight
+            ? 'end'
+            : null,
     };
 
-    const origin = this.el.querySelector(classNamesToQuery(className));
+    this.isAlive = true;
 
-    return (origin ?? createEl()) as HTMLElement;
+    this.settings.handlers.forEach(handlerName => handlers[handlerName](this));
+
+    this.lastScrollTop = Math.floor(element.scrollTop);
+    this.lastScrollLeft = element.scrollLeft;
+    this.event.bind(this.element, 'scroll', e => this.onScroll(e));
+    updateGeometry(this);
+  }
+
+  /**
+   * 更新滚动条
+   */
+  update() {
+    if (!this.isAlive) {
+      return;
+    }
+
+    this.negativeScrollAdjustment = this.isNegativeScroll ? this.element.scrollWidth - this.element.clientWidth : 0;
+
+    CSS.set(this.scrollbarXRail, { display: 'block' });
+    CSS.set(this.scrollbarYRail, { display: 'block' });
+    this.railXMarginWidth =
+      toInt(CSS.get(this.scrollbarXRail).marginLeft) + toInt(CSS.get(this.scrollbarXRail).marginRight);
+    this.railYMarginHeight =
+      toInt(CSS.get(this.scrollbarYRail).marginTop) + toInt(CSS.get(this.scrollbarYRail).marginBottom);
+
+    CSS.set(this.scrollbarXRail, { display: 'none' });
+    CSS.set(this.scrollbarYRail, { display: 'none' });
+
+    updateGeometry(this);
+
+    processScrollDiff(this, 'top', 0, false, true);
+    processScrollDiff(this, 'left', 0, false, true);
+
+    CSS.set(this.scrollbarXRail, { display: '' });
+    CSS.set(this.scrollbarYRail, { display: '' });
+  }
+
+  /**
+   * 滚动事件处理
+   * @param {Event} _e - 滚动事件
+   */
+  onScroll(_e) {
+    if (!this.isAlive) {
+      return;
+    }
+
+    updateGeometry(this);
+    processScrollDiff(this, 'top', this.element.scrollTop - this.lastScrollTop);
+    processScrollDiff(this, 'left', this.element.scrollLeft - this.lastScrollLeft);
+
+    this.lastScrollTop = Math.floor(this.element.scrollTop);
+    this.lastScrollLeft = this.element.scrollLeft;
+  }
+
+  /**
+   * 销毁滚动条实例
+   */
+  destroy() {
+    if (!this.isAlive) {
+      return;
+    }
+
+    this.event.unbindAll();
+    DOM.remove(this.scrollbarX);
+    DOM.remove(this.scrollbarY);
+    DOM.remove(this.scrollbarXRail);
+    DOM.remove(this.scrollbarYRail);
+    this.removePsClasses();
+
+    this.element = null;
+    this.scrollbarX = null;
+    this.scrollbarY = null;
+    this.scrollbarXRail = null;
+    this.scrollbarYRail = null;
+
+    this.isAlive = false;
+  }
+
+  /**
+   * 移除滚动条相关的类名
+   */
+  removePsClasses() {
+    this.element.className = this.element.className
+      .split(' ')
+      .filter(name => !name.match(/^ps([-_].+|)$/))
+      .join(' ');
   }
 }

@@ -49,40 +49,29 @@ export default (target: Ref<HTMLElement>, props: VirtualRenderProps) => {
     mouseEntered: resolveClassName('scrollbar-mouse-entered'),
   };
 
-  const init = (scrollFn?, delegateXContent?, delegateYContent?) => {
+  const init = (_scrollFn?, _delegateXContent?, _delegateYContent?) => {
     instance = new BkScrollbar(target.value, {
-      classNames,
-      wrapperNode: target.value,
-      scrollDelegate: {
-        scrollHeight: null,
-        scrollWidth: null,
-      },
-      useSystemScrollYBehavior: !props.enabled,
-      useSystemScrollXBehavior: true,
-      delegateXContent,
-      delegateYContent,
-      onScrollCallback: scrollFn,
+      scrollingThreshold: 120,
     });
   };
 
   const scrollTo = (x, y) => {
     if (props.scrollbar?.enabled) {
-      instance.scrollTo({ left: x, top: y });
+      // instance.scrollTo({ left: x, top: y });
       return;
     }
 
     target.value.scrollTo(x, y);
   };
 
-  const updateScrollHeight = (height: number) => {
-    instance?.setOptions({
-      scrollDelegate: {
-        scrollHeight: height,
-        scrollWidth: null,
-      },
-    });
-
-    instance?.recalculate();
+  const updateScrollHeight = (_height: number) => {
+    // instance?.setOptions({
+    //   scrollDelegate: {
+    //     scrollHeight: height,
+    //     scrollWidth: null,
+    //   },
+    // });
+    // instance?.recalculate();
   };
 
   return {

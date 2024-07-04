@@ -1,12 +1,12 @@
 /*
  * Tencent is pleased to support the open source community by making
- * 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition) available.
+ * 蓝鲸智云PaaS平台 (BlueKing PaaS) available.
  *
  * Copyright (C) 2021 THL A29 Limited, a Tencent company.  All rights reserved.
  *
- * 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition) is licensed under the MIT License.
+ * 蓝鲸智云PaaS平台 (BlueKing PaaS) is licensed under the MIT License.
  *
- * License for 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition):
+ * License for 蓝鲸智云PaaS平台 (BlueKing PaaS):
  *
  * ---------------------------------------------------
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -23,29 +23,48 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import canUseDOM from './can-use-dom';
+const cls = {
+  main: 'ps',
+  rtl: 'ps__rtl',
+  element: {
+    thumb: x => `ps__thumb-${x}`,
+    rail: x => `ps__rail-${x}`,
+    consuming: 'ps__child--consume',
+  },
+  state: {
+    focus: 'ps--focus',
+    clicking: 'ps--clicking',
+    active: x => `ps--active-${x}`,
+    scrolling: x => `ps--scrolling-${x}`,
+  },
+};
 
-let cachedScrollbarWidth: null | number = null;
-let cachedDevicePixelRatio: null | number = null;
+export default cls;
 
-if (canUseDOM()) {
-  window.addEventListener('resize', () => {
-    if (cachedDevicePixelRatio !== window.devicePixelRatio) {
-      cachedDevicePixelRatio = window.devicePixelRatio;
-      cachedScrollbarWidth = null;
-    }
-  });
+/*
+ * Helper methods
+ */
+const scrollingClassTimeout = { x: null, y: null };
+
+export function addScrollingClass(i, x) {
+  const classList = i.element.classList;
+  const className = cls.state.scrolling(x);
+
+  if (classList.contains(className)) {
+    clearTimeout(scrollingClassTimeout[x]);
+  } else {
+    classList.add(className);
+  }
 }
 
-export default function scrollbarWidth() {
-  if (cachedScrollbarWidth === null) {
-    if (typeof document === 'undefined') {
-      cachedScrollbarWidth = 0;
-      return cachedScrollbarWidth;
-    }
+export function removeScrollingClass(i, x) {
+  scrollingClassTimeout[x] = setTimeout(
+    () => i.isAlive && i.element.classList.remove(cls.state.scrolling(x)),
+    i.settings.scrollingThreshold,
+  );
+}
 
-    cachedScrollbarWidth = 8;
-  }
-
-  return cachedScrollbarWidth;
+export function setScrollingClassInstantly(i, x) {
+  addScrollingClass(i, x);
+  removeScrollingClass(i, x);
 }
