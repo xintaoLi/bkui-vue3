@@ -23,6 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+import { VirtualElement } from '..';
 import * as CSS from './css';
 import * as DOM from './dom';
 
@@ -56,7 +57,13 @@ export const env = {
     typeof window !== 'undefined' &&
     ('ontouchstart' in window ||
       ('maxTouchPoints' in window.navigator && window.navigator.maxTouchPoints > 0) ||
+      // @ts-ignore
       (window.DocumentTouch && document instanceof window.DocumentTouch)),
+
+  // @ts-ignore
   supportsIePointer: typeof navigator !== 'undefined' && navigator.msMaxTouchPoints,
   isChrome: typeof navigator !== 'undefined' && /Chrome/i.test(navigator?.userAgent),
 };
+
+export const getElement = (element: Partial<Element> & Partial<VirtualElement>) =>
+  (element.isVirtualElement ? element.delegateElement : element) as Element;

@@ -23,12 +23,20 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+import BkScrollbar, { VirtualElement } from '.';
 import cls from './helper/class-names';
 import * as CSS from './helper/css';
 import * as DOM from './helper/dom';
 import { toInt } from './helper/util';
 
-export default function (i) {
+export type Placement = {
+  left?: number;
+  right?: number;
+  top?: number;
+  bottom?: number;
+};
+
+export default function (i: BkScrollbar) {
   const element = i.element;
   const roundedScrollTop = Math.floor(element.scrollTop);
   const rect = element.getBoundingClientRect();
@@ -67,10 +75,11 @@ export default function (i) {
     i.scrollbarYActive = true;
     i.railYHeight = i.containerHeight - i.railYMarginHeight;
     i.railYRatio = i.containerHeight / i.railYHeight;
+
     i.scrollbarYHeight = getThumbSize(i, toInt((i.railYHeight * i.containerHeight) / i.contentHeight));
-    i.scrollbarYTop = toInt(
-      (roundedScrollTop * (i.railYHeight - i.scrollbarYHeight)) / (i.contentHeight - i.containerHeight),
-    );
+    i.scrollbarYTop = i.element.isVirtualElement
+      ? getThumbTop(i)
+      : toInt((roundedScrollTop * (i.railYHeight - i.scrollbarYHeight)) / (i.contentHeight - i.containerHeight));
   } else {
     i.scrollbarYActive = false;
   }
@@ -102,6 +111,15 @@ export default function (i) {
   }
 }
 
+function getThumbTop(i) {
+  const top = toInt(i.element.virtualScrollTop);
+  if (top >= 0) {
+    return top;
+  }
+
+  return 0;
+}
+
 function getThumbSize(i, thumbSize) {
   if (i.settings.minScrollbarLength) {
     thumbSize = Math.max(thumbSize, i.settings.minScrollbarLength);
@@ -112,9 +130,11 @@ function getThumbSize(i, thumbSize) {
   return thumbSize;
 }
 
-function updateCss(element, i) {
-  const xRailOffset = { width: i.railXWidth };
-  const roundedScrollTop = Math.floor(element.scrollTop);
+function updateCss(element: Partial<Element> & Partial<VirtualElement>, i) {
+  const xRailOffset: Placement & { width: number } = {
+    width: i.railXWidth,
+  };
+  const roundedScrollTop = element.isVirtualElement ? 0 : Math.floor(element.scrollTop);
 
   if (i.isRtl) {
     xRailOffset.left = i.negativeScrollAdjustment + element.scrollLeft + i.containerWidth - i.contentWidth;
@@ -128,7 +148,7 @@ function updateCss(element, i) {
   }
   CSS.set(i.scrollbarXRail, xRailOffset);
 
-  const yRailOffset = { top: roundedScrollTop, height: i.railYHeight };
+  const yRailOffset: Placement & { height: number } = { top: roundedScrollTop, height: i.railYHeight };
   if (i.isScrollbarYUsingRight) {
     if (i.isRtl) {
       yRailOffset.right =

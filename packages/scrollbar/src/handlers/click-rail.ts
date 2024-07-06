@@ -23,13 +23,20 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+import BkScrollbar from '..';
 import updateGeometry from '../update-geometry';
 
-export default function (i) {
+export default function (i: BkScrollbar) {
   i.event.bind(i.scrollbarY, 'mousedown', e => e.stopPropagation());
   i.event.bind(i.scrollbarYRail, 'mousedown', e => {
     const positionTop = e.pageY - window.pageYOffset - i.scrollbarYRail.getBoundingClientRect().top;
     const direction = positionTop > i.scrollbarYTop ? 1 : -1;
+
+    if (!i.element.isVirtualElement) {
+      i.element.scrollTop += direction * i.containerHeight;
+    } else {
+      i.element.scrollTop = positionTop / (i.element.offsetHeight / i.element.scrollHeight);
+    }
 
     i.element.scrollTop += direction * i.containerHeight;
     updateGeometry(i);
@@ -43,6 +50,7 @@ export default function (i) {
     const direction = positionLeft > i.scrollbarXLeft ? 1 : -1;
 
     i.element.scrollLeft += direction * i.containerWidth;
+
     updateGeometry(i);
 
     e.stopPropagation();

@@ -41,7 +41,7 @@ import updateGeometry from './update-geometry';
 const defaultSettings = () => ({
   handlers: ['click-rail', 'drag-thumb', 'keyboard', 'wheel', 'touch'],
   maxScrollbarLength: null,
-  minScrollbarLength: null,
+  minScrollbarLength: 16,
   scrollingThreshold: 1000,
   scrollXMarginOffset: 0,
   scrollYMarginOffset: 0,
@@ -103,7 +103,8 @@ export type VirtualElementOptions = {
   scrollTop: number;
   scrollLeft: number;
   className: string;
-  delegateElement: Element;
+  delegateElement: HTMLElement;
+  onScrollFn: (...args) => void;
 };
 
 export class VirtualElement {
@@ -116,53 +117,76 @@ export class VirtualElement {
   scrollTop: number;
   scrollLeft: number;
   className: string;
-  delegateElement: Element;
-  constructor({
-    offsetWidth,
-    offsetHeight,
-    scrollHeight,
-    scrollWidth,
-    delegateElement,
-    clientWidth,
-    scrollTop,
-    scrollLeft,
-    className,
-  }: Partial<VirtualElementOptions>) {
-    this.offsetWidth = offsetWidth;
-    this.offsetHeight = offsetHeight;
+  virtualScrollTop: number;
+  virtualScrollLeft: number;
+  onScrollFn: (...args) => void;
+
+  delegateElement: HTMLElement;
+  constructor({ scrollHeight, delegateElement, onScrollFn }: Partial<VirtualElementOptions>) {
     this.scrollHeight = scrollHeight;
-    this.scrollWidth = scrollWidth;
-    this.clientWidth = clientWidth;
-    this.scrollTop = scrollTop;
-    this.scrollLeft = scrollLeft;
-    this.className = className;
+
     this.delegateElement = delegateElement;
+    this.virtualScrollTop = 0;
+    this.virtualScrollLeft = 0;
+    this.onScrollFn = onScrollFn;
 
     return new Proxy(this, {
-      get: (target, prop) => {
-        if (target[prop] !== undefined) {
-          return target[prop];
+      get: (target, prop, receiver) => {
+        if (prop in target) {
+          const value = Reflect.get(target, prop, receiver);
+          if (value !== undefined) {
+            return value;
+          }
         }
-
-        if (prop in delegateElement) {
-          return delegateElement[prop];
+        if (delegateElement && prop in delegateElement) {
+          const value = delegateElement[prop as keyof Element];
+          // Bind the method to delegateElement if it's a function
+          if (typeof value === 'function') {
+            return value.bind(delegateElement);
+          }
+          return value;
         }
+        return undefined;
       },
       set: (target, prop, value) => {
-        if (prop in delegateElement) {
-          delegateElement[prop] = value;
+        if (prop in target) {
+          if (prop === 'scrollTop') {
+            const triggerCallbackFn = target.scrollTop !== value;
+            const args = { offset: { x: target.scrollLeft, y: value } };
+
+            if (triggerCallbackFn) {
+              this.onScrollFn?.(args);
+            }
+
+            target.virtualScrollTop = (value * target.delegateElement.offsetHeight) / target.scrollHeight;
+            target.scrollTop = value;
+            return true;
+          }
+
+          target[prop] = value;
+          return true;
         }
 
+        if (delegateElement && prop in delegateElement) {
+          delegateElement[prop] = value;
+          return true;
+        }
         target[prop] = value;
         return true;
       },
     });
   }
+
+  scrollTo({ top, left, behavior }: ScrollToOptions) {
+    this.scrollLeft = left;
+    this.scrollTop = top;
+    this.delegateElement.scrollTo({ top, left, behavior });
+  }
 }
 
 // 自定义滚动条类
-export default class PerfectScrollbar {
-  element: Element | VirtualElement;
+export default class BkScrollbar {
+  element: Partial<Element> & Partial<VirtualElement>;
   containerWidth: number;
   containerHeight: number;
   contentWidth: number;
@@ -209,7 +233,7 @@ export default class PerfectScrollbar {
    * @param {Partial<ISettingPropType>} userSettings - 用户配置
    */
   constructor(
-    element: (Element & { isVirtualElement?: boolean }) | string,
+    element: (Partial<Element> & Partial<VirtualElement>) | string,
     userSettings: Partial<ISettingPropType> = {},
   ) {
     if (typeof element === 'string') {
@@ -335,9 +359,13 @@ export default class PerfectScrollbar {
   /**
    * 更新滚动条
    */
-  update() {
+  update(virtaulElement?: VirtualElement) {
     if (!this.isAlive) {
       return;
+    }
+
+    if (virtaulElement?.isVirtualElement) {
+      this.element = virtaulElement;
     }
 
     this.negativeScrollAdjustment = this.isNegativeScroll ? this.element.scrollWidth - this.element.clientWidth : 0;

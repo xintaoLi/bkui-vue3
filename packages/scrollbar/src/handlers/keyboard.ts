@@ -23,11 +23,12 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+import BkScrollbar from '..';
 import * as DOM from '../helper/dom';
 import { isEditable } from '../helper/util';
 import updateGeometry from '../update-geometry';
 
-export default function (i) {
+export default function (i: BkScrollbar) {
   const element = i.element;
 
   const elementHovered = () => DOM.matches(element, ':hover');
@@ -56,7 +57,24 @@ export default function (i) {
     return true;
   }
 
+  function getPageHeight() {
+    if (element.isVirtualElement) {
+      return (i.containerHeight / i.element.scrollHeight) * i.containerHeight;
+    }
+
+    return i.containerHeight;
+  }
+
+  function getContentHeight() {
+    if (element.isVirtualElement) {
+      return i.containerHeight;
+    }
+
+    return i.contentHeight;
+  }
+
   i.event.bind(i.ownerDocument, 'keydown', e => {
+    const step = 10;
     if (e.isDefaultPrevented?.() || e.defaultPrevented) {
       return;
     }
@@ -68,6 +86,7 @@ export default function (i) {
     let activeElement = document.activeElement ? document.activeElement : i.ownerDocument.activeElement;
     if (activeElement) {
       if (activeElement.tagName === 'IFRAME') {
+        // @ts-ignore
         activeElement = activeElement.contentDocument.activeElement;
       } else {
         // go deeper if element is a webcomponent
@@ -90,16 +109,16 @@ export default function (i) {
         } else if (e.altKey) {
           deltaX = -i.containerWidth;
         } else {
-          deltaX = -30;
+          deltaX = -step;
         }
         break;
       case 38: // up
         if (e.metaKey) {
-          deltaY = i.contentHeight;
+          deltaY = getContentHeight();
         } else if (e.altKey) {
-          deltaY = i.containerHeight;
+          deltaY = getPageHeight();
         } else {
-          deltaY = 30;
+          deltaY = step;
         }
         break;
       case 39: // right
@@ -108,36 +127,36 @@ export default function (i) {
         } else if (e.altKey) {
           deltaX = i.containerWidth;
         } else {
-          deltaX = 30;
+          deltaX = step;
         }
         break;
       case 40: // down
         if (e.metaKey) {
-          deltaY = -i.contentHeight;
+          deltaY = -getContentHeight();
         } else if (e.altKey) {
-          deltaY = -i.containerHeight;
+          deltaY = -getPageHeight();
         } else {
-          deltaY = -30;
+          deltaY = -step;
         }
         break;
       case 32: // space bar
         if (e.shiftKey) {
-          deltaY = i.containerHeight;
+          deltaY = getPageHeight();
         } else {
-          deltaY = -i.containerHeight;
+          deltaY = -getPageHeight();
         }
         break;
       case 33: // page up
-        deltaY = i.containerHeight;
+        deltaY = getPageHeight();
         break;
       case 34: // page down
-        deltaY = -i.containerHeight;
+        deltaY = -getPageHeight();
         break;
       case 36: // home
-        deltaY = i.contentHeight;
+        deltaY = getContentHeight();
         break;
       case 35: // end
-        deltaY = -i.contentHeight;
+        deltaY = -getContentHeight();
         break;
       default:
         return;
@@ -151,6 +170,7 @@ export default function (i) {
     }
 
     element.scrollTop -= deltaY;
+
     element.scrollLeft += deltaX;
     updateGeometry(i);
 

@@ -23,48 +23,38 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-const cls = {
-  main: 'ps',
-  rtl: 'ps__rtl',
-  element: {
-    thumb: x => `ps__thumb-${x}`,
-    rail: x => `ps__rail-${x}`,
-    consuming: 'ps__child--consume',
-  },
-  state: {
-    focus: 'ps--focus',
-    clicking: 'ps--clicking',
-    active: x => `ps--active-${x}`,
-    scrolling: x => `ps--scrolling-${x}`,
-  },
-};
 
-export default cls;
+import { getElement } from './util';
 
-/*
- * Helper methods
- */
-const scrollingClassTimeout = { x: null, y: null };
+export function div(className) {
+  const div = document.createElement('div');
+  div.className = className;
+  return div;
+}
 
-export function addScrollingClass(i, x) {
-  const classList = i.element.classList;
-  const className = cls.state.scrolling(x);
+const elMatches = typeof Element !== 'undefined' && Element.prototype.matches;
 
-  if (classList.contains(className)) {
-    clearTimeout(scrollingClassTimeout[x]);
+export function matches(el, query) {
+  const element = getElement(el);
+
+  if (!elMatches) {
+    throw new Error('No element matching method supported');
+  }
+
+  return elMatches.call(element, query);
+}
+
+export function remove(el) {
+  const element = getElement(el);
+  if (element.remove) {
+    element.remove();
   } else {
-    classList.add(className);
+    if (element.parentNode) {
+      element.parentNode.removeChild(element);
+    }
   }
 }
 
-export function removeScrollingClass(i, x) {
-  scrollingClassTimeout[x] = setTimeout(
-    () => i.isAlive && i.element.classList.remove(cls.state.scrolling(x)),
-    i.settings.scrollingThreshold,
-  );
-}
-
-export function setScrollingClassInstantly(i, x) {
-  addScrollingClass(i, x);
-  removeScrollingClass(i, x);
+export function queryChildren(element, selector) {
+  return Array.prototype.filter.call(element.children, child => matches(child, selector));
 }

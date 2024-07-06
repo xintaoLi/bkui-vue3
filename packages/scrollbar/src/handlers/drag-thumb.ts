@@ -81,7 +81,7 @@ function bindMouseScrollHandler(
     i.event.unbind(i.ownerDocument, 'mousemove', mouseMoveHandler);
   }
 
-  function bindMoves(e, touchMode) {
+  function bindMoves(e, touchMode?) {
     startingScrollTop = element[scrollTop];
     if (touchMode && e.touches) {
       e[pageY] = e.touches[0].pageY;

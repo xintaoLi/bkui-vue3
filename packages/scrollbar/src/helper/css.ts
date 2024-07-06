@@ -24,13 +24,10 @@
  * IN THE SOFTWARE.
  */
 import { VirtualElement } from '..';
+import { getElement } from './util';
 
-export function get(element: Element & Partial<VirtualElement>) {
-  if (element.isVirtualElement) {
-    return getComputedStyle(element.delegateElement);
-  }
-
-  return getComputedStyle(element as Element);
+export function get(element: Partial<Element> & Partial<VirtualElement>) {
+  return getComputedStyle(getElement(element));
 }
 
 export function set(element, obj) {

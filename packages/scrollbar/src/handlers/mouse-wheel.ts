@@ -23,26 +23,36 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+import BkScrollbar from '..';
 import cls from '../helper/class-names';
 import * as CSS from '../helper/css';
 import { env } from '../helper/util';
 import updateGeometry from '../update-geometry';
 
-export default function (i) {
-  const element = i.element;
+export default function (i: BkScrollbar) {
+  const isVirtualElement = i.element.isVirtualElement;
+  const element = isVirtualElement ? i.element.delegateElement : i.element;
 
   function shouldPreventDefault(deltaX, deltaY) {
-    const roundedScrollTop = Math.floor(element.scrollTop);
-    const isTop = element.scrollTop === 0;
-    const isBottom = roundedScrollTop + element.offsetHeight === element.scrollHeight;
+    const scrollTopValue = isVirtualElement ? i.element.virtualScrollTop : element.scrollTop;
+    const roundedScrollTop = Math.floor(scrollTopValue);
+
+    const isTop = scrollTopValue === 0;
+    const isBottom = () => {
+      if (isVirtualElement) {
+        return roundedScrollTop + i.scrollbarYHeight >= i.railYHeight;
+      }
+
+      return roundedScrollTop + i.element.offsetHeight === i.element.scrollHeight;
+    };
     const isLeft = element.scrollLeft === 0;
-    const isRight = element.scrollLeft + element.offsetWidth === element.scrollWidth;
+    const isRight = element.scrollLeft + (element as HTMLElement).offsetWidth === element.scrollWidth;
 
     let hitsBound;
 
     // pick axis with primary direction
     if (Math.abs(deltaY) > Math.abs(deltaX)) {
-      hitsBound = isTop || isBottom;
+      hitsBound = isTop || isBottom();
     } else {
       hitsBound = isLeft || isRight;
     }
@@ -123,6 +133,25 @@ export default function (i) {
     return false;
   }
 
+  const getMaxValue = () => {
+    return i.element.scrollHeight - i.element.offsetHeight;
+  };
+
+  function setScrollTop(diff) {
+    let newValue = i.element.scrollTop - diff;
+    const maxValue = getMaxValue();
+
+    if (newValue > maxValue) {
+      newValue = maxValue;
+    }
+
+    if (newValue < 0) {
+      newValue = 0;
+    }
+
+    i.element.scrollTop = newValue;
+  }
+
   function mousewheelHandler(e) {
     const [deltaX, deltaY] = getDeltaFromEvent(e);
 
@@ -134,15 +163,15 @@ export default function (i) {
     if (!i.settings.useBothWheelAxes) {
       // deltaX will only be used for horizontal scrolling and deltaY will
       // only be used for vertical scrolling - this is the default
-      element.scrollTop -= deltaY * i.settings.wheelSpeed;
+      setScrollTop(deltaY * i.settings.wheelSpeed);
       element.scrollLeft += deltaX * i.settings.wheelSpeed;
     } else if (i.scrollbarYActive && !i.scrollbarXActive) {
       // only vertical scrollbar is active and useBothWheelAxes option is
       // active, so let's scroll vertical bar using both mouse wheel axes
       if (deltaY) {
-        element.scrollTop -= deltaY * i.settings.wheelSpeed;
+        setScrollTop(deltaY * i.settings.wheelSpeed);
       } else {
-        element.scrollTop += deltaX * i.settings.wheelSpeed;
+        setScrollTop(-deltaX * i.settings.wheelSpeed);
       }
       shouldPrevent = true;
     } else if (i.scrollbarXActive && !i.scrollbarYActive) {
@@ -167,6 +196,7 @@ export default function (i) {
 
   if (typeof window.onwheel !== 'undefined') {
     i.event.bind(element, 'wheel', mousewheelHandler);
+    // @ts-ignore
   } else if (typeof window.onmousewheel !== 'undefined') {
     i.event.bind(element, 'mousewheel', mousewheelHandler);
   }

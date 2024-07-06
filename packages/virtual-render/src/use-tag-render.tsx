@@ -35,7 +35,7 @@ export default (props: VirtualRenderProps, ctx) => {
   const refRoot = ref(null);
   const refContent = ref(null);
 
-  const { init, scrollTo, classNames } = useScrollbar(refRoot, props);
+  const { init, scrollTo, classNames } = useScrollbar(props);
   const contentStyle = reactive({ x: 0, y: 0 });
   const computedStyle = computed(() => ({
     ...props.contentStyle,
@@ -47,6 +47,7 @@ export default (props: VirtualRenderProps, ctx) => {
     if (scrollbar?.offset) {
       Object.assign(contentStyle, scrollbar?.offset ?? {});
     }
+
     ctx.emit('content-scroll', [event, { translateY, translateX: scrollLeft, pos }]);
   };
 
@@ -84,7 +85,7 @@ export default (props: VirtualRenderProps, ctx) => {
   onMounted(() => {
     renderInstance = new VisibleRender(binding, refRoot.value);
     if (props.scrollbar?.enabled) {
-      init(renderInstance.executeThrottledRender.bind(renderInstance));
+      init(refRoot);
       return;
     }
     renderInstance.install();

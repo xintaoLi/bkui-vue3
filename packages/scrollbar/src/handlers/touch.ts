@@ -23,12 +23,13 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+import BkScrollbar from '..';
 import cls from '../helper/class-names';
 import * as CSS from '../helper/css';
 import { env } from '../helper/util';
 import updateGeometry from '../update-geometry';
 
-export default function (i) {
+export default function (i: BkScrollbar & { isInitialized: boolean }) {
   if (!env.supportsTouch && !env.supportsIePointer) {
     return;
   }
@@ -60,15 +61,15 @@ export default function (i) {
   }
 
   function applyTouchMove(differenceX, differenceY) {
-    element.scrollTop -= differenceY;
     element.scrollLeft -= differenceX;
+    element.scrollTop -= differenceY;
 
     updateGeometry(i);
   }
 
-  let startOffset = {};
+  let startOffset: { pageX?: number; pageY?: number } = {};
   let startTime = 0;
-  let speed = {};
+  let speed: { x?: number; y?: number } = {};
   let easingLoop = null;
 
   function getTouch(e) {
@@ -220,6 +221,8 @@ export default function (i) {
       i.event.bind(element, 'pointerdown', touchStart);
       i.event.bind(element, 'pointermove', touchMove);
       i.event.bind(element, 'pointerup', touchEnd);
+
+      // @ts-ignore
     } else if (window.MSPointerEvent) {
       i.event.bind(element, 'MSPointerDown', touchStart);
       i.event.bind(element, 'MSPointerMove', touchMove);

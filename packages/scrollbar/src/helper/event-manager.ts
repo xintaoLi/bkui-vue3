@@ -23,8 +23,13 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+
+import { VirtualElement } from '..';
+
 class EventElement {
-  constructor(element) {
+  element: Element & VirtualElement;
+  handlers: Record<string, ((...args) => void)[]>;
+  constructor(element: Element & VirtualElement) {
     this.element = element;
     this.handlers = {};
   }
@@ -37,7 +42,7 @@ class EventElement {
     this.element.addEventListener(eventName, handler, false);
   }
 
-  unbind(eventName, target) {
+  unbind(eventName, target?) {
     this.handlers[eventName] = this.handlers[eventName].filter(handler => {
       if (target && handler !== target) {
         return true;
@@ -59,6 +64,7 @@ class EventElement {
 }
 
 export default class EventManager {
+  eventElements: EventElement[];
   constructor() {
     this.eventElements = [];
   }

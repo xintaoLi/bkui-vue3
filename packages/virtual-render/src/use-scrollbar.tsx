@@ -27,11 +27,11 @@
 import { Ref } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
-import BkScrollbar from '@bkui-vue/scrollbar';
+import BkScrollbar, { VirtualElement } from '@bkui-vue/scrollbar';
 
 import { VirtualRenderProps } from './props';
 
-export default (target: Ref<HTMLElement>, props: VirtualRenderProps) => {
+export default (props: VirtualRenderProps) => {
   let instance: BkScrollbar = null;
   const { resolveClassName } = usePrefix();
   const classNames = {
@@ -49,29 +49,23 @@ export default (target: Ref<HTMLElement>, props: VirtualRenderProps) => {
     mouseEntered: resolveClassName('scrollbar-mouse-entered'),
   };
 
-  const init = (_scrollFn?, _delegateXContent?, _delegateYContent?) => {
+  const init = (target: Ref<Partial<Element> & Partial<VirtualElement>>) => {
     instance = new BkScrollbar(target.value, {
       scrollingThreshold: 120,
+      // wheelPropagation: false,
+      // wheelSpeed: 1,
     });
   };
 
   const scrollTo = (x, y) => {
-    if (props.scrollbar?.enabled) {
-      // instance.scrollTo({ left: x, top: y });
-      return;
-    }
-
-    target.value.scrollTo(x, y);
+    instance.element.scrollTo(x, y);
   };
 
-  const updateScrollHeight = (_height: number) => {
-    // instance?.setOptions({
-    //   scrollDelegate: {
-    //     scrollHeight: height,
-    //     scrollWidth: null,
-    //   },
-    // });
-    // instance?.recalculate();
+  const updateScrollHeight = (height: number) => {
+    if (instance?.element) {
+      instance.element.scrollHeight = height;
+      instance.update();
+    }
   };
 
   return {

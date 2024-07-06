@@ -42,9 +42,11 @@ import {
   SlotsType,
   watch,
   nextTick,
+  Ref,
 } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
+import { VirtualElement } from '@bkui-vue/scrollbar';
 
 import { type VirtualRenderProps, virtualRenderProps } from './props';
 import useFixTop from './use-fix-top';
@@ -96,7 +98,15 @@ export default defineComponent({
     const refRoot = ref(null);
     const refContent = ref(null);
 
-    const { init, scrollTo, classNames, updateScrollHeight } = useScrollbar(refRoot, props);
+    /** 如果有分组状态，计算总行数 */
+    const listLength = ref(0);
+
+    /** 实际高度，根据行高和总行数计算出来的实际高度 */
+    const innerHeight = ref(0);
+
+    const virtualRoot: Ref<VirtualElement> = ref(null);
+
+    const { init, scrollTo, classNames, updateScrollHeight } = useScrollbar(props);
 
     let instance = null;
     const pagination = reactive({
@@ -142,7 +152,12 @@ export default defineComponent({
       instance = new VisibleRender(binding, refRoot.value);
 
       if (props.scrollbar?.enabled) {
-        init(instance.executeThrottledRender.bind(instance));
+        virtualRoot.value = new VirtualElement({
+          delegateElement: refRoot.value,
+          offsetHeight: innerHeight.value,
+          onScrollFn: handleScrollBarCallback,
+        });
+        init(virtualRoot);
         updateScrollHeight(contentHeight.value);
         instance.executeThrottledRender.call(instance, { offset: { x: 0, y: 0 } });
         return;
@@ -159,12 +174,6 @@ export default defineComponent({
       /** 数据改变时激活当前表单，使其渲染DOM */
       handleListChanged(props.list as Record<string, object>[]);
     };
-
-    /** 如果有分组状态，计算总行数 */
-    const listLength = ref(0);
-
-    /** 实际高度，根据行高和总行数计算出来的实际高度 */
-    const innerHeight = ref(0);
 
     /**
      * 列表数据改变时，处理相关参数
@@ -281,6 +290,10 @@ export default defineComponent({
       refRoot,
       refContent,
     });
+
+    const handleScrollBarCallback = args => {
+      instance.executeThrottledRender.call(instance, args);
+    };
 
     return () =>
       h(
