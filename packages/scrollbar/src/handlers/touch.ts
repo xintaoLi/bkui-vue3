@@ -24,7 +24,6 @@
  * IN THE SOFTWARE.
  */
 import BkScrollbar from '..';
-import cls from '../helper/class-names';
 import * as CSS from '../helper/css';
 import { env } from '../helper/util';
 import updateGeometry from '../update-geometry';
@@ -119,7 +118,7 @@ export default function (i: BkScrollbar & { isInitialized: boolean }) {
     let cursor = target;
 
     while (cursor && cursor !== element) {
-      if (cursor.classList.contains(cls.element.consuming)) {
+      if (cursor.classList.contains(i.cls.element.consuming)) {
         return true;
       }
 

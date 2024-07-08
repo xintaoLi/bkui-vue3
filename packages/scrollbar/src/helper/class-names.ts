@@ -24,23 +24,41 @@
  * IN THE SOFTWARE.
  */
 
-const cls = {
-  main: 'ps',
-  rtl: 'ps__rtl',
+class Cls {
+  main: string;
+  rtl: string;
   element: {
-    thumb: x => `ps__thumb-${x}`,
-    rail: x => `ps__rail-${x}`,
-    consuming: 'ps__child--consume',
-  },
+    thumb: (x: string) => string;
+    rail: (x: string) => string;
+    size: (size: string) => string;
+    consuming: string;
+  };
   state: {
-    focus: 'ps--focus',
-    clicking: 'ps--clicking',
-    active: x => `ps--active-${x}`,
-    scrolling: x => `ps--scrolling-${x}`,
-  },
-};
+    focus: string;
+    clicking: string;
+    active: (x: string) => string;
+    scrolling: (x: string) => string;
+  };
 
-export default cls;
+  constructor(prefix = 'bk') {
+    this.main = `${prefix}-scrollbar`;
+    this.rtl = `${prefix}-rtl`;
+    this.element = {
+      thumb: x => `${prefix}__thumb-${x}`,
+      rail: x => `${prefix}__rail-${x}`,
+      size: x => `${prefix}-scroll-size-${x}`,
+      consuming: `${prefix}__child--consume`,
+    };
+    this.state = {
+      focus: `${prefix}--focus`,
+      clicking: `${prefix}--clicking`,
+      active: x => `${prefix}--active-${x}`,
+      scrolling: x => `${prefix}--scrolling-${x}`,
+    };
+  }
+}
+
+export default Cls;
 
 /*
  * Helper methods
@@ -49,7 +67,7 @@ const scrollingClassTimeout = { x: null, y: null };
 
 export function addScrollingClass(i, x) {
   const classList = i.element.classList;
-  const className = cls.state.scrolling(x);
+  const className = i.cls.state.scrolling(x);
 
   if (classList.contains(className)) {
     clearTimeout(scrollingClassTimeout[x]);
@@ -60,7 +78,7 @@ export function addScrollingClass(i, x) {
 
 export function removeScrollingClass(i, x) {
   scrollingClassTimeout[x] = setTimeout(
-    () => i.isAlive && i.element.classList.remove(cls.state.scrolling(x)),
+    () => i.isAlive && i.element.classList.remove(i.cls.state.scrolling(x)),
     i.settings.scrollingThreshold,
   );
 }

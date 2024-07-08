@@ -86,8 +86,8 @@ export default (props: VirtualRenderProps, ctx) => {
     renderInstance = new VisibleRender(binding, refRoot.value);
     if (props.scrollbar?.enabled) {
       init(refRoot);
-      return;
     }
+
     renderInstance.install();
   });
 

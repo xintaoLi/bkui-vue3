@@ -155,7 +155,7 @@ export default defineComponent({
         virtualRoot.value = new VirtualElement({
           delegateElement: refRoot.value,
           offsetHeight: innerHeight.value,
-          onScrollFn: handleScrollBarCallback,
+          onScollCallback: handleScrollBarCallback,
         });
         init(virtualRoot);
         updateScrollHeight(contentHeight.value);

@@ -52,13 +52,11 @@ export default (props: VirtualRenderProps) => {
   const init = (target: Ref<Partial<Element> & Partial<VirtualElement>>) => {
     instance = new BkScrollbar(target.value, {
       scrollingThreshold: 120,
-      // wheelPropagation: false,
-      // wheelSpeed: 1,
     });
   };
 
   const scrollTo = (x, y) => {
-    instance.element.scrollTo(x, y);
+    instance.scrollTo({ left: x, top: y });
   };
 
   const updateScrollHeight = (height: number) => {

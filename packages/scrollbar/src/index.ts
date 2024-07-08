@@ -29,13 +29,19 @@ import dragThumb from './handlers/drag-thumb';
 import keyboard from './handlers/keyboard';
 import wheel from './handlers/mouse-wheel';
 import touch from './handlers/touch';
-import cls from './helper/class-names';
+import Cls from './helper/class-names';
 import * as CSS from './helper/css';
 import * as DOM from './helper/dom';
 import EventManager from './helper/event-manager';
 import { toInt, outerWidth } from './helper/util';
 import processScrollDiff from './process-scroll-diff';
 import updateGeometry from './update-geometry';
+
+export enum IScrollbarSize {
+  Large = 'large',
+  Normal = 'normal',
+  Small = 'small',
+}
 
 // 默认配置
 const defaultSettings = () => ({
@@ -51,6 +57,8 @@ const defaultSettings = () => ({
   useBothWheelAxes: false,
   wheelPropagation: true,
   wheelSpeed: 1,
+  classPrefix: 'bk',
+  scrollSize: IScrollbarSize.Normal,
 });
 
 // 处理器集合
@@ -61,8 +69,6 @@ const handlers = {
   wheel,
   touch,
 };
-
-// 配置类型定义
 
 /**
  * 滚动条配置项类型定义
@@ -92,6 +98,9 @@ export type ISettingPropType = {
   useBothWheelAxes: boolean;
   wheelPropagation: boolean;
   wheelSpeed: number;
+  onScollCallback?: (...args) => void;
+  classPrefix?: string;
+  scrollSize: IScrollbarSize;
 };
 
 export type VirtualElementOptions = {
@@ -104,7 +113,7 @@ export type VirtualElementOptions = {
   scrollLeft: number;
   className: string;
   delegateElement: HTMLElement;
-  onScrollFn: (...args) => void;
+  onScollCallback: (...args) => void;
 };
 
 export class VirtualElement {
@@ -119,16 +128,16 @@ export class VirtualElement {
   className: string;
   virtualScrollTop: number;
   virtualScrollLeft: number;
-  onScrollFn: (...args) => void;
+  onScollCallback: (...args) => void;
 
   delegateElement: HTMLElement;
-  constructor({ scrollHeight, delegateElement, onScrollFn }: Partial<VirtualElementOptions>) {
+  constructor({ scrollHeight, delegateElement, onScollCallback }: Partial<VirtualElementOptions>) {
     this.scrollHeight = scrollHeight;
 
     this.delegateElement = delegateElement;
     this.virtualScrollTop = 0;
     this.virtualScrollLeft = 0;
-    this.onScrollFn = onScrollFn;
+    this.onScollCallback = onScollCallback;
 
     return new Proxy(this, {
       get: (target, prop, receiver) => {
@@ -155,7 +164,7 @@ export class VirtualElement {
             const args = { offset: { x: target.scrollLeft, y: value } };
 
             if (triggerCallbackFn) {
-              this.onScrollFn?.(args);
+              this.onScollCallback?.(args);
             }
 
             target.virtualScrollTop = (value * target.delegateElement.offsetHeight) / target.scrollHeight;
@@ -226,6 +235,7 @@ export default class BkScrollbar {
   isAlive: boolean;
   lastScrollTop: number;
   lastScrollLeft: number;
+  cls: Cls;
 
   /**
    * 构造函数
@@ -244,23 +254,23 @@ export default class BkScrollbar {
       throw new Error('no element is specified to initialize PerfectScrollbar');
     }
 
-    this.element = element;
-
-    element.classList.add(cls.main);
-
     this.settings = { ...defaultSettings(), ...userSettings };
+
+    this.element = element;
+    this.cls = new Cls(this.settings.classPrefix);
+    element.classList.add(this.cls.main);
 
     this.containerWidth = null;
     this.containerHeight = null;
     this.contentWidth = null;
     this.contentHeight = null;
 
-    const focus = () => element.classList.add(cls.state.focus);
-    const blur = () => element.classList.remove(cls.state.focus);
+    const focus = () => element.classList.add(this.cls.state.focus);
+    const blur = () => element.classList.remove(this.cls.state.focus);
 
     this.isRtl = CSS.get(element).direction === 'rtl';
     if (this.isRtl) {
-      element.classList.add(cls.rtl);
+      element.classList.add(this.cls.rtl);
     }
 
     this.isNegativeScroll = (() => {
@@ -276,9 +286,9 @@ export default class BkScrollbar {
     this.event = new EventManager();
     this.ownerDocument = element.ownerDocument || document;
 
-    this.scrollbarXRail = DOM.div(cls.element.rail('x'));
+    this.scrollbarXRail = DOM.div(this.cls.element.rail('x'));
     element.appendChild(this.scrollbarXRail);
-    this.scrollbarX = DOM.div(cls.element.thumb('x'));
+    this.scrollbarX = DOM.div(this.cls.element.thumb('x'));
     this.scrollbarXRail.appendChild(this.scrollbarX);
     this.scrollbarX.setAttribute('tabindex', '0');
     this.event.bind(this.scrollbarX, 'focus', focus);
@@ -303,9 +313,9 @@ export default class BkScrollbar {
     this.railXWidth = null;
     this.railXRatio = null;
 
-    this.scrollbarYRail = DOM.div(cls.element.rail('y'));
+    this.scrollbarYRail = DOM.div(this.cls.element.rail('y'));
     element.appendChild(this.scrollbarYRail);
-    this.scrollbarY = DOM.div(cls.element.thumb('y'));
+    this.scrollbarY = DOM.div(this.cls.element.thumb('y'));
     this.scrollbarYRail.appendChild(this.scrollbarY);
     this.scrollbarY.setAttribute('tabindex', '0');
     this.event.bind(this.scrollbarY, 'focus', focus);
@@ -406,6 +416,12 @@ export default class BkScrollbar {
     this.lastScrollLeft = this.element.scrollLeft;
   }
 
+  scrollTo({ left, top }) {
+    this.element.scrollTop = top;
+    this.element.scrollLeft = left;
+    updateGeometry(this);
+  }
+
   /**
    * 销毁滚动条实例
    */
@@ -436,7 +452,7 @@ export default class BkScrollbar {
   removePsClasses() {
     this.element.className = this.element.className
       .split(' ')
-      .filter(name => !name.match(/^ps([-_].+|)$/))
+      .filter(name => !name.match(new RegExp(`^${this.settings.classPrefix}([-_].+|)$`)))
       .join(' ');
   }
 }

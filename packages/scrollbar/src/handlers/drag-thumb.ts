@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import cls, { addScrollingClass, removeScrollingClass } from '../helper/class-names';
+import { addScrollingClass, removeScrollingClass } from '../helper/class-names';
 import updateGeometry from '../update-geometry';
 
 export default function (i) {
@@ -77,7 +77,7 @@ function bindMouseScrollHandler(
 
   function mouseUpHandler() {
     removeScrollingClass(i, y);
-    i[scrollbarYRail].classList.remove(cls.state.clicking);
+    i[scrollbarYRail].classList.remove(i.cls.state.clicking);
     i.event.unbind(i.ownerDocument, 'mousemove', mouseMoveHandler);
   }
 
@@ -96,7 +96,7 @@ function bindMouseScrollHandler(
       i.event.bind(i.ownerDocument, 'touchmove', mouseMoveHandler);
     }
 
-    i[scrollbarYRail].classList.add(cls.state.clicking);
+    i[scrollbarYRail].classList.add(i.cls.state.clicking);
 
     e.stopPropagation();
   }
