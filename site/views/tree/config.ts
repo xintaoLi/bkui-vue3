@@ -159,6 +159,13 @@ export default [
         desc: '是否开启监听节点进入父容器可视区域',
         optional: ['true', 'false', 'IIntersectionObserver'],
       },
+      {
+        name: 'check-strictly',
+        type: 'Boolean',
+        default: 'true',
+        desc: '在显示复选框的情况下，是否严格的遵循父子互相关联的做法',
+        optional: ['true', 'false'],
+      },
     ],
   },
   {
