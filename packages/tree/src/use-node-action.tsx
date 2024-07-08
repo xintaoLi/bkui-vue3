@@ -230,9 +230,9 @@ export default (props: TreePropTypes, ctx, flatData: IFlatData, _renderData, ini
 
     if (props.checkStrictly) {
       deepUpdateChildNode(item, [NODE_ATTRIBUTES.IS_CHECKED, NODE_ATTRIBUTES.IS_INDETERMINATE], [!!value, false]);
+      updateParentChecked(item, value);
     }
 
-    updateParentChecked(item, value);
     ctx.emit(
       EVENTS.NODE_CHECKED,
       flatData.data.filter((t: TreeNode) => isNodeChecked(t)),
@@ -423,6 +423,7 @@ export default (props: TreePropTypes, ctx, flatData: IFlatData, _renderData, ini
 
     setNodeAttr(resolvedItem, NODE_ATTRIBUTES.IS_SELECTED, selected);
     selectedNodeId = getNodeId(resolvedItem);
+    ctx.emit(EVENTS.NODE_SELECTED, { selected: selected, node: resolvedItem });
 
     /**
      * 如果设置了自动展开

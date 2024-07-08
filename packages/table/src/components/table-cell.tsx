@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { computed, defineComponent, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, CSSProperties, defineComponent, onBeforeUnmount, onMounted, ref } from 'vue';
 import { toType } from 'vue-types';
 
 import { bkEllipsisInstance } from '@bkui-vue/directives';
@@ -52,7 +52,7 @@ export default defineComponent({
     const isTipsEnabled = ref(false);
 
     const cellStyle = computed(() => ({
-      textAlign: props.column.textAlign as any,
+      textAlign: props.column.textAlign as CSSProperties['textAlign'],
       minWidth: resolveNumberOrStringToPix(props.column.minWidth, null),
     }));
 
@@ -104,10 +104,10 @@ export default defineComponent({
     const resolveTooltipOption = () => {
       const { showOverflowTooltip = false } = resolveSetting();
 
-      let disabled: ((col: Column, row: any) => boolean) | boolean = true;
+      let disabled: ((col: Column, row: Record<string, object>) => boolean) | boolean = true;
       let { resizerWay } = props;
-      const defaultContent = getContentValue((showOverflowTooltip as any).allowHtml);
-      let content: any = () => defaultContent;
+      const defaultContent = getContentValue((showOverflowTooltip as IOverflowTooltipOption).allowHtml);
+      let content: () => ((col: Column, row: Record<string, object>) => string) | Node | string = () => defaultContent;
       let popoverOption = {};
       let mode = 'auto';
       let watchCellResize = true;
@@ -154,6 +154,10 @@ export default defineComponent({
           mode = 'static';
           content = () => props.headExplain;
         }
+      }
+
+      if (props.column.type === 'expand' && !props.isHead) {
+        disabled = true;
       }
 
       return { disabled, content, mode, resizerWay, watchCellResize, popoverOption };
