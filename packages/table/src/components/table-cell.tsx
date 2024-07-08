@@ -41,6 +41,7 @@ export default defineComponent({
     title: PropTypes.string.def(undefined),
     observerResize: PropTypes.bool.def(true),
     isHead: PropTypes.bool.def(false),
+    isExpandChild: PropTypes.bool.def(false),
     headExplain: PropTypes.string,
     resizerWay: toType<`${ResizerWay}`>('ResizerWay', {
       default: ResizerWay.DEBOUNCE,
@@ -156,7 +157,7 @@ export default defineComponent({
         }
       }
 
-      if (props.column.type === 'expand' && !props.isHead) {
+      if (props.column.type === 'expand' && !props.isHead && !props.isExpandChild) {
         disabled = true;
       }
 
