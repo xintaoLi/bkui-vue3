@@ -104,13 +104,9 @@ export type ISettingPropType = {
 };
 
 export type VirtualElementOptions = {
-  offsetWidth: number;
-  offsetHeight: number;
   scrollHeight: number;
-  scrollWidth: number;
-  clientWidth: number;
-  scrollTop: number;
-  scrollLeft: number;
+  scrollTop?: number;
+  scrollLeft?: number;
   className: string;
   delegateElement: HTMLElement;
   onScollCallback: (...args) => void;
@@ -118,22 +114,15 @@ export type VirtualElementOptions = {
 
 export class VirtualElement {
   isVirtualElement = true;
-  offsetWidth: number;
-  offsetHeight: number;
   scrollHeight: number;
-  scrollWidth: number;
-  clientWidth: number;
-  scrollTop: number;
-  scrollLeft: number;
-  className: string;
   virtualScrollTop: number;
   virtualScrollLeft: number;
+  scrollTop = 0;
   onScollCallback: (...args) => void;
 
   delegateElement: HTMLElement;
   constructor({ scrollHeight, delegateElement, onScollCallback }: Partial<VirtualElementOptions>) {
     this.scrollHeight = scrollHeight;
-
     this.delegateElement = delegateElement;
     this.virtualScrollTop = 0;
     this.virtualScrollLeft = 0;
@@ -160,15 +149,13 @@ export class VirtualElement {
       set: (target, prop, value) => {
         if (prop in target) {
           if (prop === 'scrollTop') {
+            target.virtualScrollTop = (value * target.delegateElement.offsetHeight) / target.scrollHeight;
             const triggerCallbackFn = target.scrollTop !== value;
-            const args = { offset: { x: target.scrollLeft, y: value } };
+            target.scrollTop = value;
 
             if (triggerCallbackFn) {
-              this.onScollCallback?.(args);
+              this.handleScrollChanged('scrollTop');
             }
-
-            target.virtualScrollTop = (value * target.delegateElement.offsetHeight) / target.scrollHeight;
-            target.scrollTop = value;
             return true;
           }
 
@@ -178,16 +165,25 @@ export class VirtualElement {
 
         if (delegateElement && prop in delegateElement) {
           delegateElement[prop] = value;
+          this.handleScrollChanged(prop as string);
           return true;
         }
+
         target[prop] = value;
         return true;
       },
     });
   }
 
+  handleScrollChanged(prop: string) {
+    if (['scrollLeft', 'scrollTop'].includes(prop)) {
+      const args = { offset: { x: this.delegateElement.scrollLeft, y: this.scrollTop } };
+      this.onScollCallback?.(args);
+    }
+  }
+
   scrollTo({ top, left, behavior }: ScrollToOptions) {
-    this.scrollLeft = left;
+    this.delegateElement.scrollLeft = left;
     this.scrollTop = top;
     this.delegateElement.scrollTo({ top, left, behavior });
   }
@@ -195,7 +191,7 @@ export class VirtualElement {
 
 // 自定义滚动条类
 export default class BkScrollbar {
-  element: Partial<Element> & Partial<VirtualElement>;
+  element: Partial<HTMLElement> & Partial<VirtualElement>;
   containerWidth: number;
   containerHeight: number;
   contentWidth: number;

@@ -68,7 +68,7 @@ export default defineComponent({
     afterSection?: Record<string, object>;
   }>,
   setup(props: VirtualRenderProps, ctx: SetupContext) {
-    const { renderAs, contentAs } = props;
+    const { renderAs } = props;
 
     const resolvePropClassName = (prop: Record<string, object> | Record<string, object>[] | string | string[]) => {
       if (typeof prop === 'string') {
@@ -96,7 +96,6 @@ export default defineComponent({
     }));
 
     const refRoot = ref(null);
-    const refContent = ref(null);
 
     /** 如果有分组状态，计算总行数 */
     const listLength = ref(0);
@@ -132,13 +131,13 @@ export default defineComponent({
       const total = localList.value.length;
       if (total < end) {
         end = total;
-        start = end - Math.floor(refContent.value.offsetHeight / props.lineHeight);
+        start = end - Math.floor(refRoot.value.offsetHeight / props.lineHeight);
         start = start < 0 ? 0 : start;
       }
 
       if (end > total) {
         end = total;
-        start = end - Math.floor(refContent.value.offsetHeight / props.lineHeight);
+        start = end - Math.floor(refRoot.value.offsetHeight / props.lineHeight);
       }
 
       const value = localList.value.slice(start, end);
@@ -154,7 +153,7 @@ export default defineComponent({
       if (props.scrollbar?.enabled) {
         virtualRoot.value = new VirtualElement({
           delegateElement: refRoot.value,
-          offsetHeight: innerHeight.value,
+          scrollHeight: innerHeight.value,
           onScollCallback: handleScrollBarCallback,
         });
         init(virtualRoot);
@@ -246,12 +245,6 @@ export default defineComponent({
       props.scrollPosition === 'container' ? resolveClassName('virtual-content') : '',
     ]);
 
-    /** 内容区域样式列表 */
-    const innerClass = computed(() => [
-      props.scrollPosition === 'content' ? resolveClassName('virtual-content') : '',
-      ...resolvePropClassName(props.contentClassName),
-    ]);
-
     /**
      * 重置当前配置
      * @param keepLastPostion
@@ -288,7 +281,7 @@ export default defineComponent({
       scrollTo,
       fixToTop,
       refRoot,
-      refContent,
+      refContent: refRoot,
     });
 
     const handleScrollBarCallback = args => {
@@ -306,22 +299,9 @@ export default defineComponent({
         },
         [
           ctx.slots.beforeContent?.() ?? '',
-          h(
-            contentAs || 'div',
-            {
-              ref: refContent,
-              class: [...innerClass.value, classNames.contentEl],
-              style: {
-                ...innerContentStyle.value,
-                ...props.contentStyle,
-              },
-            },
-            [
-              ctx.slots.default?.({
-                data: calcList.value,
-              }) ?? '',
-            ],
-          ),
+          ctx.slots.default?.({
+            data: calcList.value,
+          }) ?? '',
           ctx.slots.afterContent?.() ?? '',
           ctx.slots.afterSection?.() ?? '',
         ],
