@@ -26,32 +26,17 @@
 
 import { Ref } from 'vue';
 
-import { usePrefix } from '@bkui-vue/config-provider';
-import BkScrollbar, { VirtualElement } from '@bkui-vue/scrollbar';
+import BkScrollbar, { IScrollbarSize, VirtualElement } from '@bkui-vue/scrollbar';
 
 import { VirtualRenderProps } from './props';
 
 export default (props: VirtualRenderProps) => {
   let instance: BkScrollbar = null;
-  const { resolveClassName } = usePrefix();
-  const classNames = {
-    contentEl: resolveClassName('scrollbar-content-el'),
-    wrapper: resolveClassName('scrollbar-wrapper'),
-    scrollbar: resolveClassName('scrollbar'),
-    track: `${resolveClassName('scrollbar-track')} track-${props.scrollbar?.size ?? 'normal'}`,
-    visible: resolveClassName('scrollbar-visible'),
-    horizontal: resolveClassName('scrollbar-horizontal'),
-    vertical: resolveClassName('scrollbar-vertical'),
-    hover: resolveClassName('scrollbar-hover'),
-    dragging: resolveClassName('scrollbar-dragging'),
-    scrolling: resolveClassName('scrollbar-scrolling'),
-    scrollable: resolveClassName('scrollbar-scrollable'),
-    mouseEntered: resolveClassName('scrollbar-mouse-entered'),
-  };
 
   const init = (target: Ref<Partial<Element> & Partial<VirtualElement>>) => {
     instance = new BkScrollbar(target.value, {
       scrollingThreshold: 120,
+      scrollSize: props.scrollbar?.size as IScrollbarSize,
     });
   };
 
@@ -70,7 +55,6 @@ export default (props: VirtualRenderProps) => {
     init,
     instance,
     scrollTo,
-    classNames,
     updateScrollHeight,
   };
 };

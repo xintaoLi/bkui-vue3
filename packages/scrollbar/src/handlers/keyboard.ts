@@ -74,7 +74,7 @@ export default function (i: BkScrollbar) {
   }
 
   i.event.bind(i.ownerDocument, 'keydown', e => {
-    const step = 10;
+    const step = 30;
     if (e.isDefaultPrevented?.() || e.defaultPrevented) {
       return;
     }

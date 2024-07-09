@@ -105,7 +105,7 @@ export default defineComponent({
 
     const virtualRoot: Ref<VirtualElement> = ref(null);
 
-    const { init, scrollTo, classNames, updateScrollHeight } = useScrollbar(props);
+    const { init, scrollTo, updateScrollHeight } = useScrollbar(props);
 
     let instance = null;
     const pagination = reactive({
@@ -294,7 +294,7 @@ export default defineComponent({
         renderAs || 'div',
         {
           ref: refRoot,
-          class: [...wrapperClass.value, classNames.wrapper],
+          class: [...wrapperClass.value],
           style: wrapperStyle.value,
         },
         [

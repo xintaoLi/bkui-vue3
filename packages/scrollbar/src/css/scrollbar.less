@@ -4,14 +4,11 @@
 .@{bk-prefix}-scrollbar {
   overflow: hidden !important;
   overflow-anchor: none;
-  -ms-overflow-style: none;
   touch-action: auto;
-  -ms-touch-action: auto;
 
   &.@{bk-prefix}--active-x > .@{bk-prefix}__rail-x,
   &.@{bk-prefix}--active-y > .@{bk-prefix}__rail-y {
     display: block;
-    // background-color: transparent;
   }
 
   .@{bk-prefix}__rail-x:hover,
@@ -21,7 +18,6 @@
   .@{bk-prefix}__rail-x.@{bk-prefix}--clicking,
   .@{bk-prefix}__rail-y.@{bk-prefix}--clicking {
     background-color: #f0f1f5;
-    // opacity: 0.9;
   }
 
   /*
@@ -33,14 +29,18 @@
     transition:
       background-color 0.2s linear,
       opacity 0.2s linear;
-    -webkit-transition:
-      background-color 0.2s linear,
-      opacity 0.2s linear;
-    height: 12px;
-    /* there must be 'bottom' or 'top' for ps__rail-x */
+    height: 10px;
     bottom: 0px;
-    /* please don't change 'position' */
     position: absolute;
+    margin-bottom: 2px;
+
+    &.@{bk-prefix}-size-small {
+      height: 8px;
+
+      .@{bk-prefix}__thumb-x {
+        height: 6px;
+      }
+    }
   }
 
   .@{bk-prefix}__rail-y {
@@ -49,14 +49,18 @@
     transition:
       background-color 0.2s linear,
       opacity 0.2s linear;
-    -webkit-transition:
-      background-color 0.2s linear,
-      opacity 0.2s linear;
-    width: 12px;
-    /* there must be 'right' or 'left' for ps__rail-y */
-    right: 0;
-    /* please don't change 'position' */
+    width: 10px;
+    right: 0px;
     position: absolute;
+    margin-right: 2px;
+
+    &.@{bk-prefix}-size-small {
+      width: 8px;
+
+      .@{bk-prefix}__thumb-y {
+        width: 6px;
+      }
+    }
   }
 
   &:hover > .@{bk-prefix}__rail-x,
@@ -77,13 +81,8 @@
     transition:
       background-color 0.2s linear,
       height 0.2s ease-in-out;
-    -webkit-transition:
-      background-color 0.2s linear,
-      height 0.2s ease-in-out;
     height: 8px;
-    /* there must be 'bottom' for ps__thumb-x */
-    bottom: 2px;
-    /* please don't change 'position' */
+    bottom: 0px;
     position: absolute;
   }
 
@@ -93,13 +92,8 @@
     transition:
       background-color 0.2s linear,
       width 0.2s ease-in-out;
-    -webkit-transition:
-      background-color 0.2s linear,
-      width 0.2s ease-in-out;
     width: 8px;
-    /* there must be 'right' for ps__thumb-y */
-    right: 2px;
-    /* please don't change 'position' */
+    right: 0px;
     position: absolute;
   }
 
@@ -107,14 +101,28 @@
   .@{bk-prefix}__rail-x:focus > .@{bk-prefix}__thumb-x,
   .@{bk-prefix}__rail-x.@{bk-prefix}--clicking .@{bk-prefix}__thumb-x {
     background-color: #979ba5;
-    height: 11px;
+    height: 10px;
   }
 
   .@{bk-prefix}__rail-y:hover > .@{bk-prefix}__thumb-y,
   .@{bk-prefix}__rail-y:focus > .@{bk-prefix}__thumb-y,
   .@{bk-prefix}__rail-y.@{bk-prefix}--clicking .@{bk-prefix}__thumb-y {
     background-color: #979ba5;
-    width: 11px;
+    width: 10px;
+  }
+
+  .@{bk-prefix}-size-small {
+    > .@{bk-prefix}__thumb-x,
+    > .@{bk-prefix}__thumb-x,
+    &.@{bk-prefix}--clicking .@{bk-prefix}__thumb-x {
+      height: 8px;
+    }
+
+    &:hover > .@{bk-prefix}__thumb-y,
+    &:focus > .@{bk-prefix}__thumb-y,
+    &.@{bk-prefix}--clicking .@{bk-prefix}__thumb-y {
+      width: 8px;
+    }
   }
 }
 

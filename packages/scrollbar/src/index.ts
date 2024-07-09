@@ -283,6 +283,7 @@ export default class BkScrollbar {
     this.ownerDocument = element.ownerDocument || document;
 
     this.scrollbarXRail = DOM.div(this.cls.element.rail('x'));
+    this.scrollbarXRail.classList.add(this.cls.element.size(this.settings.scrollSize));
     element.appendChild(this.scrollbarXRail);
     this.scrollbarX = DOM.div(this.cls.element.thumb('x'));
     this.scrollbarXRail.appendChild(this.scrollbarX);
@@ -310,6 +311,7 @@ export default class BkScrollbar {
     this.railXRatio = null;
 
     this.scrollbarYRail = DOM.div(this.cls.element.rail('y'));
+    this.scrollbarYRail.classList.add(this.cls.element.size(this.settings.scrollSize));
     element.appendChild(this.scrollbarYRail);
     this.scrollbarY = DOM.div(this.cls.element.thumb('y'));
     this.scrollbarYRail.appendChild(this.scrollbarY);
