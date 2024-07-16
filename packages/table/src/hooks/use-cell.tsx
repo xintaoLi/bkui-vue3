@@ -147,8 +147,8 @@ export default ({
       if (typeof column.render === 'function') {
         return renderCellCallbackFn();
       }
-      if (typeof cell === 'boolean') {
-        return String(cell);
+      if (typeof cell === 'boolean' || typeof cell === 'number') {
+        return `${cell}`;
       }
 
       if (typeof cell === 'object') {
