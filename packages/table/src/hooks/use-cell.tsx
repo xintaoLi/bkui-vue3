@@ -127,6 +127,18 @@ export default ({
     );
   };
 
+  const isEmptyCellText = cellText => {
+    if (Array.isArray(props.isEmptyCell)) {
+      return props.isEmptyCell.some(item => item === cellText);
+    }
+
+    if (typeof props.isEmptyCell === 'function') {
+      return props.isEmptyCell({ cellText, row, column });
+    }
+
+    return isEmpty(cellText);
+  };
+
   /**
    * 渲染表格Cell内容
    * @param row 当前行
@@ -151,11 +163,11 @@ export default ({
         return `${cell}`;
       }
 
-      if (typeof cell === 'object') {
+      if (typeof cell === 'object' && cell !== null) {
         return JSON.stringify(unref(cell));
       }
 
-      if (isEmpty(cell)) {
+      if (isEmptyCellText(cell)) {
         const { emptyCellText } = props;
         if (emptyCellText) {
           if (typeof emptyCellText === 'function') {

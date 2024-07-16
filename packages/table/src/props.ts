@@ -504,6 +504,18 @@ export const tableProps = {
   emptyCellText: PropTypes.oneOfType([PropTypes.string, PropTypes.func.def(() => '')]).def(''),
 
   /**
+   * 判定单元格是否为空
+   * 支持数组：判定条件为 arr.some(item => item === cellText)
+   * 支持函数回调：返回结果为 true | false， ({ cellText, row, column }) => boolean
+   */
+  isEmptyCell: PropTypes.oneOfType([
+    PropTypes.arrayOf(string),
+    PropTypes.arrayOf(null),
+    PropTypes.arrayOf(undefined),
+    PropTypes.func,
+  ]).def(['', undefined, null]),
+
+  /**
    * bk-table-setting-content
    */
   settings: ITableSettings,
