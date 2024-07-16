@@ -152,8 +152,11 @@ export default (columns: UseColumns, { afterResize }) => {
           return;
         }
 
-        const rect = target.getBoundingClientRect();
-        if (rect.width > 12 && rect.right - e.pageX < 12) {
+        const { offsetWidth } = target;
+        const mouseOffsetX = e.offsetX;
+        if (offsetWidth > 12 && offsetWidth - mouseOffsetX < 12) {
+          console.log('mouse enter', target, e);
+
           isInDragSection = true;
           setNodeCursor(target);
         } else {
