@@ -11,7 +11,7 @@
 import { defineComponent } from 'vue';
 
 import { DATA_TABLE } from './options';
-const DATA_ROWS = DATA_TABLE.map(item => ({
+const DATA_ROWS = DATA_TABLE.map((item) => ({
   ...item,
 }));
 export default defineComponent({
