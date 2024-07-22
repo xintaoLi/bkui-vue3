@@ -367,7 +367,7 @@ export enum IColSortBehavior {
 }
 
 export type FixedBottomOption = {
-  position: 'absolute' | 'fixed' | 'relative';
+  position: 'absolute' | 'relative';
   height: number;
   loading?: boolean;
 };
