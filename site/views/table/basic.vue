@@ -375,13 +375,17 @@ const generateDataAndUpdateTable = async () => {
 generateDataAndUpdateTable();
 const refTable = ref(null);
 const handleRowSelect = (...args) => {
-  console.log('getRowSelection', refTable.value.getSelection())
+  console.log('handleRowSelect', refTable.value.getSelection())
+}
+
+const handleSelectAll = (...agrs) => {
+  console.log('handleSelectAll', refTable.value.getSelection())
 }
 </script>
 
 <template>
   <div style="height: 400px;">
-    <bk-table @select="handleRowSelect" row-hover="auto" height="100%" :columns="columns" :data="tableData"
-      show-overflow-tooltip ref="refTable" />
+    <bk-table @select="handleRowSelect" @select-all="handleSelectAll" row-hover="auto" height="100%" :columns="columns"
+      :data="tableData" show-overflow-tooltip ref="refTable" />
   </div>
 </template>

@@ -689,15 +689,17 @@ const useColumns = (props: TablePropTypes) => {
     let isContinue = true;
     let width = 0;
     let index = 0;
-    while (isContinue) {
-      width = width + getColumnWidth(visibleColumns[index]);
-      index = index + 1;
+    while (isContinue && index < visibleColumns.length) {
       if (col === visibleColumns[index]) {
         if (includingSelf) {
           width = width + getColumnWidth(visibleColumns[index]);
         }
         isContinue = false;
+        break;
       }
+
+      width = width + getColumnWidth(visibleColumns[index]);
+      index = index + 1;
     }
 
     return width;

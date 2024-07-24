@@ -32,14 +32,7 @@ import { Column } from '../props';
 import { UseColumns } from './use-columns';
 
 export default (columns: UseColumns, { afterResize }) => {
-  const {
-    getColumnAttribute,
-    getColumnOrderWidth,
-    setColumnAttribute,
-    setNextColumnWidth,
-    getPreColumn,
-    getLeftColumnsWidth,
-  } = columns;
+  const { getColumnAttribute, getColumnOrderWidth, setColumnAttribute, setNextColumnWidth, getPreColumn } = columns;
   const getColListener = (col: Column) =>
     getColumnAttribute(col, COLUMN_ATTRIBUTE.LISTENERS) as Map<string, ((...args) => void)[]>;
 
@@ -70,6 +63,7 @@ export default (columns: UseColumns, { afterResize }) => {
   };
 
   const handleMouseUp = (e: MouseEvent) => {
+    stopDefaultEvent(e);
     isMouseDown = false;
     isDraging = false;
 
@@ -93,8 +87,8 @@ export default (columns: UseColumns, { afterResize }) => {
   };
 
   const handleMouseDragMove = (e: MouseEvent) => {
-    document.body.style.setProperty('user-select', 'none');
     stopDefaultEvent(e);
+    document.body.style.setProperty('user-select', 'none');
     const diff = e.clientX - startX;
     dragWidth = dragWidth + diff;
     startX = e.clientX;
@@ -125,26 +119,57 @@ export default (columns: UseColumns, { afterResize }) => {
     if (!isInDragSection) {
       return;
     }
+
+    removePointerClass(e.target as HTMLElement);
     startX = e.clientX;
     const column = poinerPlacement === 'left' ? getPreColumn(mouseMoveColumn) : mouseMoveColumn;
     setColumnAttribute(column, COLUMN_ATTRIBUTE.COL_IS_DRAG, true);
     dragColumn = column;
-    headTable = (e.target as HTMLElement).closest('table');
+    headTable = (e.target as HTMLElement).closest('table') as HTMLElement;
+    const rect = headTable.getBoundingClientRect();
+    dragOffsetX.value = e.clientX - rect.left;
+
     setNodeCursor(headTable);
     isMouseDown = true;
+  };
+
+  const removePointerClass = (target: HTMLElement) => {
+    const targetElements = target?.parentElement?.parentElement?.querySelectorAll('.col-pointer-hover');
+    targetElements.forEach(element => {
+      element?.classList.remove('col-pointer-hover');
+      element?.classList.remove('poiner-left');
+      element?.classList.remove('poiner-right');
+    });
+  };
+
+  const addPointerClass = (target: HTMLElement, poinerPlacement: string) => {
+    const targetTh = target.parentElement;
+    targetTh?.classList.add('col-pointer-hover');
+    targetTh?.classList.add(`poiner-${poinerPlacement}`);
+
+    const nextTarget = poinerPlacement === 'right' ? targetTh.nextElementSibling : targetTh.previousElementSibling;
+
+    const nextPlacement = poinerPlacement === 'right' ? 'left' : 'right';
+    nextTarget?.classList.add('col-pointer-hover');
+    nextTarget?.classList.add(`poiner-${nextPlacement}`);
   };
 
   const handleMouseoutDragSection = (target: HTMLElement) => {
     if (!isDraging) {
       dragOffsetX.value = -1000;
       target.classList.remove('cell-resize');
+      removePointerClass(target);
+
       cellCursorStore.set(target, false);
       document.removeEventListener('mousedown', handlemouseDownEvent);
+      document.removeEventListener('mouseup', handleMouseUp);
     }
   };
 
   const handler = {
     [EVENTS.MOUSE_MOVE]: (e: MouseEvent, column: Column, index: number) => {
+      stopDefaultEvent(e);
+
       if (isMouseDown) {
         isDraging = true;
         handleMouseDragMove(e);
@@ -168,11 +193,10 @@ export default (columns: UseColumns, { afterResize }) => {
           if (!cellCursorStore.get(target)) {
             cellCursorStore.set(target, true);
             target.classList.add('cell-resize');
-            const offsetLeft = getLeftColumnsWidth(column, poinerPlacement === 'right');
-            console.log('-set offset');
-            dragOffsetX.value = offsetLeft;
 
+            addPointerClass(target, poinerPlacement);
             mouseMoveColumn = column;
+
             document.addEventListener('mousedown', handlemouseDownEvent);
             document.addEventListener('mouseup', handleMouseUp);
           }

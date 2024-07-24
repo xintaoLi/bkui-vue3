@@ -341,7 +341,7 @@ export default [
       {
         name: 'is-empty-cell',
         type: '["", undefined, null] | ({ cellText, row, column }) => boolean',
-        default: "['', undefined, null]",
+        default: '["", undefined, null]',
         desc: `  /**
          * 判定单元格是否为空
          * 支持数组：判定条件为 arr.some(item => item === cellText)
