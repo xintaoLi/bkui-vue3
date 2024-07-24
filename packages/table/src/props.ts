@@ -136,7 +136,7 @@ export const ISortType = toType<ISortPropShape>('ISortPropShape', {
 });
 
 export type ISortShape = {
-  sortFn?: (...args) => boolean;
+  sortFn?: (...args) => number;
   sortScope?: SortScope;
   value?: SORT_OPTION;
 };

@@ -330,7 +330,7 @@ const columns = [
     width: 200,
   },
 ];
-const DATASIZE = 20;
+const DATASIZE = 100;
 // 生成一万条数据
 const generateData = () => {
   const data = [];

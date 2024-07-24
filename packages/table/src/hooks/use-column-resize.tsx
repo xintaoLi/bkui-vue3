@@ -131,6 +131,8 @@ export default (columns: UseColumns, { afterResize }) => {
 
     setNodeCursor(headTable);
     isMouseDown = true;
+
+    document.addEventListener('mouseup', handleMouseUp);
   };
 
   const removePointerClass = (target: HTMLElement) => {
@@ -162,7 +164,6 @@ export default (columns: UseColumns, { afterResize }) => {
 
       cellCursorStore.set(target, false);
       document.removeEventListener('mousedown', handlemouseDownEvent);
-      document.removeEventListener('mouseup', handleMouseUp);
     }
   };
 
@@ -198,7 +199,6 @@ export default (columns: UseColumns, { afterResize }) => {
             mouseMoveColumn = column;
 
             document.addEventListener('mousedown', handlemouseDownEvent);
-            document.addEventListener('mouseup', handleMouseUp);
           }
         } else {
           isInDragSection = false;
