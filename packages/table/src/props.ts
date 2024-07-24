@@ -635,6 +635,11 @@ export const tableProps = {
    */
   observerResize: PropTypes.bool.def(true),
 
+  /**
+   * 是否使用IntersectionObserver监听表格Cell进如有可视区域再渲染
+   */
+  intersectionObserver: PropTypes.bool.def(false),
+
   // 对齐方式
   align: TableAlign,
   headerAlign: TableAlign,

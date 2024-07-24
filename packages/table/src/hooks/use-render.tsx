@@ -429,6 +429,7 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
                     class={tdCtxClass}
                     column={column}
                     data-id={cellKey}
+                    intersectionObserver={props.intersectionObserver}
                     isExpandChild={isChild}
                     observerResize={props.observerResize}
                     parentSetting={props.showOverflowTooltip}
