@@ -1,6 +1,12 @@
 ## 更新日志
 
 
+### 2.0.1-beta.40
+
+* **[feat]**:
+    - feat: TS定义导出 BkTableColumn, BkCollapse 配置
+
+
 ### 2.0.1-beta.39
 
 * **[feat]**:
