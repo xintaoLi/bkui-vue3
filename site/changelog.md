@@ -1,6 +1,12 @@
 ## 更新日志
 
 
+### 2.0.1-beta.41
+
+* **[feat]**:
+    - feat(table): scrollbar优化
+
+
 ### 2.0.1-beta.40
 
 * **[feat]**:
