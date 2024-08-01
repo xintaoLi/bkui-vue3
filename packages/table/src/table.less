@@ -506,6 +506,10 @@
     pointer-events: none;
     transform: translate(var(--translate-x), var(--translate-y));
 
+    &.has-virtual-scroll {
+      transform: translate(var(--translate-x), 0);
+    }
+
     .column_fixed_right {
       box-shadow: var(--shadow-right);
     }

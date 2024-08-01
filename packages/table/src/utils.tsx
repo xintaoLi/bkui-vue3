@@ -398,7 +398,7 @@ export const resolveColumnSpan = (
   row: Record<string, unknown>,
   rowIndex: number,
   key: string,
-) => {
+): number => {
   if (typeof column[key] === 'function') {
     return Reflect.apply(column[key], this, [{ column, colIndex, row, rowIndex }]);
   }
