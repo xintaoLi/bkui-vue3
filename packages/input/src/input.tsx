@@ -24,14 +24,14 @@
  * IN THE SOFTWARE.
  */
 
+import { computed, defineComponent, ExtractPropTypes, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+
 import { useLocale, usePrefix } from '@bkui-vue/config-provider';
 import { bkTooltips } from '@bkui-vue/directives';
 import { Close, DownSmall, Eye, Search, Unvisible } from '@bkui-vue/icon';
 import { classes, InputBehaviorType, PropTypes, useFormItem } from '@bkui-vue/shared';
-import { computed, defineComponent, ExtractPropTypes, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+
 import { calcTextareaHeight } from './util';
-
-
 
 export type InputAutoSize = { minRows?: number; maxRows?: number };
 
@@ -435,8 +435,8 @@ export default defineComponent({
       handleInput(e);
     }
 
-    function isNum (num): boolean {
-      return typeof num === 'number'
+    function isNum(num): boolean {
+      return typeof num === 'number';
     }
 
     function handleNumber(modelValue: number, step: number, INC = true) {
