@@ -196,6 +196,7 @@ export default () => {
                 ref={inputRef}
                 class={`${resolveClassName('pagination-editor')}`}
                 contenteditable={!proxy.disabled}
+                innerHTML={String(localCurrent.value)}
                 spellcheck='false'
                 onBlur={handlePageEditorBlur}
                 onFocus={handlePageEditorFocus}
