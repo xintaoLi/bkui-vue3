@@ -302,6 +302,7 @@ export type Column = {
   index?: number;
   explain?: IColumnExplain;
   children?: Column[];
+  acrossPage?: boolean;
 };
 
 export const IColumnProp = toType<Column>('IColumnPropType', {
