@@ -85,7 +85,7 @@ export function computedVirtualIndex(lineHeight, callback, pagination, wrapper, 
     targetStartIndex = startValue.startIndex > 0 ? startValue.startIndex : 0;
     translateY = startValue.diffHeight;
     const endValue = getMatchedIndex(count, elOffsetHeight, groupItemCount, lineHeight);
-    targetEndIndex = endValue.startIndex + targetStartIndex;
+    targetEndIndex = endValue.startIndex + targetStartIndex + 1;
   }
 
   const bottom = elScrollHeight - elOffsetHeight - elScrollTop;

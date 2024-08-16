@@ -160,7 +160,7 @@ export default defineComponent({
       let end = pagination.endIndex * props.groupItemCount;
       const total = localList.value.length;
       if (total < end) {
-        end = total;
+        end = total + 1;
 
         if (typeof props.lineHeight === 'function') {
           start = getLastPageIndex().startIndex;
@@ -169,11 +169,6 @@ export default defineComponent({
           start = start < 0 ? 0 : start;
         }
       }
-
-      // if (end > total) {
-      //   end = total;
-      //   start = end - Math.floor(refRoot.value.offsetHeight / props.lineHeight);
-      // }
 
       const value = localList.value.slice(start, end);
       calcList.value = value;
