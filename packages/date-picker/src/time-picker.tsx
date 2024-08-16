@@ -313,6 +313,17 @@ export default defineComponent({
 
     const pickerPanelRef = ref(null);
     const handleClose = (e?: Event) => {
+      if (props.appendToBody) {
+        state.disableCloseUnderTransfer = true;
+        const pickerPanel = pickerPanelRef?.value?.$el;
+        if (e && pickerPanel?.contains(e.target)) {
+          return;
+        }
+        state.visible = false;
+        e?.preventDefault();
+        e?.stopPropagation();
+      }
+
       if (state.disableCloseUnderTransfer) {
         state.disableCloseUnderTransfer = false;
         return false;
