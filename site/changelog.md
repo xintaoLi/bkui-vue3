@@ -1,6 +1,14 @@
 ## 更新日志
 
 
+### 2.0.1-beta.54
+
+* **[feat]**:
+    - fix(virtual-render): 修复lineHeight fn计算最后一行位置问题
+    - feature: alert组件提供自定义icon插槽
+    - feature(select): select需要支持手动控制下拉选项显示和隐藏逻辑
+
+
 ### 2.0.1-beta.53
 
 * **[feat]**:
