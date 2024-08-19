@@ -50,7 +50,7 @@ export default (props: TablePropTypes, ctx) => {
   const offsetRight = ref(0);
   const layout: { bottom?: number } = reactive({});
   const fixedColumns = reactive([]);
-  const lineHeight = ref(props.rowHeight ?? LINE_HEIGHT);
+  const lineHeight = ref(LINE_HEIGHT);
   const headerRowCount = ref(1);
 
   const fixedBottomHeight = computed(() => {
@@ -243,7 +243,7 @@ export default (props: TablePropTypes, ctx) => {
     offsetRight.value = scrollWidth - offsetWidth - translateX?.value ?? 0;
   };
 
-  const setLineHeight = (val: number) => {
+  const setLineHeight = (val: ((...args) => number) | number) => {
     lineHeight.value = val;
   };
 
@@ -294,7 +294,7 @@ export default (props: TablePropTypes, ctx) => {
   const fixedBottomRow = resolveClassName('table-fixed-bottom');
 
   const fixedBottomLoadingStyle = computed(() => ({
-    minHeight: `${lineHeight.value}px`,
+    minHeight: `${props.fixedBottom?.minHeight ?? LINE_HEIGHT}px`,
     position: props.fixedBottom?.position ?? 'absolute',
     height: props.fixedBottom?.height ?? null,
   }));

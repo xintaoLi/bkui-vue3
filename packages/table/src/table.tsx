@@ -63,20 +63,34 @@ export default defineComponent({
       setDragOffsetX,
       setOffsetRight,
       setHeaderRowCount,
+      setLineHeight,
       refBody,
       refRoot,
     } = useLayout(props, ctx);
 
     const scrollTo = (...args) => refBody.value?.scrollTo(...args);
 
+    if (typeof props.rowHeight === 'function') {
+      setLineHeight(args => {
+        return rows.getRowHeight(args.rows[0], args.index);
+      });
+    } else {
+      setLineHeight(props.rowHeight);
+    }
+
     /**
      * 设置字段结束，展示字段改变，设置表格偏移量为0
      * 避免太长横向滚动导致数据不可见
      * @param fields
      */
-    const afterSetting = fields => {
-      if (fields?.length > 0) {
+    const afterSetting = ({ checked, height }) => {
+      if (checked?.length > 0) {
         scrollTo(0, 0);
+      }
+
+      if (typeof props.rowHeight !== 'function') {
+        rows.setRowHeight(height);
+        setLineHeight(height);
       }
     };
 
@@ -89,7 +103,6 @@ export default defineComponent({
       columns,
       rows,
       pagination,
-      settings,
     });
 
     setDragEvents(dragEvents as Record<string, () => void>);
