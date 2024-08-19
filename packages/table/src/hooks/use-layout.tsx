@@ -244,7 +244,7 @@ export default (props: TablePropTypes, ctx) => {
   };
 
   const setLineHeight = (val: ((...args) => number) | number) => {
-    lineHeight.value = val;
+    lineHeight.value = val as number;
   };
 
   const handleScrollChanged = (

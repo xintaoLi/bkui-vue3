@@ -1,6 +1,12 @@
 ## 更新日志
 
 
+### 2.0.1-beta.56
+
+* **[feat]**:
+    - feat(table): 优化row-height计算逻辑
+
+
 ### 2.0.1-beta.55
 
 * **[feat]**:
