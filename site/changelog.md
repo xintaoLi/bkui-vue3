@@ -1,6 +1,22 @@
 ## 更新日志
 
 
+### 2.0.1-beta.54
+
+* **[feat]**:
+    - fix(virtual-render): 修复lineHeight fn计算最后一行位置问题
+    - feature: alert组件提供自定义icon插槽
+    - feature(select): select需要支持手动控制下拉选项显示和隐藏逻辑
+
+
+### 2.0.1-beta.53
+
+* **[feat]**:
+    - bugfix: date-picker，添加append-to-body属性，选择后需要点击两次才能关闭
+    - bugfix: pagination，手动输入页码后点击上下页，页码未改变
+    - message display: box => display: -webkit-box
+
+
 ### 2.0.1-beta.50
 
 * **[feat]**:
