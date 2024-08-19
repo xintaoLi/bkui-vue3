@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { ExtractPropTypes } from 'vue';
+import { ExtractPropTypes, VNode } from 'vue';
 import { string, toType } from 'vue-types';
 
 import { PropTypes } from '@bkui-vue/shared';
@@ -136,7 +136,7 @@ export const ISortType = toType<ISortPropShape>('ISortPropShape', {
 });
 
 export type ISortShape = {
-  sortFn?: (...args) => boolean;
+  sortFn?: (...args) => number;
   sortScope?: SortScope;
   value?: SORT_OPTION;
 };
@@ -226,8 +226,8 @@ export type HeadRenderArgs = {
   cell?: Record<string, object>;
   data?: Record<string, object>[];
   row?: Record<string, object>;
-  column: Column;
-  index: number;
+  column?: Column;
+  index?: number;
   rows?: Record<string, object>[];
 };
 
@@ -302,6 +302,7 @@ export type Column = {
   index?: number;
   explain?: IColumnExplain;
   children?: Column[];
+  acrossPage?: boolean;
 };
 
 export const IColumnProp = toType<Column>('IColumnPropType', {
@@ -315,7 +316,7 @@ export const IColumnProp = toType<Column>('IColumnPropType', {
 export type Thead = {
   height?: number;
   isShow?: boolean;
-  cellFn?: (...args) => void;
+  cellFn?: ({ index, column }) => JSX.Element | VNode | string;
   color?: IHeadColor | string;
 };
 
@@ -371,6 +372,16 @@ export type FixedBottomOption = {
   height: number;
   loading?: boolean;
 };
+
+export type AppendLastRowOption = {
+  type: 'default' | 'summary';
+  cellRender?: (column: Column, index: number) => VNode | number | string;
+};
+
+// export enum BkScrollBehavior {
+//   AUTO = 'auto',
+
+// };
 
 export const tableProps = {
   /**
@@ -497,10 +508,23 @@ export const tableProps = {
    */
   // emptyText: PropTypes.string.def('暂无数据'),
   emptyText: PropTypes.string,
+
   /**
    * 单元格数据为空展示
    */
-  emptyCellText: PropTypes.oneOfType([PropTypes.string, PropTypes.func.def(() => '')]).def(''),
+  emptyCellText: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).def(''),
+
+  /**
+   * 判定单元格是否为空
+   * 支持数组：判定条件为 arr.some(item => item === cellText)
+   * 支持函数回调：返回结果为 true | false， ({ cellText, row, column }) => boolean
+   */
+  isEmptyCell: PropTypes.oneOfType([
+    PropTypes.arrayOf(string),
+    PropTypes.arrayOf(null),
+    PropTypes.arrayOf(undefined),
+    PropTypes.func,
+  ]).def(['', undefined, null]),
 
   /**
    * bk-table-setting-content
@@ -617,6 +641,11 @@ export const tableProps = {
    */
   observerResize: PropTypes.bool.def(true),
 
+  /**
+   * 是否使用IntersectionObserver监听表格Cell进如有可视区域再渲染
+   */
+  intersectionObserver: PropTypes.bool.def(false),
+
   // 对齐方式
   align: TableAlign,
   headerAlign: TableAlign,
@@ -656,10 +685,22 @@ export const tableProps = {
    */
   scrollbar: PropTypes.bool.def(true),
 
+  // scrollbehavior: toType<`${ScrollBehavior}`>('ScrollBehavior', {
+
   /**
    * 固定在底部的配置项
    */
   fixedBottom: toType<FixedBottomOption>('FixedBottomOption', {
     default: { position: 'relative', height: LINE_HEIGHT },
   }).def(null),
+
+  /**
+   * 表格尾部追加的行配置
+   */
+  appendLastRow: toType<AppendLastRowOption>('AppendLastRowOption', {
+    default: {
+      type: 'default',
+      cellRender: undefined,
+    },
+  }),
 };

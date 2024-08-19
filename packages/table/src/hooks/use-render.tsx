@@ -141,6 +141,50 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
   };
 
   /** **************************************** Rows Render ******************************* **/
+  const renderAppendLastRow = () => {
+    const rowId = 'append-last-row';
+    const rowStyle = [
+      ...formatPropAsArray(props.rowStyle, []),
+      {
+        '--row-height': `${getRowHeight(null, null, 'append-last-row')}px`,
+      },
+    ];
+    if (props.appendLastRow.type === 'default') {
+      if (ctx.slots.appendLastRow) {
+        return (
+          <TableRow key={rowId}>
+            <tr
+              key={rowId}
+              style={rowStyle}
+            >
+              <td colspan={columns.visibleColumns.length}>
+                {props.appendLastRow.cellRender?.(null, null) ?? ctx.slots.appendLastRow()}
+              </td>
+            </tr>
+          </TableRow>
+        );
+      }
+
+      return;
+    }
+
+    if (props.appendLastRow.type === 'summary') {
+      return (
+        <TableRow key={rowId}>
+          <tr
+            key={rowId}
+            style={rowStyle}
+          >
+            {columns.visibleColumns.map((column, index) => (
+              <td>
+                <TableCell>{props.appendLastRow.cellRender?.(column, index) ?? column.field ?? column.prop}</TableCell>
+              </td>
+            ))}
+          </tr>
+        </TableRow>
+      );
+    }
+  };
 
   /**
    * 渲染Table Body
@@ -158,13 +202,20 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
           preRow = row;
           return result;
         })}
+        {renderAppendLastRow()}
       </tbody>
     );
   };
 
-  const getRowHeight = (row?: Record<string, object>, rowIndex?: number) => {
+  const getRowHeight = (row?: Record<string, object>, rowIndex?: number, type?: string) => {
     if (typeof props.rowHeight === 'function' || /^\d+/.test(`${props.rowHeight}`)) {
-      return resolvePropVal(props, 'rowHeight', ['tbody', row, rowIndex]);
+      return resolvePropVal(props, 'rowHeight', [
+        {
+          index: rowIndex,
+          type: type ?? 'tbody',
+          row,
+        },
+      ]);
     }
 
     const { size, height, enabled } = settings.options;
@@ -415,6 +466,7 @@ export default ({ props, ctx, columns, rows, pagination, settings }: RenderType)
                     class={tdCtxClass}
                     column={column}
                     data-id={cellKey}
+                    intersectionObserver={props.intersectionObserver}
                     isExpandChild={isChild}
                     observerResize={props.observerResize}
                     parentSetting={props.showOverflowTooltip}

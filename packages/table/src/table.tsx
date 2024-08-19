@@ -67,6 +67,8 @@ export default defineComponent({
       refRoot,
     } = useLayout(props, ctx);
 
+    const scrollTo = (...args) => refBody.value?.scrollTo(...args);
+
     /**
      * 设置字段结束，展示字段改变，设置表格偏移量为0
      * 避免太长横向滚动导致数据不可见
@@ -74,7 +76,7 @@ export default defineComponent({
      */
     const afterSetting = fields => {
       if (fields?.length > 0) {
-        refBody.value?.scrollTo(0, 0);
+        scrollTo(0, 0);
       }
     };
 
@@ -177,7 +179,7 @@ export default defineComponent({
       }
     };
 
-    const setTableData = debounce(() => {
+    const setTableData = debounce((resetScroll = true) => {
       const filterOrderList = getFilterAndSortList();
       if (!props.remotePagination) {
         pagination.setPagination({ count: filterOrderList.length });
@@ -188,7 +190,10 @@ export default defineComponent({
 
       nextTick(() => {
         setOffsetRight();
-        refBody.value?.scrollTo(0, 0);
+
+        if (resetScroll) {
+          scrollTo(0, 0);
+        }
       });
     }, 64);
 
@@ -212,7 +217,7 @@ export default defineComponent({
         }
         computedColumnRect();
         setOffsetRight();
-        refBody.value?.scrollTo(0, 0);
+        scrollTo(0, 0);
         return;
       }
 
@@ -267,7 +272,7 @@ export default defineComponent({
       () => [props.data],
       () => {
         rows.setTableRowList(props.data);
-        setTableData();
+        setTableData(false);
       },
       { immediate: true, deep: true },
     );

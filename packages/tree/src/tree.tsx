@@ -76,9 +76,11 @@ export default defineComponent({
     const filterFn = (item: TreeNode) => {
       if (isSearchActive.value) {
         if (showChildNodes) {
+          const itemPath = getNodePath(item) ?? '';
+          const asParentPath = `${itemPath}-`;
           return (
             checkNodeIsOpen(item) &&
-            (isNodeMatched(item) || matchedNodePath.some(path => (getNodePath(item) ?? '').indexOf(path) === 0))
+            (isNodeMatched(item) || matchedNodePath.some(path => asParentPath.indexOf(`${path}-`) === 0))
           );
         }
 
@@ -95,12 +97,12 @@ export default defineComponent({
     const {
       renderTreeNode,
       handleTreeNodeClick,
-      setNodeOpened,
       setOpen,
       setNodeAction,
       setSelect,
       asyncNodeClick,
       setNodeAttribute,
+      isIndeterminate,
     } = useNodeAction(props, ctx, flatData, renderData, { registerNextLoop });
 
     const handleSearch = debounce(120, () => {
@@ -137,13 +139,21 @@ export default defineComponent({
      * 设置指定节点是否选中
      * @param item Node item | Node Id
      * @param checked
+     * @param triggerEvent 是否触发抛出事件
      */
-    const setChecked = (item: TreeNode | TreeNode[], checked = true) => {
-      setNodeAction(resolveNodeItem(item), NODE_ATTRIBUTES.IS_CHECKED, checked);
+    const setChecked = (item: TreeNode | TreeNode[], checked = true, triggerEvent = false) => {
+      setNodeAction(resolveNodeItem(item as TreeNode), NODE_ATTRIBUTES.IS_CHECKED, checked);
+      if (triggerEvent) {
+        ctx.emit(
+          EVENTS.NODE_CHECKED,
+          flatData.data.filter(t => isNodeChecked(t)),
+          flatData.data.filter(t => isIndeterminate(t)),
+        );
+      }
     };
 
     onSelected((newData: TreeNode) => {
-      setSelect(newData, true, props.autoOpenParentNode);
+      setSelect(newData, true, props.autoOpenParentNode, true);
     });
 
     const getData = () => flatData;
@@ -207,7 +217,7 @@ export default defineComponent({
       setOpen,
       setChecked,
       setNodeAction,
-      setNodeOpened,
+      setNodeOpened: setOpen,
       setSelect,
       scrollToTop,
       asyncNodeClick,

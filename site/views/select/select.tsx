@@ -39,6 +39,7 @@ import SelectSearchDemo from './select-search-demo.vue';
 import SelectSlotDemo from './select-slot-demo.vue';
 import SelectStyleDemo from './select-style-demo.vue';
 import SelectTreeDemo from './select-tree-demo.vue';
+import SelectTriggerDemo from './select-trigger-demo.vue';
 import SelectVirtualRender from './select-virtual-render.vue';
 
 const eventColumnMap = {
@@ -123,6 +124,20 @@ const propsJson: IPropsTableItem[] = [
     type: 'number',
     default: '',
     desc: '下拉框最小高度',
+    optional: [],
+  },
+  {
+    name: 'showAll',
+    type: 'boolean',
+    default: 'false',
+    desc: '是否展示全部',
+    optional: ['true', 'false'],
+  },
+  {
+    name: 'allOptionId',
+    type: 'string|number',
+    default: '',
+    desc: 'showAll为true时，全部选项的ID',
     optional: [],
   },
   {
@@ -360,8 +375,20 @@ const propsJson: IPropsTableItem[] = [
     type: 'boolean',
     default: 'false',
   },
+  {
+    name: 'trigger',
+    desc: 'content显示方式',
+    type: 'string',
+    default: 'default',
+    optional: ['default', 'manual'],
+  },
 ];
 const eventJson = [
+  {
+    name: 'update:modelValue',
+    desc: 'v-model事件',
+    params: 'value',
+  },
   {
     name: 'change',
     desc: '选中值发生变化时触发',
@@ -407,6 +434,11 @@ const eventJson = [
     desc: '取消选中时调用',
     params: 'value',
   },
+  {
+    name: 'search-change',
+    desc: '自定义搜索回调',
+    params: 'searchValue',
+  },
 ];
 // 输入框插槽
 const selectSlots = [
@@ -442,8 +474,14 @@ const selectSlots = [
     name: 'tag',
     type: 'Slot',
     default: null,
-    desc: '标签插槽（multiple-mode=“tag” 生效）',
+    desc: '整个标签插槽（multiple-mode=“tag” 生效）',
     optional: [],
+  },
+  {
+    name: 'tagRender',
+    type: 'Slot',
+    default: null,
+    desc: '标签内容插槽（multiple-mode=“tag” 生效）',
   },
 ];
 const selectExpose = [
@@ -459,6 +497,13 @@ const selectExpose = [
     type: 'function',
     default: '',
     desc: '显示Popover弹窗',
+    optional: [],
+  },
+  {
+    name: 'setSelected',
+    type: 'function',
+    default: '',
+    desc: '手动设置选择的值（需要配置idKey和displayKey）',
     optional: [],
   },
 ];
@@ -574,6 +619,14 @@ export default defineComponent({
           title='Virtual Select'
         >
           <SelectVirtualRender />
+        </DemoBox>
+        <DemoBox
+          componentName='select'
+          demoName='select-trigger-demo'
+          desc='配置trigger属性来控制content显示和隐藏'
+          title='自定义content显示方式'
+        >
+          <SelectTriggerDemo />
         </DemoBox>
         <DemoBox
           componentName='select'
