@@ -170,11 +170,6 @@ export default defineComponent({
         }
       }
 
-      // if (end > total) {
-      //   end = total;
-      //   start = end - Math.floor(refRoot.value.offsetHeight / props.lineHeight);
-      // }
-
       const value = localList.value.slice(start, end);
       calcList.value = value;
       if (event) {
