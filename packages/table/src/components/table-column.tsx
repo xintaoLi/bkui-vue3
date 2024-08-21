@@ -69,7 +69,7 @@ export type ITableColumn = Partial<ExtractPropTypes<typeof TableColumnProp>>;
 export default defineComponent({
   name: 'TableColumn',
   props: TableColumnProp,
-  setup(props: ITableColumn, {  }) {
+  setup(props: ITableColumn, {}) {
     const initTableColumns = inject(PROVIDE_KEY_INIT_COL, () => {});
     const lastPropsVal = {};
 
@@ -86,8 +86,8 @@ export default defineComponent({
         }
 
         return isEqual(sorce[key], target[key]);
-      })
-    }
+      });
+    };
 
     watch(
       () => [props],
@@ -111,13 +111,13 @@ export default defineComponent({
         row: {},
         column: {},
         $index: -1,
-      })
-      const children = [renderDefault]
+      });
+      const children = [renderDefault];
 
-      const vnode = h('div', children)
-      return vnode
+      const vnode = h('div', children);
+      return vnode;
     } catch {
-      return h('div', [])
+      return h('div', []);
     }
-  }
+  },
 });

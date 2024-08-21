@@ -357,9 +357,9 @@ const useRows = (props: TablePropTypes) => {
 
   const getCurrentPageRowsHeight = () => {
     return pageRowList.reduce((out, row) => {
-      return out + getRowHeight(row)
-    }, 0)
-  }
+      return out + getRowHeight(row);
+    }, 0);
+  };
 
   return {
     setRowIndex,
