@@ -32,12 +32,7 @@
 
 import { throttle } from 'lodash';
 
-export function getMatchedIndex(
-  maxCount: number,
-  maxHeight: number,
-  groupItemCount: number,
-  callback: (agrs: { index: number; items: number[]; type: string }) => 0,
-) {
+export function getMatchedIndex(maxCount: number, maxHeight: number, callback: (agrs: { index: number }) => 0) {
   let startIndex = 0;
   let height = 0;
   let diffHeight = 0;
@@ -45,8 +40,6 @@ export function getMatchedIndex(
   for (; startIndex < maxCount; startIndex++) {
     lastHeight = callback({
       index: startIndex,
-      items: [startIndex * groupItemCount, (startIndex + 1) * groupItemCount],
-      type: 'virtual',
     });
     if (height + lastHeight > maxHeight) {
       diffHeight = maxHeight - height;
@@ -81,10 +74,11 @@ export function computedVirtualIndex(lineHeight, callback, pagination, wrapper, 
   }
 
   if (typeof lineHeight === 'function') {
-    const startValue = getMatchedIndex(count, elScrollTop, groupItemCount, lineHeight);
+    const maxCount = Math.ceil(count / groupItemCount);
+    const startValue = getMatchedIndex(maxCount, elScrollTop, lineHeight);
     targetStartIndex = startValue.startIndex > 0 ? startValue.startIndex : 0;
     translateY = startValue.diffHeight;
-    const endValue = getMatchedIndex(count, elOffsetHeight, groupItemCount, lineHeight);
+    const endValue = getMatchedIndex(maxCount, elOffsetHeight, lineHeight);
     targetEndIndex = endValue.startIndex + targetStartIndex + 1;
   }
 

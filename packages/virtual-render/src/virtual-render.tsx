@@ -87,8 +87,30 @@ export default defineComponent({
       return rendAsTag;
     }
 
+    const getRowHeightArgs = startIndex => {
+      const start = startIndex * props.groupItemCount;
+      const end = (startIndex + 1) * props.groupItemCount;
+
+      return {
+        index: startIndex,
+        rows: props.list.slice(start, end),
+        items: [start, end],
+        type: 'virtual',
+      };
+    };
+
+    const getLineHeight = () => {
+      if (typeof props.lineHeight === 'function') {
+        return ({ index }) => {
+          return props.lineHeight(getRowHeightArgs(index));
+        };
+      }
+
+      return props.lineHeight;
+    };
+
     const binding = computed(() => ({
-      lineHeight: props.lineHeight,
+      lineHeight: getLineHeight(),
       handleScrollCallback,
       pagination,
       throttleDelay: props.throttleDelay,
@@ -127,16 +149,12 @@ export default defineComponent({
     const getLastPageIndex = () => {
       // @ts-ignore
       const elHeight = virtualRoot.value.offsetHeight;
-      let startIndex = listLength.value;
+      let startIndex = Math.ceil(listLength.value / props.groupItemCount);
       let rowsHeight = 0;
       let lastHeight = 0;
       let diffHeight = 0;
       for (; startIndex > 0; startIndex--) {
-        lastHeight = props.lineHeight({
-          index: startIndex,
-          items: [startIndex, startIndex * props.groupItemCount],
-          type: 'virtual',
-        });
+        lastHeight = props.lineHeight(getRowHeightArgs(startIndex));
 
         rowsHeight = rowsHeight + lastHeight;
 
@@ -216,14 +234,9 @@ export default defineComponent({
         if (typeof props.lineHeight === 'function') {
           innerHeight.value = 0;
           let fnValue = 0;
-          for (let i = 0; i < listLength.value; i++) {
-            const fnVal = props.lineHeight.apply(this, [
-              {
-                index: i,
-                type: 'virtual',
-                items: [i * props.groupItemCount, props.groupItemCount],
-              },
-            ]);
+          const rowsLength = Math.ceil(listLength.value / props.groupItemCount);
+          for (let i = 0; i < rowsLength; i++) {
+            const fnVal = props.lineHeight.apply(this, [getRowHeightArgs(i)]);
             fnValue += typeof fnVal === 'number' ? fnVal : 0;
           }
           innerHeight.value = fnValue;

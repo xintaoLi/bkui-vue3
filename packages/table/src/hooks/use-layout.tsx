@@ -243,8 +243,8 @@ export default (props: TablePropTypes, ctx) => {
     offsetRight.value = scrollWidth - offsetWidth - translateX?.value ?? 0;
   };
 
-  const setLineHeight = (val: number) => {
-    lineHeight.value = val;
+  const setLineHeight = (val: ((...args) => number) | number) => {
+    lineHeight.value = val as number;
   };
 
   const handleScrollChanged = (
@@ -294,7 +294,7 @@ export default (props: TablePropTypes, ctx) => {
   const fixedBottomRow = resolveClassName('table-fixed-bottom');
 
   const fixedBottomLoadingStyle = computed(() => ({
-    minHeight: `${lineHeight.value}px`,
+    minHeight: `${props.fixedBottom?.minHeight ?? LINE_HEIGHT}px`,
     position: props.fixedBottom?.position ?? 'absolute',
     height: props.fixedBottom?.height ?? null,
   }));
