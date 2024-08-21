@@ -208,6 +208,7 @@ export default defineComponent({
 
       nextTick(() => {
         setOffsetRight();
+        setRowsBodyHeight();
 
         if (scrollTo00.value) {
           scrollTo(0, 0);
@@ -245,6 +246,12 @@ export default defineComponent({
         observerResizing.value = false;
       });
     });
+
+    const setRowsBodyHeight = () => {
+      if (props.height === '100%') {
+        setBodyHeight(rows.getCurrentPageRowsHeight(), false);
+      }
+    }
 
     watch(
       () => [props.columns],
@@ -311,6 +318,11 @@ export default defineComponent({
       },
       { immediate: true },
     );
+
+    watch(() => [rows.pageRowList.length], () => {
+      scrollTo(undefined, 0);
+      refBody?.value?.updateScroll?.();
+    });
 
     ctx.expose({
       setRowExpand: rows.setRowExpand,
