@@ -55,6 +55,7 @@ export default (props: VirtualRenderProps) => {
     init,
     instance,
     scrollTo,
+    update: () => instance?.update(),
     updateScrollHeight,
   };
 };

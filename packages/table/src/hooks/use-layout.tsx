@@ -50,7 +50,7 @@ export default (props: TablePropTypes, ctx) => {
   const offsetRight = ref(0);
   const layout: { bottom?: number } = reactive({});
   const fixedColumns = reactive([]);
-  const lineHeight = ref(props.rowHeight ?? LINE_HEIGHT);
+  const lineHeight = ref(LINE_HEIGHT);
   const headerRowCount = ref(1);
 
   const fixedBottomHeight = computed(() => {

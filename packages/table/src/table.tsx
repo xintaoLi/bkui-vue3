@@ -179,6 +179,8 @@ export default defineComponent({
       }
     };
 
+    const scrollTo00 = ref(false);
+
     const setTableData = debounce((resetScroll = true) => {
       const filterOrderList = getFilterAndSortList();
       if (!props.remotePagination) {
@@ -187,12 +189,16 @@ export default defineComponent({
 
       const renderList = getRenderRowList(filterOrderList);
       rows.setPageRowList(renderList);
+      if (resetScroll) {
+        scrollTo00.value = true;
+      }
 
       nextTick(() => {
         setOffsetRight();
 
-        if (resetScroll) {
+        if (scrollTo00.value) {
           scrollTo(0, 0);
+          scrollTo00.value = false;
         }
       });
     }, 64);
@@ -253,9 +259,17 @@ export default defineComponent({
     );
 
     watch(
-      () => [columns.sortColumns, columns.filterColumns],
+      () => [columns.filterColumns],
       () => {
         setTableData();
+      },
+      { deep: true },
+    );
+
+    watch(
+      () => [columns.sortColumns],
+      () => {
+        setTableData(false);
       },
       { deep: true },
     );
@@ -280,7 +294,7 @@ export default defineComponent({
     watch(
       () => [pagination.options.count, pagination.options.limit, pagination.options.current],
       () => {
-        setTableData();
+        setTableData(false);
       },
       { immediate: true },
     );
