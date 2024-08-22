@@ -1,5 +1,7 @@
 <template>
-  <bk-button @click="clearSelection">取消全选</bk-button><bk-button @click="handleScrollTo">ScrollTo</bk-button>
+  <bk-button @click="clearSelection">取消全选</bk-button>
+  <bk-button @click="handleScrollTo">ScrollToLast</bk-button>
+  <bk-button @click="handleAppendToLastRow">追加一行</bk-button>
   <div style="display: grid">
     <div style="height: 300px">
       <bk-table
@@ -12,7 +14,6 @@
         :fixedBottom="fixedBottom"
         show-overflow-tooltip
         :pagination="pagination"
-        virtual-enabled
       >
         <bk-table-column
           type="selection"
@@ -32,7 +33,7 @@
         <bk-table-column
           label="有效期"
           prop="validityPeriod"
-          :filter="true"
+          :filter="filterOption"
         />
         <bk-table-column
           label="加入时间"
@@ -52,19 +53,39 @@
 <script setup>
   import { ref, reactive, onMounted, computed } from 'vue';
   const refTable = ref(null);
+
+  const handleScrollTo = () => {
+    refTable?.value.scrollTo(0, 1000);
+  };
+
   const pagination = ref({ count: 11, limit: 10, current: 1 });
   const clearSelection = () => {
     refTable.value.clearSelection();
   };
 
-  const filterList = reactive([{ text: '0505', value: '0505' }, { text: '0506', value: '0506' }, { text: '0605', value: '0605' }]);
+  const filterList = reactive([]);
   const filterOption = computed(() => ({
-    list: filterList
-  }))
+    list: filterList,
+    checked: [],
+  }));
 
-  const handleScrollTo = () => {
-    refTable.value.scrollTo(0, 0);
-  }
+  const lastRowIndex = ref(10);
+
+  const handleAppendToLastRow = () => {
+    lastRowIndex.value = lastRowIndex.value + 1;
+    projectTable.value.push({
+      groupId: lastRowIndex.value,
+      groupName: `last-group-${lastRowIndex.value}`,
+      groupDesc: `last-des-${lastRowIndex.value}`,
+      validityPeriod: `last-period-${lastRowIndex.value}`,
+      joinedTime: '08-18',
+      operateSource: `last-source-${lastRowIndex.value}`,
+      operator: `last-operator-${lastRowIndex.value}`,
+      removeMemberButtonControl: true,
+    });
+  };
+
+
   const fixedBottom = reactive({
     position: 'relative',
     height: 42,
@@ -184,6 +205,15 @@
           removeMemberButtonControl: false,
         },
       ];
+    });
+
+    setTimeout(() => {
+      filterList.push(
+        ...[
+          { text: '0506', value: '0506' },
+          { text: '0605', value: '0605' },
+        ],
+      );
     });
   });
 </script>

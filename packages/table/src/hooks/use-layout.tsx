@@ -213,9 +213,13 @@ export default (props: TablePropTypes, ctx) => {
     return null;
   });
 
+  const getBodyHeight = (height) => {
+    return height - headHeight.value - fixedBottomHeight.value - footHeight.value;
+  }
+
   const setBodyHeight = (height: number, withHeadFoot = true) => {
     if (withHeadFoot) {
-      bodyHeight.value = height - headHeight.value - fixedBottomHeight.value - footHeight.value;
+      bodyHeight.value = getBodyHeight(height);
       return;
     }
 
@@ -381,6 +385,7 @@ export default (props: TablePropTypes, ctx) => {
     renderBody,
     renderFooter,
     renderFixedBottom,
+    getBodyHeight,
     setBodyHeight,
     setVirtualBodyHeight,
     setFootHeight,

@@ -64,6 +64,7 @@ export default defineComponent({
       setOffsetRight,
       setHeaderRowCount,
       setLineHeight,
+      getBodyHeight,
       refBody,
       refRoot,
     } = useLayout(props, ctx);
@@ -248,8 +249,17 @@ export default defineComponent({
     });
 
     const setRowsBodyHeight = () => {
-      if (props.height === '100%') {
-        setBodyHeight(rows.getCurrentPageRowsHeight(), false);
+      if (props.height === '100%' || props.height === 'auto') {
+        const rowsHeight = rows.getCurrentPageRowsHeight();
+        let bodyHeight = rowsHeight;
+        if (/^\d+\.?\d*(px)?$/.test(`${props.maxHeight}`)) {
+          const maxHeight = getBodyHeight(Number(`${props.maxHeight}`.replace('px', '')));
+          if (bodyHeight > maxHeight) {
+            setBodyHeight(maxHeight, false);
+            return;
+          }
+        }
+        setBodyHeight(bodyHeight, false);
       }
     };
 
@@ -319,11 +329,14 @@ export default defineComponent({
       { immediate: true },
     );
 
-    watch(
-      () => [rows.pageRowList.length],
-      () => {
-        scrollTo(undefined, 0);
-        refBody?.value?.updateScroll?.();
+    const pageListLength = computed(() => rows.pageRowList.length);
+
+    watch(pageListLength,
+      (val, old) => {
+        if (val < old) {
+          refBody?.value?.updateScroll?.();
+          scrollTo(undefined, 0);
+        }
       },
     );
 
