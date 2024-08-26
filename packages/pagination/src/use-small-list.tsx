@@ -168,7 +168,7 @@ export default () => {
    *  @param { boolean } isShow
    */
   const handlePopShow = (isShow: boolean) => {
-    isPopoverShow.value = isShow
+    isPopoverShow.value = isShow;
   };
 
   const { resolveClassName } = usePrefix();

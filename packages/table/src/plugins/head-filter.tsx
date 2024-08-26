@@ -115,8 +115,8 @@ export default defineComponent({
     const maxLength = 5;
     const maxHeight = computed(() => (filter.value as IFilterShape)?.maxHeight ?? ROW_HEIGHT * maxLength);
     const height = computed(() => {
-      const { height, list = [] } = filter.value as IFilterShape
-      return height || list.length * ROW_HEIGHT
+      const { height, list = [] } = filter.value as IFilterShape;
+      return height || list.length * ROW_HEIGHT;
     });
     const minHeight = computed(() => {
       const defaultMin = ROW_HEIGHT * 2;

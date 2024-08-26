@@ -47,7 +47,7 @@ export default defineComponent({
   props: tagProps(),
   emits: ['update:modelValue', 'change', 'select', 'focus', 'blur', 'remove', 'removeAll', 'input'],
   setup(props, { emit }) {
-    let chineseInputTemporaryValue = ''
+    let chineseInputTemporaryValue = '';
     const formItem = useFormItem();
     const t = useLocale('tagInput');
     const state = reactive({

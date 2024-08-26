@@ -204,7 +204,7 @@ export default defineComponent({
         if (!isElHidden) {
           inputRef.value?.style?.setProperty('height', `${parentRef.value?.offsetHeight}px`);
           textareaCalcStyle.value = Object.assign(textareaCalcStyle.value, {
-            height: `${parentRef.value?.offsetHeight}px`
+            height: `${parentRef.value?.offsetHeight}px`,
           });
           if (parentRef.value?.offsetWidth > parentRef.value?.parentNode?.offsetWidth) {
             parentRef.value?.style?.setProperty('width', `${parentRef.value?.parentNode?.offsetWidth}px`);
@@ -337,7 +337,7 @@ export default defineComponent({
         innerInputValue.value = {
           value: val,
         };
-        nextTick( () => {
+        nextTick(() => {
           resizeTextarea();
           onDragSizeTextarea();
         });
@@ -388,7 +388,7 @@ export default defineComponent({
       ctx.emit(EVENTS.CLEAR);
     }
 
-    function handleFocus(e:FocusEvent) {
+    function handleFocus(e: FocusEvent) {
       isFocused.value = true;
       ctx.emit(EVENTS.FOCUS, e);
     }

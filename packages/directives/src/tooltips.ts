@@ -52,10 +52,10 @@ const tooltips: ObjectDirective = {
     const { trigger, showOnInit } = opts;
     const popper = renderContent(opts);
     let delayTimeout = null;
-    if(showOnInit) {
+    if (showOnInit) {
       nextTick(() => {
         show(el);
-      })
+      });
     }
     if (trigger === 'hover') {
       let hideTimeout = null;

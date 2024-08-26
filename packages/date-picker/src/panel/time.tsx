@@ -159,11 +159,11 @@ export default defineComponent({
         newVal = new Date(newVal);
         state.date = newVal;
         parentProvide.panelDate = newVal;
-        visibleDate.value = fecha.format(parentProvide.panelDate, props.format)
+        visibleDate.value = fecha.format(parentProvide.panelDate, props.format);
       },
       {
-        immediate: true
-      }
+        immediate: true,
+      },
     );
 
     onMounted(() => {
