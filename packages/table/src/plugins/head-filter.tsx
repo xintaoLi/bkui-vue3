@@ -107,14 +107,17 @@ export default defineComponent({
       const { list = [] } = filter.value as IFilterShape;
       const filterList = list.filter(l => {
         const reg = getRegExp(searchValue.value);
-        return reg.test(l.label) || reg.test(l.value);
+        return reg.test(l.label) || reg.test(l.text) || reg.test(l.value);
       });
       return filterList;
     });
 
     const maxLength = 5;
     const maxHeight = computed(() => (filter.value as IFilterShape)?.maxHeight ?? ROW_HEIGHT * maxLength);
-    const height = computed(() => (filter.value as IFilterShape)?.height || '100%');
+    const height = computed(() => {
+      const { height, list = [] } = filter.value as IFilterShape
+      return height || list.length * ROW_HEIGHT
+    });
     const minHeight = computed(() => {
       const defaultMin = ROW_HEIGHT * 2;
       if (localData.value.length > maxLength) {
