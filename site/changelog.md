@@ -1,6 +1,12 @@
 ## 更新日志
 
 
+### 2.0.1-beta.59
+
+* **[feat]**:
+    - bugfix(table): table问题合集
+
+
 ### 2.0.1-beta.58
 
 * **[feat]**:
