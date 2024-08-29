@@ -144,7 +144,8 @@ export type ISortShape = {
 export type ISortPropShape = ISortShape | boolean | string;
 
 export type IFilterShape = {
-  list: { label: string; value: string }[];
+  // 为了防止有的项目用到label字段，在之前结构上兼容新增text字段
+  list: { label: string; text?: string, value: string }[];
   filterFn?: (...args) => boolean;
   match?: FullEnum;
   checked?: string[];

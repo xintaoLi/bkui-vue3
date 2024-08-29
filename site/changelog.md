@@ -1,6 +1,21 @@
 ## 更新日志
 
 
+### 2.0.1-beta.58
+
+* **[feat]**:
+    - fix: timepicker组件使用键盘修改时间，视图层更改了，但是值没有变化([#1809](https://github.com/TencentBlueKing/bkui-vue3/issues/1809))
+    - fix:datePicker组件选中时间与控件展示时间不一致([#2086](https://github.com/TencentBlueKing/bkui-vue3/issues/2086))
+    - fix: 表格组件支持只显示表头区域的tooltips([#1833](https://github.com/TencentBlueKing/bkui-vue3/issues/1833))
+    - fix: 表格筛选少于限制最大个数时，高度没有自动撑开([#2082](https://github.com/TencentBlueKing/bkui-vue3/issues/2082))
+    - fix: 表头筛选组件label溢出时会导致checkbox宽度样式缩小
+    - fix: textarea模式拖动宽度可以超出父级且内部输入框高度没有自适应([#1983](https://github.com/TencentBlueKing/bkui-vue3/issues/1983))
+    - fix:小型分页下拉菜单点击不消失([#2090](https://github.com/TencentBlueKing/bkui-vue3/issues/2090))
+    - fix: tooltip组件showOnInit配置项失效且会造成函数循环引用([#1523](https://github.com/TencentBlueKing/bkui-vue3/issues/1523))
+    - feature: table组件表头筛选组件的筛选逻辑([#2048](https://github.com/TencentBlueKing/bkui-vue3/issues/2048))
+    - feature: 编写限制文件类型上传demo([#1886](https://github.com/TencentBlueKing/bkui-vue3/issues/1886))
+
+
 ### 2.0.1-beta.57
 
 * **[feat]**:
