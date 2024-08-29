@@ -238,7 +238,7 @@ const useRows = (props: TablePropTypes) => {
     tableRowList.value.forEach(row => setRowAttribute(row, TABLE_ROW_ATTRIBUTE.ROW_HEIGHT, height));
   };
 
-  const getRowHeight = (row?, index?, type?) => {
+  const getRowHeight = (row?, index?, type?): number => {
     if (row) {
       return getRowAttribute(row, TABLE_ROW_ATTRIBUTE.ROW_HEIGHT);
     }
@@ -355,6 +355,12 @@ const useRows = (props: TablePropTypes) => {
     formatDataSchema();
   };
 
+  const getCurrentPageRowsHeight = () => {
+    return pageRowList.reduce((out, row) => {
+      return out + getRowHeight(row);
+    }, 0);
+  };
+
   return {
     setRowIndex,
     setRowExpand,
@@ -373,6 +379,7 @@ const useRows = (props: TablePropTypes) => {
     getRowSelection,
     getRowIndeterminate,
     getRowCheckedAllValue,
+    getCurrentPageRowsHeight,
     changePageRowIndex,
     toggleAllSelection,
     getRowHeight,

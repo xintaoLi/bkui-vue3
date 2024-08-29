@@ -64,6 +64,7 @@ export default defineComponent({
       setOffsetRight,
       setHeaderRowCount,
       setLineHeight,
+      getBodyHeight,
       refBody,
       refRoot,
     } = useLayout(props, ctx);
@@ -192,6 +193,8 @@ export default defineComponent({
       }
     };
 
+    const scrollTo00 = ref(false);
+
     const setTableData = debounce((resetScroll = true) => {
       const filterOrderList = getFilterAndSortList();
       if (!props.remotePagination) {
@@ -200,12 +203,17 @@ export default defineComponent({
 
       const renderList = getRenderRowList(filterOrderList);
       rows.setPageRowList(renderList);
+      if (resetScroll) {
+        scrollTo00.value = true;
+      }
 
       nextTick(() => {
         setOffsetRight();
+        setRowsBodyHeight();
 
-        if (resetScroll) {
+        if (scrollTo00.value) {
           scrollTo(0, 0);
+          scrollTo00.value = false;
         }
       });
     }, 64);
@@ -240,6 +248,21 @@ export default defineComponent({
       });
     });
 
+    const setRowsBodyHeight = () => {
+      if (props.height === '100%' || props.height === 'auto') {
+        const rowsHeight = rows.getCurrentPageRowsHeight();
+        let bodyHeight = rowsHeight;
+        if (/^\d+\.?\d*(px)?$/.test(`${props.maxHeight}`)) {
+          const maxHeight = getBodyHeight(Number(`${props.maxHeight}`.replace('px', '')));
+          if (bodyHeight > maxHeight) {
+            setBodyHeight(maxHeight, false);
+            return;
+          }
+        }
+        setBodyHeight(bodyHeight, false);
+      }
+    };
+
     watch(
       () => [props.columns],
       () => {
@@ -266,9 +289,17 @@ export default defineComponent({
     );
 
     watch(
-      () => [columns.sortColumns, columns.filterColumns],
+      () => [columns.filterColumns],
       () => {
         setTableData();
+      },
+      { deep: true },
+    );
+
+    watch(
+      () => [columns.sortColumns],
+      () => {
+        setTableData(false);
       },
       { deep: true },
     );
@@ -293,9 +324,20 @@ export default defineComponent({
     watch(
       () => [pagination.options.count, pagination.options.limit, pagination.options.current],
       () => {
-        setTableData();
+        setTableData(false);
       },
       { immediate: true },
+    );
+
+    const pageListLength = computed(() => rows.pageRowList.length);
+
+    watch(pageListLength,
+      (val, old) => {
+        if (val < old) {
+          refBody?.value?.updateScroll?.();
+          scrollTo(undefined, 0);
+        }
+      },
     );
 
     ctx.expose({

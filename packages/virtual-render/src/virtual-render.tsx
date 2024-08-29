@@ -87,12 +87,30 @@ export default defineComponent({
       return rendAsTag;
     }
 
+    const refRoot = ref(null);
+
+    /** 如果有分组状态，计算总行数 */
+    const listLength = ref(0);
+
+    /** 实际高度，根据行高和总行数计算出来的实际高度 */
+    const innerHeight = ref(0);
+
+    const contentHeight = ref(0);
+
+    const virtualRoot: Ref<VirtualElement> = ref(null);
+
     const getRowHeightArgs = startIndex => {
-      const start = startIndex * props.groupItemCount;
-      const end = (startIndex + 1) * props.groupItemCount;
+      let start = startIndex * props.groupItemCount;
+      let end = (startIndex + 1) * props.groupItemCount;
+
+      if (end > listLength.value) {
+        const count = end - start;
+        end = listLength.value;
+        start = end - count;
+      }
 
       return {
-        index: startIndex,
+        index: start,
         rows: props.list.slice(start, end),
         items: [start, end],
         type: 'virtual',
@@ -117,19 +135,7 @@ export default defineComponent({
       scrollbar: props.scrollbar,
     }));
 
-    const refRoot = ref(null);
-
-    /** 如果有分组状态，计算总行数 */
-    const listLength = ref(0);
-
-    /** 实际高度，根据行高和总行数计算出来的实际高度 */
-    const innerHeight = ref(0);
-
-    const contentHeight = ref(0);
-
-    const virtualRoot: Ref<VirtualElement> = ref(null);
-
-    const { init, scrollTo, updateScrollHeight } = useScrollbar(props);
+    const { init, scrollTo, updateScrollHeight, update } = useScrollbar(props);
 
     let instance = null;
     const pagination = reactive({
@@ -145,10 +151,17 @@ export default defineComponent({
     });
 
     const calcList = ref([]);
+    const getOffsetHeight = () => {
+      if (typeof props.height === 'number') {
+        return props.height;
+      }
+
+      // @ts-ignore
+      return virtualRoot.value.offsetHeight;
+    };
 
     const getLastPageIndex = () => {
-      // @ts-ignore
-      const elHeight = virtualRoot.value.offsetHeight;
+      const elHeight = getOffsetHeight();
       let startIndex = Math.ceil(listLength.value / props.groupItemCount);
       let rowsHeight = 0;
       let lastHeight = 0;
@@ -253,7 +266,9 @@ export default defineComponent({
     /** 列表数据重置之后的处理事项 */
     const afterListDataReset = (_scrollToOpt = { left: 0, top: 0 }) => {
       const el = refRoot.value as HTMLElement;
-      computedVirtualIndex(props.lineHeight, handleScrollCallback, pagination, el, { target: el });
+      const container =
+        typeof props.height === 'number' ? { scrollHeight: innerHeight.value, offsetHeight: props.height } : el;
+      computedVirtualIndex(props.lineHeight, handleScrollCallback, pagination, container, { target: el });
     };
 
     /** 映射传入的数组为新的数组，增加 $index属性，用来处理唯一Index */
@@ -308,22 +323,41 @@ export default defineComponent({
 
     const { fixToTop } = useFixTop(props, scrollTo);
 
-    watch(
-      () => [props.list],
-      () => {
-        instance?.setBinding(binding);
-        handleChangeListConfig();
-        updateScrollHeight(contentHeight.value);
-        afterListDataReset();
-        nextTick(() => {
-          instance?.executeThrottledRender.call(instance, {
-            offset: { x: pagination.scrollLeft, y: pagination.scrollTop },
-          });
+    const setDelegateEl = () => {
+      const el = refRoot.value as HTMLElement;
+      const container =
+        typeof props.height === 'number' ? { scrollHeight: innerHeight.value, offsetHeight: props.height } : el;
+      instance?.setDelegateWrapper(container);
+    };
+
+    const updateVirtualInstance = () => {
+      instance?.setBinding(binding);
+      handleChangeListConfig();
+      updateScrollHeight(contentHeight.value);
+      setDelegateEl();
+      update();
+      afterListDataReset();
+      nextTick(() => {
+        instance?.executeThrottledRender.call(instance, {
+          offset: { x: pagination.scrollLeft, y: pagination.scrollTop },
         });
+      });
+    };
+
+    watch(
+      () => props.height,
+      () => {
+        updateVirtualInstance();
+      },
+    );
+
+    watch(
+      () => [props.list, props.list.length],
+      () => {
+        updateVirtualInstance();
       },
       {
         immediate: true,
-        deep: true,
       },
     );
 
@@ -331,6 +365,7 @@ export default defineComponent({
       reset,
       scrollTo,
       fixToTop,
+      updateScroll: update,
       refRoot,
       refContent: refRoot,
     });

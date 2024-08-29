@@ -60,8 +60,10 @@ export default defineComponent({
 
     const state = reactive({
       isOpen: false,
-      checked: checked.value,
+      checked: [],
     });
+
+    state.checked.push(...checked.value);
 
     watch(
       () => checked,
@@ -69,7 +71,6 @@ export default defineComponent({
         state.checked.length = 0;
         state.checked = [];
         state.checked.push(...checked.value);
-        // handleBtnSaveClick();
       },
       { deep: true },
     );

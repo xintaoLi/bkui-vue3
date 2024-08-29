@@ -102,11 +102,25 @@ export class VisibleRender {
   private binding;
   private wrapper;
   private delay;
+  private delegateWrapper;
   constructor(binding, el) {
     this.binding = binding;
     this.wrapper = el;
     const { throttleDelay } = binding.value;
     this.delay = throttleDelay;
+    this.delegateWrapper = undefined;
+  }
+
+  get scrollHeight() {
+    return this.delegateWrapper?.scrollHeight ?? this.wrapper?.scrollHeight;
+  }
+
+  get offsetHeight() {
+    return this.delegateWrapper?.offsetHeight ?? this.wrapper?.offsetHeight;
+  }
+
+  public setDelegateWrapper(el) {
+    this.delegateWrapper = el;
   }
 
   public render(e) {
@@ -114,7 +128,7 @@ export class VisibleRender {
     if (onlyScroll) {
       const elScrollTop = e.offset?.y;
       const elScrollLeft = e.offset?.x ?? 0;
-      const bottom = this.wrapper.scrollHeight - this.wrapper.offsetHeight - elScrollTop;
+      const bottom = this.scrollHeight - this.offsetHeight - elScrollTop;
       handleScrollCallback(e, null, null, elScrollTop, elScrollTop, elScrollLeft, {
         bottom: bottom >= 0 ? bottom : 0,
         scrollbar: e,
@@ -127,7 +141,7 @@ export class VisibleRender {
       lineHeight,
       handleScrollCallback,
       { scrollTop, startIndex, endIndex, groupItemCount, count, scrollLeft },
-      this.wrapper,
+      this.delegateWrapper ?? this.wrapper,
       e,
     );
   }
