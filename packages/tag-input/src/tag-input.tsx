@@ -584,7 +584,7 @@ export default defineComponent({
 
       // 中文拼音输入事件
       if (e.isComposing) {
-        return
+        return;
       }
 
       let target;
