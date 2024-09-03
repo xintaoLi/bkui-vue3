@@ -249,7 +249,7 @@ export default defineComponent({
     });
 
     const setRowsBodyHeight = () => {
-      if (props.height === '100%' || props.height === 'auto') {
+      if (props.virtualEnabled && (props.height === '100%' || props.height === 'auto')) {
         const rowsHeight = rows.getCurrentPageRowsHeight();
         let bodyHeight = rowsHeight;
         if (/^\d+\.?\d*(px)?$/.test(`${props.maxHeight}`)) {
