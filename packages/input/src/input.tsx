@@ -563,7 +563,8 @@ export default defineComponent({
             {...innerInputValue.value}
           />
         )}
-        {!isTextArea.value && props.clearable && !!props.modelValue && (
+        {/* {!isTextarea.value && props.clearable && !!props.modelValue && ( */}
+        {props.clearable && !!props.modelValue && (
           <span
             class={clearCls.value}
             onClick={clear}

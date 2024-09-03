@@ -262,6 +262,11 @@ export default ({ props, ctx, columns, rows, pagination }: RenderType) => {
     index: number,
     rows: Record<string, object>[],
   ) => {
+    const tagName = (e.target as HTMLElement)?.tagName;
+    // span标签中嵌套了input标签产生冒泡，会先后都触发一次click事件, 所以会调用两遍
+    if (tagName === 'INPUT') {
+      return;
+    }
     ctx.emit(EMIT_EVENTS.ROW_CLICK, e, row, index, rows);
   };
 

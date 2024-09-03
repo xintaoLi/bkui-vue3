@@ -1,5 +1,32 @@
 ## 更新日志
 
+### 2.0.1-beta.62
+
+* **[feat]**:
+    - bugfix(select): select组件同时出现无数据与option
+    - feature: tab组件支持配置数字和数字样式类型([#1811](https://github.com/TencentBlueKing/bkui-vue3/issues/1811))
+    - feature: input 组组件 textarea 模式下，支持 clearable([#1456](https://github.com/TencentBlueKing/bkui-vue3/issues/1456))
+    - fix: 点击行内radio或者checkbox组件时row-click事件会触发两次([#2104](https://github.com/TencentBlueKing/bkui-vue3/issues/2104))
+    - fix: 下拉菜单靠近底部区域hover出来一下会消失([#1964](https://github.com/TencentBlueKing/bkui-vue3/issues/1964))
+
+
+### 2.0.1-beta.61
+
+* **[feat]**:
+    - fix: 修复 taginput 中文输入退格删除 tag 问题
+
+
+### 2.0.1-beta.60
+
+* **[feat]**:
+    - form-item, tag-input 小问题修复
+
+
+### 2.0.1-beta.59
+
+* **[feat]**:
+    - bugfix(table): table问题合集
+
 
 ### 2.0.1-beta.58
 

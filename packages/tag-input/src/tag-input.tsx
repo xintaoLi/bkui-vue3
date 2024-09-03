@@ -47,7 +47,6 @@ export default defineComponent({
   props: tagProps(),
   emits: ['update:modelValue', 'change', 'select', 'focus', 'blur', 'remove', 'removeAll', 'input'],
   setup(props, { emit }) {
-    let chineseInputTemporaryValue = '';
     const formItem = useFormItem();
     const t = useLocale('tagInput');
     const state = reactive({
@@ -398,7 +397,6 @@ export default defineComponent({
       const { maxData, trigger, allowCreate } = props;
       if (maxData === -1 || maxData > tagList.value.length) {
         const { value } = e?.target ? (e.target as HTMLInputElement) : curInputValue;
-        chineseInputTemporaryValue = value;
         const charLen = getCharLength(value);
 
         if (charLen) {
@@ -442,8 +440,6 @@ export default defineComponent({
             // 如果是单选，且input不为空，即保留了上次的结果则恢复
             if (inputValue === oldValue && listState.selectedTagListCache.length) {
               addTag(listState.selectedTagListCache[0], 'select');
-            } else {
-              handleChange('remove');
             }
           }
           // 如果匹配，则自动选则
@@ -586,6 +582,11 @@ export default defineComponent({
         return;
       }
 
+      // 中文拼音输入事件
+      if (e.isComposing) {
+        return;
+      }
+
       let target;
       const val = (e.target as HTMLInputElement).value;
       const valLen = getCharLength(val);
@@ -656,7 +657,7 @@ export default defineComponent({
           e.preventDefault();
           break;
         case 'Backspace':
-          if (tagInputItemIndex !== 0 && !curInputValue.value && !chineseInputTemporaryValue) {
+          if (tagInputItemIndex !== 0 && !curInputValue.value) {
             target = listState.selectedTagList[tagInputItemIndex - 1];
             backspaceHandler(tagInputItemIndex, target);
           }
