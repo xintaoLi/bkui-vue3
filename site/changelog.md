@@ -1,5 +1,16 @@
 ## 更新日志
 
+
+### 2.0.1-beta.64
+
+* **[fix]**:
+    - fix: 下拉菜单靠近底部区域hover出来一下会消失([#1964](https://github.com/TencentBlueKing/bkui-vue3/issues/1964))
+    - fix: select组件支持自定义创建时失焦会清空文本框的值且匹配tag后文本框输入的值也没有清空([#2095](https://github.com/TencentBlueKing/bkui-vue3/issues/2095))
+    - fix: dialog组件设置transfer属性失效([#1673](https://github.com/TencentBlueKing/bkui-vue3/issues/1673))
+    - fix: tagInput组件输入文本内容时空白区域较大([#2118](https://github.com/TencentBlueKing/bkui-vue3/issues/2118))
+    - fix: 修复textarea组件自适应高度autosize异常 ([#2122](https://github.com/TencentBlueKing/bkui-vue3/issues/2122))
+
+
 ### 2.0.1-beta.63
 
 * **[fix]**:
