@@ -1,6 +1,12 @@
 ## 更新日志
 
 
+### 2.0.1-beta.66
+
+* **[feat]**:
+    - feat(table): 导出 setRowSelection 方法
+
+
 ### 2.0.1-beta.65
 
 * **[feat]**:
