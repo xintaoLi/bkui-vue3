@@ -1,6 +1,13 @@
 ## 更新日志
 
 
+### 2.0.1-beta.65
+
+* **[feat]**:
+    - feat(release-note): 增加版本日志组件文档页面
+    - fix: resizeLayout组件initialDivide 和 min同时配置时，min优先级较低问题([#1804](https://github.com/TencentBlueKing/bkui-vue3/issues/1804))
+
+
 ### 2.0.1-beta.64
 
 * **[fix]**:
