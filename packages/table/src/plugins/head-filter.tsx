@@ -74,10 +74,10 @@ export default defineComponent({
 
     watch(
       () => checked,
-      () => {
+      payload => {
         state.checked.length = 0;
         state.checked = [];
-        state.checked.push(...checked.value);
+        state.checked.push(...payload.value);
       },
       { deep: true },
     );
@@ -267,7 +267,7 @@ export default defineComponent({
       );
     };
 
-    const handleValueChange = (val, item) => {
+    const handleValueChange = (val: boolean, item: Record<string, string>) => {
       const setValue = new Set(state.checked);
       if (val) {
         setValue.add(item.value);
@@ -277,6 +277,7 @@ export default defineComponent({
 
       state.checked.length = 0;
       state.checked.push(...Array.from(setValue));
+      (filter.value as { checked?: string[] }).checked = [...state.checked];
       handleFilterChange();
     };
 
