@@ -1,6 +1,12 @@
 ## 更新日志
 
 
+### 2.0.1-beta.70
+
+* **[feat]**:
+    - feature: colorPicker支持初始化默认展开popover
+
+
 ### 2.0.1-beta.69
 
 * **[feat]**:
