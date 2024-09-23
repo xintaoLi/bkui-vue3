@@ -31,7 +31,15 @@ import Popover from '@bkui-vue/popover';
 import { debounce, random } from '@bkui-vue/shared';
 
 import SearchSelectMenu from './menu';
-import { useSearchSelectInject, ValueSplitRegex, ValueSplitTestRegex } from './utils';
+import {
+  useSearchSelectInject,
+  ValueSplitRegex,
+  ValueSplitTestRegex,
+  SearchInputMode,
+  SearchLogical,
+  ValueBehavior,
+  SelectedItem,
+} from './utils';
 
 import type {
   GetMenuListFunc,
@@ -39,12 +47,8 @@ import type {
   IMenuFooterItem,
   ISearchItem,
   MenuSlotParams,
-  SearchInputMode,
   SearchItemType,
-  SearchLogical,
-  SelectedItem,
   ValidateValuesFunc,
-  ValueBehavior,
 } from './utils';
 import type { PropType, Ref, SlotsType } from 'vue';
 export default defineComponent({
