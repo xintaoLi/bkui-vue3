@@ -1,6 +1,45 @@
 ## 更新日志
 
 
+### 2.0.1-beta.71
+
+* **[feat]**:
+    - feat(search-select): 更新resize-detector依赖
+
+
+### 2.0.1-beta.70
+
+* **[feat]**:
+    - feature: colorPicker支持初始化默认展开popover
+
+
+### 2.0.1-beta.69
+
+* **[feat]**:
+    - fix: 修复upload组件下error事件的message提示object问题
+
+
+### 2.0.1-beta.68
+
+* **[feat]**:
+    - bugfix(select): 修复select tag key没有设置问题
+    - fix: searchSelect组件设置maxHeight不生效
+
+
+### 2.0.1-beta.67
+
+* **[feat]**:
+    - fix(input): 自适应高度 autosize 异常
+    - bugfix(table): 表头过滤弹窗期望默认支持 '超出...' 的规范
+    - feature(upload): 支持error事件的错误信息返回的是上传接口返回的message信息
+
+
+### 2.0.1-beta.66
+
+* **[feat]**:
+    - feat(table): 导出 setRowSelection 方法
+
+
 ### 2.0.1-beta.65
 
 * **[feat]**:
