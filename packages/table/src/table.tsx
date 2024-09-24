@@ -224,7 +224,7 @@ export default defineComponent({
     useObserverResize(refRoot, () => {
       if (!observerResizing.value) {
         observerResizing.value = true;
-        if ((props.height === '100%' || props.virtualEnabled) && isElement(refRoot.value)) {
+        if (props.virtualEnabled && isElement(refRoot.value)) {
           if (isResizeBodyHeight.value) {
             setTimeout(() => {
               isResizeBodyHeight.value = false;
@@ -249,7 +249,7 @@ export default defineComponent({
     });
 
     const setRowsBodyHeight = () => {
-      if (props.virtualEnabled && (props.height === '100%' || props.height === 'auto')) {
+      if (props.virtualEnabled) {
         const rowsHeight = rows.getCurrentPageRowsHeight();
         let bodyHeight = rowsHeight;
         if (/^\d+\.?\d*(px)?$/.test(`${props.maxHeight}`)) {

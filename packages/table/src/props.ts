@@ -685,7 +685,7 @@ export const tableProps = {
   /**
    * 启用Scrollbar
    */
-  scrollbar: PropTypes.bool.def(true),
+  scrollbar: PropTypes.bool.def(false),
 
   // scrollbehavior: toType<`${ScrollBehavior}`>('ScrollBehavior', {
 
