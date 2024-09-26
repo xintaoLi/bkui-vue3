@@ -92,7 +92,7 @@ const dialogPropsJson: IPropsTableItem[] = [
     type: 'Boolean | String',
     default: 'true',
     desc: '控制弹框是否出现在 body 内',
-    optional: [],
+    optional: ['false', 'true', 'DOM 选择器'],
   },
   {
     name: 'fullscreen',

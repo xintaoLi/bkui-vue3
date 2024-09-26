@@ -207,7 +207,7 @@ export default defineComponent({
       return (
         <Teleport
           disabled={!props.transfer}
-          to='body'
+          to={typeof props.transfer === 'string' && Boolean(props.transfer) ? props.transfer : 'body'}
         >
           <div
             ref={rootRef}

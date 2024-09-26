@@ -92,7 +92,7 @@ const SideSliserPropsJson: IPropsTableItem[] = [
     type: 'Boolean',
     default: 'false',
     desc: '控制 sidslider 是否出现在 body 内',
-    optional: ['false', 'true'],
+    optional: ['false', 'true', 'DOM 选择器'],
   },
   {
     name: 'zIndex',
