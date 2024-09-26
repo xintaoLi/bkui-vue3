@@ -151,10 +151,10 @@ const dialogPropsJson: IPropsTableItem[] = [
   },
   {
     name: 'render-directive',
-    type: '() => Promise<boolean> | boolean>',
-    default: 'is',
+    type: 'String',
+    default: 'if',
     desc: '弹框的渲染方式',
-    optional: ['v-if', 'v-show'],
+    optional: ['if', 'show'],
   },
 
   // {

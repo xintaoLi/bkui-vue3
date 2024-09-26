@@ -108,6 +108,13 @@ const SideSliserPropsJson: IPropsTableItem[] = [
     desc: '内容区背景颜色',
   },
   {
+    name: 'render-directive',
+    type: 'String',
+    default: 'if',
+    desc: '弹框的渲染方式',
+    optional: ['if', 'show'],
+  },
+  {
     name: 'before-close',
     type: 'Function',
     default: '',
