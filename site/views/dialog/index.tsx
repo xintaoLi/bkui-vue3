@@ -89,7 +89,7 @@ const dialogPropsJson: IPropsTableItem[] = [
   },
   {
     name: 'transfer',
-    type: 'Boolean | String | HTMLElement',
+    type: 'Boolean | String',
     default: 'true',
     desc: '控制弹框是否出现在 body 内',
     optional: [],
