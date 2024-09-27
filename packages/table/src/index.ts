@@ -27,9 +27,9 @@ import { ExtractPropTypes } from 'vue';
 
 import { withInstallProps } from '@bkui-vue/shared';
 
-import Column from './components/table-column';
 import { tableProps } from './props';
 import Component from './table';
+import Column from './table-column';
 
 export type TableProps = Partial<ExtractPropTypes<typeof tableProps>>;
 

@@ -230,6 +230,8 @@ export type HeadRenderArgs = {
   column?: Column;
   index?: number;
   rows?: Record<string, unknown>[];
+  formatterParams?: unknown;
+  instance?: unknown;
 };
 
 export type RenderFunctionString = (args: HeadRenderArgs) => JSX.Element | boolean | number | string;

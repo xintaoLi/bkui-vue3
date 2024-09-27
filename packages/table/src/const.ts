@@ -114,6 +114,8 @@ export const SCROLLY_WIDTH = 8;
  */
 export const LINE_HEIGHT = 42;
 
+export const ROW_HEIGHT = 42;
+
 export enum IHeadColor {
   DEF1 = 'def1',
   DEF2 = 'def2',

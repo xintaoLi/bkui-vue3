@@ -3272,6 +3272,11 @@
   resolved "https://mirrors.tencent.com/npm/@types/strip-json-comments/-/strip-json-comments-0.0.30.tgz#9aa30c04db212a9a0649d6ae6fd50accc40748a1"
   integrity sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==
 
+"@types/tabulator-tables@~6.2.3":
+  version "6.2.3"
+  resolved "https://mirrors.tencent.com/npm/@types/tabulator-tables/-/tabulator-tables-6.2.3.tgz#f9eecd5872ea1607bdb89c4907f8e514fbe586e4"
+  integrity sha512-ZeRF/WvtwFXml/4aT7kzfkHEiwbjHZdlIsjrgqcfdmpkl9GQ9XBHY6u9BblUaHX4NUiOlBeHrQKjvai6/bQH0g==
+
 "@types/through@*":
   version "0.0.33"
   resolved "https://mirrors.tencent.com/npm/@types/through/-/through-0.0.33.tgz#14ebf599320e1c7851e7d598149af183c6b9ea56"
@@ -11720,6 +11725,11 @@ table@^6.8.2:
     slice-ansi "^4.0.0"
     string-width "^4.2.3"
     strip-ansi "^6.0.1"
+
+tabulator-tables@~6.2.5:
+  version "6.2.5"
+  resolved "https://mirrors.tencent.com/npm/tabulator-tables/-/tabulator-tables-6.2.5.tgz#c3cd011c287b4e25143a3c62c912b835b8c0636a"
+  integrity sha512-f/TI78hV+GNoBefdqQ4q5RXbP+vJkvwSwt7sqeCTriAchNXax3ekcT1GG3i2J+8mhz6dHg0PFKyCYfmMW45HEg==
 
 tapable@^2.1.1, tapable@^2.2.0:
   version "2.2.1"

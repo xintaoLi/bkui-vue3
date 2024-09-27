@@ -171,7 +171,11 @@ export const DATA_COLUMNS = [
   {
     label: (column, index) => `状态-${index}-${column.field}`,
     field: 'status',
-    render: ({ row }) => `${row.status}-${row.priority}`,
+    render: ({ row }) => (
+      <span style='color: red;'>
+        ${row.status}-${row.priority}
+      </span>
+    ),
     sort: true,
   },
 ];
