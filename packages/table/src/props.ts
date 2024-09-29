@@ -27,6 +27,7 @@ import { ExtractPropTypes, VNode } from 'vue';
 import { string, toType } from 'vue-types';
 
 import { PropTypes } from '@bkui-vue/shared';
+import { type Options } from 'tabulator-tables'
 
 import {
   BORDER_OPTION,
@@ -176,7 +177,7 @@ export enum ResizerWay {
 
 export const IColumnType = toType<Column>('IColumnType', {
   default: {
-    width: '100%',
+    width: undefined,
     label: '',
   },
   type: [Object],
@@ -397,6 +398,12 @@ export const tableProps = {
    * Table 列渲染
    */
   columns: PropTypes.arrayOf(IColumnType).def([]),
+
+  /**
+   * 新增配置，可以覆盖 columns
+   * 详细配置项可以参考 https://tabulator.info/docs/6.2/columns
+   */
+  options: toType<Options>('bkTableOptions', {}).def(undefined),
 
   /**
    * 当前选中列

@@ -23,6 +23,62 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { defineComponent } from 'vue';
+import { isString } from 'lodash';
+import { computed, defineComponent, Fragment, getCurrentInstance, h, ref, onMounted } from 'vue';
 
-export default defineComponent({});
+export default defineComponent({
+  name: 'TableColumn',
+  setup(_props, { expose }) {
+    const instance = getCurrentInstance();
+    const columnConfig = ref({});
+    const colOwner = computed(() => {
+      let parent = instance.parent;
+      while (parent && !parent.tableId) {
+        parent = parent.parent;
+      }
+      return parent;
+    });
+
+    onMounted(() => {
+      // console.log('--on mounted', instance)
+    })
+
+    expose({
+      columnConfig,
+      colOwner,
+    });
+
+    return;
+  },
+  render() {
+    try {
+      const renderDefault = this.$slots.default?.({
+        row: {},
+        column: {},
+        $index: -1,
+      });
+      const children = [];
+      if (Array.isArray(renderDefault)) {
+        for (const childNode of renderDefault) {
+          if ((childNode.type as { name?: string })?.name === 'TableColumn' || childNode.shapeFlag & 2) {
+            children.push(childNode);
+          } else if (childNode.type === Fragment && Array.isArray(childNode.children)) {
+            childNode.children.forEach(vnode => {
+              // No rendering when vnode is dynamic slot or text
+              if (
+                (vnode as { patchFlag: number })?.patchFlag !== 1024 &&
+                !isString((vnode as { children: unknown })?.children)
+              ) {
+                children.push(vnode);
+              }
+            });
+          }
+        }
+      }
+      const vnode = h('div', children);
+      return vnode;
+    } catch {
+      return h('div', []);
+    }
+  },
+});

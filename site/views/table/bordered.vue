@@ -14,7 +14,15 @@
     </div>
 
   </div>
-  <bk-table :border="border" :columns="columns" :data="tableData" />
+  <bk-table :border="border" :columns="columns" :data="tableData" >
+    <bk-table-column>
+      <bk-table-column>
+        <template #default="{ row }">
+          {{ row.x }}
+        </template>
+      </bk-table-column>
+    </bk-table-column>
+  </bk-table>
 </template>
 
 <script>

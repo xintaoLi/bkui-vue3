@@ -49,6 +49,69 @@ export default (props: TablePropTypes) => {
     Object.assign(resolvedOptions, { data: getRawData(props.data ?? []) });
   };
 
+  const renderVnodeToCell = (vnode, cell, onRendered) => {
+    if (isVNode(vnode)) {
+      onRendered(() => {
+        render(vnode, cell.getElement());
+      });
+      return undefined;
+    }
+
+    return vnode;
+  };
+
+  const formatOptionColumns = () => {
+    return (
+      props.options.columns?.map(col => {
+        ['formatter', 'titleFormatter'].forEach(key => {
+          if (typeof col[key] === 'function') {
+            const fn = col[key];
+            col[key] = (cell, formatterParams, onRendered) => {
+              return renderVnodeToCell(fn(cell, formatterParams, onRendered), cell, onRendered);
+            };
+          }
+        });
+
+        return col;
+      }) ?? []
+    );
+  };
+
+  const vNodeFnKeyList = ['rowFormatter', 'rowFormatterPrint'];
+  const formatRowRender = () => {
+    return vNodeFnKeyList.reduce((out, key) => {
+      if (typeof props.options[key] === 'function') {
+        return Object.assign(out, {
+          [key]: row => {
+            return renderVnodeToCell(props.options[key](row), row, fn => fn());
+          },
+        });
+      }
+    }, {});
+  };
+
+  /**
+   * 格式化表格配置
+   */
+  const formatOptions = () => {
+    if (props.options) {
+      Object.assign(resolvedOptions, props.options, {
+        columns: formatOptionColumns(),
+        ...formatRowRender(),
+      });
+
+      return true;
+    }
+
+    return false;
+  };
+
+  /**
+   * 兼容旧版本cell-render
+   * @param column
+   * @param fn
+   * @returns
+   */
   const getCellRender = (column: Column, fn: (args: HeadRenderArgs) => unknown) => {
     return (cell, formatterParams, onRendered) => {
       const vnode = fn({
@@ -58,20 +121,21 @@ export default (props: TablePropTypes) => {
         formatterParams,
         instance: cell,
       });
-      if (isVNode(vnode)) {
-        onRendered(() => {
-          render(vnode, cell.getElement());
-        });
-        return undefined;
-      }
 
-      return vnode;
+      return renderVnodeToCell(vnode, cell, onRendered);
     };
   };
 
+  /**
+   * 映射旧版本设置到新的配置
+   */
   const getCellFormatter = (column: Column) => {
     if (typeof column.render === 'function') {
       return getCellRender(column, column.render);
+    }
+
+    if (column.type === 'index') {
+      return 'rownum';
     }
 
     return undefined;
@@ -81,6 +145,11 @@ export default (props: TablePropTypes) => {
     return args.find(arg => typeof arg === 'function') as (args: HeadRenderArgs) => unknown;
   };
 
+  /**
+   * 自定义表头
+   * @param column
+   * @returns
+   */
   const getTitleFormatter = (column: Column) => {
     const renderFn = getFn([column.label, column.renderHead, props.thead.cellFn]);
     if (typeof renderFn === 'function') {
@@ -90,18 +159,42 @@ export default (props: TablePropTypes) => {
     return undefined;
   };
 
+  const commonOptionFormat = (column: Column) => {
+    return ['width', 'minWidth', 'maxWidth', 'resizable', 'field'].reduce((output, key) => {
+      if (column[key] !== undefined) {
+        return Object.assign(output, { [key]: column[key] });
+      }
+
+      return output;
+    }, {});
+  };
+
+  const getFrozenFormat = (column: Column) => {
+    if (typeof column.fixed === 'string' || (typeof column.fixed === 'boolean' && column.fixed)) {
+      return { frozen: true };
+    }
+
+    return {};
+  };
+
   const resolveColumns = () => {
     Object.assign(resolvedOptions, {
       columns: getRawData(props.columns ?? []).map((column: Column) => {
         const formatter = getCellFormatter(column);
         const titleFormatter = getTitleFormatter(column);
+        const frozen = getFrozenFormat(column);
 
-        return { title: column.label, ...column, formatter, titleFormatter };
+        return { title: column.label, ...commonOptionFormat(column), ...frozen, formatter, titleFormatter };
       }),
     });
   };
 
   const getTableOption = () => {
+    // 如果启用了Options设置，则跳过其他配置
+    if (formatOptions()) {
+      return resolvedOptions;
+    }
+
     resolveLayout();
     resolveData();
     resolveColumns();

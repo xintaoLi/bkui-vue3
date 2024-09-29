@@ -28,14 +28,16 @@ import { defineComponent, onMounted, ref, watch } from 'vue';
 import useProps from './hooks/use-props';
 import useTabulator from './hooks/use-tabulator';
 import { tableProps } from './props';
+import { uniqueId } from 'lodash';
 
 export default defineComponent({
   name: 'Table',
   props: tableProps,
-  setup(props) {
+  setup(props, { slots, expose }) {
     const refTableRoot = ref(null);
     const { getTableOption } = useProps(props);
     const { createIntance, setData } = useTabulator();
+    const tableId = uniqueId('bk-table-');
 
     watch(
       () => props.data,
@@ -49,6 +51,10 @@ export default defineComponent({
       createIntance(refTableRoot.value, getTableOption());
     });
 
-    return () => <div ref={refTableRoot}></div>;
+    expose({
+      tableId,
+    });
+
+    return () => <div ref={refTableRoot}>{slots.default?.()}</div>;
   },
 });

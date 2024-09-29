@@ -15,6 +15,9 @@
         show-overflow-tooltip
         stripe
       >
+      <bk-column>
+
+      </bk-column>
       </bk-table>
     </div>
   </div>
