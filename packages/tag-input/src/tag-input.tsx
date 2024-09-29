@@ -77,6 +77,7 @@ export default defineComponent({
     const tagListRef = ref(null);
     const tagInputItemRef = ref(null);
     const selectorListRef = ref(null);
+    const inputValueRef = ref<HTMLElement>();
     const timer: Ref<ReturnType<typeof setTimeout>> = ref(null);
 
     // 是否展示tag close
@@ -401,12 +402,12 @@ export default defineComponent({
 
         if (charLen) {
           filterData(value);
-          // 如果按最小宽度计算，空白区域会比较大，这里先按一半宽度处理
-          tagInputRef.value.style.width = `${charLen * (INPUT_MIN_WIDTH / 2)}px`;
+          nextTick(() => {
+            tagInputRef.value.style.width = `${inputValueRef.value!.getBoundingClientRect().width}px`;
+          });
         } else {
           if (trigger === 'focus') {
             filterData();
-            tagInputRef.value.style.width = `${INPUT_MIN_WIDTH}px`;
           }
         }
       } else {
@@ -878,6 +879,7 @@ export default defineComponent({
       bkTagSelectorRef,
       tagListRef,
       tagInputItemRef,
+      inputValueRef,
       selectorListRef,
       triggerClass,
       overflowTagIndex,
@@ -957,6 +959,7 @@ export default defineComponent({
                       ref='tagInputRef'
                       class='tag-input'
                       v-model={this.curInputValue}
+                      spellcheck='false'
                       type='text'
                       onBlur={this.handleBlur}
                       onFocus={this.handleFocus}
@@ -975,6 +978,13 @@ export default defineComponent({
                       </div>
                     </li>
                   )}
+                  <div
+                    key='inputValuePlaceholder'
+                    ref='inputValueRef'
+                    style='position: absolute; white-space: nowrap; border-box; visibility: hidden; z-index: 1'
+                  >
+                    {this.curInputValue}
+                  </div>
                 </ul>
                 <p
                   class='placeholder'

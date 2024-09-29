@@ -224,12 +224,12 @@ export type LabelFunctionString =
   | string;
 export const LabelFunctionStringType = toType<LabelFunctionString>('LabelFunctionStringType', {});
 export type HeadRenderArgs = {
-  cell?: unknown;
-  data?: unknown;
-  row?: Record<string, unknown>;
+  cell?: any;
+  data?: any;
+  row?: Record<string, any>;
   column?: Column;
   index?: number;
-  rows?: Record<string, unknown>[];
+  rows?: Record<string, any>[];
 };
 
 export type RenderFunctionString = (args: HeadRenderArgs) => JSX.Element | boolean | number | string;
