@@ -63,7 +63,7 @@ export const useContentResize = (
     isContentScroll.value = windowInnerHeight < headerHeight + contentHeight + footerHeight + footerMarginTop;
     if (isContentScroll.value || props.fullscreen) {
       contentStyles.value = {
-        height: `${windowInnerHeight - headerHeight - footerHeight}px`,
+        height: `${windowInnerHeight - headerHeight - 48}px`,
         overflow: 'auto',
         'scrollbar-gutter': 'stable',
       };
