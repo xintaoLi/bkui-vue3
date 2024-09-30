@@ -247,20 +247,20 @@ export default defineComponent({
       //    */
       //   component: () => <event></event>,
       // },
-      // {
-      //   attrs: {
-      //     title: 'Pagination - Local',
-      //     subtitle: '分页配置',
-      //     desc: 'props: pagination',
-      //     componentName: 'table',
-      //     demoName: 'pagination',
-      //   },
-      //   /**
-      //    * Table
-      //    * @returns
-      //    */
-      //   component: () => <pagination></pagination>,
-      // },
+      {
+        attrs: {
+          title: 'Pagination - Local',
+          subtitle: '分页配置',
+          desc: 'props: pagination',
+          componentName: 'table',
+          demoName: 'pagination',
+        },
+        /**
+         * Table
+         * @returns
+         */
+        component: () => <pagination></pagination>,
+      },
       // {
       //   attrs: {
       //     title: 'Pagination - Remote',

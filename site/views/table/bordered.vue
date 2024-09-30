@@ -14,14 +14,14 @@
     </div>
 
   </div>
-  <bk-table :border="border" :columns="columns" :data="tableData" >
-    <bk-table-column>
+  <bk-table :border="border" :columns="columns" :data="tableData" :rowDraggable="true">
+    <!-- <bk-table-column>
       <bk-table-column>
         <template #default="{ row }">
           {{ row.x }}
         </template>
       </bk-table-column>
-    </bk-table-column>
+    </bk-table-column> -->
   </bk-table>
 </template>
 

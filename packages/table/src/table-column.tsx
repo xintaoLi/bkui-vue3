@@ -29,24 +29,24 @@ import { computed, defineComponent, Fragment, getCurrentInstance, h, ref, onMoun
 export default defineComponent({
   name: 'TableColumn',
   setup(_props, { expose }) {
-    const instance = getCurrentInstance();
-    const columnConfig = ref({});
-    const colOwner = computed(() => {
-      let parent = instance.parent;
-      while (parent && !parent.tableId) {
-        parent = parent.parent;
-      }
-      return parent;
-    });
+    // const instance = getCurrentInstance();
+    // const columnConfig = ref({});
+    // // const colOwner = computed(() => {
+    // //   let parent = instance.parent;
+    // //   while (parent && !parent.tableId) {
+    // //     parent = parent.parent;
+    // //   }
+    // //   return parent;
+    // // });
 
-    onMounted(() => {
-      // console.log('--on mounted', instance)
-    })
+    // onMounted(() => {
+    //   // console.log('--on mounted', instance)
+    // })
 
-    expose({
-      columnConfig,
-      colOwner,
-    });
+    // expose({
+    //   columnConfig,
+    //   // colOwner,
+    // });
 
     return;
   },

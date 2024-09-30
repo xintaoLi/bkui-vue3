@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%; height: 500px" v-if="isShow">
-    <bk-table ref="refTable" height="100%" :columns="columns" :data="tableData" :pagination="pagination"
+    <bk-table ref="refTable" :height="400" :columns="columns" :data="tableData" :pagination="pagination"
       empty-cell-text="--" :pagination-heihgt="60" show-overflow-tooltip shift-multi-checked
       @selection-change="handleSelectionChange" />
   </div>

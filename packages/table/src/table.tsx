@@ -27,16 +27,21 @@ import { defineComponent, onMounted, ref, watch } from 'vue';
 
 import useProps from './hooks/use-props';
 import useTabulator from './hooks/use-tabulator';
+import usePagination from './hooks/use-pagination';
 import { tableProps } from './props';
 import { uniqueId } from 'lodash';
 
 export default defineComponent({
   name: 'Table',
   props: tableProps,
-  setup(props, { slots, expose }) {
+  setup(props, { slots, expose, emit }) {
     const refTableRoot = ref(null);
-    const { getTableOption } = useProps(props);
-    const { createIntance, setData } = useTabulator();
+    const refTableFooter = ref(null);
+    const refHiddenTable = ref(null);
+
+    const { getTableOption, setFooterElement } = useProps(props);
+    const { createIntance, setData, getInstance } = useTabulator();
+    const { renderPagination } = usePagination(props, { emit, getInstance });
     const tableId = uniqueId('bk-table-');
 
     watch(
@@ -48,6 +53,7 @@ export default defineComponent({
     );
 
     onMounted(() => {
+      setFooterElement(refTableFooter.value);
       createIntance(refTableRoot.value, getTableOption());
     });
 
@@ -55,6 +61,12 @@ export default defineComponent({
       tableId,
     });
 
-    return () => <div ref={refTableRoot}>{slots.default?.()}</div>;
+    return () => (
+      <div>
+        <div ref={refHiddenTable}>{slots.default?.()}</div>
+        <div ref={refTableRoot}></div>
+        <div ref={refTableFooter} style="height: 42px;">{renderPagination()}</div>
+      </div>
+    );
   },
 });

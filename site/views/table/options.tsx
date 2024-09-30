@@ -104,9 +104,14 @@ export const DATA_TABLE = [
  */
 export const DATA_COLUMNS = [
   {
+    type: 'selection',
+    width: 40,
+    minWidth: 40,
+  },
+  {
     label: '序号',
     type: 'index',
-    width: 350,
+    width: 50,
     minWidth: 80,
     sort: true,
     fixed: true,

@@ -39,5 +39,7 @@ export default () => {
     instance?.replaceData(getRawData(data));
   };
 
-  return { createIntance, setData };
+  const getInstance = () => instance;
+
+  return { createIntance, setData, getInstance };
 };
