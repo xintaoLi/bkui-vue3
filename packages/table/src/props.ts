@@ -27,7 +27,7 @@ import { ExtractPropTypes, VNode } from 'vue';
 import { string, toType } from 'vue-types';
 
 import { PropTypes } from '@bkui-vue/shared';
-import { type Options } from 'tabulator-tables'
+import { CellComponent, type Options } from 'tabulator-tables';
 
 import {
   BORDER_OPTION,
@@ -232,10 +232,10 @@ export type HeadRenderArgs = {
   index?: number;
   rows?: Record<string, unknown>[];
   formatterParams?: unknown;
-  instance?: unknown;
+  instance?: CellComponent;
 };
 
-export type RenderFunctionString = (args: HeadRenderArgs) => JSX.Element | boolean | number | string;
+export type RenderFunctionString = (args: HeadRenderArgs) => HTMLElement | JSX.Element | boolean | number | string;
 export const RenderFunctionStringType = toType<RenderFunctionString>('RenderFunctionStringType', {});
 
 export type SpanFunctionString = (({ column, colIndex, row, rowIndex }) => number) | number;
@@ -286,6 +286,7 @@ export type Column = {
   label?: LabelFunctionString;
   field?: LabelFunctionString;
   render?: RenderFunctionString;
+  renderSpan?: unknown;
   disabled?: boolean;
   renderHead?: RenderFunctionString;
   width?: number | string;

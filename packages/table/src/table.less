@@ -1,2 +1,17 @@
 // @import "tabulator-tables/dist/css/tabulator.min.css";
-@import "tabulator-tables/dist/css/tabulator_semanticui.min.css";
+@import 'tabulator-tables/dist/css/tabulator_semanticui.min.css';
+@import '@bkui-vue/styles/themes/themes.less';
+
+.@{bk-prefix}-table {
+  .@{bk-prefix}-table-footer {
+    .@{bk-prefix}-pagination {
+      width: 100%;
+      height: var(--footer-height);
+      padding: 0 16px 0 22px;
+
+      .is-last {
+        margin-left: auto;
+      }
+    }
+  }
+}

@@ -25,13 +25,15 @@
  */
 
 import { computed, reactive, ref, toRaw, watch } from 'vue';
+
 import Pagination from '@bkui-vue/pagination';
-import { TablePropTypes } from '../props';
-import { EMIT_EVENTS } from '../events';
 import { TabulatorFull } from 'tabulator-tables';
+
+import { EMIT_EVENTS } from '../events';
+import { TablePropTypes } from '../props';
 const usePagination = (
   props: TablePropTypes,
-  { emit, getInstance }: { emit: (event: string, ...args: any[]) => void; getInstance: () => TabulatorFull | null },
+  { emit, getInstance }: { emit: (event: string, ...args: unknown[]) => void; getInstance: () => TabulatorFull | null },
 ) => {
   // 当前分页缓存，用于支持内置前端分页，用户无需接收change事件来自行处理数据分割
   const pagination = reactive({
@@ -123,12 +125,20 @@ const usePagination = (
     }
   };
 
+  const footHeight = computed(() => {
+    return isShowPagination.value ? props.paginationHeight : 0;
+  });
+
+  const footerStyle = computed(() => ({
+    '--footer-height': `${footHeight.value}px`,
+  }));
+
   const renderPagination = () => {
     if (isShowPagination.value) {
       return (
         <Pagination
-          style='width: 100%;'
           {...pagination}
+          style={footerStyle.value}
           modelValue={pagination.current}
           onChange={current => handlePageChange(current)}
           onLimitChange={limit => handlePageLimitChange(limit)}

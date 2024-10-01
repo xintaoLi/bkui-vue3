@@ -23,13 +23,13 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { createApp, isVNode } from 'vue';
+import { isVNode, render } from 'vue';
 
-import { SortDirection, type Options } from 'tabulator-tables';
+import { CellComponent, SortDirection, type Options } from 'tabulator-tables';
 
 import { ROW_HEIGHT, SORT_OPTION } from '../const';
 import { Column, HeadRenderArgs, TablePropTypes } from '../props';
-import { getRawData } from '../utils';
+import { getRawData, resolveCellSpan } from '../utils';
 
 const defaultOptions: Options = {
   layout: 'fitColumns',
@@ -51,25 +51,9 @@ export default (props: TablePropTypes) => {
     Object.assign(resolvedOptions, { data: getRawData(props.data ?? []) });
   };
 
-  // 延迟加载的 Vue 实例
-  let app = null;
-
-  function renderCell(vnode, targetElement) {
-    if (!app) {
-      // 创建 Vue 实例
-      app = createApp({
-        render() {
-          return vnode;
-        },
-      });
-
-      // 挂载 Vue 实例
-      app.mount(targetElement);
-    } else {
-      // 更新 Vue 实例的 vnode
-      app._instance.proxy.$forceUpdate();
-    }
-  }
+  const renderCell = (vnode, targetElement) => {
+    render(vnode, targetElement);
+  };
 
   const renderVnodeToCell = (vnode, cell, onRendered) => {
     if (isVNode(vnode)) {
@@ -80,6 +64,28 @@ export default (props: TablePropTypes) => {
     }
 
     return vnode;
+  };
+
+  // 自定义 formatter
+  const customCellSpanFormatter = (cell: CellComponent, column: Column, colIndex: number) => {
+    if (!cell) {
+      return;
+    }
+
+    const cellElement = cell?.getElement();
+    const { colspan, rowspan } = resolveCellSpan(column, colIndex, cell.getData?.());
+
+    if (colspan > 1) {
+      cellElement.setAttribute('colspan', `${colspan}`);
+      // cellElement.style.display = 'block';
+      // cellElement.style.width = `calc(${colspan * 100}% - 10px)`; // 调整宽度
+    }
+
+    if (rowspan > 1) {
+      cellElement.setAttribute('rowspan', `${rowspan}`);
+      // cellElement.style.display = 'block';
+      // cellElement.style.height = `calc(${rowspan * 100}% - 10px)`; // 调整高度
+    }
   };
 
   const formatOptionColumns = () => {
@@ -127,7 +133,7 @@ export default (props: TablePropTypes) => {
     }
   };
 
-  /****************************** Begin 旧版本Props配置项映射配置 ******************************/
+  /** **************************** Begin 旧版本Props配置项映射配置 ******************************/
   const resolveLayout = () => {
     Object.assign(resolvedOptions, {
       headerVisible: props.showHead,
@@ -160,6 +166,10 @@ export default (props: TablePropTypes) => {
    */
   const getCellRender = (column: Column, fn: (args: HeadRenderArgs) => unknown) => {
     return (cell, formatterParams, onRendered) => {
+      if (typeof column.renderSpan === 'function') {
+        column.renderSpan(cell);
+      }
+
       const vnode = fn({
         cell: cell.getValue(),
         column,
@@ -173,10 +183,23 @@ export default (props: TablePropTypes) => {
     };
   };
 
+  const resolveColumnSpan = (column: Column, index: number) => {
+    if (typeof column.rowspan !== undefined || typeof column.colspan !== undefined) {
+      column.renderSpan = cell => {
+        customCellSpanFormatter(cell, column, index);
+      };
+      if (column.render === undefined) {
+        column.render = ({ instance }) => instance.getValue();
+      }
+    }
+  };
+
   /**
    * 映射旧版本设置到新的配置
    */
-  const getCellFormatter = (column: Column) => {
+  const getCellFormatter = (column: Column, index: number) => {
+    resolveColumnSpan(column, index);
+
     if (typeof column.render === 'function') {
       return getCellRender(column, column.render);
     }
@@ -277,8 +300,8 @@ export default (props: TablePropTypes) => {
    */
   const resolveColumns = () => {
     const formatColumns = (cols: Column[]) =>
-      cols.map((column: Column) => {
-        const formatter = getCellFormatter(column);
+      cols.map((column: Column, index: number) => {
+        const formatter = getCellFormatter(column, index);
         const titleFormatter = getTitleFormatter(column);
         const frozen = getFrozenFormat(column);
         const visible = getVisibleFormat(column);
@@ -335,7 +358,7 @@ export default (props: TablePropTypes) => {
     });
   };
 
-  /*************************************** End 旧版本映射关系 ***************************************************/
+  /** ************************************* End 旧版本映射关系 ***************************************************/
 
   const getTableOption = () => {
     resolveData();

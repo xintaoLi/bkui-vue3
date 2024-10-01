@@ -25,11 +25,13 @@
  */
 import { defineComponent, onMounted, ref, watch } from 'vue';
 
+import { usePrefix } from '@bkui-vue/config-provider';
+import { uniqueId } from 'lodash';
+
+import usePagination from './hooks/use-pagination';
 import useProps from './hooks/use-props';
 import useTabulator from './hooks/use-tabulator';
-import usePagination from './hooks/use-pagination';
 import { tableProps } from './props';
-import { uniqueId } from 'lodash';
 
 export default defineComponent({
   name: 'Table',
@@ -39,9 +41,16 @@ export default defineComponent({
     const refTableFooter = ref(null);
     const refHiddenTable = ref(null);
 
+    const { resolveClassName } = usePrefix();
+
+    const wrapperClassName = resolveClassName('table');
+    const hiddenClassName = resolveClassName('table-hidden');
+    const footerClassName = resolveClassName('table-footer');
+
     const { getTableOption, setFooterElement } = useProps(props);
     const { createIntance, setData, getInstance } = useTabulator();
     const { renderPagination } = usePagination(props, { emit, getInstance });
+
     const tableId = uniqueId('bk-table-');
 
     watch(
@@ -62,10 +71,20 @@ export default defineComponent({
     });
 
     return () => (
-      <div>
-        <div ref={refHiddenTable}>{slots.default?.()}</div>
+      <div class={wrapperClassName}>
+        <div
+          ref={refHiddenTable}
+          class={hiddenClassName}
+        >
+          {slots.default?.()}
+        </div>
         <div ref={refTableRoot}></div>
-        <div ref={refTableFooter} style="height: 42px;">{renderPagination()}</div>
+        <div
+          ref={refTableFooter}
+          class={footerClassName}
+        >
+          {renderPagination()}
+        </div>
       </div>
     );
   },

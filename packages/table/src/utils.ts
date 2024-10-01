@@ -25,6 +25,8 @@
  */
 import { isReactive, isReadonly, isRef, toRaw, unref, toValue } from 'vue';
 
+import { Column } from './props';
+
 export const getRawData = data => {
   if (typeof toValue === 'function') {
     return toValue(data);
@@ -37,4 +39,27 @@ export const getRawData = data => {
   if (isRef(data)) {
     return unref(data);
   }
+};
+
+export const resolveColumnSpan = (
+  column: Column,
+  colIndex: number,
+  row: Record<string, unknown>,
+  key: string,
+): number => {
+  if (typeof column[key] === 'function') {
+    return Reflect.apply(column[key], this, [{ column, colIndex, row }]);
+  }
+
+  if (typeof column[key] === 'number') {
+    return column[key];
+  }
+
+  return 1;
+};
+
+export const resolveCellSpan = (column: Column, colIndex: number, row: Record<string, unknown>) => {
+  const colspan = resolveColumnSpan(column, colIndex, row, 'colspan');
+  const rowspan = resolveColumnSpan(column, colIndex, row, 'rowspan');
+  return { colspan, rowspan };
 };

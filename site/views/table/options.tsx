@@ -295,7 +295,7 @@ export const DATA_FIX_COLUMNS = [
     label: '序号',
     type: 'index',
     sort: true,
-    minWidth: 30,
+    width: 30,
     fixed: true,
   },
   {
@@ -339,7 +339,6 @@ export const DATA_FIX_COLUMNS = [
     render: ({ data }) => {
       return <bk-input v-model={data.status}></bk-input>;
     },
-    width: 180,
     // fixed: 'right',
   },
 ];
