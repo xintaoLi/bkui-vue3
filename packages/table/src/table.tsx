@@ -23,7 +23,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 
 import { usePrefix } from '@bkui-vue/config-provider';
 import { uniqueId } from 'lodash';
@@ -48,18 +48,10 @@ export default defineComponent({
     const footerClassName = resolveClassName('table-footer');
 
     const { getTableOption, setFooterElement } = useProps(props);
-    const { createIntance, setData, getInstance } = useTabulator();
+    const { createIntance, getInstance } = useTabulator(props);
     const { renderPagination } = usePagination(props, { emit, getInstance });
 
     const tableId = uniqueId('bk-table-');
-
-    watch(
-      () => props.data,
-      () => {
-        setData(props.data ?? []);
-      },
-      { deep: true },
-    );
 
     onMounted(() => {
       setFooterElement(refTableFooter.value);

@@ -203,20 +203,20 @@ export default defineComponent({
       //    */
       //   component: () => <CustomHead></CustomHead>,
       // },
-      // {
-      //   attrs: {
-      //     title: '启用虚拟滚动-渲染大数据表格',
-      //     subtitle: '大数据模式启用虚拟滚动',
-      //     desc: 'props: virtual-enabled',
-      //     componentName: 'table',
-      //     demoName: 'virtual-render',
-      //   },
-      //   /**
-      //    * Table
-      //    * @returns
-      //    */
-      //   component: () => <virtual-render></virtual-render>,
-      // },
+      {
+        attrs: {
+          title: '启用虚拟滚动-渲染大数据表格',
+          subtitle: '大数据模式启用虚拟滚动',
+          desc: 'props: virtual-enabled',
+          componentName: 'table',
+          demoName: 'virtual-render',
+        },
+        /**
+         * Table
+         * @returns
+         */
+        component: () => <virtual-render></virtual-render>,
+      },
       // {
       //   attrs: {
       //     title: '自定义Column渲染',
@@ -261,20 +261,20 @@ export default defineComponent({
          */
         component: () => <pagination></pagination>,
       },
-      {
-        attrs: {
-          title: 'Pagination - Remote',
-          subtitle: '分页配置: remote-pagination = true',
-          desc: 'props: pagination',
-          componentName: 'table',
-          demoName: 'remotePagination',
-        },
-        /**
-         * Table
-         * @returns
-         */
-        component: () => <RemotePagination></RemotePagination>,
-      },
+      // {
+      //   attrs: {
+      //     title: 'Pagination - Remote',
+      //     subtitle: '分页配置: remote-pagination = true',
+      //     desc: 'props: pagination',
+      //     componentName: 'table',
+      //     demoName: 'remotePagination',
+      //   },
+      //   /**
+      //    * Table
+      //    * @returns
+      //    */
+      //   component: () => <RemotePagination></RemotePagination>,
+      // },
       // {
       //   attrs: {
       //     title: 'Empty - 空数据提示',
@@ -429,20 +429,20 @@ export default defineComponent({
       //    */
       //   component: () => <Selection></Selection>,
       // },
-      {
-        attrs: {
-          title: '表格合并',
-          subtitle: 'colspan & rowspan',
-          desc: '',
-          componentName: 'table',
-          demoName: 'basic-span',
-        },
-        /**
-         * basicSort
-         * @returns
-         */
-        component: () => <BasicSpan></BasicSpan>,
-      },
+      // {
+      //   attrs: {
+      //     title: '表格合并',
+      //     subtitle: 'colspan & rowspan',
+      //     desc: '',
+      //     componentName: 'table',
+      //     demoName: 'basic-span',
+      //   },
+      //   /**
+      //    * basicSort
+      //    * @returns
+      //    */
+      //   component: () => <BasicSpan></BasicSpan>,
+      // },
     ];
 
     /**

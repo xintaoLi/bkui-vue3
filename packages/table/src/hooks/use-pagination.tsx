@@ -61,10 +61,12 @@ const usePagination = (
       pagination.current = 1;
     }
 
-    const instance = getInstance();
-    if (instance) {
-      instance.setPageSize(pagination.limit);
-      instance.setPage(pagination.current);
+    if (!props.remotePagination) {
+      const instance = getInstance();
+      if (instance) {
+        instance.setPageSize(pagination.limit);
+        instance.setPage(pagination.current);
+      }
     }
   };
 

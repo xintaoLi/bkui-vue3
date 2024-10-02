@@ -1,54 +1,52 @@
 <template>
-  <div>
-    <bk-table :columns="columns" :data="tableData" :pagination="pagination" border="horizontal" remote-pagination
-      @column-sort="handleColumnSort" @page-limit-change="handlePageLimitChange" maxHeight="400"
-      @page-value-change="handlePageValueChange" />
+  <div
+    style="width: 100%; height: 500px"
+    v-if="isShow"
+  >
+    <bk-table
+      ref="refTable"
+      :height="400"
+      :columns="columns"
+      :data="tableData"
+      :pagination="pagination"
+      empty-cell-text="--"
+      :pagination-heihgt="60"
+      remote-pagination
+    />
   </div>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
+<script setup>
+  import { reactive, ref } from 'vue';
 
-import { DATA_FIX_COLUMNS } from './options';
+  import { DATA_FIX_COLUMNS } from './options';
+  const appendColumns = new Array(20)
+    .fill('')
+    .map((item, index) => ({ label: `新增列${index}`, field: `new-${index}`, width: 50 }));
 
-export default defineComponent({
-  components: {},
-  data() {
-    return {
-      tableData: [],
-      columns: [...DATA_FIX_COLUMNS],
-      pagination: { count: 0, current: 1, limit: 50 },
-    };
-  },
-  mounted() {
-    this.setCurrentData();
-  },
-  methods: {
-    setCurrentData(current = 1) {
-      const start = (this.pagination.current - 1) * this.pagination.limit;
-      setTimeout(() => {
-        this.pagination.count = 100;
-        this.pagination.current = current;
-        this.tableData = new Array(this.pagination.limit).fill('').map((_, index) => ({
-          ip: `${start + index}--192.168.0.x`,
-          source: `${start + index}_QQ`,
-          status: '创建中',
-          create_time: `2018-05-25 15:02:24.${start + index}`,
-        }));
-      }, 100);
-    },
-    handlePageValueChange(value) {
-      this.pagination.current = value;
-      console.log('handlePageValueChange', value);
-      this.setCurrentData(value);
-    },
-    handlePageLimitChange(limit) {
-      this.pagination.limit = limit;
-      this.setCurrentData();
-    },
-    handleColumnSort(...args) {
-      console.log('sort', args);
-    },
-  },
-});
+  const tableData = reactive([]);
+
+  const isShow = ref(true);
+  const renderTable = () => {
+    isShow.value = !isShow.value;
+  };
+  const pagination = ref({ count: 100, limit: 20 });
+  const columns = reactive(DATA_FIX_COLUMNS.concat(appendColumns));
+  const refTable = ref(null);
+  const handleSelectionChange = args => {};
+  setTimeout(() => {
+    tableData.push(
+      ...new Array(100).fill('').map((_, index) => ({
+        ip: `${index}--192.168.0.x`,
+        source: index,
+        create_by: `user-admin-${index}`,
+        status: '',
+        create_time: `2018-05-25 15:02:24.${index}`,
+        ...appendColumns.reduce(
+          (acc, cur, curIndex) => ({ ...acc, [`new-${curIndex}`]: `随机数据-${curIndex}-${index}` }),
+          {},
+        ),
+      })),
+    );
+  }, 100);
 </script>

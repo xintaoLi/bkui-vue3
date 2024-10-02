@@ -36,25 +36,31 @@ export const DATA_TABLE = [
     percent: '15%',
     children: [
       {
-        ip: '192.168.0.2',
-        source: '微信',
-        status: '正常',
-        create_time: '2018-05-25 15:02:242',
-        selected: false,
-      },
-      {
-        ip: '192.168.0.3',
+        ip: '192.168.0.1-2018-05-25 15:02:241',
         source: 'QQ',
         status: '创建中',
-        create_time: '2018-05-25 15:02:243',
+        create_time: '2018-05-25 15:02:241',
         selected: false,
+        priority: 1,
+        percent: '15%',
       },
       {
-        ip: '192.168.0.3',
+        ip: '192.168.0.1-2018-05-25 15:02:241',
         source: 'QQ',
         status: '创建中',
-        create_time: '2018-05-25 15:02:244',
-        selected: true,
+        create_time: '2018-05-25 15:02:241',
+        selected: false,
+        priority: 1,
+        percent: '15%',
+      },
+      {
+        ip: '192.168.0.1-2018-05-25 15:02:241',
+        source: 'QQ',
+        status: '创建中',
+        create_time: '2018-05-25 15:02:241',
+        selected: false,
+        priority: 1,
+        percent: '15%',
       },
     ],
   },
@@ -104,34 +110,13 @@ export const DATA_TABLE = [
  */
 export const DATA_COLUMNS = [
   {
-    type: 'selection',
-    width: 40,
-    minWidth: 40,
-  },
-  {
-    label: '序号',
-    type: 'index',
-    width: 50,
-    minWidth: 80,
-    sort: true,
-    fixed: true,
-    showOverflowTooltip: {
-      mode: 'static',
-      content: '这是个静态的提示，限制最大宽度为200px，测试一下是否生效，长度不够，数字来凑，哈哈哈',
-      popoverOption: {
-        maxWidth: 250,
-      },
-    },
-    className: () => 'custom-class',
-  },
-  {
     label: () => (
       <div>
         <i>H</i>名称/内网IP
       </div>
     ),
     field: 'ip',
-    width: 100,
+    width: 120,
     showOverflowTooltip: {
       disabled: false,
       showHead: true,
@@ -176,9 +161,15 @@ export const DATA_COLUMNS = [
   {
     label: (column, index) => `状态-${index}-${column.field}`,
     field: 'status',
-    render: ({ row }) => (
+    with: 400,
+    render: ({ data }) => (
       <span style='color: red;'>
-        ${row.status}-${row.priority}
+        {data.percent} <bk-button>78788</bk-button>
+        <bk-input
+          class='mb8'
+          style='width: 200px;'
+          v-model={data.priority}
+        />
       </span>
     ),
     sort: true,
@@ -245,13 +236,8 @@ export const DATA_COLUMNS1 = [...DATA_COLUMNS2];
  */
 export const DATA_EXPAND_COLUMNS = [
   {
-    type: 'selection',
-    width: 20,
-    minWidth: 20,
-  },
-  {
     type: 'expand',
-    width: 140,
+    width: 40,
     minWidth: 30,
   },
   ...DATA_COLUMNS,
@@ -301,8 +287,11 @@ export const DATA_FIX_COLUMNS = [
   {
     label: '名称/内网IP',
     field: 'ip',
-    minWidth: 50,
+    minWidth: 150,
     fixed: true,
+    render: ({ data }) => {
+      return <bk-input v-model={data.ip}></bk-input>
+    }
   },
   {
     label: '来源',

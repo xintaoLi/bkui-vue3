@@ -39,6 +39,8 @@ export const getRawData = data => {
   if (isRef(data)) {
     return unref(data);
   }
+
+  return data;
 };
 
 export const resolveColumnSpan = (

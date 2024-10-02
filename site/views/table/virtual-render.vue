@@ -14,9 +14,7 @@
       :columns="columns"
       :data="randomRows"
       :height="300"
-      :row-height="getRowHeight"
       settings
-      virtual-enabled
     />
   </div>
 </template>
@@ -38,21 +36,10 @@
       this.handleRandomRows();
     },
     methods: {
-      getRowHeight(...args) {
-        const hj = [40, 80, 100, 65];
-        return hj[(args[0].index ?? 0) % 3];
-      },
       handleRandomRows() {
-        this.randomRows.splice(
-          0,
-          this.randomRows.length,
-          ...new Array(Math.ceil(Math.random() * 90) + 10).fill('').map((_, index) => ({
-            ip: `${index}--192.168.0.x`,
-            source: `${index}_QQ`,
-            status: '创建中',
-            create_time: `2018-05-25 15:02:24.${index}`,
-          })),
-        );
+        const newVal = new Array(100).fill('').map(v => this.randomRows).flat();
+        this.randomRows.length= 0;
+        this.randomRows.push(...newVal)
       },
     },
   });

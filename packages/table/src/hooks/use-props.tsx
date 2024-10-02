@@ -23,47 +23,96 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { isVNode, render } from 'vue';
+import { createApp, getCurrentInstance, onMounted, defineComponent, computed, isVNode, reactive } from 'vue';
 
 import { CellComponent, SortDirection, type Options } from 'tabulator-tables';
 
 import { ROW_HEIGHT, SORT_OPTION } from '../const';
 import { Column, HeadRenderArgs, TablePropTypes } from '../props';
 import { getRawData, resolveCellSpan } from '../utils';
+import { rightShape, downShape } from '../svg-icon/svg-string';
 
 const defaultOptions: Options = {
   layout: 'fitColumns',
   resizableColumnFit: true,
   resizableColumnGuide: true,
+  reactiveData: true,
   columnHeaderSortMulti: false,
   autoColumns: false,
+  dataTree: false,
+  dataTreeStartExpanded: false,
+  dataTreeChildField: 'children',
+  dataTreeExpandElement: rightShape,
+  dataTreeCollapseElement: downShape,
   rowHeight: ROW_HEIGHT,
   movableRows: false,
   pagination: false,
   initialSort: [],
   rowHeader: null,
+  paginationMode: 'local',
 };
+
+export type RowFormatterFn = Map<string, (row: Record<string, unknown>) => void>;
 
 export default (props: TablePropTypes) => {
   const resolvedOptions = { ...defaultOptions };
+  const rowFormatterFnList: RowFormatterFn = new Map();
+  let instance = null;
+
+  const dataTree = computed(() => props.columns.some(col => col.type === 'expand'));
 
   const resolveData = () => {
-    Object.assign(resolvedOptions, { data: getRawData(props.data ?? []) });
+    Object.assign(resolvedOptions, {
+      dataTree: dataTree.value,
+      data: getRawData(props.data),
+    });
   };
 
-  const renderCell = (vnode, targetElement) => {
-    render(vnode, targetElement);
-  };
+  const renderApp = defineComponent({
+    props: {
+      slotFn: {
+        type: Function,
+        default: null,
+      },
+      params: {
+        type: Array,
+        default: () => [],
+      },
+    },
 
-  const renderVnodeToCell = (vnode, cell, onRendered) => {
-    if (isVNode(vnode)) {
-      onRendered(() => {
-        renderCell(vnode, cell.getElement());
+    unmounted() {
+      console.log('unmounted');
+    },
+    render() {
+      return this.slotFn?.(...this.params);
+    },
+  });
+
+  const createCellApp = (params, slotFn) => {
+    if (typeof slotFn === 'function' || isVNode(slotFn)) {
+      const globalAppInstance = createApp(renderApp, {
+        slotFn,
+        params,
       });
-      return undefined;
+
+      Object.keys(instance.appContext.components).forEach(key => {
+        const component = instance.appContext.components[key];
+        if (!globalAppInstance._context.components[key]) {
+          // Check if component is already registered
+          if ('install' in component) {
+            globalAppInstance.use(component, {});
+          } else {
+            globalAppInstance.component(key, component);
+          }
+        }
+      });
+
+      let temp = document.createElement('div');
+      globalAppInstance.mount(temp);
+      return globalAppInstance?._instance.proxy.$el;
     }
 
-    return vnode;
+    return slotFn;
   };
 
   // 自定义 formatter
@@ -89,20 +138,25 @@ export default (props: TablePropTypes) => {
   };
 
   const formatOptionColumns = () => {
-    return (
-      props.options.columns?.map(col => {
-        ['formatter', 'titleFormatter'].forEach(key => {
-          if (typeof col[key] === 'function') {
-            const fn = col[key];
-            col[key] = (cell, formatterParams, onRendered) => {
-              return renderVnodeToCell(fn(cell, formatterParams, onRendered), cell, onRendered);
-            };
-          }
-        });
+    if (props.options.columns === undefined) {
+      return {};
+    }
 
-        return col;
-      }) ?? []
-    );
+    return {
+      columns:
+        props.options.columns?.map(col => {
+          ['formatter', 'titleFormatter'].forEach(key => {
+            if (typeof col[key] === 'function') {
+              const fn = col[key];
+              col[key] = (cell, formatterParams, onRendered) => {
+                return createCellApp([cell, formatterParams, onRendered], fn);
+              };
+            }
+          });
+
+          return col;
+        }) ?? [],
+    };
   };
 
   /**
@@ -114,7 +168,7 @@ export default (props: TablePropTypes) => {
       if (typeof props.options[key] === 'function') {
         return Object.assign(out, {
           [key]: row => {
-            return renderVnodeToCell(props.options[key](row), row, fn => fn());
+            return createCellApp([row], props.options[key]);
           },
         });
       }
@@ -127,7 +181,7 @@ export default (props: TablePropTypes) => {
   const formatOptions = () => {
     if (props.options) {
       Object.assign(resolvedOptions, props.options, {
-        columns: formatOptionColumns(),
+        ...formatOptionColumns(),
         ...formatRowRender(),
       });
     }
@@ -139,9 +193,10 @@ export default (props: TablePropTypes) => {
       headerVisible: props.showHead,
       movableRows: props.rowDraggable,
       height: props.height,
-      rowHeight: props.rowHeight,
+      rowHeight: props.rowHeight ?? ROW_HEIGHT,
       minHeight: props.minHeight,
       maxHeight: props.maxHeight,
+      renderHorizontal: props.virtualEnabled ? 'virtual' : 'basic',
     });
 
     if (props.rowDraggable) {
@@ -165,21 +220,22 @@ export default (props: TablePropTypes) => {
    * @returns
    */
   const getCellRender = (column: Column, fn: (args: HeadRenderArgs) => unknown) => {
-    return (cell, formatterParams, onRendered) => {
+    return cell => {
       if (typeof column.renderSpan === 'function') {
         column.renderSpan(cell);
       }
 
-      const vnode = fn({
-        cell: cell.getValue(),
-        column,
-        row: cell.getData?.(),
-        data: cell.getData?.(),
-        formatterParams,
-        instance: cell,
-      });
+      const params = [
+        {
+          cell: cell.getValue(),
+          column,
+          row: reactive(cell.getData?.() ?? {}),
+          data: reactive(cell.getData?.() ?? {}),
+          instance: cell,
+        },
+      ];
 
-      return renderVnodeToCell(vnode, cell, onRendered);
+      return createCellApp(params, fn);
     };
   };
 
@@ -188,10 +244,16 @@ export default (props: TablePropTypes) => {
       column.renderSpan = cell => {
         customCellSpanFormatter(cell, column, index);
       };
-      if (column.render === undefined) {
-        column.render = ({ instance }) => instance.getValue();
-      }
     }
+  };
+
+  const convertColumnTypeToFormatter = (type: string) => {
+    const map = {
+      index: 'rownum',
+      selection: 'rowSelection',
+    };
+
+    return map[type];
   };
 
   /**
@@ -204,15 +266,7 @@ export default (props: TablePropTypes) => {
       return getCellRender(column, column.render);
     }
 
-    if (column.type === 'index') {
-      return 'rownum';
-    }
-
-    if (column.type === 'selection') {
-      return 'rowSelection';
-    }
-
-    return undefined;
+    return convertColumnTypeToFormatter(column.type);
   };
 
   const getFn = (args: unknown[]) => {
@@ -295,45 +349,69 @@ export default (props: TablePropTypes) => {
     };
   };
 
+  const renderExpandChildRow = row => {
+    var data = row?.getData() ?? {};
+    if (data._is_tree_node) {
+      const element = row.getElement() as HTMLElement;
+      element.innerHTML = '';
+      element.append('_is_tree_node');
+    }
+  };
+
   /**
    * 解析列配置，映射到table设置项
    */
   const resolveColumns = () => {
     const formatColumns = (cols: Column[]) =>
-      cols.map((column: Column, index: number) => {
-        const formatter = getCellFormatter(column, index);
-        const titleFormatter = getTitleFormatter(column);
-        const frozen = getFrozenFormat(column);
-        const visible = getVisibleFormat(column);
-        const headerSort = getHeaderSortFormat(column);
-        const sorter = getColumnSorter(column);
-        const align = getColumnAlign(column);
-        const field = column.field ?? column.prop;
+      cols
+        .filter(col => {
+          if (col.type === 'expand') {
+            return col.expandCell === true;
+          }
 
-        if (column.children?.length) {
+          return true;
+        })
+        .map((column: Column, index: number) => {
+          const formatter = getCellFormatter(column, index);
+          const titleFormatter = getTitleFormatter(column);
+          const frozen = getFrozenFormat(column);
+          const visible = getVisibleFormat(column);
+          const headerSort = getHeaderSortFormat(column);
+          const sorter = getColumnSorter(column);
+          const align = getColumnAlign(column);
+
+          const isRenderFn = typeof formatter === 'function';
+          const field = isRenderFn ? undefined : column.field ?? column.prop;
+
+          if (column.children?.length) {
+            return {
+              title: column.label,
+              columns: formatColumns(column.children ?? []),
+            };
+          }
+
           return {
             title: column.label,
-            columns: formatColumns(column.children ?? []),
+            width: column.width,
+            minWidth: column.minWidth ?? '100%',
+            resizable: column.resizable ?? true,
+            formatter,
+            field,
+            titleFormatter,
+            ...frozen,
+            ...visible,
+            ...headerSort,
+            ...sorter,
+            ...align,
           };
-        }
-        return {
-          title: column.label,
-          width: column.width,
-          minWidth: column.minWidth ?? '100%',
-          resizable: column.resizable ?? true,
-          formatter,
-          field,
-          titleFormatter,
-          ...frozen,
-          ...visible,
-          ...headerSort,
-          ...sorter,
-          ...align,
-        };
-      });
+        });
+
+    if ((props.columns ?? []).some(col => col.type === 'expand')) {
+      rowFormatterFnList.set('expand', renderExpandChildRow);
+    }
 
     Object.assign(resolvedOptions, {
-      columns: formatColumns(getRawData(props.columns ?? [])),
+      columns: formatColumns(props.columns ?? []),
     });
   };
 
@@ -342,7 +420,8 @@ export default (props: TablePropTypes) => {
       const config = props.pagination as Record<string, unknown>;
 
       Object.assign(resolvedOptions, {
-        pagination: 'local',
+        pagination: true,
+        paginationMode: props.remotePagination ? 'remote' : 'local',
         paginationSize: config.limit ?? 10,
         paginationSizeSelector: config.showLimit ?? true ? config.limitList ?? [10, 20, 50, 100] : false,
         paginationCounter: 'rows',
@@ -358,6 +437,21 @@ export default (props: TablePropTypes) => {
     });
   };
 
+  /**
+   * 执行 rowFormatter
+   */
+  const resolveRowFormatter = () => {
+    const oldFn = resolvedOptions.rowFormatter;
+    Object.assign(resolvedOptions, {
+      rowFormatter: row => {
+        oldFn?.(row);
+        Array.from(rowFormatterFnList.values()).forEach(fn => {
+          fn(row);
+        });
+      },
+    });
+  };
+
   /** ************************************* End 旧版本映射关系 ***************************************************/
 
   const getTableOption = () => {
@@ -366,8 +460,13 @@ export default (props: TablePropTypes) => {
     resolveLayout();
     resolveColumns();
     formatOptions();
+    resolveRowFormatter();
     return resolvedOptions;
   };
+
+  onMounted(() => {
+    instance = getCurrentInstance();
+  });
 
   return { getTableOption, setFooterElement };
 };

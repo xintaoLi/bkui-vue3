@@ -24,22 +24,50 @@
  * IN THE SOFTWARE.
  */
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
+import { computed, watch } from 'vue';
+import { TablePropTypes } from '../props';
 
-import { getRawData } from '../utils';
-
-export default () => {
+export default (props: TablePropTypes) => {
   let instance: Tabulator = null;
 
+  let isTableBuilt = false;
   const createIntance = (target, options) => {
     instance = new Tabulator(target, options);
+    instance.on('tableBuilt', function () {
+      isTableBuilt = true;
+      instance.setData(props.data);
+    });
+
     return instance;
   };
 
   const setData = data => {
-    instance?.replaceData(getRawData(data));
+    instance?.replaceData(data ?? []);
   };
 
   const getInstance = () => instance;
+  const dataTree = computed(() => props.columns.some(col => col.type === 'expand'));
+  const updateTreeData = () => {
+    (props.data ?? []).forEach(row => {
+      if (dataTree.value && !row.children) {
+        Object.assign(row, { children: [{ _is_tree_node: true }] });
+      }
+    });
+  };
+
+  updateTreeData();
+
+  watch(
+    () => props.data,
+    () => {
+      updateTreeData();
+      if (!instance?.options.reactiveData && isTableBuilt) {
+        console.log('xxxxxx')
+        setData(props.data);
+      }
+    },
+    { deep: true },
+  );
 
   return { createIntance, setData, getInstance };
 };

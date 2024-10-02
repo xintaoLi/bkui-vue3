@@ -294,6 +294,7 @@ export type Column = {
   columnKey?: string;
   showOverflowTooltip?: IOverflowTooltip;
   type?: string;
+  expandCell?: boolean;
   fixed?: boolean | string;
   resizable?: boolean;
   sort?: ISortShape | boolean | string;
