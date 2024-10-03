@@ -89,20 +89,20 @@ export default defineComponent({
   },
   render() {
     const configs = [
-      // {
-      //   attrs: {
-      //     title: '基础用法',
-      //     subtitle: '基础用法，用于表单内容的录入',
-      //     desc: '通过 stripe 设置是否为斑马纹',
-      //     componentName: 'table',
-      //     demoName: 'basic',
-      //   },
-      //   /**
-      //    * Table
-      //    * @returns
-      //    */
-      //   component: () => <basic></basic>,
-      // },
+      {
+        attrs: {
+          title: '基础用法',
+          subtitle: '基础用法，用于表单内容的录入',
+          desc: '通过 stripe 设置是否为斑马纹',
+          componentName: 'table',
+          demoName: 'basic',
+        },
+        /**
+         * Table
+         * @returns
+         */
+        component: () => <basic></basic>,
+      },
       // {
       //   attrs: {
       //     title: '基础用法: min-width',
@@ -175,20 +175,20 @@ export default defineComponent({
       //    */
       //   component: () => <TableTplTsx></TableTplTsx>,
       // },
-      {
-        attrs: {
-          title: '设置边框',
-          subtitle: '设置边框显示样式',
-          desc: 'props: border',
-          componentName: 'table',
-          demoName: 'bordered',
-        },
-        /**
-         * Table
-         * @returns
-         */
-        component: () => <bordered></bordered>,
-      },
+      // {
+      //   attrs: {
+      //     title: '设置边框',
+      //     subtitle: '设置边框显示样式',
+      //     desc: 'props: border',
+      //     componentName: 'table',
+      //     demoName: 'bordered',
+      //   },
+      //   /**
+      //    * Table
+      //    * @returns
+      //    */
+      //   component: () => <bordered></bordered>,
+      // },
       // {
       //   attrs: {
       //     title: '自定义头部',
@@ -203,20 +203,20 @@ export default defineComponent({
       //    */
       //   component: () => <CustomHead></CustomHead>,
       // },
-      {
-        attrs: {
-          title: '启用虚拟滚动-渲染大数据表格',
-          subtitle: '大数据模式启用虚拟滚动',
-          desc: 'props: virtual-enabled',
-          componentName: 'table',
-          demoName: 'virtual-render',
-        },
-        /**
-         * Table
-         * @returns
-         */
-        component: () => <virtual-render></virtual-render>,
-      },
+      // {
+      //   attrs: {
+      //     title: '启用虚拟滚动-渲染大数据表格',
+      //     subtitle: '大数据模式启用虚拟滚动',
+      //     desc: 'props: virtual-enabled',
+      //     componentName: 'table',
+      //     demoName: 'virtual-render',
+      //   },
+      //   /**
+      //    * Table
+      //    * @returns
+      //    */
+      //   component: () => <virtual-render></virtual-render>,
+      // },
       // {
       //   attrs: {
       //     title: '自定义Column渲染',
@@ -247,20 +247,20 @@ export default defineComponent({
       //    */
       //   component: () => <event></event>,
       // },
-      {
-        attrs: {
-          title: 'Pagination - Local',
-          subtitle: '分页配置',
-          desc: 'props: pagination',
-          componentName: 'table',
-          demoName: 'pagination',
-        },
-        /**
-         * Table
-         * @returns
-         */
-        component: () => <pagination></pagination>,
-      },
+      // {
+      //   attrs: {
+      //     title: 'Pagination - Local',
+      //     subtitle: '分页配置',
+      //     desc: 'props: pagination',
+      //     componentName: 'table',
+      //     demoName: 'pagination',
+      //   },
+      //   /**
+      //    * Table
+      //    * @returns
+      //    */
+      //   component: () => <pagination></pagination>,
+      // },
       // {
       //   attrs: {
       //     title: 'Pagination - Remote',

@@ -1,184 +1,33 @@
 <template>
-  <bk-button @click="clearSelection">取消全选</bk-button>
-  <bk-button @click="handleScrollTo">ScrollToLast</bk-button>
-  <bk-button @click="handleAppendToLastRow">追加一行</bk-button>
   <div style="display: grid">
     <div style="height: 300px">
       <bk-table
-        ref="refTable"
-        height="auto"
-        :data="projectTable"
-        :fixed-bottom="fixedBottom"
-        :pagination="pagination"
-        max-height="100%"
-        row-draggable
-        show-overflow-tooltip
-        stripe
+        :headers="headers"
+        :items="items"
       >
-      <bk-column>
-
-      </bk-column>
       </bk-table>
     </div>
   </div>
 </template>
 
 <script setup>
-  import { ref, reactive, onMounted } from 'vue';
-  const refTable = ref(null);
+  const headers = [
+    { text: "PLAYER", value: "player" },
+    { text: "TEAM", value: "team"},
+    { text: "NUMBER", value: "number"},
+    { text: "POSITION", value: "position"},
+    { text: "HEIGHT", value: "indicator.height"},
+    { text: "WEIGHT (lbs)", value: "indicator.weight", sortable: true},
+    { text: "LAST ATTENDED", value: "lastAttended", width: 200},
+    { text: "COUNTRY", value: "country"},
+  ];
 
-  const pagination = ref({ count: 11, limit: 10, current: 1 });
-
-  // const filterList = reactive([]);
-  // const filterOption = computed(() => ({
-  //   list: filterList,
-  //   checked: [],
-  // }));
-
-  const lastRowIndex = ref(10);
-
-  const handleAppendToLastRow = () => {
-    lastRowIndex.value = lastRowIndex.value + 1;
-    projectTable.value.push({
-      groupId: lastRowIndex.value,
-      groupName: `last-group-${lastRowIndex.value}`,
-      groupDesc: `last-des-${lastRowIndex.value}`,
-      validityPeriod: `last-period-${lastRowIndex.value}`,
-      joinedTime: '08-18',
-      operateSource: `last-source-${lastRowIndex.value}`,
-      operator: `last-operator-${lastRowIndex.value}`,
-      removeMemberButtonControl: true,
-    });
-  };
-
-  const fixedBottom = reactive({
-    position: 'relative',
-    height: 42,
-  });
-  const projectTable = ref([]);
-  onMounted(() => {
-    projectTable.value = [
-      {
-        groupId: 1,
-        groupName: '11',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0506',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: true,
-      },
-      {
-        groupId: 2,
-        groupName: '22',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0505',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 3,
-        groupName: '33',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0605',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 4,
-        groupName: '44',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0506',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 5,
-        groupName: '55',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0605',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 6,
-        groupName: '66',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0506',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 7,
-        groupName: '77',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0605',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 8,
-        groupName: '88',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0605',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 9,
-        groupName: '99',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0605',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 10,
-        groupName: '1010',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0506',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 11,
-        groupName: '1111',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0505',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-    ];
-
-    setTimeout(() => {
-      filterList.push(
-        ...[
-          { text: '0506', value: '0506' },
-          { text: '0605', value: '0605' },
-        ],
-      );
-    });
-  });
+  const items = [
+    { player: "Stephen Curry", team: "GSW", number: 30, position: 'G', indicator: {"height": '6-2', "weight": 185}, lastAttended: "Davidson", country: "USA"},
+    { player: "Lebron James", team: "LAL", number: 6, position: 'F', indicator: {"height": '6-9', "weight": 250}, lastAttended: "St. Vincent-St. Mary HS (OH)", country: "USA"},
+    { player: "Kevin Durant", team: "BKN", number: 7, position: 'F', indicator: {"height": '6-10', "weight": 240}, lastAttended: "Texas-Austin", country: "USA"},
+    { player: "Giannis Antetokounmpo", team: "MIL", number: 34, position: 'F', indicator: {"height": '6-11', "weight": 242}, lastAttended: "Filathlitikos", country: "Greece"},
+  ];
 </script>
 <style scoped>
   .row {
