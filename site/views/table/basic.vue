@@ -2,8 +2,12 @@
   <div style="display: grid">
     <div style="height: 300px">
       <bk-table
-        :headers="headers"
-        :items="items"
+        :columns="columns"
+        :data="tableData"
+        :expand-option="expandOption"
+        :max-height="300"
+        :virtual-scroll-option="virtualScrollOption"
+        row-key-field-name="rowKey"
       >
       </bk-table>
     </div>
@@ -11,23 +15,77 @@
 </template>
 
 <script setup>
-  const headers = [
-    { text: "PLAYER", value: "player" },
-    { text: "TEAM", value: "team"},
-    { text: "NUMBER", value: "number"},
-    { text: "POSITION", value: "position"},
-    { text: "HEIGHT", value: "indicator.height"},
-    { text: "WEIGHT (lbs)", value: "indicator.weight", sortable: true},
-    { text: "LAST ATTENDED", value: "lastAttended", width: 200},
-    { text: "COUNTRY", value: "country"},
-  ];
+  import { onMounted, reactive } from 'vue';
 
-  const items = [
-    { player: "Stephen Curry", team: "GSW", number: 30, position: 'G', indicator: {"height": '6-2', "weight": 185}, lastAttended: "Davidson", country: "USA"},
-    { player: "Lebron James", team: "LAL", number: 6, position: 'F', indicator: {"height": '6-9', "weight": 250}, lastAttended: "St. Vincent-St. Mary HS (OH)", country: "USA"},
-    { player: "Kevin Durant", team: "BKN", number: 7, position: 'F', indicator: {"height": '6-10', "weight": 240}, lastAttended: "Texas-Austin", country: "USA"},
-    { player: "Giannis Antetokounmpo", team: "MIL", number: 34, position: 'F', indicator: {"height": '6-11', "weight": 242}, lastAttended: "Filathlitikos", country: "Greece"},
-  ];
+  const virtualScrollOption = reactive({ enable: true });
+
+  const expandOption = {
+    render: ({ row }) => {
+      return `<p>
+          My name is <span style='color:#1890ff;'>${row.name}</span>
+          ,I'm living in ${row.address}
+        </p>`;
+    },
+  };
+  const columns = reactive([
+    {
+      field: '',
+      key: 'a',
+      // 设置需要显示展开图标的列
+      type: 'expand',
+      title: '',
+      width: 50,
+      align: 'center',
+    },
+    {
+      field: 'index',
+      key: 'a',
+      title: '#',
+      width: 100,
+      align: 'left',
+    },
+    {
+      field: 'name',
+      key: 'b',
+      title: 'Name',
+      width: 200,
+      align: 'left',
+      sortBy: 'asc',
+    },
+    {
+      field: 'hobby',
+      key: 'c',
+      title: 'Hobby',
+      width: 300,
+      align: 'left',
+      sortBy: 'asc',
+    },
+    {
+      field: 'address',
+      key: 'd',
+      title: 'Address',
+      width: '',
+      align: 'left',
+      sortBy: 'asc',
+    },
+  ]);
+
+  let tableData = reactive([]);
+
+  onMounted(() => {
+    let data = [];
+    for (let i = 0; i < 10000; i++) {
+      data.push({
+        rowKey: i,
+        index: i,
+        name: `name${i}`,
+        hobby: `hobby${i}`,
+        address: `address${i}`,
+      });
+    }
+
+    tableData.push(...data);
+  });
 </script>
 <style scoped>
   .row {

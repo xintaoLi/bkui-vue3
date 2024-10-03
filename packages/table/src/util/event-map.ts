@@ -1,12 +1,12 @@
 /*
  * Tencent is pleased to support the open source community by making
- * 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition) available.
+ * 蓝鲸智云PaaS平台 (BlueKing PaaS) available.
  *
  * Copyright (C) 2021 THL A29 Limited, a Tencent company.  All rights reserved.
  *
- * 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition) is licensed under the MIT License.
+ * 蓝鲸智云PaaS平台 (BlueKing PaaS) is licensed under the MIT License.
  *
- * License for 蓝鲸智云PaaS平台社区版 (BlueKing PaaS Community Edition):
+ * License for 蓝鲸智云PaaS平台 (BlueKing PaaS):
  *
  * ---------------------------------------------------
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -23,19 +23,12 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-// import { ExtractPropTypes } from 'vue';
-
-import { withInstallProps } from '@bkui-vue/shared';
-
-// import Column from './components/table-column';
-// import { tableProps } from './props';
-import Component from './table';
-
-// export type TableProps = Partial<ExtractPropTypes<typeof tableProps>>;
-
-// export type { Column as TableIColumn, Settings as TableSettings } from './props';
-const BkTable = withInstallProps(Component, {
-  // Column,
-});
-export default BkTable;
-// export { BkTable, Column as BkTableColumn };
+const getOnEventKey = key => {
+  return `on${key.charAt(0).toUpperCase() + key.slice(1)}`;
+};
+export const convertToV3Event = (events: Record<string, (...args) => unknown>) => {
+  return Object.keys(events ?? {}).reduce(
+    (output, key) => Object.assign(output, { [getOnEventKey(key)]: events[key] }),
+    {},
+  );
+};

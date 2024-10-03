@@ -78,7 +78,7 @@ export { default as Swiper } from '@bkui-vue/swiper';
 export { default as Switcher } from '@bkui-vue/switcher';
 export type { TabProps, TabPanelProps } from '@bkui-vue/tab';
 export { default as Tab } from '@bkui-vue/tab';
-export type { TableSettings, TableIColumn, TableProps } from '@bkui-vue/table';
+// export type { TableSettings, TableIColumn, TableProps } from '@bkui-vue/table';
 export { default as Table } from '@bkui-vue/table';
 export { default as Tag } from '@bkui-vue/tag';
 export { default as TagInput } from '@bkui-vue/tag-input';
