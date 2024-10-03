@@ -43,6 +43,7 @@ const usePagination = (
     current: 1,
     align: 'right',
     layout: ['total', 'limit', 'list'],
+    limitList: [10, 20, 50, 100, 500, 1000]
   });
 
   /**

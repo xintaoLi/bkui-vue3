@@ -42,7 +42,21 @@ export default (props: TablePropTypes) => {
   };
 
   const setData = data => {
-    instance?.replaceData(data ?? []);
+    // if (instance.options.renderHorizontal === 'virtual' || instance.options.renderVertical === 'virtual') {
+    //   instance.clearData();
+    //   instance.setData(data ?? []).then(() => {
+    //     setTimeout(() => instance.redraw(), 0);
+    //   });
+
+    //   return;
+    // }
+
+    instance.clearData();
+    instance.setData(data ?? []).then(() => {
+      setTimeout(() => instance.redraw(), 0);
+    });
+
+    // instance?.replaceData(data ?? []);
   };
 
   const getInstance = () => instance;
@@ -62,7 +76,7 @@ export default (props: TablePropTypes) => {
     () => {
       updateTreeData();
       if (!instance?.options.reactiveData && isTableBuilt) {
-        console.log('xxxxxx')
+        console.log('setData ---')
         setData(props.data);
       }
     },

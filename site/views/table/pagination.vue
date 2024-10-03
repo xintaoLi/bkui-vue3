@@ -44,7 +44,7 @@
   const renderTable = () => {
     isShow.value = !isShow.value;
   };
-  const pagination = ref({ count: tableData.length, limit: 20 });
+  const pagination = ref({ count: tableData.length, limit: 20, list });
   const columns = reactive(DATA_FIX_COLUMNS.concat(appendColumns));
   const refTable = ref(null);
   const handleSelectionChange = args => {};

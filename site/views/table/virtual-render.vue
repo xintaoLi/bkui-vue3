@@ -14,6 +14,7 @@
       :columns="columns"
       :data="randomRows"
       :height="300"
+      :options="{ reactiveData: false }"
       settings
     />
   </div>
@@ -37,7 +38,7 @@
     },
     methods: {
       handleRandomRows() {
-        const newVal = new Array(100).fill('').map(v => this.randomRows).flat();
+        const newVal = new Array(Math.ceil(Math.random() * 1000)).fill('').map((v, index) => ({ ...this.randomRows[0], source:`${index}-${this.randomRows[0]?.source}` })).flat();
         this.randomRows.length= 0;
         this.randomRows.push(...newVal)
       },

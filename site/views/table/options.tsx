@@ -110,11 +110,7 @@ export const DATA_TABLE = [
  */
 export const DATA_COLUMNS = [
   {
-    label: () => (
-      <div>
-        <i>H</i>名称/内网IP
-      </div>
-    ),
+    label: '名称/内网IP',
     field: 'ip',
     width: 120,
     showOverflowTooltip: {
@@ -159,19 +155,9 @@ export const DATA_COLUMNS = [
     sort: true,
   },
   {
-    label: (column, index) => `状态-${index}-${column.field}`,
+    label: '状态',
     field: 'status',
     with: 400,
-    render: ({ data }) => (
-      <span style='color: red;'>
-        {data.percent} <bk-button>78788</bk-button>
-        <bk-input
-          class='mb8'
-          style='width: 200px;'
-          v-model={data.priority}
-        />
-      </span>
-    ),
     sort: true,
   },
 ];
@@ -214,11 +200,6 @@ export const DATA_COLUMNS2 = [
     label: '创建时间7',
     field: 'create_time',
     sort: 'custom',
-  },
-  {
-    label: (column, index) => `状态-${index}-${column.field}`,
-    field: 'status',
-    sort: true,
   },
 ];
 

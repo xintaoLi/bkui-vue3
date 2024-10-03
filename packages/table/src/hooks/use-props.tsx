@@ -50,6 +50,7 @@ const defaultOptions: Options = {
   initialSort: [],
   rowHeader: null,
   paginationMode: 'local',
+  renderVerticalBuffer: undefined
 };
 
 export type RowFormatterFn = Map<string, (row: Record<string, unknown>) => void>;
@@ -196,7 +197,7 @@ export default (props: TablePropTypes) => {
       rowHeight: props.rowHeight ?? ROW_HEIGHT,
       minHeight: props.minHeight,
       maxHeight: props.maxHeight,
-      renderHorizontal: props.virtualEnabled ? 'virtual' : 'basic',
+      // renderHorizontal: props.virtualEnabled ? 'virtual' : 'basic',
     });
 
     if (props.rowDraggable) {
