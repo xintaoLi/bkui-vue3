@@ -1,5 +1,5 @@
 {
-  "name": "@bkui-vue/table-column",
+  "name": "@bkui-vue/table-grid",
   "version": "0.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

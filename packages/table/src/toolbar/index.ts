@@ -1,7 +1,7 @@
-import VxeToolbarComponent from './toolbar';
+import ToolbarComponent from './toolbar';
 import { withInstall } from '@bkui-vue/shared';
 
-const component = withInstall(VxeToolbarComponent);
+const TableToolbar = withInstall(ToolbarComponent);
 
-export const Toolbar = component;
-export default component;
+export const Toolbar = TableToolbar;
+export default TableToolbar;

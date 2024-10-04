@@ -10,7 +10,7 @@ import type { VxeGridConstructor, GridPrivateMethods, ToolbarMethods, ToolbarInt
 const { getConfig, getIcon, getI18n, renderer, commands, createEvent, useFns } = VxeUI
 
 export default defineComponent({
-  name: 'VxeToolbar',
+  name: 'TableToolbar',
   props: {
     loading: Boolean,
     refresh: [Boolean, Object] as PropType<VxeToolbarPropTypes.Refresh>,

@@ -24,4 +24,9 @@
  * IN THE SOFTWARE.
  */
 
-describe('column.tsx', () => {});
+const baseJestConf = require('../../jest.config');
+
+module.exports = {
+  ...baseJestConf,
+  testRegex: 'packages/table/__test__/.*\\.test\\.(js|ts|tsx)$',
+};

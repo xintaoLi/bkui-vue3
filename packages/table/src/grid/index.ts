@@ -1,6 +1,6 @@
 import { withInstall } from '@bkui-vue/shared';
-import VxeGridComponent from './grid';
-const grid = withInstall(VxeGridComponent);
+import GridComponent from './grid';
+const grid = withInstall(GridComponent);
 
 export const TableGrid = grid;
 export default grid;

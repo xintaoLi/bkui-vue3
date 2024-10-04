@@ -23,9 +23,10 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
-import { withInstall } from '@bkui-vue/shared';
 
-import { Column } from '../../table/src/column/index';
+const baseJestConf = require('../../jest.config');
 
-const BkTableColumn = withInstall(Column);
-export default BkTableColumn;
+module.exports = {
+  ...baseJestConf,
+  testRegex: 'packages/table/__test__/.*\\.test\\.(js|ts|tsx)$',
+};
