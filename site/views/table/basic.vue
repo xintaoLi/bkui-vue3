@@ -1,23 +1,26 @@
 <template>
-  <bk-button @click="clearSelection">取消全选</bk-button>
+  <!-- <bk-button @click="clearSelection">取消全选</bk-button>
   <bk-button @click="handleScrollTo">ScrollToLast</bk-button>
-  <bk-button @click="handleAppendToLastRow">追加一行</bk-button>
+  <bk-button @click="handleAppendToLastRow">追加一行</bk-button> -->
   <div style="display: grid">
     <div style="height: 300px">
-      <bk-table
-        ref="refTable"
-        height="auto"
-        :data="projectTable"
-        :fixed-bottom="fixedBottom"
-        :pagination="pagination"
-        max-height="100%"
-        row-draggable
-        show-overflow-tooltip
-        stripe
-      >
-      <bk-column>
-
-      </bk-column>
+      <bk-table v-bind="gridOptions">
+        <!-- <bk-table-column
+          type="seq"
+          width="70"
+        ></bk-table-column>
+        <bk-table-column
+          field="name"
+          title="Name"
+        ></bk-table-column>
+        <bk-table-column
+          field="sex"
+          title="Sex"
+        ></bk-table-column>
+        <bk-table-column
+          field="age"
+          title="Age"
+        ></bk-table-column> -->
       </bk-table>
     </div>
   </div>
@@ -25,159 +28,20 @@
 
 <script setup>
   import { ref, reactive, onMounted } from 'vue';
-  const refTable = ref(null);
 
-  const pagination = ref({ count: 11, limit: 10, current: 1 });
-
-  // const filterList = reactive([]);
-  // const filterOption = computed(() => ({
-  //   list: filterList,
-  //   checked: [],
-  // }));
-
-  const lastRowIndex = ref(10);
-
-  const handleAppendToLastRow = () => {
-    lastRowIndex.value = lastRowIndex.value + 1;
-    projectTable.value.push({
-      groupId: lastRowIndex.value,
-      groupName: `last-group-${lastRowIndex.value}`,
-      groupDesc: `last-des-${lastRowIndex.value}`,
-      validityPeriod: `last-period-${lastRowIndex.value}`,
-      joinedTime: '08-18',
-      operateSource: `last-source-${lastRowIndex.value}`,
-      operator: `last-operator-${lastRowIndex.value}`,
-      removeMemberButtonControl: true,
-    });
-  };
-
-  const fixedBottom = reactive({
-    position: 'relative',
-    height: 42,
-  });
-  const projectTable = ref([]);
-  onMounted(() => {
-    projectTable.value = [
-      {
-        groupId: 1,
-        groupName: '11',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0506',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: true,
-      },
-      {
-        groupId: 2,
-        groupName: '22',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0505',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 3,
-        groupName: '33',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0605',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 4,
-        groupName: '44',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0506',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 5,
-        groupName: '55',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0605',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 6,
-        groupName: '66',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0506',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 7,
-        groupName: '77',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0605',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 8,
-        groupName: '88',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0605',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 9,
-        groupName: '99',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0605',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 10,
-        groupName: '1010',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0506',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-      {
-        groupId: 11,
-        groupName: '1111',
-        groupDesc: 'kjkjkjk',
-        validityPeriod: '0505',
-        joinedTime: '08-18',
-        operateSource: '加入组',
-        operator: '张三',
-        removeMemberButtonControl: false,
-      },
-    ];
-
-    setTimeout(() => {
-      filterList.push(
-        ...[
-          { text: '0506', value: '0506' },
-          { text: '0605', value: '0605' },
-        ],
-      );
-    });
+  const gridOptions = reactive({
+    columns: [
+      { type: 'seq', width: 70 },
+      { field: 'name', title: 'Name' },
+      { field: 'sex', title: 'Sex' },
+      { field: 'age', title: 'Age' },
+    ],
+    data: [
+      { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+      { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+      { id: 10003, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+      { id: 10004, name: 'Test4', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+    ],
   });
 </script>
 <style scoped>
