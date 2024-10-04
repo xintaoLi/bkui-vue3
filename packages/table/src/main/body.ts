@@ -155,11 +155,11 @@ export default defineComponent({
           h(
             'div',
             {
-              class: 'vxe-tree--line-wrapper',
+              class: 'bk-tree--line-wrapper',
             },
             [
               h('div', {
-                class: 'vxe-tree--line',
+                class: 'bk-tree--line',
                 style: {
                   height: `${isFirstRow ? 1 : calcTreeLine(params, items, rIndex)}px`,
                   left: `${rLevel * treeOpts.indent + (rLevel ? 2 - getOffsetSize() : 0) + 16}px`,
@@ -356,7 +356,7 @@ export default defineComponent({
         tdVNs.push(
           h('div', {
             class: [
-              'vxe-cell',
+              'bk-cell',
               {
                 'c--title': showTitle,
                 'c--tooltip': showTooltip,
@@ -376,7 +376,7 @@ export default defineComponent({
             'div',
             {
               class: [
-                'vxe-cell',
+                'bk-cell',
                 {
                   'c--title': showTitle,
                   'c--tooltip': showTooltip,
@@ -399,7 +399,7 @@ export default defineComponent({
             h(
               'div',
               {
-                class: ['vxe-cell--valid-error-hint', getPropClass(validOpts.className, validParams)],
+                class: ['bk-cell--valid-error-hint', getPropClass(validOpts.className, validParams)],
                 style:
                   errRule && errRule.maxWidth
                     ? {
@@ -413,7 +413,7 @@ export default defineComponent({
                     h(
                       'span',
                       {
-                        class: 'vxe-cell--valid-error-msg',
+                        class: 'bk-cell--valid-error-msg',
                       },
                       errorValidItem.content,
                     ),
@@ -427,7 +427,7 @@ export default defineComponent({
         'td',
         {
           class: [
-            'vxe-body--column',
+            'bk-body--column',
             colid,
             {
               [`col--${cellAlign}`]: cellAlign,
@@ -554,7 +554,7 @@ export default defineComponent({
             'tr',
             {
               class: [
-                'vxe-body--row',
+                'bk-body--row',
                 treeConfig ? `row--level-${rowLevel}` : '',
                 {
                   'row--stripe': stripe && ($xeTable.getVTRowIndex(row) + 1) % 2 === 0,
@@ -622,7 +622,7 @@ export default defineComponent({
               'tr',
               {
                 class: [
-                  'vxe-body--expanded-row',
+                  'bk-body--expanded-row',
                   {
                     'is--padding': padding,
                   },
@@ -636,7 +636,7 @@ export default defineComponent({
                   'td',
                   {
                     class: {
-                      'vxe-body--expanded-column': 1,
+                      'bk-body--expanded-column': 1,
                       'fixed--hidden': fixedType && !hasFixedColumn,
                       'col--ellipsis': hasEllipsis,
                     },
@@ -647,7 +647,7 @@ export default defineComponent({
                       'div',
                       {
                         class: {
-                          'vxe-body--expanded-cell': 1,
+                          'bk-body--expanded-cell': 1,
                           'is--ellipsis': expandHeight,
                         },
                         style: cellStyle,
@@ -1037,7 +1037,7 @@ export default defineComponent({
         'div',
         {
           ref: refElem,
-          class: ['vxe-table--body-wrapper', fixedType ? `fixed-${fixedType}--wrapper` : 'body--wrapper'],
+          class: ['bk-table--body-wrapper', fixedType ? `fixed-${fixedType}--wrapper` : 'body--wrapper'],
           xid: xID,
           ...(sYOpts.mode === 'wheel' ? { onWheel: wheelEvent } : {}),
         },
@@ -1046,17 +1046,17 @@ export default defineComponent({
             ? createCommentVNode()
             : h('div', {
                 ref: refBodyXSpace,
-                class: 'vxe-body--x-space',
+                class: 'bk-body--x-space',
               }),
           h('div', {
             ref: refBodyYSpace,
-            class: 'vxe-body--y-space',
+            class: 'bk-body--y-space',
           }),
           h(
             'table',
             {
               ref: refBodyTable,
-              class: 'vxe-table--body',
+              class: 'bk-table--body',
               xid: xID,
               cellspacing: 0,
               cellpadding: 0,
@@ -1091,24 +1091,24 @@ export default defineComponent({
             ],
           ),
           h('div', {
-            class: 'vxe-table--checkbox-range',
+            class: 'bk-table--checkbox-range',
           }),
           mouseConfig && mouseOpts.area
             ? h(
                 'div',
                 {
-                  class: 'vxe-table--cell-area',
+                  class: 'bk-table--cell-area',
                 },
                 [
                   h(
                     'span',
                     {
-                      class: 'vxe-table--cell-main-area',
+                      class: 'bk-table--cell-main-area',
                     },
                     mouseOpts.extension
                       ? [
                           h('span', {
-                            class: 'vxe-table--cell-main-area-btn',
+                            class: 'bk-table--cell-main-area-btn',
                             onMousedown(evnt: any) {
                               $xeTable.triggerCellExtendMousedownEvent(evnt, {
                                 $table: $xeTable,
@@ -1121,16 +1121,16 @@ export default defineComponent({
                       : [],
                   ),
                   h('span', {
-                    class: 'vxe-table--cell-copy-area',
+                    class: 'bk-table--cell-copy-area',
                   }),
                   h('span', {
-                    class: 'vxe-table--cell-extend-area',
+                    class: 'bk-table--cell-extend-area',
                   }),
                   h('span', {
-                    class: 'vxe-table--cell-multi-area',
+                    class: 'bk-table--cell-multi-area',
                   }),
                   h('span', {
-                    class: 'vxe-table--cell-active-area',
+                    class: 'bk-table--cell-active-area',
                   }),
                 ],
               )
@@ -1139,14 +1139,14 @@ export default defineComponent({
             ? h(
                 'div',
                 {
-                  class: 'vxe-table--empty-block',
+                  class: 'bk-table--empty-block',
                   ref: refBodyEmptyBlock,
                 },
                 [
                   h(
                     'div',
                     {
-                      class: 'vxe-table--empty-content',
+                      class: 'bk-table--empty-content',
                     },
                     emptyContent,
                   ),

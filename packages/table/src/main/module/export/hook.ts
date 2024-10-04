@@ -550,7 +550,7 @@ hooks.add('tableExportModule', {
       const { print: isPrint, isHeader, isFooter, isColgroup, isMerge, colgroups, original } = opts
       const allCls = 'check-all'
       const clss = [
-        'vxe-table',
+        'bk-table',
         `border--${toTableBorder(border)}`,
         isPrint ? 'is--print' : '',
         isHeader ? 'is--header' : ''
@@ -620,15 +620,15 @@ hooks.add('tableExportModule', {
                 if (column.treeNode) {
                   let treeIcon = ''
                   if (item._hasChild) {
-                    treeIcon = `<i class="${item._expand ? 'vxe-table--tree-fold-icon' : 'vxe-table--tree-unfold-icon'}"></i>`
+                    treeIcon = `<i class="${item._expand ? 'bk-table--tree-fold-icon' : 'bk-table--tree-unfold-icon'}"></i>`
                   }
-                  classNames.push('vxe-table--tree-node')
+                  classNames.push('bk-table--tree-node')
                   if (column.type === 'radio') {
-                    return `<td class="${classNames.join(' ')}" title="${cellValue}"><div ${isPrint ? '' : `style="width: ${column.renderWidth}px"`}><div class="vxe-table--tree-node-wrapper" style="padding-left: ${item._level * treeOpts.indent}px"><div class="vxe-table--tree-icon-wrapper">${treeIcon}</div><div class="vxe-table--tree-cell"><input type="radio" name="radio_${id}" ${item._radioDisabled ? 'disabled ' : ''}${getBooleanValue(cellValue) ? 'checked' : ''}><span>${item._radioLabel}</span></div></div></div></td>`
+                    return `<td class="${classNames.join(' ')}" title="${cellValue}"><div ${isPrint ? '' : `style="width: ${column.renderWidth}px"`}><div class="bk-table--tree-node-wrapper" style="padding-left: ${item._level * treeOpts.indent}px"><div class="bk-table--tree-icon-wrapper">${treeIcon}</div><div class="bk-table--tree-cell"><input type="radio" name="radio_${id}" ${item._radioDisabled ? 'disabled ' : ''}${getBooleanValue(cellValue) ? 'checked' : ''}><span>${item._radioLabel}</span></div></div></div></td>`
                   } else if (column.type === 'checkbox') {
-                    return `<td class="${classNames.join(' ')}" title="${cellValue}"><div ${isPrint ? '' : `style="width: ${column.renderWidth}px"`}><div class="vxe-table--tree-node-wrapper" style="padding-left: ${item._level * treeOpts.indent}px"><div class="vxe-table--tree-icon-wrapper">${treeIcon}</div><div class="vxe-table--tree-cell"><input type="checkbox" ${item._checkboxDisabled ? 'disabled ' : ''}${getBooleanValue(cellValue) ? 'checked' : ''}><span>${item._checkboxLabel}</span></div></div></div></td>`
+                    return `<td class="${classNames.join(' ')}" title="${cellValue}"><div ${isPrint ? '' : `style="width: ${column.renderWidth}px"`}><div class="bk-table--tree-node-wrapper" style="padding-left: ${item._level * treeOpts.indent}px"><div class="bk-table--tree-icon-wrapper">${treeIcon}</div><div class="bk-table--tree-cell"><input type="checkbox" ${item._checkboxDisabled ? 'disabled ' : ''}${getBooleanValue(cellValue) ? 'checked' : ''}><span>${item._checkboxLabel}</span></div></div></div></td>`
                   }
-                  return `<td class="${classNames.join(' ')}" title="${cellValue}"><div ${isPrint ? '' : `style="width: ${column.renderWidth}px"`}><div class="vxe-table--tree-node-wrapper" style="padding-left: ${item._level * treeOpts.indent}px"><div class="vxe-table--tree-icon-wrapper">${treeIcon}</div><div class="vxe-table--tree-cell">${cellValue}</div></div></div></td>`
+                  return `<td class="${classNames.join(' ')}" title="${cellValue}"><div ${isPrint ? '' : `style="width: ${column.renderWidth}px"`}><div class="bk-table--tree-node-wrapper" style="padding-left: ${item._level * treeOpts.indent}px"><div class="bk-table--tree-icon-wrapper">${treeIcon}</div><div class="bk-table--tree-cell">${cellValue}</div></div></div></td>`
                 }
                 if (column.type === 'radio') {
                   return `<td class="${classNames.join(' ')}"><div ${isPrint ? '' : `style="width: ${column.renderWidth}px"`}><input type="radio" name="radio_${id}" ${item._radioDisabled ? 'disabled ' : ''}${getBooleanValue(cellValue) ? 'checked' : ''}><span>${item._radioLabel}</span></div></td>`

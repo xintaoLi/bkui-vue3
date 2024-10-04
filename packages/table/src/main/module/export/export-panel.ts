@@ -4,7 +4,7 @@ import XEUtils from '../../../func'
 import { formatText } from '../../../ui/utils'
 import { errLog } from '../../../ui/log'
 
-import type { VxeModalComponent, VxeInputComponent, VxeCheckboxComponent, VxeSelectComponent, VxeButtonComponent } from 'vxe-pc-ui'
+import type { VxeModalComponent, VxeInputComponent, VxeCheckboxComponent, VxeSelectComponent, VxeButtonComponent } from 'bk-pc-ui'
 import type { VxeTablePrivateMethods, VxeTableConstructor, VxeTableMethods } from '../../../types'
 
 const { getI18n, getIcon } = VxeUI
@@ -175,7 +175,7 @@ export default defineComponent({
         cols.push(
           h('li', {
             key: column.id,
-            class: ['vxe-export--panel-column-option', `level--${column.level}`, {
+            class: ['bk-export--panel-column-option', `level--${column.level}`, {
               'is--group': isColGroup,
               'is--checked': isChecked,
               'is--indeterminate': indeterminate,
@@ -189,17 +189,17 @@ export default defineComponent({
             }
           }, [
             h('span', {
-              class: ['vxe-checkbox--icon', indeterminate ? getIcon().TABLE_CHECKBOX_INDETERMINATE : (isChecked ? getIcon().TABLE_CHECKBOX_CHECKED : getIcon().TABLE_CHECKBOX_UNCHECKED)]
+              class: ['bk-checkbox--icon', indeterminate ? getIcon().TABLE_CHECKBOX_INDETERMINATE : (isChecked ? getIcon().TABLE_CHECKBOX_CHECKED : getIcon().TABLE_CHECKBOX_UNCHECKED)]
             }),
             isHtml
               ? h('span', {
                 key: '1',
-                class: 'vxe-checkbox--label',
+                class: 'bk-checkbox--label',
                 innerHTML: colTitle
               })
               : h('span', {
                 key: '0',
-                class: 'vxe-checkbox--label'
+                class: 'bk-checkbox--label'
               }, colTitle)
           ])
         )
@@ -209,7 +209,7 @@ export default defineComponent({
         ? h(VxeUIModalComponent, {
           modelValue: storeData.visible,
           title: getI18n(isPrint ? 'vxe.export.printTitle' : 'vxe.export.expTitle'),
-          className: 'vxe-table-export-popup-wrapper',
+          className: 'bk-table-export-popup-wrapper',
           width: 660,
           mask: true,
           lockView: true,
@@ -224,7 +224,7 @@ export default defineComponent({
         }, {
           default: () => {
             return h('div', {
-              class: 'vxe-export--panel'
+              class: 'bk-export--panel'
             }, [
               h('table', {
                 cellspacing: 0,
@@ -310,13 +310,13 @@ export default defineComponent({
                       h('td', [getI18n('vxe.export.expColumn')]),
                       h('td', [
                         h('div', {
-                          class: 'vxe-export--panel-column'
+                          class: 'bk-export--panel-column'
                         }, [
                           h('ul', {
-                            class: 'vxe-export--panel-column-header'
+                            class: 'bk-export--panel-column-header'
                           }, [
                             h('li', {
-                              class: ['vxe-export--panel-column-option', {
+                              class: ['bk-export--panel-column-option', {
                                 'is--checked': isAllChecked,
                                 'is--indeterminate': isAllIndeterminate
                               }],
@@ -324,15 +324,15 @@ export default defineComponent({
                               onClick: allColumnEvent
                             }, [
                               h('span', {
-                                class: ['vxe-checkbox--icon', isAllIndeterminate ? getIcon().TABLE_CHECKBOX_INDETERMINATE : (isAllChecked ? getIcon().TABLE_CHECKBOX_CHECKED : getIcon().TABLE_CHECKBOX_UNCHECKED)]
+                                class: ['bk-checkbox--icon', isAllIndeterminate ? getIcon().TABLE_CHECKBOX_INDETERMINATE : (isAllChecked ? getIcon().TABLE_CHECKBOX_CHECKED : getIcon().TABLE_CHECKBOX_UNCHECKED)]
                               }),
                               h('span', {
-                                class: 'vxe-checkbox--label'
+                                class: 'bk-checkbox--label'
                               }, getI18n('vxe.export.expCurrentColumn'))
                             ])
                           ]),
                           h('ul', {
-                            class: 'vxe-export--panel-column-body'
+                            class: 'bk-export--panel-column-body'
                           }, cols)
                         ])
                       ])
@@ -341,7 +341,7 @@ export default defineComponent({
                       h('td', getI18n('vxe.export.expOpts')),
                       h('td', [
                         h('div', {
-                          class: 'vxe-export--panel-option-row'
+                          class: 'bk-export--panel-option-row'
                         }, [
                           VxeUICheckboxComponent
                             ? h(VxeUICheckboxComponent, {
@@ -376,7 +376,7 @@ export default defineComponent({
                             : createCommentVNode()
                         ]),
                         h('div', {
-                          class: 'vxe-export--panel-option-row'
+                          class: 'bk-export--panel-option-row'
                         }, [
                           VxeUICheckboxComponent
                             ? h(VxeUICheckboxComponent, {
@@ -429,7 +429,7 @@ export default defineComponent({
                 ])
               ]),
               h('div', {
-                class: 'vxe-export--panel-btns'
+                class: 'bk-export--panel-btns'
               }, [
                 VxeUIButtonComponent
                   ? h(VxeUIButtonComponent, {
@@ -455,19 +455,19 @@ export default defineComponent({
     if (process.env.VUE_APP_VXE_ENV === 'development') {
       nextTick(() => {
         if (!VxeUIModalComponent) {
-          errLog('vxe.error.reqComp', ['vxe-modal'])
+          errLog('vxe.error.reqComp', ['bk-modal'])
         }
         if (!VxeUIButtonComponent) {
-          errLog('vxe.error.reqComp', ['vxe-button'])
+          errLog('vxe.error.reqComp', ['bk-button'])
         }
         if (!VxeUISelectComponent) {
-          errLog('vxe.error.reqComp', ['vxe-select'])
+          errLog('vxe.error.reqComp', ['bk-select'])
         }
         if (!VxeUIInputComponent) {
-          errLog('vxe.error.reqComp', ['vxe-input'])
+          errLog('vxe.error.reqComp', ['bk-input'])
         }
         if (!VxeUICheckboxComponent) {
-          errLog('vxe.error.reqComp', ['vxe-checkbox'])
+          errLog('vxe.error.reqComp', ['bk-checkbox'])
         }
       })
     }

@@ -490,7 +490,7 @@ renderer.mixin({
     tableFilterDefaultMethod: handleFilterMethod,
     tableExportMethod: handleExportSelectMethod
   },
-  VxeInput: {
+  BkInput: {
     tableAutoFocus: 'input',
     renderTableEdit: defaultEditRender,
     renderTableCell (renderOpts, params) {
@@ -518,7 +518,7 @@ renderer.mixin({
     renderTableFilter: defaultFilterRender,
     tableFilterDefaultMethod: handleInputFilterMethod
   },
-  VxeNumberInput: {
+  BkNumberInput: {
     tableAutoFocus: 'input',
     renderTableEdit: defaultEditRender,
     renderTableCell (renderOpts, params) {
@@ -539,7 +539,7 @@ renderer.mixin({
     renderTableFilter: defaultFilterRender,
     tableFilterDefaultMethod: handleInputFilterMethod
   },
-  VxeDatePicker: {
+  BkDatePicker: {
     tableAutoFocus: 'input',
     renderTableEdit: defaultEditRender,
     renderTableCell (renderOpts, params) {
@@ -555,7 +555,7 @@ renderer.mixin({
     renderTableFilter: defaultFilterRender,
     tableFilterDefaultMethod: handleFilterMethod
   },
-  VxeTextarea: {
+  BkTextarea: {
     tableAutoFocus: 'textarea',
     renderTableEdit: defaultEditRender,
     renderTableCell (renderOpts, params) {
@@ -564,10 +564,10 @@ renderer.mixin({
       return getCellLabelVNs(renderOpts, params, cellValue)
     }
   },
-  VxeButton: {
+  BkButton: {
     renderTableDefault: buttonCellRender
   },
-  VxeButtonGroup: {
+  BkButtonGroup: {
     renderTableDefault (renderOpts, params) {
       const { options } = renderOpts
       return [
@@ -579,7 +579,7 @@ renderer.mixin({
       ]
     }
   },
-  VxeSelect: {
+  BkSelect: {
     tableAutoFocus: 'input',
     renderTableEdit: defaultSelectEditRender,
     renderTableDefault: defaultSelectEditRender,
@@ -601,7 +601,7 @@ renderer.mixin({
     tableFilterDefaultMethod: handleFilterMethod,
     tableExportMethod: handleExportSelectMethod
   },
-  VxeTreeSelect: {
+  BkTreeSelect: {
     tableAutoFocus: 'input',
     renderTableEdit: defaultTreeSelectEditRender,
     renderTableCell (renderOpts, params) {
@@ -609,7 +609,7 @@ renderer.mixin({
     },
     tableExportMethod: handleExportTreeSelectMethod
   },
-  VxeIconPicker: {
+  BkIconPicker: {
     tableAutoFocus: 'input',
     renderTableEdit: defaultEditRender,
     renderTableCell (renderOpts, params) {
@@ -620,23 +620,23 @@ renderer.mixin({
       })
     }
   },
-  VxeRadioGroup: {
+  BkRadioGroup: {
     renderTableDefault: radioAndCheckboxEditRender
   },
-  VxeCheckboxGroup: {
+  BkCheckboxGroup: {
     renderTableDefault: radioAndCheckboxEditRender
   },
-  VxeSwitch: {
+  BkSwitcher: {
     tableAutoFocus: 'button',
     renderTableEdit: defaultEditRender,
     renderTableDefault: defaultEditRender
   },
-  VxeUpload: {
+  BkUpload: {
     renderTableEdit: defaultEditRender,
     renderTableCell: defaultEditRender,
     renderTableDefault: defaultEditRender
   },
-  VxeImage: {
+  BkImage: {
     renderTableDefault (renderOpts, params) {
       const { row, column } = params
       const { props } = renderOpts
@@ -650,7 +650,7 @@ renderer.mixin({
       ]
     }
   },
-  VxeImageGroup: {
+  BkImageGroup: {
     renderTableDefault (renderOpts, params) {
       const { row, column } = params
       const { props } = renderOpts
@@ -664,7 +664,7 @@ renderer.mixin({
       ]
     }
   },
-  VxeTextEllipsis: {
+  BkTextEllipsis: {
     renderTableDefault (renderOpts, params) {
       const { row, column } = params
       const { props } = renderOpts

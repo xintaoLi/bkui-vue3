@@ -97,13 +97,13 @@ export default defineComponent({
       if (filterSlot) {
         return [
           h('div', {
-            class: 'vxe-table--filter-template'
+            class: 'bk-table--filter-template'
           }, $xeTable.callSlot(filterSlot, params))
         ]
       } else if (rtFilter) {
         return [
           h('div', {
-            class: 'vxe-table--filter-template'
+            class: 'bk-table--filter-template'
           }, getSlotVNs(rtFilter(filterRender, params)))
         ]
       }
@@ -111,10 +111,10 @@ export default defineComponent({
       const isAllIndeterminate = multiple && filterStore.isIndeterminate
       return [
         h('ul', {
-          class: 'vxe-table--filter-header'
+          class: 'bk-table--filter-header'
         }, [
           h('li', {
-            class: ['vxe-table--filter-option', {
+            class: ['bk-table--filter-option', {
               'is--checked': isAllChecked,
               'is--indeterminate': isAllIndeterminate
             }],
@@ -125,17 +125,17 @@ export default defineComponent({
           }, (multiple
             ? [
                 h('span', {
-                  class: ['vxe-checkbox--icon', isAllIndeterminate ? getIcon().TABLE_CHECKBOX_INDETERMINATE : (isAllChecked ? getIcon().TABLE_CHECKBOX_CHECKED : getIcon().TABLE_CHECKBOX_UNCHECKED)]
+                  class: ['bk-checkbox--icon', isAllIndeterminate ? getIcon().TABLE_CHECKBOX_INDETERMINATE : (isAllChecked ? getIcon().TABLE_CHECKBOX_CHECKED : getIcon().TABLE_CHECKBOX_UNCHECKED)]
                 })
               ]
             : []).concat([
             h('span', {
-              class: 'vxe-checkbox--label'
+              class: 'bk-checkbox--label'
             }, getI18n('vxe.table.allFilter'))
           ]))
         ]),
         h('ul', {
-          class: 'vxe-table--filter-body',
+          class: 'bk-table--filter-body',
           style: maxHeight
             ? {
                 maxHeight: `${maxHeight}px`
@@ -145,7 +145,7 @@ export default defineComponent({
           const isChecked = item._checked
           const isIndeterminate = false
           return h('li', {
-            class: ['vxe-table--filter-option', {
+            class: ['bk-table--filter-option', {
               'is--checked': item._checked
             }],
             title: item.label,
@@ -155,12 +155,12 @@ export default defineComponent({
           }, (multiple
             ? [
                 h('span', {
-                  class: ['vxe-checkbox--icon', isIndeterminate ? getIcon().TABLE_CHECKBOX_INDETERMINATE : (isChecked ? getIcon().TABLE_CHECKBOX_CHECKED : getIcon().TABLE_CHECKBOX_UNCHECKED)]
+                  class: ['bk-checkbox--icon', isIndeterminate ? getIcon().TABLE_CHECKBOX_INDETERMINATE : (isChecked ? getIcon().TABLE_CHECKBOX_CHECKED : getIcon().TABLE_CHECKBOX_UNCHECKED)]
                 })
               ]
             : []).concat([
             h('span', {
-              class: 'vxe-checkbox--label'
+              class: 'bk-checkbox--label'
             }, formatText(item.label, 1))
           ]))
         }))
@@ -178,7 +178,7 @@ export default defineComponent({
       return multiple && (compConf ? !(compConf.showTableFilterFooter === false || compConf.showFilterFooter === false || compConf.isFooter === false) : true)
         ? [
             h('div', {
-              class: 'vxe-table--filter-footer'
+              class: 'bk-table--filter-footer'
             }, [
               h('button', {
                 class: {
@@ -205,7 +205,7 @@ export default defineComponent({
       const params = Object.assign({}, tableInternalData._currFilterParams, { $panel, $table: $xeTable })
       return h('div', {
         class: [
-          'vxe-table--filter-wrapper',
+          'bk-table--filter-wrapper',
           'filter--prevent-default',
           getPropClass(filterClassName, params),
           {

@@ -31,6 +31,7 @@ module.exports = [
       'vue/no-reserved-component-names': 'off',
       '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-var-requires': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
       'perfectionist/sort-classes': 'off',
     },
   },

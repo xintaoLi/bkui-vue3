@@ -133,7 +133,7 @@ export default defineComponent({
       }
       return h('div', {
         ref: refElem,
-        class: ['vxe-table--footer-wrapper', fixedType ? `fixed-${fixedType}--wrapper` : 'body--wrapper'],
+        class: ['bk-table--footer-wrapper', fixedType ? `fixed-${fixedType}--wrapper` : 'body--wrapper'],
         xid: xID,
         onScroll: scrollEvent
       }, [
@@ -141,11 +141,11 @@ export default defineComponent({
           ? createCommentVNode()
           : h('div', {
             ref: refFooterXSpace,
-            class: 'vxe-body--x-space'
+            class: 'bk-body--x-space'
           }),
         h('table', {
           ref: refFooterTable,
-          class: 'vxe-table--footer',
+          class: 'bk-table--footer',
           xid: xID,
           cellspacing: 0,
           cellpadding: 0,
@@ -177,7 +177,7 @@ export default defineComponent({
             const $rowIndex = _rowIndex
             const rowParams = { $table: $xeTable, row: list, _rowIndex, $rowIndex, fixed: fixedType, type: renderType }
             return h('tr', {
-              class: ['vxe-footer--row', footerRowClassName ? XEUtils.isFunction(footerRowClassName) ? footerRowClassName(rowParams) : footerRowClassName : ''],
+              class: ['bk-footer--row', footerRowClassName ? XEUtils.isFunction(footerRowClassName) ? footerRowClassName(rowParams) : footerRowClassName : ''],
               style: footerRowStyle ? (XEUtils.isFunction(footerRowStyle) ? footerRowStyle(rowParams) : footerRowStyle) : null
             }, tableColumn.map((column, $columnIndex) => {
               const { type, showFooterOverflow, footerAlign, align, footerClassName } = column
@@ -267,7 +267,7 @@ export default defineComponent({
                 }
               }
               return h('td', {
-                class: ['vxe-footer--column', column.id, {
+                class: ['bk-footer--column', column.id, {
                   [`col--${footAlign}`]: footAlign,
                   [`col--${type}`]: type,
                   'col--last': $columnIndex === tableColumn.length - 1,
@@ -281,7 +281,7 @@ export default defineComponent({
                 key: columnKey || columnOpts.useKey ? column.id : $columnIndex
               }, [
                 h('div', {
-                  class: ['vxe-cell', {
+                  class: ['bk-cell', {
                     'c--title': showTitle,
                     'c--tooltip': showTooltip,
                     'c--ellipsis': showEllipsis
@@ -291,7 +291,7 @@ export default defineComponent({
             }).concat(scrollbarWidth
               ? [
                   h('td', {
-                    class: 'vxe-footer--gutter col--gutter'
+                    class: 'bk-footer--gutter col--gutter'
                   })
                 ]
               : []))

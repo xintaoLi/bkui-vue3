@@ -40,7 +40,7 @@ export default defineComponent({
       }, [
         h('div', {
           ref: refElem,
-          class: ['vxe-table--context-menu-wrapper', menuOpts.className, {
+          class: ['bk-table--context-menu-wrapper', menuOpts.className, {
             'is--visible': ctxMenuStore.visible
           }],
           style: ctxMenuStore.style
@@ -48,7 +48,7 @@ export default defineComponent({
           return options.every(item => item.visible === false)
             ? createCommentVNode()
             : h('ul', {
-              class: 'vxe-context-menu--option-wrapper',
+              class: 'bk-context-menu--option-wrapper',
               key: gIndex
             }, options.map((item, index) => {
               const hasChildMenus = item.children && item.children.some((child: any) => child.visible !== false)
@@ -64,7 +64,7 @@ export default defineComponent({
                   key: `${gIndex}_${index}`
                 }, [
                   h('a', {
-                    class: 'vxe-context-menu--link',
+                    class: 'bk-context-menu--link',
                     onClick (evnt: Event) {
                       $xeTable.ctxMenuLinkEvent(evnt, item)
                     },
@@ -76,7 +76,7 @@ export default defineComponent({
                     }
                   }, [
                     h('div', {
-                      class: ['vxe-context-menu--link-prefix', prefixOpts.className || '']
+                      class: ['bk-context-menu--link-prefix', prefixOpts.className || '']
                     }, [
                       h('i', {
                         class: prefixOpts.icon || item.prefixIcon
@@ -84,10 +84,10 @@ export default defineComponent({
                       prefixOpts.content ? h('span', {}, `${prefixOpts.content}`) : createCommentVNode()
                     ]),
                     h('div', {
-                      class: 'vxe-context-menu--link-content'
+                      class: 'bk-context-menu--link-content'
                     }, getFuncText(item.name)),
                     h('div', {
-                      class: ['vxe-context-menu--link-suffix', suffixOpts.className || '']
+                      class: ['bk-context-menu--link-suffix', suffixOpts.className || '']
                     }, [
                       h('i', {
                         class: (suffixOpts.icon || item.suffixIcon) || (hasChildMenus ? getIcon().TABLE_MENU_OPTIONS : '')
@@ -97,7 +97,7 @@ export default defineComponent({
                   ]),
                   hasChildMenus
                     ? h('ul', {
-                      class: ['vxe-table--context-menu-clild-wrapper', {
+                      class: ['bk-table--context-menu-clild-wrapper', {
                         'is--show': item === ctxMenuStore.selected && ctxMenuStore.showChild
                       }]
                     }, item.children.map((child: any, cIndex: any) => {
@@ -113,7 +113,7 @@ export default defineComponent({
                           key: `${gIndex}_${index}_${cIndex}`
                         }, [
                           h('a', {
-                            class: 'vxe-context-menu--link',
+                            class: 'bk-context-menu--link',
                             onClick (evnt: Event) {
                               $xeTable.ctxMenuLinkEvent(evnt, child)
                             },
@@ -125,7 +125,7 @@ export default defineComponent({
                             }
                           }, [
                             h('div', {
-                              class: ['vxe-context-menu--link-prefix', childPrefixOpts.className || '']
+                              class: ['bk-context-menu--link-prefix', childPrefixOpts.className || '']
                             }, [
                               h('i', {
                                 class: childPrefixOpts.icon || child.prefixIcon
@@ -133,10 +133,10 @@ export default defineComponent({
                               childPrefixOpts.content ? h('span', `${childPrefixOpts.content}`) : createCommentVNode()
                             ]),
                             h('div', {
-                              class: 'vxe-context-menu--link-content'
+                              class: 'bk-context-menu--link-content'
                             }, getFuncText(child.name)),
                             h('div', {
-                              class: ['vxe-context-menu--link-suffix', childSuffixOpts.className || '']
+                              class: ['bk-context-menu--link-suffix', childSuffixOpts.className || '']
                             }, [
                               h('i', {
                                 class: childSuffixOpts.icon

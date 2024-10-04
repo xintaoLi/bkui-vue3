@@ -41,7 +41,7 @@ import {
   formatText,
   eqEmptyValue,
 } from '../ui/utils';
-import { VxeUI } from '../ui';
+import { setTheme, VxeUI } from '../ui';
 import Cell from './cell';
 import TableBodyComponent from './body';
 import TableHeaderComponent from './header';
@@ -72,13 +72,7 @@ import TableImportPanelComponent from './module/export/import-panel';
 import TableExportPanelComponent from './module/export/export-panel';
 import TableMenuPanelComponent from './module/menu/panel';
 
-import type {
-  VxeLoadingComponent,
-  VxeTooltipInstance,
-  VxeTooltipComponent,
-  VxeTabsConstructor,
-  VxeTabsPrivateMethods,
-} from 'vxe-pc-ui';
+
 import type {
   VxeGridConstructor,
   VxeGridPrivateMethods,
@@ -97,6 +91,8 @@ import type {
   VxeTableProps,
   VxeColumnPropTypes,
 } from '../types';
+import { transpileModule } from 'typescript';
+import useComponentInstall from '../core/useComponentInstall';
 
 const {
   getConfig,
@@ -126,10 +122,11 @@ export default defineComponent({
     const xID = XEUtils.uniqueId();
 
     // 使用已安装的组件，如果未安装则不渲染
-    const VxeUILoadingComponent = VxeUI.getComponent<VxeLoadingComponent>('VxeLoading');
-    const VxeUITooltipComponent = VxeUI.getComponent<VxeTooltipComponent>('VxeTooltip');
+    const VxeUILoadingComponent = VxeUI.getComponent('BkLoading');
+    const VxeUITooltipComponent = VxeUI.getComponent('BkTooltip');
+    useComponentInstall(props);
 
-    const $xeTabs = inject<(VxeTabsConstructor & VxeTabsPrivateMethods) | null>('$xeTabs', null);
+    const $xeTabs = inject('$xeTabs', null);
 
     const { computeSize } = useFns.useSize(props);
 
@@ -434,9 +431,9 @@ export default defineComponent({
     let tablePrivateMethods = {} as TablePrivateMethods;
 
     const refElem = ref() as Ref<HTMLDivElement>;
-    const refTooltip = ref() as Ref<VxeTooltipInstance>;
-    const refCommTooltip = ref() as Ref<VxeTooltipInstance>;
-    const refValidTooltip = ref() as Ref<VxeTooltipInstance>;
+    const refTooltip = ref() as Ref;
+    const refCommTooltip = ref() as Ref;
+    const refValidTooltip = ref() as Ref;
     const refTableMenu = ref() as Ref<any>;
     const refTableFilter = ref() as Ref<ComponentPublicInstance>;
     const refTableCustom = ref() as Ref<ComponentPublicInstance>;
@@ -1349,7 +1346,7 @@ export default defineComponent({
         if (el) {
           autoWidthColumnList.forEach(column => {
             const cellElList = el.querySelectorAll(
-              `.vxe-header--column.${column.id}>.vxe-cell,.vxe-body--column.${column.id}>.vxe-cell,.vxe-footer--column.${column.id}>.vxe-cell`,
+              `.bk-header--column.${column.id}>.bk-cell,.bk-body--column.${column.id}>.bk-cell,.bk-footer--column.${column.id}>.bk-cell`,
             );
             const firstCellEl = cellElList[0];
             let paddingSize = 0;
@@ -2048,7 +2045,7 @@ export default defineComponent({
                 if (listElem) {
                   XEUtils.arrayEach(listElem.querySelectorAll(`.${column.id}`), (elem: any) => {
                     const colspan = parseInt(elem.getAttribute('colspan') || 1);
-                    const cellElem = elem.querySelector('.vxe-cell');
+                    const cellElem = elem.querySelector('.bk-cell');
                     let colWidth = column.renderWidth;
                     if (cellElem) {
                       if (colspan > 1) {
@@ -3557,7 +3554,7 @@ export default defineComponent({
             bodyElem = tableBody.$el as HTMLDivElement;
           }
           if (bodyElem) {
-            return bodyElem.querySelector(`.vxe-body--row[rowid="${rowid}"] .${column.id}`);
+            return bodyElem.querySelector(`.bk-body--row[rowid="${rowid}"] .${column.id}`);
           }
         }
         return null;
@@ -5264,12 +5261,12 @@ export default defineComponent({
       const tableMenu = refTableMenu.value;
       // 筛选
       if (tableFilter) {
-        if (getEventTargetNode(evnt, el, 'vxe-cell--filter').flag) {
+        if (getEventTargetNode(evnt, el, 'bk-cell--filter').flag) {
           // 如果点击了筛选按钮
         } else if (getEventTargetNode(evnt, tableFilter.$el as HTMLDivElement).flag) {
           // 如果点击筛选容器
         } else {
-          if (!getEventTargetNode(evnt, document.body, 'vxe-table--ignore-clear').flag) {
+          if (!getEventTargetNode(evnt, document.body, 'bk-table--ignore-clear').flag) {
             tablePrivateMethods.preventEvent(evnt, 'event.clearFilter', filterStore.args, tableMethods.closeFilter);
           }
         }
@@ -5278,13 +5275,13 @@ export default defineComponent({
       if (tableCustom) {
         if (
           customStore.btnEl === evnt.target ||
-          getEventTargetNode(evnt, document.body, 'vxe-toolbar-custom-target').flag
+          getEventTargetNode(evnt, document.body, 'bk-toolbar-custom-target').flag
         ) {
           // 如果点击了自定义列按钮
         } else if (getEventTargetNode(evnt, tableCustom.$el as HTMLDivElement).flag) {
           // 如果点击自定义列容器
         } else {
-          if (!getEventTargetNode(evnt, document.body, 'vxe-table--ignore-clear').flag) {
+          if (!getEventTargetNode(evnt, document.body, 'bk-table--ignore-clear').flag) {
             tablePrivateMethods.preventEvent(evnt, 'event.clearCustom', {}, () => {
               if ($xeTable.closeCustom) {
                 $xeTable.closeCustom();
@@ -5304,12 +5301,12 @@ export default defineComponent({
               // 如果是激活状态，且点击了校验提示框
             } else if (!internalData._lastCallTime || internalData._lastCallTime + 50 < Date.now()) {
               // 如果是激活状态，点击了单元格之外
-              if (!getEventTargetNode(evnt, document.body, 'vxe-table--ignore-clear').flag) {
+              if (!getEventTargetNode(evnt, document.body, 'bk-table--ignore-clear').flag) {
                 // 如果手动调用了激活单元格，避免触发源被移除后导致重复关闭
                 tablePrivateMethods.preventEvent(evnt, 'event.clearEdit', actived.args, () => {
                   let isClear;
                   if (editOpts.mode === 'row') {
-                    const rowTargetNode = getEventTargetNode(evnt, el, 'vxe-body--row');
+                    const rowTargetNode = getEventTargetNode(evnt, el, 'bk-body--row');
                     const rowNodeRest = rowTargetNode.flag ? tableMethods.getRowNode(rowTargetNode.targetElem) : null;
                     // row 方式，如果点击了不同行
                     isClear = rowNodeRest ? !$xeTable.eqRow(rowNodeRest.item, actived.args.row) : false;
@@ -5319,16 +5316,16 @@ export default defineComponent({
                   }
                   // 如果点击表头行，则清除激活状态
                   if (!isClear) {
-                    isClear = getEventTargetNode(evnt, el, 'vxe-header--row').flag;
+                    isClear = getEventTargetNode(evnt, el, 'bk-header--row').flag;
                   }
                   // 如果点击表尾行，则清除激活状态
                   if (!isClear) {
-                    isClear = getEventTargetNode(evnt, el, 'vxe-footer--row').flag;
+                    isClear = getEventTargetNode(evnt, el, 'bk-footer--row').flag;
                   }
                   // 如果固定了高度且点击了行之外的空白处，则清除激活状态
                   if (!isClear && props.height && !reactData.overflowY) {
                     const bodyWrapperElem = evnt.target as HTMLDivElement;
-                    if (hasClass(bodyWrapperElem, 'vxe-table--body-wrapper')) {
+                    if (hasClass(bodyWrapperElem, 'bk-table--body-wrapper')) {
                       isClear = evnt.offsetY < bodyWrapperElem.clientHeight;
                     }
                   }
@@ -5360,7 +5357,7 @@ export default defineComponent({
               if (
                 cellAreas &&
                 cellAreas.length &&
-                !getEventTargetNode(evnt, document.body, 'vxe-table--ignore-areas-clear').flag
+                !getEventTargetNode(evnt, document.body, 'bk-table--ignore-areas-clear').flag
               ) {
                 tablePrivateMethods.preventEvent(evnt, 'event.clearAreas', {}, () => {
                   $xeTable.clearCellAreas();
@@ -6627,13 +6624,13 @@ export default defineComponent({
           let overflowElem;
           let tipElem;
           if (column.treeNode) {
-            overflowElem = cell.querySelector('.vxe-tree-cell');
+            overflowElem = cell.querySelector('.bk-tree-cell');
             if (column.type === 'html') {
-              tipElem = cell.querySelector('.vxe-cell--html');
+              tipElem = cell.querySelector('.bk-cell--html');
             }
           } else {
             tipElem = cell.querySelector(
-              column.type === 'html' ? '.vxe-cell--html' : '.vxe-cell--label',
+              column.type === 'html' ? '.bk-cell--html' : '.bk-cell--label',
             ) as HTMLElement;
           }
           handleTooltip(evnt, cell, (overflowElem || cell.children[0]) as HTMLElement, tipElem as HTMLElement, params);
@@ -6651,7 +6648,7 @@ export default defineComponent({
           handleTooltip(
             evnt,
             cell,
-            (cell.querySelector('.vxe-cell--item') as HTMLElement) || cell.children[0],
+            (cell.querySelector('.bk-cell--item') as HTMLElement) || cell.children[0],
             null,
             params,
           );
@@ -6681,8 +6678,8 @@ export default defineComponent({
         const { column } = params;
         const cell = evnt.currentTarget;
         const triggerResizable = _lastResizeTime && _lastResizeTime > Date.now() - 300;
-        const triggerSort = getEventTargetNode(evnt, cell, 'vxe-cell--sort').flag;
-        const triggerFilter = getEventTargetNode(evnt, cell, 'vxe-cell--filter').flag;
+        const triggerSort = getEventTargetNode(evnt, cell, 'bk-cell--sort').flag;
+        const triggerFilter = getEventTargetNode(evnt, cell, 'bk-cell--filter').flag;
         if (sortOpts.trigger === 'cell' && !(triggerResizable || triggerSort || triggerFilter)) {
           tablePrivateMethods.triggerSortEvent(evnt, column, getNextSortOrder(column));
         }
@@ -6720,10 +6717,10 @@ export default defineComponent({
         const isCheckboxType = type === 'checkbox';
         const isExpandType = type === 'expand';
         const cell = evnt.currentTarget;
-        const triggerRadio = isRadioType && getEventTargetNode(evnt, cell, 'vxe-cell--radio').flag;
-        const triggerCheckbox = isCheckboxType && getEventTargetNode(evnt, cell, 'vxe-cell--checkbox').flag;
-        const triggerTreeNode = treeNode && getEventTargetNode(evnt, cell, 'vxe-tree--btn-wrapper').flag;
-        const triggerExpandNode = isExpandType && getEventTargetNode(evnt, cell, 'vxe-table--expanded').flag;
+        const triggerRadio = isRadioType && getEventTargetNode(evnt, cell, 'bk-cell--radio').flag;
+        const triggerCheckbox = isCheckboxType && getEventTargetNode(evnt, cell, 'bk-cell--checkbox').flag;
+        const triggerTreeNode = treeNode && getEventTargetNode(evnt, cell, 'bk-tree--btn-wrapper').flag;
+        const triggerExpandNode = isExpandType && getEventTargetNode(evnt, cell, 'bk-table--expanded').flag;
         params = Object.assign({ cell, triggerRadio, triggerCheckbox, triggerTreeNode, triggerExpandNode }, params);
         if (!triggerCheckbox && !triggerRadio) {
           // 如果是展开行
@@ -7092,11 +7089,11 @@ export default defineComponent({
           const tableHeaderElem = tableHeader ? (tableHeader.$el as HTMLDivElement) : null;
           const tableFooterElem = tableFooter ? (tableFooter.$el as HTMLDivElement) : null;
           const headerElem = tableHeaderElem
-            ? (tableHeaderElem.querySelector('.vxe-table--header') as HTMLTableElement)
+            ? (tableHeaderElem.querySelector('.bk-table--header') as HTMLTableElement)
             : null;
-          const bodyElem = tableBodyElem.querySelector('.vxe-table--body') as HTMLTableElement;
+          const bodyElem = tableBodyElem.querySelector('.bk-table--body') as HTMLTableElement;
           const footerElem = tableFooterElem
-            ? (tableFooterElem.querySelector('.vxe-table--footer') as HTMLTableElement)
+            ? (tableFooterElem.querySelector('.bk-table--footer') as HTMLTableElement)
             : null;
           const leftSpaceWidth = visibleColumn
             .slice(0, scrollXStore.startIndex)
@@ -7224,7 +7221,7 @@ export default defineComponent({
       clearHoverRow() {
         const el = refElem.value;
         if (el) {
-          XEUtils.arrayEach(el.querySelectorAll('.vxe-body--row.row--hover'), elem => removeClass(elem, 'row--hover'));
+          XEUtils.arrayEach(el.querySelectorAll('.bk-body--row.row--hover'), elem => removeClass(elem, 'row--hover'));
         }
         internalData.hoverRow = null;
       },
@@ -7282,7 +7279,7 @@ export default defineComponent({
         'div',
         {
           ref: isFixedLeft ? refLeftContainer : refRightContainer,
-          class: `vxe-table--fixed-${fixedType}-wrapper`,
+          class: `bk-table--fixed-${fixedType}-wrapper`,
         },
         [
           showHeader
@@ -7392,14 +7389,14 @@ export default defineComponent({
         {
           ref: refElem,
           class: [
-            'vxe-table',
-            'vxe-table--render-default',
+            'bk-table',
+            'bk-table--render-default',
             `tid_${xID}`,
             `border--${tableBorder}`,
             {
               [`size--${vSize}`]: vSize,
               [`valid-msg--${validOpts.msgMode}`]: !!editRules,
-              'vxe-editable': !!editConfig,
+              'bk-editable': !!editConfig,
               'old-cell-valid': editRules && getConfig().cellVaildMode === 'obsolete',
               'cell--highlight': highlightCell,
               'cell--selected': mouseConfig && mouseOpts.selected,
@@ -7436,20 +7433,20 @@ export default defineComponent({
           h(
             'div',
             {
-              class: 'vxe-table-slots',
+              class: 'bk-table-slots',
             },
             slots.default ? slots.default({}) : [],
           ),
           h(
             'div',
             {
-              class: 'vxe-table--render-wrapper',
+              class: 'bk-table--render-wrapper',
             },
             [
               h(
                 'div',
                 {
-                  class: 'vxe-table--main-wrapper',
+                  class: 'bk-table--main-wrapper',
                 },
                 [
                   /**
@@ -7486,7 +7483,7 @@ export default defineComponent({
               h(
                 'div',
                 {
-                  class: 'vxe-table--fixed-wrapper',
+                  class: 'bk-table--fixed-wrapper',
                 },
                 [
                   /**
@@ -7508,13 +7505,13 @@ export default defineComponent({
             'div',
             {
               ref: refEmptyPlaceholder,
-              class: 'vxe-table--empty-placeholder',
+              class: 'bk-table--empty-placeholder',
             },
             [
               h(
                 'div',
                 {
-                  class: 'vxe-table--empty-content',
+                  class: 'bk-table--empty-content',
                 },
                 renderEmptyContenet(),
               ),
@@ -7524,14 +7521,14 @@ export default defineComponent({
            * 边框线
            */
           h('div', {
-            class: 'vxe-table--border-line',
+            class: 'bk-table--border-line',
           }),
           /**
            * 列宽线
            */
           h('div', {
             ref: refCellResizeBar,
-            class: 'vxe-table--resizable-bar',
+            class: 'bk-table--resizable-bar',
             style: overflowX
               ? {
                   'padding-bottom': `${scrollbarHeight}px`,
@@ -7545,8 +7542,8 @@ export default defineComponent({
             ? h(
                 VxeUILoadingComponent,
                 {
-                  class: 'vxe-table--loading',
-                  modelValue: currLoading,
+                  class: 'bk-table--loading',
+                  loading: currLoading,
                   icon: loadingOpts.icon,
                   text: loadingOpts.text,
                 },
@@ -7639,7 +7636,7 @@ export default defineComponent({
                         {
                           'old-cell-valid': editRules && getConfig().cellVaildMode === 'obsolete',
                         },
-                        'vxe-table--valid-error',
+                        'bk-table--valid-error',
                       ],
                       ...((validOpts.message === 'tooltip' || tableData.length === 1 ? validTipOpts : {}) as any),
                     })
@@ -7651,6 +7648,7 @@ export default defineComponent({
     };
 
     const dataFlag = ref(0);
+
     watch(
       () => (props.data ? props.data.length : -1),
       () => {
@@ -8144,7 +8142,7 @@ export default defineComponent({
       nextTick(() => {
         if (props.loading) {
           if (!VxeUILoadingComponent) {
-            errLog('vxe.error.reqComp', ['vxe-loading']);
+            errLog('vxe.error.reqComp', ['bk-loading']);
           }
         }
         if (
@@ -8158,7 +8156,7 @@ export default defineComponent({
           props.editRules
         ) {
           if (!VxeUITooltipComponent) {
-            errLog('vxe.error.reqComp', ['vxe-tooltip']);
+            errLog('vxe.error.reqComp', ['bk-tooltip']);
           }
         }
       });

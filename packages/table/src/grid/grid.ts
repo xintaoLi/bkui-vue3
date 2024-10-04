@@ -25,8 +25,9 @@ import tableComponentProps from '../main/props';
 import tableComponentEmits from '../main/emits';
 import { getSlotVNs } from '../ui/vn';
 import { errLog } from '../ui/log';
+import useComponentInstall from '../core/useComponentInstall';
 
-// import type { ValueOf, VxePagerComponent, VxeFormComponent, VxeFormEvents, VxeFormInstance, VxePagerEvents, VxeFormItemProps, VxePagerInstance } from 'vxe-pc-ui'
+// import type { ValueOf, VxePagerComponent, VxeFormComponent, VxeFormEvents, VxeFormInstance, VxePagerEvents, VxeFormItemProps, VxePagerInstance } from 'bk-pc-ui'
 import type {
   VxeTableMethods,
   VxeGridConstructor,
@@ -219,6 +220,8 @@ export default defineComponent({
     const { slots, emit } = context;
 
     const xID = XEUtils.uniqueId();
+
+    useComponentInstall(props);
 
     // 使用已安装的组件，如果未安装则不渲染
     // const VxeUIFormComponent = VxeUI.getComponent<VxeFormComponent>('VxeForm')
@@ -664,7 +667,7 @@ export default defineComponent({
           {
             ref: refFormWrapper,
             key: 'form',
-            class: 'vxe-grid--form-wrapper',
+            class: 'bk-grid--form-wrapper',
           },
           slotVNs,
         );
@@ -713,7 +716,7 @@ export default defineComponent({
           {
             ref: refToolbarWrapper,
             key: 'toolbar',
-            class: 'vxe-grid--toolbar-wrapper',
+            class: 'bk-grid--toolbar-wrapper',
           },
           slotVNs,
         );
@@ -731,7 +734,7 @@ export default defineComponent({
           {
             ref: refTopWrapper,
             key: 'top',
-            class: 'vxe-grid--top-wrapper',
+            class: 'bk-grid--top-wrapper',
           },
           slots.top({ $grid: $xeGrid }),
         );
@@ -745,7 +748,7 @@ export default defineComponent({
         return h(
           'div',
           {
-            class: 'vxe-grid--left-wrapper',
+            class: 'bk-grid--left-wrapper',
           },
           leftSlot({ $grid: $xeGrid }),
         );
@@ -759,7 +762,7 @@ export default defineComponent({
         return h(
           'div',
           {
-            class: 'vxe-grid--right-wrapper',
+            class: 'bk-grid--right-wrapper',
           },
           rightSlot({ $grid: $xeGrid }),
         );
@@ -798,7 +801,7 @@ export default defineComponent({
       return h(
         'div',
         {
-          class: 'vxe-grid--table-wrapper',
+          class: 'bk-grid--table-wrapper',
         },
         [
           h(
@@ -824,7 +827,7 @@ export default defineComponent({
           {
             ref: refBottomWrapper,
             key: 'bottom',
-            class: 'vxe-grid--bottom-wrapper',
+            class: 'bk-grid--bottom-wrapper',
           },
           slots.bottom({ $grid: $xeGrid }),
         );
@@ -874,7 +877,7 @@ export default defineComponent({
           {
             ref: refPagerWrapper,
             key: 'pager',
-            class: 'vxe-grid--pager-wrapper',
+            class: 'bk-grid--pager-wrapper',
           },
           slotVNs,
         );
@@ -902,7 +905,7 @@ export default defineComponent({
                 'div',
                 {
                   key: 'table',
-                  class: 'vxe-grid--table-container',
+                  class: 'bk-grid--table-container',
                 },
                 [renderTableLeft(), renderTable(), renderTableRight()],
               ),
@@ -1551,12 +1554,12 @@ export default defineComponent({
         nextTick(() => {
           if (props.formConfig) {
             // if (!VxeUIFormComponent) {
-            //   errLog('vxe.error.reqComp', ['vxe-form'])
+            //   errLog('vxe.error.reqComp', ['bk-form'])
             // }
           }
           if (props.pagerConfig) {
             // if (!VxeUIPagerComponent) {
-            //   errLog('vxe.error.reqComp', ['vxe-pager'])
+            //   errLog('vxe.error.reqComp', ['bk-pager'])
             // }
           }
         });
@@ -1598,7 +1601,7 @@ export default defineComponent({
         {
           ref: refElem,
           class: [
-            'vxe-grid',
+            'bk-grid',
             {
               [`size--${vSize}`]: vSize,
               'is--animat': !!props.animat,

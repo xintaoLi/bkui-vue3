@@ -188,7 +188,7 @@ hooks.add('tableMenuModule', {
           // 分别匹配表尾、内容、表尾的快捷菜单
           for (let index = 0; index < layoutList.length; index++) {
             const layout = layoutList[index] as 'header' | 'body' | 'footer'
-            const columnTargetNode = getEventTargetNode(evnt, el, `vxe-${layout}--column`, (target: any) => {
+            const columnTargetNode = getEventTargetNode(evnt, el, `bk-${layout}--column`, (target: any) => {
               // target=td|th，直接向上找 table 去匹配即可
               return target.parentNode.parentNode.parentNode.getAttribute('xid') === xID
             })
@@ -214,7 +214,7 @@ hooks.add('tableMenuModule', {
               handleOpenMenuEvent(evnt, layout, params)
               $xeTable.dispatchEvent(eventType, params, evnt)
               return
-            } else if (getEventTargetNode(evnt, el, `vxe-table--${layout}-wrapper`, target => target.getAttribute('xid') === xID).flag) {
+            } else if (getEventTargetNode(evnt, el, `bk-table--${layout}-wrapper`, target => target.getAttribute('xid') === xID).flag) {
               if (menuOpts.trigger === 'cell') {
                 evnt.preventDefault()
               } else {

@@ -1,15 +1,15 @@
 @import '../helpers/mixin.less';
 
 /*toolbar*/
-.vxe-toolbar {
+.bk-toolbar {
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 0.6em 0;
-  color: var(--vxe-ui-font-color);
-  font-family: var(--vxe-ui-font-family);
-  background-color: var(--vxe-ui-layout-background-color);
+  color: var(--bk-ui-font-color);
+  font-family: var(--bk-ui-font-family);
+  background-color: var(--bk-ui-layout-background-color);
   &:after {
     content: "";
     display: block;
@@ -19,9 +19,9 @@
     visibility: hidden;
   }
   &.is--perfect {
-    border: 1px solid var(--vxe-ui-table-border-color);
+    border: 1px solid var(--bk-ui-table-border-color);
     border-bottom-width: 0;
-    background-color: var(--vxe-ui-table-header-background-color);
+    background-color: var(--bk-ui-table-header-background-color);
   }
   &.is--loading {
     &:before {
@@ -33,70 +33,70 @@
       height: 100%;
       z-index: 999;
       user-select: none;
-      background-color: var(--vxe-ui-loading-background-color);
+      background-color: var(--bk-ui-loading-background-color);
     }
   }
-  .vxe-buttons--wrapper {
+  .bk-buttons--wrapper {
     flex-grow: 1;
-    & > .vxe-button+.vxe-button--item,
-    & > .vxe-button--item+.vxe-button,
-    & > .vxe-button--item+.vxe-button--item {
+    & > .bk-button+.bk-button--item,
+    & > .bk-button--item+.bk-button,
+    & > .bk-button--item+.bk-button--item {
       margin-left: 0.8em;
     }
-    & > .vxe-button--item {
+    & > .bk-button--item {
       display: inline-block;
     }
   }
-  .vxe-tools--wrapper {
-    & > .vxe-button+.vxe-tool--item,
-    & > .vxe-tool--item+.vxe-button,
-    & > .vxe-tool--item+.vxe-tool--item {
+  .bk-tools--wrapper {
+    & > .bk-button+.bk-tool--item,
+    & > .bk-tool--item+.bk-button,
+    & > .bk-tool--item+.bk-tool--item {
       margin-left: 0.8em;
     }
-    & > .vxe-tool--item {
+    & > .bk-tool--item {
       display: inline-block;
     }
   }
-  .vxe-tools--wrapper {
-    & > .vxe-button {
+  .bk-tools--wrapper {
+    & > .bk-button {
       display: flex;
       align-items: center;
       justify-content: center;
     }
   }
-  .vxe-buttons--wrapper,
-  .vxe-tools--wrapper,
-  .vxe-tools--operate {
+  .bk-buttons--wrapper,
+  .bk-tools--wrapper,
+  .bk-tools--operate {
     display: flex;
     align-items: center;
   }
-  .vxe-buttons--wrapper,
-  .vxe-tools--wrapper {
+  .bk-buttons--wrapper,
+  .bk-tools--wrapper {
     flex-wrap: wrap;
   }
-  .vxe-tools--operate {
+  .bk-tools--operate {
     flex-shrink: 0;
   }
-  .vxe-custom--wrapper {
+  .bk-custom--wrapper {
     position: relative;
     &.is--active {
-      & > .vxe-button {
-        background-color: var(--vxe-ui-toolbar-custom-active-background-color);
+      & > .bk-button {
+        background-color: var(--bk-ui-toolbar-custom-active-background-color);
         border-radius: 50%;
       }
     }
   }
 }
 
-.vxe-toolbar {
-  font-size: var(--vxe-ui-font-size-default);
+.bk-toolbar {
+  font-size: var(--bk-ui-font-size-default);
   &.size--medium {
-    font-size: var(--vxe-ui-font-size-medium);
+    font-size: var(--bk-ui-font-size-medium);
   }
   &.size--small {
-    font-size: var(--vxe-ui-font-size-small);
+    font-size: var(--bk-ui-font-size-small);
   }
   &.size--mini {
-    font-size: var(--vxe-ui-font-size-mini);
+    font-size: var(--bk-ui-font-size-mini);
   }
 }

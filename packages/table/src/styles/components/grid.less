@@ -1,4 +1,4 @@
-.vxe-grid {
+.bk-grid {
   position: relative;
   &.is--loading {
     &:before {
@@ -10,10 +10,10 @@
       height: 100%;
       z-index: 99;
       user-select: none;
-      background-color: var(--vxe-ui-loading-background-color);
+      background-color: var(--bk-ui-loading-background-color);
     }
-    & > .vxe-table {
-      .vxe-loading {
+    & > .bk-table {
+      .bk-loading {
         background-color: transparent;
       }
     }
@@ -25,38 +25,38 @@
     width: 100%;
     height: 100%;
     padding: 0.5em 1em;
-    background-color: var(--vxe-ui-layout-background-color);
+    background-color: var(--bk-ui-layout-background-color);
   }
-  .vxe-grid--form-wrapper,
-  .vxe-grid--top-wrapper,
-  .vxe-grid--bottom-wrapper  {
+  .bk-grid--form-wrapper,
+  .bk-grid--top-wrapper,
+  .bk-grid--bottom-wrapper  {
     position: relative;
   }
-  .vxe-grid--table-container {
+  .bk-grid--table-container {
     display: flex;
     flex-direction: row;
   }
-  .vxe-grid--left-wrapper,
-  .vxe-grid--right-wrapper {
+  .bk-grid--left-wrapper,
+  .bk-grid--right-wrapper {
     flex-shrink: 0;
     overflow: auto;
     outline: 0;
   }
-  .vxe-grid--table-wrapper {
+  .bk-grid--table-wrapper {
     flex-grow: 1;
     overflow: hidden;
   }
 }
 
-.vxe-grid {
-  font-size: var(--vxe-ui-font-size-default);
+.bk-grid {
+  font-size: var(--bk-ui-font-size-default);
   &.size--medium {
-    font-size: var(--vxe-ui-font-size-medium);
+    font-size: var(--bk-ui-font-size-medium);
   }
   &.size--small {
-    font-size: var(--vxe-ui-font-size-small);
+    font-size: var(--bk-ui-font-size-small);
   }
   &.size--mini {
-    font-size: var(--vxe-ui-font-size-mini);
+    font-size: var(--bk-ui-font-size-mini);
   }
 }

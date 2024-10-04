@@ -37,9 +37,7 @@ VxeUI.setConfig({
     columnConfig: {
       maxFixedSize: 4
     },
-    // menuConfig: {
-    //   visibleMethod () {}
-    // },
+
     customConfig: {
       allowVisible: true,
       allowResizable: true,
@@ -47,8 +45,7 @@ VxeUI.setConfig({
       allowSort: true,
       showFooter: true,
       placement: 'top-right',
-      //  storage: false,
-      //  checkMethod () {},
+
       modalOptions: {
         showMaximize: true,
         mask: true,
@@ -189,7 +186,7 @@ VxeUI.setConfig({
   }
 })
 
-const iconPrefix = 'vxe-table-icon-'
+const iconPrefix = 'bk-table-icon-'
 
 VxeUI.setIcon({
   // table

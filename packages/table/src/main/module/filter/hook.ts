@@ -114,8 +114,8 @@ hooks.add('tableFilterModule', {
             }
             const filterWidth = filterWrapperElem.offsetWidth
             const filterHeight = filterWrapperElem.offsetHeight
-            const filterHeadElem = filterWrapperElem.querySelector<HTMLDivElement>('.vxe-table--filter-header')
-            const filterFootElem = filterWrapperElem.querySelector<HTMLDivElement>('.vxe-table--filter-footer')
+            const filterHeadElem = filterWrapperElem.querySelector<HTMLDivElement>('.bk-table--filter-header')
+            const filterFootElem = filterWrapperElem.querySelector<HTMLDivElement>('.bk-table--filter-footer')
             const centerWidth = filterWidth / 2
             const minMargin = 10
             const maxLeft = bodyElem.clientWidth - filterWidth - minMargin
@@ -254,7 +254,7 @@ hooks.add('tableFilterModule', {
             const headerWrapperRef = elemStore[`${fixed || 'main'}-header-wrapper`] || elemStore['main-header-wrapper']
             const headerWrapperElem = headerWrapperRef ? headerWrapperRef.value : null
             if (headerWrapperElem) {
-              const filterBtnElem = headerWrapperElem.querySelector(`.vxe-header--column.${column.id} .vxe-filter--btn`) as HTMLElement
+              const filterBtnElem = headerWrapperElem.querySelector(`.bk-header--column.${column.id} .bk-filter--btn`) as HTMLElement
               triggerEvent(filterBtnElem, 'click')
             }
           })

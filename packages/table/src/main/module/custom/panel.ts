@@ -154,7 +154,7 @@ export default defineComponent({
         VxeUI.modal
           .confirm({
             content: getI18n('vxe.custom.cstmConfirmRestore'),
-            className: 'vxe-table--ignore-clear',
+            className: 'bk-table--ignore-clear',
             escClosable: true,
           })
           .then(type => {
@@ -411,7 +411,7 @@ export default defineComponent({
                 key: column.id,
                 colid: column.id,
                 class: [
-                  'vxe-table-custom--option',
+                  'bk-table-custom--option',
                   `level--${column.level}`,
                   {
                     'is--group': isColGroup,
@@ -427,7 +427,7 @@ export default defineComponent({
                       'div',
                       {
                         class: [
-                          'vxe-table-custom--checkbox-option',
+                          'bk-table-custom--checkbox-option',
                           {
                             'is--checked': isChecked,
                             'is--indeterminate': isIndeterminate,
@@ -444,7 +444,7 @@ export default defineComponent({
                       [
                         h('span', {
                           class: [
-                            'vxe-checkbox--icon',
+                            'bk-checkbox--icon',
                             isIndeterminate
                               ? getIcon().TABLE_CHECKBOX_INDETERMINATE
                               : isChecked
@@ -459,14 +459,14 @@ export default defineComponent({
                   ? h(
                       'div',
                       {
-                        class: 'vxe-table-custom--sort-option',
+                        class: 'bk-table-custom--sort-option',
                       },
                       [
                         h(
                           'span',
                           {
                             class: [
-                              'vxe-table-custom--sort-btn',
+                              'bk-table-custom--sort-btn',
                               {
                                 'is--disabled': isHidden,
                               },
@@ -491,14 +491,14 @@ export default defineComponent({
                 column.type === 'html'
                   ? h('div', {
                       key: '1',
-                      class: 'vxe-table-custom--checkbox-label',
+                      class: 'bk-table-custom--checkbox-label',
                       innerHTML: colTitle,
                     })
                   : h(
                       'div',
                       {
                         key: '0',
-                        class: 'vxe-table-custom--checkbox-label',
+                        class: 'bk-table-custom--checkbox-label',
                       },
                       colTitle,
                     ),
@@ -506,7 +506,7 @@ export default defineComponent({
                   ? h(
                       'div',
                       {
-                        class: 'vxe-table-custom--fixed-option',
+                        class: 'bk-table-custom--fixed-option',
                       },
                       [
                         VxeUIButtonComponent
@@ -560,7 +560,7 @@ export default defineComponent({
           ref: refElem,
           key: 'simple',
           class: [
-            'vxe-table-custom-wrapper',
+            'bk-table-custom-wrapper',
             `placement--${placement}`,
             {
               'is--active': customStore.visible,
@@ -578,13 +578,13 @@ export default defineComponent({
               h(
                 'ul',
                 {
-                  class: 'vxe-table-custom--header',
+                  class: 'bk-table-custom--header',
                 },
                 [
                   h(
                     'li',
                     {
-                      class: 'vxe-table-custom--option',
+                      class: 'bk-table-custom--option',
                     },
                     [
                       allowVisible
@@ -592,7 +592,7 @@ export default defineComponent({
                             'div',
                             {
                               class: [
-                                'vxe-table-custom--checkbox-option',
+                                'bk-table-custom--checkbox-option',
                                 {
                                   'is--checked': isAllChecked,
                                   'is--indeterminate': isAllIndeterminate,
@@ -604,7 +604,7 @@ export default defineComponent({
                             [
                               h('span', {
                                 class: [
-                                  'vxe-checkbox--icon',
+                                  'bk-checkbox--icon',
                                   isAllIndeterminate
                                     ? getIcon().TABLE_CHECKBOX_INDETERMINATE
                                     : isAllChecked
@@ -615,7 +615,7 @@ export default defineComponent({
                               h(
                                 'span',
                                 {
-                                  class: 'vxe-checkbox--label',
+                                  class: 'bk-checkbox--label',
                                 },
                                 getI18n('vxe.toolbar.customAll'),
                               ),
@@ -624,7 +624,7 @@ export default defineComponent({
                         : h(
                             'span',
                             {
-                              class: 'vxe-checkbox--label',
+                              class: 'bk-checkbox--label',
                             },
                             getI18n('vxe.table.customTitle'),
                           ),
@@ -636,14 +636,14 @@ export default defineComponent({
                 'div',
                 {
                   ref: bodyElemRef,
-                  class: 'vxe-table-custom--list-wrapper',
+                  class: 'bk-table-custom--list-wrapper',
                 },
                 [
                   h(
                     TransitionGroup,
                     {
-                      class: 'vxe-table-custom--body',
-                      name: 'vxe-table-custom--list',
+                      class: 'bk-table-custom--body',
+                      name: 'bk-table-custom--list',
                       tag: 'ul',
                       ...customWrapperOns,
                     },
@@ -655,7 +655,7 @@ export default defineComponent({
                     'div',
                     {
                       ref: dragHintElemRef,
-                      class: 'vxe-table-custom-popup--drag-hint',
+                      class: 'bk-table-custom-popup--drag-hint',
                     },
                     getI18n('vxe.custom.cstmDragTarget', [
                       dragColumn && dragColumn.type !== 'html' ? dragColumn.getTitle() : '',
@@ -667,7 +667,7 @@ export default defineComponent({
                 ? h(
                     'div',
                     {
-                      class: 'vxe-table-custom--footer',
+                      class: 'bk-table-custom--footer',
                     },
                     [
                       VxeUIButtonComponent
@@ -747,7 +747,7 @@ export default defineComponent({
                 key: column.id,
                 colid: column.id,
                 class: [
-                  `vxe-table-custom-popup--row level--${column.level}`,
+                  `bk-table-custom-popup--row level--${column.level}`,
                   {
                     'is--group': isColGroup,
                   },
@@ -761,14 +761,14 @@ export default defineComponent({
                   ? h(
                       'td',
                       {
-                        class: 'vxe-table-custom-popup--column-item col--visible',
+                        class: 'bk-table-custom-popup--column-item col--visible',
                       },
                       [
                         h(
                           'div',
                           {
                             class: [
-                              'vxe-table-custom--checkbox-option',
+                              'bk-table-custom--checkbox-option',
                               {
                                 'is--checked': isChecked,
                                 'is--indeterminate': isIndeterminate,
@@ -785,7 +785,7 @@ export default defineComponent({
                           [
                             h('span', {
                               class: [
-                                'vxe-checkbox--icon',
+                                'bk-checkbox--icon',
                                 isIndeterminate
                                   ? getIcon().TABLE_CHECKBOX_INDETERMINATE
                                   : isChecked
@@ -802,7 +802,7 @@ export default defineComponent({
                   ? h(
                       'td',
                       {
-                        class: 'vxe-table-custom-popup--column-item col--sort',
+                        class: 'bk-table-custom-popup--column-item col--sort',
                       },
                       [
                         column.level === 1
@@ -810,7 +810,7 @@ export default defineComponent({
                               'span',
                               {
                                 class: [
-                                  'vxe-table-custom-popup--column-sort-btn',
+                                  'bk-table-custom-popup--column-sort-btn',
                                   {
                                     'is--disabled': isHidden,
                                   },
@@ -836,20 +836,20 @@ export default defineComponent({
                 h(
                   'td',
                   {
-                    class: 'vxe-table-custom-popup--column-item col--name',
+                    class: 'bk-table-custom-popup--column-item col--name',
                   },
                   [
                     column.type === 'html'
                       ? h('div', {
                           key: '1',
-                          class: 'vxe-table-custom-popup--name',
+                          class: 'bk-table-custom-popup--name',
                           innerHTML: colTitle,
                         })
                       : h(
                           'div',
                           {
                             key: '0',
-                            class: 'vxe-table-custom-popup--name',
+                            class: 'bk-table-custom-popup--name',
                             title: colTitle,
                           },
                           colTitle,
@@ -860,7 +860,7 @@ export default defineComponent({
                   ? h(
                       'td',
                       {
-                        class: 'vxe-table-custom-popup--column-item col--resizable',
+                        class: 'bk-table-custom-popup--column-item col--resizable',
                       },
                       [
                         column.children && column.children.length
@@ -882,7 +882,7 @@ export default defineComponent({
                   ? h(
                       'td',
                       {
-                        class: 'vxe-table-custom-popup--column-item col--fixed',
+                        class: 'bk-table-custom-popup--column-item col--fixed',
                       },
                       [
                         parent
@@ -928,13 +928,13 @@ export default defineComponent({
             'div',
             {
               ref: bodyElemRef,
-              class: 'vxe-table-custom-popup--body',
+              class: 'bk-table-custom-popup--body',
             },
             [
               h(
                 'div',
                 {
-                  class: 'vxe-table-custom-popup--table-wrapper',
+                  class: 'bk-table-custom-popup--table-wrapper',
                 },
                 [
                   h('table', {}, [
@@ -981,7 +981,7 @@ export default defineComponent({
                                 'div',
                                 {
                                   class: [
-                                    'vxe-table-custom--checkbox-option',
+                                    'bk-table-custom--checkbox-option',
                                     {
                                       'is--checked': isAllChecked,
                                       'is--indeterminate': isAllIndeterminate,
@@ -993,7 +993,7 @@ export default defineComponent({
                                 [
                                   h('span', {
                                     class: [
-                                      'vxe-checkbox--icon',
+                                      'bk-checkbox--icon',
                                       isAllIndeterminate
                                         ? getIcon().TABLE_CHECKBOX_INDETERMINATE
                                         : isAllChecked
@@ -1004,7 +1004,7 @@ export default defineComponent({
                                   h(
                                     'span',
                                     {
-                                      class: 'vxe-checkbox--label',
+                                      class: 'bk-checkbox--label',
                                     },
                                     getI18n('vxe.toolbar.customAll'),
                                   ),
@@ -1017,7 +1017,7 @@ export default defineComponent({
                               h(
                                 'span',
                                 {
-                                  class: 'vxe-table-custom-popup--table-sort-help-title',
+                                  class: 'bk-table-custom-popup--table-sort-help-title',
                                 },
                                 getI18n('vxe.custom.setting.colSort'),
                               ),
@@ -1027,13 +1027,13 @@ export default defineComponent({
                                     {
                                       enterable: true,
                                       content: getI18n('vxe.custom.setting.sortHelpTip'),
-                                      popupClassName: 'vxe-table--ignore-clear',
+                                      popupClassName: 'bk-table--ignore-clear',
                                     },
                                     {
                                       default: () => {
                                         return h('i', {
                                           class:
-                                            'vxe-table-custom-popup--table-sort-help-icon vxe-icon-question-circle-fill',
+                                            'bk-table-custom-popup--table-sort-help-icon bk-icon-question-circle-fill',
                                         });
                                       },
                                     },
@@ -1057,9 +1057,9 @@ export default defineComponent({
                     h(
                       TransitionGroup,
                       {
-                        class: 'vxe-table-custom--body',
+                        class: 'bk-table-custom--body',
                         tag: 'tbody',
-                        name: 'vxe-table-custom--list',
+                        name: 'bk-table-custom--list',
                       },
                       {
                         default: () => trVNs,
@@ -1072,7 +1072,7 @@ export default defineComponent({
                 'div',
                 {
                   ref: dragHintElemRef,
-                  class: 'vxe-table-custom-popup--drag-hint',
+                  class: 'bk-table-custom-popup--drag-hint',
                 },
                 getI18n('vxe.custom.cstmDragTarget', [dragColumn ? dragColumn.getTitle() : '']),
               ),
@@ -1083,7 +1083,7 @@ export default defineComponent({
           return h(
             'div',
             {
-              class: 'vxe-table-custom-popup--footer',
+              class: 'bk-table-custom-popup--footer',
             },
             [
               VxeUIButtonComponent
@@ -1116,8 +1116,8 @@ export default defineComponent({
               {
                 key: 'drawer',
                 className: [
-                  'vxe-table-custom-drawer-wrapper',
-                  'vxe-table--ignore-clear',
+                  'bk-table-custom-drawer-wrapper',
+                  'bk-table--ignore-clear',
                   drawerOpts.className || '',
                 ].join(' '),
                 modelValue: customStore.visible,
@@ -1140,7 +1140,7 @@ export default defineComponent({
             VxeUIModalComponent,
             {
               key: 'modal',
-              className: ['vxe-table-custom-modal-wrapper', 'vxe-table--ignore-clear', modalOpts.className || ''].join(
+              className: ['bk-table-custom-modal-wrapper', 'bk-table--ignore-clear', modalOpts.className || ''].join(
                 ' ',
               ),
               modelValue: customStore.visible,
@@ -1180,22 +1180,22 @@ export default defineComponent({
         const customOpts = computeCustomOpts.value;
         const { mode } = customOpts;
         if (!VxeUIModalComponent) {
-          errLog('vxe.error.reqComp', ['vxe-modal']);
+          errLog('vxe.error.reqComp', ['bk-modal']);
         }
         if (!VxeUIDrawerComponent && mode === 'drawer') {
-          errLog('vxe.error.reqComp', ['vxe-drawer']);
+          errLog('vxe.error.reqComp', ['bk-drawer']);
         }
         if (!VxeUIButtonComponent) {
-          errLog('vxe.error.reqComp', ['vxe-button']);
+          errLog('vxe.error.reqComp', ['bk-button']);
         }
         if (!VxeUIInputComponent) {
-          errLog('vxe.error.reqComp', ['vxe-input']);
+          errLog('vxe.error.reqComp', ['bk-input']);
         }
         if (!VxeUITooltipComponent) {
-          errLog('vxe.error.reqComp', ['vxe-tooltip']);
+          errLog('vxe.error.reqComp', ['bk-tooltip']);
         }
         if (!VxeUIRadioGroupComponent) {
-          errLog('vxe.error.reqComp', ['vxe-radio-group']);
+          errLog('vxe.error.reqComp', ['bk-radio-group']);
         }
       });
     }

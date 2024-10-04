@@ -1,7 +1,7 @@
 import { PropType } from 'vue'
 import { VxeUI } from '../ui'
 
-import type { VxeTablePropTypes } from '../types'
+import type { VxeGlobalThemeName, VxeTablePropTypes } from '../types'
 
 const { getConfig } = VxeUI
 
@@ -246,6 +246,10 @@ export default {
   delayHover: {
     type: Number as PropType<VxeTablePropTypes.DelayHover>,
     default: () => getConfig().table.delayHover as number
+  },
+  theme: {
+    type: String as PropType<VxeGlobalThemeName>,
+    default: 'light'
   },
   // 额外的参数
   params: Object as PropType<VxeTablePropTypes.Params>

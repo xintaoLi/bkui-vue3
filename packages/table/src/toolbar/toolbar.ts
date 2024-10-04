@@ -4,7 +4,7 @@ import { VxeUI } from '../ui'
 import { getSlotVNs } from '../ui/vn'
 import { warnLog, errLog } from '../ui/log'
 
-// import type { ValueOf, VxeButtonComponent, VxeButtonEvents } from 'vxe-pc-ui'
+// import type { ValueOf, VxeButtonComponent, VxeButtonEvents } from 'bk-pc-ui'
 import type { VxeGridConstructor, GridPrivateMethods, ToolbarMethods, ToolbarInternalData, VxeToolbarConstructor, VxeToolbarEmits, VxeToolbarPropTypes, ToolbarPrivateRef, ToolbarReactData } from '../types'
 
 const { getConfig, getIcon, getI18n, renderer, commands, createEvent, useFns } = VxeUI
@@ -341,7 +341,7 @@ export default defineComponent({
               const params = { $grid: $xeGrid, $table: $table!, button: item }
               btnVNs.push(
                 h('span', {
-                  class: ['vxe-button--item', toolbarButtonClassName ? (XEUtils.isFunction(toolbarButtonClassName) ? toolbarButtonClassName(params) : toolbarButtonClassName) : '']
+                  class: ['bk-button--item', toolbarButtonClassName ? (XEUtils.isFunction(toolbarButtonClassName) ? toolbarButtonClassName(params) : toolbarButtonClassName) : '']
                 }, getSlotVNs(compConf.renderToolbarButton(buttonRender, params)))
               )
             } else {
@@ -400,7 +400,7 @@ export default defineComponent({
               btnVNs.push(
                 h('span', {
                   key: rdName as string,
-                  class: ['vxe-tool--item', toolbarToolClassName ? (XEUtils.isFunction(toolbarToolClassName) ? toolbarToolClassName(params) : toolbarToolClassName) : '']
+                  class: ['bk-tool--item', toolbarToolClassName ? (XEUtils.isFunction(toolbarToolClassName) ? toolbarToolClassName(params) : toolbarToolClassName) : '']
                 }, getSlotVNs(compConf.renderToolbarTool(toolRender, params)))
               )
             } else {
@@ -529,7 +529,7 @@ export default defineComponent({
           circle: true,
           icon: customOpts.icon || getIcon().TOOLBAR_TOOLS_CUSTOM,
           title: getI18n('vxe.toolbar.custom'),
-          className: 'vxe-toolbar-custom-target',
+          className: 'bk-toolbar-custom-target',
           ...customBtnOns
         })
         : createCommentVNode()
@@ -545,20 +545,20 @@ export default defineComponent({
 
       return h('div', {
         ref: refElem,
-        class: ['vxe-toolbar', className ? (XEUtils.isFunction(className) ? className({ $toolbar: $xeToolbar }) : className) : '', {
+        class: ['bk-toolbar', className ? (XEUtils.isFunction(className) ? className({ $toolbar: $xeToolbar }) : className) : '', {
           [`size--${vSize}`]: vSize,
           'is--perfect': perfect,
           'is--loading': loading
         }]
       }, [
         h('div', {
-          class: 'vxe-buttons--wrapper'
+          class: 'bk-buttons--wrapper'
         }, buttonsSlot ? buttonsSlot({ $grid: $xeGrid, $table: $table }) : renderBtns()),
         h('div', {
-          class: 'vxe-tools--wrapper'
+          class: 'bk-tools--wrapper'
         }, toolsSlot ? toolsSlot({ $grid: $xeGrid, $table: $table }) : renderRightTools()),
         h('div', {
-          class: 'vxe-tools--operate'
+          class: 'bk-tools--operate'
         }, [
           props.import ? renderToolImport() : createCommentVNode(),
           props.export ? renderToolExport() : createCommentVNode(),
@@ -597,7 +597,7 @@ export default defineComponent({
       if (process.env.VUE_APP_VXE_ENV === 'development') {
         if (props.refresh || props.import || props.export || props.print || props.zoom) {
           if (!VxeUIButtonComponent) {
-            errLog('vxe.error.reqComp', ['vxe-button'])
+            errLog('vxe.error.reqComp', ['bk-button'])
           }
         }
       }

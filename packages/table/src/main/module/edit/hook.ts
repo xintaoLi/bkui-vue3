@@ -498,7 +498,7 @@ hooks.add('tableEditModule', {
         const { afterFullData } = internalData
         const el = refElem.value
         const { args, row } = editStore.actived
-        if (args && $xeTable.findRowIndexOf(afterFullData, row) > -1 && el.querySelectorAll('.vxe-body--column.col--active').length) {
+        if (args && $xeTable.findRowIndexOf(afterFullData, row) > -1 && el.querySelectorAll('.bk-body--column.col--active').length) {
           return Object.assign({}, args)
         }
         return null

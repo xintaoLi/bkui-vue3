@@ -184,18 +184,18 @@ export default defineComponent({
       }
       return h('div', {
         ref: refElem,
-        class: ['vxe-table--header-wrapper', fixedType ? `fixed-${fixedType}--wrapper` : 'body--wrapper'],
+        class: ['bk-table--header-wrapper', fixedType ? `fixed-${fixedType}--wrapper` : 'body--wrapper'],
         xid: xID
       }, [
         fixedType
           ? createCommentVNode()
           : h('div', {
             ref: refHeaderXSpace,
-            class: 'vxe-body--x-space'
+            class: 'bk-body--x-space'
           }),
         h('table', {
           ref: refHeaderTable,
-          class: 'vxe-table--header',
+          class: 'bk-table--header',
           xid: xID,
           cellspacing: 0,
           cellpadding: 0,
@@ -225,7 +225,7 @@ export default defineComponent({
             ref: refHeaderTHead
           }, headerGroups.map((cols, $rowIndex) => {
             return h('tr', {
-              class: ['vxe-header--row', headerRowClassName ? (XEUtils.isFunction(headerRowClassName) ? headerRowClassName({ $table: $xeTable, $rowIndex, fixed: fixedType, type: renderType }) : headerRowClassName) : ''],
+              class: ['bk-header--row', headerRowClassName ? (XEUtils.isFunction(headerRowClassName) ? headerRowClassName({ $table: $xeTable, $rowIndex, fixed: fixedType, type: renderType }) : headerRowClassName) : ''],
               style: headerRowStyle ? (XEUtils.isFunction(headerRowStyle) ? headerRowStyle({ $table: $xeTable, $rowIndex, fixed: fixedType, type: renderType }) : headerRowStyle) : null
             }, cols.map((column, $columnIndex) => {
               const { type, showHeaderOverflow, headerAlign, align, headerClassName } = column
@@ -255,7 +255,7 @@ export default defineComponent({
                 thOns.onMousedown = (evnt: MouseEvent) => $xeTable.triggerHeaderCellMousedownEvent(evnt, params)
               }
               return h('th', {
-                class: ['vxe-header--column', colid, {
+                class: ['bk-header--column', colid, {
                   [`col--${headAlign}`]: headAlign,
                   [`col--${type}`]: type,
                   'col--last': $columnIndex === cols.length - 1,
@@ -279,7 +279,7 @@ export default defineComponent({
                 key: columnKey || columnOpts.useKey || isColGroup ? colid : $columnIndex
               }, [
                 h('div', {
-                  class: ['vxe-cell', {
+                  class: ['bk-cell', {
                     'c--title': showTitle,
                     'c--tooltip': showTooltip,
                     'c--ellipsis': showEllipsis
@@ -290,7 +290,7 @@ export default defineComponent({
                  */
                 !fixedHiddenColumn && !isColGroup && (XEUtils.isBoolean(column.resizable) ? column.resizable : (columnOpts.resizable || resizable))
                   ? h('div', {
-                    class: ['vxe-resizable', {
+                    class: ['bk-resizable', {
                       'is--line': !border || border === 'none'
                     }],
                     onMousedown: (evnt: MouseEvent) => resizeMousedown(evnt, params)
@@ -300,7 +300,7 @@ export default defineComponent({
             }).concat(scrollbarWidth
               ? [
                   h('th', {
-                    class: 'vxe-header--gutter col--gutter'
+                    class: 'bk-header--gutter col--gutter'
                   })
                 ]
               : []))
@@ -311,7 +311,7 @@ export default defineComponent({
          */
         h('div', {
           ref: refHeaderBorderRepair,
-          class: 'vxe-table--header-border-line'
+          class: 'bk-table--header-border-line'
         })
       ])
     }

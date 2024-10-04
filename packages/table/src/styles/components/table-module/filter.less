@@ -1,41 +1,41 @@
 @import '../../helpers/mixin.less';
 
-.vxe-cell--filter {
+.bk-cell--filter {
   padding: 0 0.1em 0 0.2em;
   text-align: center;
   vertical-align: middle;
   display: inline-block;
   line-height: 0;
   &.col--filter {
-    .vxe-filter--btn {
-      color: var(--vxe-ui-font-color);
+    .bk-filter--btn {
+      color: var(--bk-ui-font-color);
     }
   }
-  .vxe-filter--btn {
-    color: var(--vxe-ui-table-column-icon-border-color);
+  .bk-filter--btn {
+    color: var(--bk-ui-table-column-icon-border-color);
     cursor: pointer;
     &:hover {
-      color: var(--vxe-ui-font-color);
+      color: var(--bk-ui-font-color);
     }
   }
 }
 .is--filter-active {
-  .vxe-cell--filter {
-    .vxe-filter--btn {
-      color: var(--vxe-ui-font-primary-color);
+  .bk-cell--filter {
+    .bk-filter--btn {
+      color: var(--bk-ui-font-primary-color);
     }
   }
 }
 
 /*筛选容器*/
-.vxe-table--filter-wrapper {
+.bk-table--filter-wrapper {
   display: none;
   position: absolute;
   top: 0;
   min-width: 100px;
-  border-radius: var(--vxe-ui-border-radius);
-  background-color: var(--vxe-ui-layout-background-color);
-  border: 1px solid var(--vxe-ui-base-popup-border-color);
+  border-radius: var(--bk-ui-border-radius);
+  background-color: var(--bk-ui-layout-background-color);
+  border: 1px solid var(--bk-ui-base-popup-border-color);
   box-shadow: 0 1px 6px rgba(0,0,0,.2);
   z-index: 10;
   &:not(.is--multiple) {
@@ -44,8 +44,8 @@
   &.is--active {
     display: block;
   }
-  .vxe-table--filter-header,
-  .vxe-table--filter-body {
+  .bk-table--filter-header,
+  .bk-table--filter-body {
     & > li {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -54,17 +54,17 @@
       padding: 0.25em 0.8em;
       cursor: pointer;
       &.is--checked {
-        color: var(--vxe-ui-font-primary-color);
+        color: var(--bk-ui-font-primary-color);
       }
       &:hover {
-        background-color: var(--vxe-ui-table-row-hover-background-color);
+        background-color: var(--bk-ui-table-row-hover-background-color);
       }
     }
   }
-  .vxe-table--filter-header {
+  .bk-table--filter-header {
     padding-top: 0.2em;
   }
-  .vxe-table--filter-body {
+  .bk-table--filter-body {
     max-height: 200px;
     padding-bottom: 0.2em;
   }
@@ -83,30 +83,30 @@
       }
     }
   }
-  .vxe-table--filter-footer {
-    border-top: 1px solid var(--vxe-ui-base-popup-border-color);
+  .bk-table--filter-footer {
+    border-top: 1px solid var(--bk-ui-base-popup-border-color);
     padding: 0.6em;
     user-select: none;
     button {
       background-color: transparent;
       padding: 0 0.4em;
       border: 0;
-      color: var(--vxe-ui-font-color);
+      color: var(--bk-ui-font-color);
       cursor: pointer;
       &:focus {
         outline: none;
       }
       &:hover {
-        color: var(--vxe-ui-font-primary-color);
+        color: var(--bk-ui-font-primary-color);
       }
       &.is--disabled {
-        color: var(--vxe-ui-font-disabled-color);
+        color: var(--bk-ui-font-disabled-color);
         cursor: not-allowed;
       }
     }
   }
 }
 
-.vxe-table--filter-option {
+.bk-table--filter-option {
   .createCheckboxIcon();
 }

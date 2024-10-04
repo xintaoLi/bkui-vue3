@@ -1,6 +1,6 @@
 import XEUtils from '../func';
 import DomZIndex from '../dom-zindex';
-import { createCommentVNode } from 'vue';
+import { createCommentVNode, resolveComponent } from 'vue';
 import { globalConfigStore } from './configStore';
 import { globalStore } from './dataStore';
 import { iconConfigStore } from './iconStore';
@@ -37,7 +37,7 @@ export function setTheme(name?: VxeGlobalThemeName) {
   if (typeof document !== 'undefined') {
     const documentElement = document.documentElement;
     if (documentElement) {
-      documentElement.setAttribute('data-vxe-ui-theme', theme);
+      documentElement.setAttribute('data-bk-ui-theme', theme);
     }
   }
   return VxeUI;
@@ -108,7 +108,7 @@ export function use(Plugin: VxeUIPluginObject, options: any[]) {
 const components: Record<string, any> = {};
 
 export function getComponent(name: keyof VxeGlobalComponents) {
-  return components[name] || null;
+  return components[name] || resolveComponent(name) || null;
 }
 
 export function component(comp: any) {
@@ -121,7 +121,7 @@ export function renderEmptyElement() {
   return createCommentVNode();
 }
 
-export const VxeUI: VxeUIExport = {
+export const VxeUI = {
   coreVersion,
   renderEmptyElement,
   setTheme,

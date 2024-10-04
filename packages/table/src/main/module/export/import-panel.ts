@@ -100,7 +100,7 @@ export default defineComponent({
         ? h(VxeUIModalComponent, {
           modelValue: storeData.visible,
           title: getI18n('vxe.import.impTitle'),
-          className: 'vxe-table-import-popup-wrapper',
+          className: 'bk-table-import-popup-wrapper',
           width: 520,
           mask: true,
           lockView: true,
@@ -115,7 +115,7 @@ export default defineComponent({
         }, {
           default: () => {
             return h('div', {
-              class: 'vxe-export--panel'
+              class: 'bk-export--panel'
             }, [
               h('table', {
                 cellspacing: 0,
@@ -128,7 +128,7 @@ export default defineComponent({
                     h('td', [
                       hasFile
                         ? h('div', {
-                          class: 'vxe-import-selected--file',
+                          class: 'bk-import-selected--file',
                           title: selectName
                         }, [
                           h('span', selectName),
@@ -139,7 +139,7 @@ export default defineComponent({
                         ])
                         : h('button', {
                           ref: refFileBtn,
-                          class: 'vxe-import-select--file',
+                          class: 'bk-import-select--file',
                           onClick: selectFileEvent
                         }, getI18n('vxe.import.impSelect'))
                     ])
@@ -165,7 +165,7 @@ export default defineComponent({
                 ])
               ]),
               h('div', {
-                class: 'vxe-export--panel-btns'
+                class: 'bk-export--panel-btns'
               }, [
                 VxeUIButtonComponent
                   ? h(VxeUIButtonComponent, {
@@ -191,13 +191,13 @@ export default defineComponent({
     if (process.env.VUE_APP_VXE_ENV === 'development') {
       nextTick(() => {
         if (!VxeUIModalComponent) {
-          errLog('vxe.error.reqComp', ['vxe-modal'])
+          errLog('vxe.error.reqComp', ['bk-modal'])
         }
         if (!VxeUIButtonComponent) {
-          errLog('vxe.error.reqComp', ['vxe-button'])
+          errLog('vxe.error.reqComp', ['bk-button'])
         }
         if (!VxeUISelectComponent) {
-          errLog('vxe.error.reqComp', ['vxe-select'])
+          errLog('vxe.error.reqComp', ['bk-select'])
         }
       })
     }

@@ -9,7 +9,7 @@ const { hooks } = VxeUI
 function getTargetOffset (target: any, container: any) {
   let offsetTop = 0
   let offsetLeft = 0
-  const triggerCheckboxLabel = !browse.firefox && hasClass(target, 'vxe-checkbox--label')
+  const triggerCheckboxLabel = !browse.firefox && hasClass(target, 'bk-checkbox--label')
   if (triggerCheckboxLabel) {
     const checkboxLabelStyle = getComputedStyle(target)
     offsetTop -= XEUtils.toNumber(checkboxLabelStyle.paddingTop)
@@ -74,7 +74,7 @@ hooks.add('tableKeyboardModule', {
         if (!bodyWrapperElem) {
           return
         }
-        const checkboxRangeElem = bodyWrapperElem.querySelector('.vxe-table--checkbox-range') as HTMLElement
+        const checkboxRangeElem = bodyWrapperElem.querySelector('.bk-table--checkbox-range') as HTMLElement
         const domMousemove = document.onmousemove
         const domMouseup = document.onmouseup
         const trElem = cell.parentNode
@@ -368,8 +368,8 @@ hooks.add('tableKeyboardModule', {
         const mouseOpts = computeMouseOpts.value
         if (mouseConfig && mouseOpts.area && $xeTable.handleHeaderCellAreaEvent) {
           const cell = evnt.currentTarget
-          const triggerSort = getEventTargetNode(evnt, cell, 'vxe-cell--sort').flag
-          const triggerFilter = getEventTargetNode(evnt, cell, 'vxe-cell--filter').flag
+          const triggerSort = getEventTargetNode(evnt, cell, 'bk-cell--sort').flag
+          const triggerFilter = getEventTargetNode(evnt, cell, 'bk-cell--filter').flag
           $xeTable.handleHeaderCellAreaEvent(evnt, Object.assign({ cell, triggerSort, triggerFilter }, params))
         }
         $xeTable.focus()
