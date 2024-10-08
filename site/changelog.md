@@ -1,6 +1,12 @@
 ## 更新日志
 
 
+### 2.0.1-beta.75
+
+* **[feat]**:
+    - bugfix(select): 同时设置remote-method和scroll-end时，滚动条异常
+
+
 ### 2.0.1-beta.72
 
 * **[feat]**:
