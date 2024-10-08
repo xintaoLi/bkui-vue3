@@ -41,7 +41,7 @@ export interface VxeGridConstructor<D = any> extends VxeComponentBaseOptions, Vx
 export interface GridPrivateRef<D = any> {
   refElem: Ref<HTMLDivElement | undefined>;
   refTable: Ref<VxeTableInstance>;
-  refForm: Ref<unknown>;
+  refForm?: Ref<unknown>;
   refToolbar: Ref<VxeToolbarInstance>;
   refPager: Ref<unknown>;
 }
@@ -226,8 +226,8 @@ export interface VxeGridProps<D = any> extends VxeTableProps<D> {
 }
 
 export interface GridPrivateComputed {
-  computeProxyOpts: ComputedRef<VxeGridPropTypes.ProxyOpts>;
-  computePagerOpts: ComputedRef<VxeGridPropTypes.PagerOpts>;
+  computeProxyOpts?: ComputedRef<VxeGridPropTypes.ProxyOpts>;
+  computePagerOpts?: ComputedRef<VxeGridPropTypes.PagerOpts>;
   computeFormOpts: ComputedRef<VxeGridPropTypes.FormOpts>;
   computeToolbarOpts: ComputedRef<VxeGridPropTypes.ToolbarOpts>;
   computeZoomOpts: ComputedRef<VxeGridPropTypes.ZoomOpts>;
@@ -243,11 +243,6 @@ export interface GridReactData<D = any> {
   formData: any;
   sortData: VxeTableDefines.SortCheckedParams<D>[];
   tZindex: number;
-  tablePage: {
-    total: number;
-    pageSize: number;
-    currentPage: number;
-  };
 }
 
 export interface GridMethods<D = any> {
@@ -291,11 +286,7 @@ export interface GridMethods<D = any> {
     form: any;
     sort: VxeTableDefines.SortCheckedParams<D> | { [key: string]: any };
     sorts: VxeTableDefines.SortCheckedParams<D>[];
-    pager: {
-      total: number;
-      pageSize: number;
-      currentPage: number;
-    };
+    pager?: any;
     pendingRecords: D[];
   } | null;
   /**
@@ -342,8 +333,7 @@ export interface GridPrivateMethods {
 export interface VxeGridPrivateMethods extends GridPrivateMethods {}
 
 export type VxeGridEmits = [
-  ...VxeTableEmits,
-
+  ...VxeTableEmits
   'page-change',
   'form-submit',
   'form-submit-invalid',
@@ -356,6 +346,8 @@ export type VxeGridEmits = [
   'toolbar-button-click',
   'toolbar-tool-click',
   'zoom',
+  'pageLimitChange',
+  'pageValueChange',
 ];
 
 export namespace VxeGridDefines {

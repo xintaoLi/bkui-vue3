@@ -26,8 +26,9 @@ import tableComponentEmits from '../main/emits';
 import { getSlotVNs } from '../ui/vn';
 import { errLog } from '../ui/log';
 import useComponentInstall from '../core/useComponentInstall';
+import usePagination from '../core/usePagination';
+import Pagination from '@bkui-vue/pagination';
 
-// import type { ValueOf, VxePagerComponent, VxeFormComponent, VxeFormEvents, VxeFormInstance, VxePagerEvents, VxeFormItemProps, VxePagerInstance } from 'bk-pc-ui'
 import type {
   VxeTableMethods,
   VxeGridConstructor,
@@ -197,6 +198,8 @@ const gridComponentEmits: VxeGridEmits = [
   'toolbar-button-click',
   'toolbar-tool-click',
   'zoom',
+  'pageLimitChange',
+  'pageValueChange',
 ];
 
 export default defineComponent({
@@ -225,9 +228,10 @@ export default defineComponent({
 
     // 使用已安装的组件，如果未安装则不渲染
     // const VxeUIFormComponent = VxeUI.getComponent<VxeFormComponent>('VxeForm')
-    // const VxeUIPagerComponent = VxeUI.getComponent<VxePagerComponent>('VxePager')
+    // const VxeUIPagerComponent = VxeUI.getComponent('Pagination');
 
     const { computeSize } = useFns.useSize(props);
+    const pagination = usePagination(props);
 
     const reactData = reactive<GridReactData>({
       tableLoading: false,
@@ -238,11 +242,6 @@ export default defineComponent({
       formData: {},
       sortData: [],
       tZindex: 0,
-      tablePage: {
-        total: 0,
-        // pageSize: getConfig().pager?.pageSize || 10,
-        currentPage: 1,
-      },
     });
 
     const refElem = ref() as Ref<HTMLDivElement>;
@@ -251,7 +250,7 @@ export default defineComponent({
     >;
     // const refForm = ref() as Ref<VxeFormInstance>
     const refToolbar = ref() as Ref<VxeToolbarInstance>;
-    // const refPager = ref() as Ref<VxePagerInstance>
+    const refPager = ref();
 
     const refFormWrapper = ref() as Ref<HTMLDivElement>;
     const refToolbarWrapper = ref() as Ref<HTMLDivElement>;
@@ -301,13 +300,13 @@ export default defineComponent({
       return proxyOpts.showActiveMsg;
     });
 
-    const computePagerOpts = computed(() => {
-      return Object.assign(
-        {},
-        XEUtils.clone(getConfig().grid.pagerConfig, true),
-        props.pagerConfig,
-      ) as VxeGridPropTypes.PagerConfig;
-    });
+    // const computePagerOpts = computed(() => {
+    //   return Object.assign(
+    //     {},
+    //     XEUtils.clone(getConfig().grid.pagerConfig, true),
+    //     props.pagerConfig,
+    //   ) as VxeGridPropTypes.PagerConfig;
+    // });
 
     const computeFormOpts = computed(() => {
       return Object.assign(
@@ -343,11 +342,11 @@ export default defineComponent({
     });
 
     const computeTableProps = computed(() => {
-      const { seqConfig, pagerConfig, loading, editConfig, proxyConfig } = props;
-      const { isZMax, tableLoading, tablePage, tableData } = reactData;
+      const { seqConfig, loading, editConfig, proxyConfig } = props;
+      const { isZMax, tableLoading, tableData } = reactData;
       const tableExtendProps = computeTableExtendProps.value;
       const proxyOpts = computeProxyOpts.value;
-      const pagerOpts = computePagerOpts.value;
+      // const pagerOpts = computePagerOpts.value;
       const tableProps = Object.assign({}, tableExtendProps);
       if (isZMax) {
         if (tableExtendProps.maxHeight) {
@@ -359,15 +358,17 @@ export default defineComponent({
       if (proxyConfig && isEnableConf(proxyOpts)) {
         tableProps.loading = loading || tableLoading;
         tableProps.data = tableData;
-        if (pagerConfig && proxyOpts.seq && isEnableConf(pagerOpts)) {
+        if (pagination.isShowPagination.value && proxyOpts.seq) {
           tableProps.seqConfig = Object.assign({}, seqConfig, {
-            startIndex: (tablePage.currentPage - 1) * tablePage.pageSize,
+            startIndex: (pagination.options.current - 1) * pagination.options.limit,
           });
         }
       }
       if (editConfig) {
         tableProps.editConfig = Object.assign({}, editConfig);
       }
+
+      tableProps.data = pagination.getPageData();
       return tableProps;
     });
 
@@ -376,7 +377,12 @@ export default defineComponent({
       if (layouts && layouts.length) {
         return layouts;
       }
-      return getConfig().grid.layouts || ['Form', 'Toolbar', 'Top', 'Table', 'Bottom', 'Pager'];
+
+      const defaultValue = getConfig().grid.layouts || ['Form', 'Toolbar', 'Top', 'Table', 'Bottom', 'Pager'];
+      if (pagination.isShowPagination.value && !defaultValue.includes('Pager')) {
+        defaultValue.push('Pager');
+      }
+      return defaultValue;
     });
 
     const refMaps: GridPrivateRef = {
@@ -384,12 +390,12 @@ export default defineComponent({
       refTable,
       // refForm,
       refToolbar,
-      // refPager
+      refPager,
     };
 
     const computeMaps: VxeGridPrivateComputed = {
       computeProxyOpts,
-      computePagerOpts,
+      // computePagerOpts,
       computeFormOpts,
       computeToolbarOpts,
       computeZoomOpts,
@@ -425,20 +431,20 @@ export default defineComponent({
       return proxyConfig && isEnableConf(proxyOpts) && proxyOpts.form ? formData : formOpts.data;
     };
 
-    const initPages = () => {
-      const { tablePage } = reactData;
-      const { pagerConfig } = props;
-      const pagerOpts = computePagerOpts.value;
-      const { currentPage, pageSize } = pagerOpts;
-      if (pagerConfig && isEnableConf(pagerOpts)) {
-        if (currentPage) {
-          tablePage.currentPage = currentPage;
-        }
-        if (pageSize) {
-          tablePage.pageSize = pageSize;
-        }
-      }
-    };
+    // const initPages = () => {
+    //   const { tablePage } = reactData;
+    //   const { pagerConfig } = props;
+    //   const pagerOpts = computePagerOpts.value;
+    //   const { currentPage, pageSize } = pagerOpts;
+    //   if (pagerConfig && isEnableConf(pagerOpts)) {
+    //     if (currentPage) {
+    //       tablePage.currentPage = currentPage;
+    //     }
+    //     if (pageSize) {
+    //       tablePage.pageSize = pageSize;
+    //     }
+    //   }
+    // };
 
     const triggerPendingEvent = (code: string) => {
       const isActiveMsg = computeIsActiveMsg.value;
@@ -494,56 +500,58 @@ export default defineComponent({
       return Promise.resolve();
     };
 
-    // const pageChangeEvent: VxePagerEvents.PageChange = (params) => {
-    //   const { proxyConfig } = props
-    //   const { tablePage } = reactData
-    //   const { $event, currentPage, pageSize } = params
-    //   const proxyOpts = computeProxyOpts.value
-    //   tablePage.currentPage = currentPage
-    //   tablePage.pageSize = pageSize
-    //   gridMethods.dispatchEvent('page-change', params, $event)
-    //   if (proxyConfig && isEnableConf(proxyOpts)) {
-    //     gridMethods.commitProxy('query').then((rest) => {
-    //       gridMethods.dispatchEvent('proxy-query', rest, $event)
-    //     })
-    //   }
-    // }
+    const pageChangeEvent = (current, $event) => {
+      if (typeof props.pagination === 'object' && current !== pagination.options.current) {
+        pagination.setPagination({ current, value: current });
+        gridMethods.dispatchEvent('pageValueChange', current, {});
+        return;
+      }
+
+      if (typeof props.pagination === 'boolean' && props.pagination !== false) {
+        gridMethods.dispatchEvent('pageValueChange', current, $event);
+      }
+    };
+
+    const handlePageLimitChange = (limit, $event) => {
+      pagination.setPagination({ limit });
+      gridMethods.dispatchEvent('pageLimitChange', limit, $event);
+    };
 
     const sortChangeEvent: VxeTableEvents.SortChange = params => {
-      const $xeTable = refTable.value;
-      const { proxyConfig } = props;
-      const { computeSortOpts } = $xeTable.getComputeMaps();
-      const proxyOpts = computeProxyOpts.value;
-      const sortOpts = computeSortOpts.value;
+      // const $xeTable = refTable.value;
+      // const { proxyConfig } = props;
+      // const { computeSortOpts } = $xeTable.getComputeMaps();
+      // const proxyOpts = computeProxyOpts.value;
+      // const sortOpts = computeSortOpts.value;
       // 如果是服务端排序
-      if (sortOpts.remote) {
-        reactData.sortData = params.sortList;
-        if (proxyConfig && isEnableConf(proxyOpts)) {
-          reactData.tablePage.currentPage = 1;
-          gridMethods.commitProxy('query').then(rest => {
-            gridMethods.dispatchEvent('proxy-query', rest, params.$event);
-          });
-        }
-      }
+      // if (sortOpts.remote) {
+      //   reactData.sortData = params.sortList;
+      //   if (proxyConfig && isEnableConf(proxyOpts)) {
+      //     reactData.tablePage.currentPage = 1;
+      //     gridMethods.commitProxy('query').then(rest => {
+      //       gridMethods.dispatchEvent('proxy-query', rest, params.$event);
+      //     });
+      //   }
+      // }
       gridMethods.dispatchEvent('sort-change', params, params.$event);
     };
 
     const filterChangeEvent: VxeTableEvents.FilterChange = params => {
-      const $xeTable = refTable.value;
-      const { proxyConfig } = props;
-      const { computeFilterOpts } = $xeTable.getComputeMaps();
-      const proxyOpts = computeProxyOpts.value;
-      const filterOpts = computeFilterOpts.value;
+      // const $xeTable = refTable.value;
+      // const { proxyConfig } = props;
+      // const { computeFilterOpts } = $xeTable.getComputeMaps();
+      // const proxyOpts = computeProxyOpts.value;
+      // const filterOpts = computeFilterOpts.value;
       // 如果是服务端过滤
-      if (filterOpts.remote) {
-        reactData.filterData = params.filterList;
-        if (proxyConfig && isEnableConf(proxyOpts)) {
-          reactData.tablePage.currentPage = 1;
-          gridMethods.commitProxy('query').then(rest => {
-            gridMethods.dispatchEvent('proxy-query', rest, params.$event);
-          });
-        }
-      }
+      // if (filterOpts.remote) {
+      //   reactData.filterData = params.filterList;
+      //   if (proxyConfig && isEnableConf(proxyOpts)) {
+      //     reactData.tablePage.currentPage = 1;
+      //     gridMethods.commitProxy('query').then(rest => {
+      //       gridMethods.dispatchEvent('proxy-query', rest, params.$event);
+      //     });
+      //   }
+      // }
       gridMethods.dispatchEvent('filter-change', params, params.$event);
     };
 
@@ -839,39 +847,16 @@ export default defineComponent({
      * 渲染分页
      */
     const renderPager = () => {
-      const { proxyConfig, pagerConfig } = props;
-      const proxyOpts = computeProxyOpts.value;
-      const pagerOpts = computePagerOpts.value;
-      if ((pagerConfig && isEnableConf(pagerOpts)) || slots.pager) {
+      if (pagination.isShowPagination.value) {
         let slotVNs: VNode[] = [];
-        if (slots.pager) {
-          slotVNs = slots.pager({ $grid: $xeGrid });
-        } else {
-          const pagerOptSlots = pagerOpts.slots;
-          const pagerSlots: { [key: string]: () => VNode[] } = {};
-          let leftSlot: any;
-          let rightSlot: any;
-          if (pagerOptSlots) {
-            leftSlot = getFuncSlot(pagerOptSlots, 'left');
-            rightSlot = getFuncSlot(pagerOptSlots, 'right');
-            if (leftSlot) {
-              pagerSlots.left = leftSlot;
-            }
-            if (rightSlot) {
-              pagerSlots.right = rightSlot;
-            }
-          }
-          // if (VxeUIPagerComponent) {
-          //   slotVNs.push(
-          //     h(VxeUIPagerComponent, {
-          //       ref: refPager,
-          //       ...pagerOpts,
-          //       ...(proxyConfig && isEnableConf(proxyOpts) ? reactData.tablePage : {}),
-          //       onPageChange: pageChangeEvent
-          //     }, pagerSlots)
-          //   )
-          // }
-        }
+        slotVNs.push(
+          h(Pagination, {
+            ref: refPager,
+            ...pagination.options,
+            onChange: pageChangeEvent,
+            onLimitChange: handlePageLimitChange,
+          }),
+        );
         return h(
           'div',
           {
@@ -991,11 +976,11 @@ export default defineComponent({
        */
       commitProxy(proxyTarget: string | VxeToolbarPropTypes.ButtonConfig, ...args: any[]) {
         const { toolbarConfig, pagerConfig, editRules, validConfig } = props;
-        const { tablePage } = reactData;
+        // const { tablePage } = reactData;
         const isActiveMsg = computeIsActiveMsg.value;
         const isRespMsg = computeIsRespMsg.value;
         const proxyOpts = computeProxyOpts.value;
-        const pagerOpts = computePagerOpts.value;
+        // const pagerOpts = computePagerOpts.value;
         const toolbarOpts = computeToolbarOpts.value;
         const { beforeQuery, afterQuery, beforeDelete, afterDelete, beforeSave, afterSave, ajax = {} } = proxyOpts;
         const resConfigs = proxyOpts.response || proxyOpts.props || {};
@@ -1060,11 +1045,11 @@ export default defineComponent({
               let pageParams: any = {};
               if (pagerConfig) {
                 if (isInited || isReload) {
-                  tablePage.currentPage = 1;
+                  // tablePage.currentPage = 1;
                 }
-                if (isEnableConf(pagerOpts)) {
-                  pageParams = { ...tablePage };
-                }
+                // if (isEnableConf(pagerOpts)) {
+                //   pageParams = { ...tablePage };
+                // }
               }
               if (isInited) {
                 let defaultSort = null;
@@ -1118,36 +1103,36 @@ export default defineComponent({
               return Promise.resolve((beforeQuery || ajaxMethods)(commitParams, ...args))
                 .then(rest => {
                   reactData.tableLoading = false;
-                  if (rest) {
-                    if (pagerConfig && isEnableConf(pagerOpts)) {
-                      const totalProp = resConfigs.total;
-                      const total =
-                        (XEUtils.isFunction(totalProp)
-                          ? totalProp({ data: rest, $grid: $xeGrid })
-                          : XEUtils.get(rest, totalProp || 'page.total')) || 0;
-                      tablePage.total = XEUtils.toNumber(total);
-                      const resultProp = resConfigs.result;
-                      reactData.tableData =
-                        (XEUtils.isFunction(resultProp)
-                          ? resultProp({ data: rest, $grid: $xeGrid })
-                          : XEUtils.get(rest, resultProp || 'result')) || [];
+                  // if (rest) {
+                    // if (pagerConfig && isEnableConf(pagerOpts)) {
+                    //   const totalProp = resConfigs.total;
+                    //   const total =
+                    //     (XEUtils.isFunction(totalProp)
+                    //       ? totalProp({ data: rest, $grid: $xeGrid })
+                    //       : XEUtils.get(rest, totalProp || 'page.total')) || 0;
+                      // tablePage.total = XEUtils.toNumber(total);
+                      // const resultProp = resConfigs.result;
+                      // reactData.tableData =
+                      //   (XEUtils.isFunction(resultProp)
+                      //     ? resultProp({ data: rest, $grid: $xeGrid })
+                      //     : XEUtils.get(rest, resultProp || 'result')) || [];
                       // 检验当前页码，不能超出当前最大页数
-                      const pageCount = Math.max(Math.ceil(total / tablePage.pageSize), 1);
-                      if (tablePage.currentPage > pageCount) {
-                        tablePage.currentPage = pageCount;
-                      }
-                    } else {
-                      const listProp = resConfigs.list;
-                      reactData.tableData =
-                        (listProp
-                          ? XEUtils.isFunction(listProp)
-                            ? listProp({ data: rest, $grid: $xeGrid })
-                            : XEUtils.get(rest, listProp)
-                          : rest) || [];
-                    }
-                  } else {
-                    reactData.tableData = [];
-                  }
+                      // const pageCount = Math.max(Math.ceil(total / tablePage.pageSize), 1);
+                      // if (tablePage.currentPage > pageCount) {
+                      //   tablePage.currentPage = pageCount;
+                      // }
+                  //   } else {
+                  //     const listProp = resConfigs.list;
+                  //     reactData.tableData =
+                  //       (listProp
+                  //         ? XEUtils.isFunction(listProp)
+                  //           ? listProp({ data: rest, $grid: $xeGrid })
+                  //           : XEUtils.get(rest, listProp)
+                  //         : rest) || [];
+                  //   }
+                  // } else {
+                  //   reactData.tableData = [];
+                  // }
                   if (afterQuery) {
                     afterQuery(commitParams, ...args);
                   }
@@ -1368,7 +1353,7 @@ export default defineComponent({
             form: getFormData(),
             sort: sortData.length ? sortData[0] : {},
             sorts: sortData,
-            pager: reactData.tablePage,
+            pager: pagination.options,
             pendingRecords: $xeTable ? $xeTable.getPendingRecords() : [],
           };
         }
@@ -1523,12 +1508,12 @@ export default defineComponent({
       },
     );
 
-    watch(
-      () => props.pagerConfig,
-      () => {
-        initPages();
-      },
-    );
+    // watch(
+    //   () => props.pagerConfig,
+    //   () => {
+    //     initPages();
+    //   },
+    // );
 
     watch(
       () => props.proxyConfig,
@@ -1547,7 +1532,7 @@ export default defineComponent({
       }
     });
 
-    initPages();
+    // initPages();
 
     onMounted(() => {
       if (process.env.VUE_APP_VXE_ENV === 'development') {

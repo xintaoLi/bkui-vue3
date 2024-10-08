@@ -1,46 +1,50 @@
 <template>
   <div>
-    <bk-table
-      border
-      show-overflow
-      :data="tableData">
-      <bk-table-column type="seq" width="70"></bk-table-column>
-      <bk-table-column field="name" title="Name" min-width="200"></bk-table-column>
-      <bk-table-column field="flag1" title="开关" width="200" :cell-render="flag1CellRender">
-        <template #default="args">
-          {{ JSON.stringify(args) }}
-        </template>
-      </bk-table-column>
-      <bk-table-column field="flag2" title="开关" width="200" :cell-render="flag2CellRender"></bk-table-column>
-    </bk-table>
+    <bk-table-grid v-bind="gridOptions"></bk-table-grid>
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ref, reactive } from 'vue'
+<script lang="ts" setup>import { reactive } from 'vue'
+import type { VxeGridProps } from 'vxe-table'
 
 interface RowVO {
   id: number
   name: string
   role: string
-  flag1: boolean
-  flag2: boolean
+  sex: string
+  age: number
+  address: string
 }
 
-const flag1CellRender = reactive({
-  name: 'BkSwitcher',
-  props: {
-    disabled: true,
-  }
+const gridOptions = reactive<VxeGridProps<RowVO>>({
+  columns: [
+    { type: 'seq', width: 70 },
+    { field: 'name', title: 'Name' },
+    { field: 'sex', title: 'Sex' },
+    { field: 'age', title: 'Age' }
+  ],
+  data: [
+    { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+    { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+    { id: 10003, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+    { id: 10004, name: 'Test4', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+    { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+    { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+    { id: 10003, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+    { id: 10004, name: 'Test4', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+    { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+    { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+    { id: 10003, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+    { id: 10004, name: 'Test4', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+    { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+    { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+    { id: 10003, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+    { id: 10004, name: 'Test4', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' },
+    { id: 10001, name: 'Test1', role: 'Develop', sex: 'Man', age: 28, address: 'test abc' },
+    { id: 10002, name: 'Test2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou' },
+    { id: 10003, name: 'Test3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
+    { id: 10004, name: 'Test4', role: 'Designer', sex: 'Women', age: 24, address: 'Shanghai' }
+  ],
+  pagination: true
 })
-
-const flag2CellRender = reactive({
-  name: 'BkSwitcher'
-})
-
-const tableData = ref<RowVO[]>([
-  { id: 10001, name: 'Test1', role: 'Develop', flag1: false, flag2: false },
-  { id: 10002, name: 'Test2', role: 'Test', flag1: true, flag2: true },
-  { id: 10003, name: 'Test3', role: 'PM', flag1: false, flag2: false }
-])
 </script>

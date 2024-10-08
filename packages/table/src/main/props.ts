@@ -2,6 +2,7 @@ import { PropType } from 'vue'
 import { VxeUI } from '../ui'
 
 import type { VxeGlobalThemeName, VxeTablePropTypes } from '../types'
+import { PropTypes } from '@bkui-vue/shared'
 
 const { getConfig } = VxeUI
 
@@ -252,5 +253,6 @@ export default {
     default: 'light'
   },
   // 额外的参数
-  params: Object as PropType<VxeTablePropTypes.Params>
+  params: Object as PropType<VxeTablePropTypes.Params>,
+  pagination: PropTypes.oneOfType([PropTypes.bool.def(false), PropTypes.object.def({})]).def(false),
 }
