@@ -184,7 +184,7 @@ const tableComponentMethodKeys: (keyof VxeTableMethods)[] = [
   'connect',
 ];
 
-const gridComponentEmits: VxeGridEmits = [
+const gridComponentEmits = [
   ...tableComponentEmits,
   'page-change',
   'form-submit',
@@ -198,8 +198,6 @@ const gridComponentEmits: VxeGridEmits = [
   'toolbar-button-click',
   'toolbar-tool-click',
   'zoom',
-  'pageLimitChange',
-  'pageValueChange',
 ];
 
 export default defineComponent({
@@ -501,13 +499,8 @@ export default defineComponent({
     };
 
     const pageChangeEvent = (current, $event) => {
-      if (typeof props.pagination === 'object' && current !== pagination.options.current) {
+      if (current !== pagination.options.current) {
         pagination.setPagination({ current, value: current });
-        gridMethods.dispatchEvent('pageValueChange', current, {});
-        return;
-      }
-
-      if (typeof props.pagination === 'boolean' && props.pagination !== false) {
         gridMethods.dispatchEvent('pageValueChange', current, $event);
       }
     };

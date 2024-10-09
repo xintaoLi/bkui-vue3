@@ -42,7 +42,7 @@ const lineOffsetSizes = {
 export default defineComponent({
   name: 'VxeTableBody',
   props: {
-    tableData: Array as PropType<any[]>,
+    // tableData: Array as PropType<any[]>,
     tableColumn: Array as PropType<VxeTableDefines.ColumnInfo[]>,
     fixedColumn: Array as PropType<VxeTableDefines.ColumnInfo[]>,
     fixedType: {

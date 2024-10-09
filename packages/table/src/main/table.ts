@@ -71,7 +71,7 @@ import TableFilterPanelComponent from './module/filter/panel';
 import TableImportPanelComponent from './module/export/import-panel';
 import TableExportPanelComponent from './module/export/export-panel';
 import TableMenuPanelComponent from './module/menu/panel';
-
+import Pagination from '@bkui-vue/pagination';
 
 import type {
   VxeGridConstructor,
@@ -91,8 +91,8 @@ import type {
   VxeTableProps,
   VxeColumnPropTypes,
 } from '../types';
-import { transpileModule } from 'typescript';
 import useComponentInstall from '../core/useComponentInstall';
+import usePagination from '../core/usePagination';
 
 const {
   getConfig,
@@ -125,6 +125,8 @@ export default defineComponent({
     const VxeUILoadingComponent = VxeUI.getComponent('BkLoading');
     const VxeUITooltipComponent = VxeUI.getComponent('BkTooltip');
     useComponentInstall(props);
+
+    const pagination = usePagination(props);
 
     const $xeTabs = inject('$xeTabs', null);
 
@@ -6629,9 +6631,7 @@ export default defineComponent({
               tipElem = cell.querySelector('.bk-cell--html');
             }
           } else {
-            tipElem = cell.querySelector(
-              column.type === 'html' ? '.bk-cell--html' : '.bk-cell--label',
-            ) as HTMLElement;
+            tipElem = cell.querySelector(column.type === 'html' ? '.bk-cell--html' : '.bk-cell--label') as HTMLElement;
           }
           handleTooltip(evnt, cell, (overflowElem || cell.children[0]) as HTMLElement, tipElem as HTMLElement, params);
         }
@@ -7275,6 +7275,7 @@ export default defineComponent({
       const { tableData, tableColumn, tableGroupColumn, columnStore, footerTableData } = reactData;
       const isFixedLeft = fixedType === 'left';
       const fixedColumn = isFixedLeft ? columnStore.leftList : columnStore.rightList;
+      // const pageData = pagination.getPageData(tableData);
       return h(
         'div',
         {
@@ -7336,6 +7337,21 @@ export default defineComponent({
       }
     }
 
+    const pageChangeEvent = (current, $event) => {
+      if (current !== pagination.options.current) {
+        pagination.setPagination({ current, value: current });
+        tableMethods.dispatchEvent('pageValueChange', current, $event);
+        dataFlag.value ++;
+        return;
+      }
+    };
+
+    const handlePageLimitChange = (limit, $event) => {
+      pagination.setPagination({ limit });
+      tableMethods.dispatchEvent('pageLimitChange', limit, $event);
+      dataFlag.value ++;
+    };
+
     const renderVN = () => {
       const {
         loading,
@@ -7384,6 +7400,7 @@ export default defineComponent({
       const loadingOpts = computeLoadingOpts.value;
       const isMenu = computeIsMenu.value;
       const currLoading = reactData._isLoading || loading;
+      const pageData = pagination.getPageData(tableData);
       return h(
         'div',
         {
@@ -7455,7 +7472,7 @@ export default defineComponent({
                   showHeader
                     ? h(TableHeaderComponent, {
                         ref: refTableHeader,
-                        tableData,
+                        tableData: pageData,
                         tableColumn,
                         tableGroupColumn,
                       })
@@ -7465,7 +7482,7 @@ export default defineComponent({
                    */
                   h(TableBodyComponent, {
                     ref: refTableBody,
-                    tableData,
+                    // tableData: pageData,
                     tableColumn,
                   }),
                   /**
@@ -7478,6 +7495,17 @@ export default defineComponent({
                         tableColumn,
                       })
                     : createCommentVNode(),
+
+                  /**
+                   * 扩展内置分页
+                   */
+                  pagination.isShowPagination.value
+                    ? h(Pagination, {
+                        ...pagination.options,
+                        onChange: pageChangeEvent,
+                        onLimitChange: handlePageLimitChange,
+                      })
+                    : null,
                 ],
               ),
               h(
@@ -7663,7 +7691,8 @@ export default defineComponent({
     );
     watch(dataFlag, () => {
       const { inited, initStatus } = internalData;
-      loadTableData(props.data || []).then(() => {
+      const pageData = pagination.getPageData();
+      loadTableData(pageData || []).then(() => {
         const { scrollXLoad, scrollYLoad, expandColumn } = reactData;
         internalData.inited = true;
         internalData.initStatus = true;
@@ -7880,7 +7909,8 @@ export default defineComponent({
 
     onMounted(() => {
       nextTick(() => {
-        const { data, treeConfig, showOverflow } = props;
+        const { treeConfig, showOverflow } = props;
+        const data = pagination.getPageData();
         const { scrollXStore, scrollYStore } = internalData;
         const sYOpts = computeSYOpts.value;
         const editOpts = computeEditOpts.value;

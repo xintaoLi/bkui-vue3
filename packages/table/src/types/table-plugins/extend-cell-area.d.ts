@@ -399,7 +399,9 @@ export type VxeTableProEmits = [
   'cell-area-arrows-start',
   'cell-area-arrows-end',
   'active-cell-change-start',
-  'active-cell-change-end'
+  'active-cell-change-end',
+  'pageLimitChange',
+  'pageValueChange',
 ]
 
 declare module '../table' {

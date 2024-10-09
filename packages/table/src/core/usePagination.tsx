@@ -96,12 +96,12 @@ const usePagination = props => {
     return pagination.enabled && pagination.count > 0;
   });
 
-  const getPageData = () => {
+  const getPageData = (data?: any[]) => {
     if (isShowPagination.value) {
-      return (props.data ?? []).slice((pagination.current - 1) * pagination.limit, pagination.current * pagination.limit)
+      return (data ?? props.data ?? []).slice((pagination.current - 1) * pagination.limit, pagination.current * pagination.limit)
     }
 
-    return props.data;
+    return data ?? props.data;
   };
 
   return {

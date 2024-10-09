@@ -102,6 +102,13 @@ const Message = (constructor: any, options: any) => {
     target = document.body;
   }
   target.appendChild(container.firstElementChild);
+
+  return {
+    close: () => {
+      close(id, position, spacing, userOnClose);
+      render(null, container);
+    },
+  };
 };
 
 function close(id: string, position: string, spacing: number, userOnClose): void {

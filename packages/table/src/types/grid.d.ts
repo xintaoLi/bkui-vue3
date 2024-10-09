@@ -333,7 +333,7 @@ export interface GridPrivateMethods {
 export interface VxeGridPrivateMethods extends GridPrivateMethods {}
 
 export type VxeGridEmits = [
-  ...VxeTableEmits
+  ...VxeTableEmits,
   'page-change',
   'form-submit',
   'form-submit-invalid',
