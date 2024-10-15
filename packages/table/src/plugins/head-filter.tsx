@@ -125,6 +125,12 @@ export default defineComponent({
       return defaultMin;
     });
 
+    const contentStyle = computed(() => ({
+      maxHeight: `${maxHeight.value}px`,
+      minHeight: `${minHeight.value}px`,
+      height: /%$/.test(`${height.value}`) ? height.value : `${height.value}px`,
+    }));
+
     const getRegExp = (val: boolean | number | string, flags = 'ig') =>
       new RegExp(`${val}`.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), flags);
 
@@ -214,8 +220,8 @@ export default defineComponent({
     };
 
     const renderFilterList = scope => {
-      if (scope.data.length) {
-        return scope.data.map((item: { value: string; text: string }) => (
+      if (scope.length) {
+        return scope.map((item: { value: string; text: string }) => (
           <div
             key={item.value}
             class='list-item'
@@ -256,21 +262,12 @@ export default defineComponent({
                 <Input v-model={searchValue.value}></Input>
               </div>
               <BkCheckboxGroup class='content-list'>
-                <VirtualRender
-                  ref={refVirtualRender}
-                  height={height.value}
-                  className='content-items'
-                  lineHeight={32}
-                  list={localData.value}
-                  maxHeight={maxHeight.value}
-                  minHeight={minHeight.value}
-                  scrollEvent={true}
-                  throttleDelay={0}
+                <div
+                  class='content-items'
+                  style={contentStyle.value}
                 >
-                  {{
-                    default: renderFilterList,
-                  }}
-                </VirtualRender>
+                  {renderFilterList(localData.value)}
+                </div>
               </BkCheckboxGroup>
               <div class='content-footer'>
                 {renderSaveBtn()}
