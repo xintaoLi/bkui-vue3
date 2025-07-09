@@ -227,6 +227,15 @@ export const treeProps = {
   dragSortMode: PropTypes.oneOf(['any', 'next']).def('any'),
 
   /**
+   * 拖拽更新方式
+   * - emit-event-only: 只触发事件，不更新数据
+   * - update-prop-data: 更新 prop 数据
+   * 默认 update-prop-data
+   * 注意：如果设置为 emit-event-only，则需要在事件中手动更新数据
+   */
+  dragUpdate: PropTypes.oneOf(['emit-event-only', 'update-prop-data']).def('update-prop-data'),
+
+  /**
    * 节点是否可以选中
    */
   selectable: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]).def(true),

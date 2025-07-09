@@ -212,40 +212,42 @@ export default (props: TreePropTypes, ctx, root?, flatData?) => {
     let targetNodeIndex = targetSlibings.findIndex(item => item === targetNodeData);
     if (sourceNodeIndex === -1 || targetNodeIndex === -1) return;
 
-    // 先移除源节点
-    sourceSiblings.splice(sourceNodeIndex, 1);
+    if (props.dragUpdate === 'update-prop-data') {
+      // 先移除源节点
+      sourceSiblings.splice(sourceNodeIndex, 1);
 
-    // 计算插入位置
-    if (dragOverItem?.classList.contains(dropAfter)) {
-      // 如果源节点在目标节点前面，移除后 targetNodeIndex 需要减 1
-      if (sourceNodeIndex < targetNodeIndex) {
-        targetNodeIndex = targetNodeIndex - 1;
+      // 计算插入位置
+      if (dragOverItem?.classList.contains(dropAfter)) {
+        // 如果源节点在目标节点前面，移除后 targetNodeIndex 需要减 1
+        if (sourceNodeIndex < targetNodeIndex) {
+          targetNodeIndex = targetNodeIndex - 1;
+        }
+        targetNodeIndex = targetNodeIndex + 1;
+      } else if (dragOverItem?.classList.contains(dropBefore)) {
+        // 如果源节点在目标节点后面，移除后 targetNodeIndex 不变
+        if (sourceNodeIndex > targetNodeIndex) {
+          // do nothing
+        }
       }
-      targetNodeIndex = targetNodeIndex + 1;
-    } else if (dragOverItem?.classList.contains(dropBefore)) {
-      // 如果源节点在目标节点后面，移除后 targetNodeIndex 不变
-      if (sourceNodeIndex > targetNodeIndex) {
-        // do nothing
-      }
+
+      // 插入节点
+      targetSlibings.splice(targetNodeIndex, 0, sourceNodeData);
+
+      // 更新所有兄弟节点的 INDEX
+      targetSlibings.forEach((item, idx) => {
+        const nodeId = getNodeAttrById(item[NODE_ATTRIBUTES.UUID], NODE_ATTRIBUTES.UUID) || item[NODE_ATTRIBUTES.UUID];
+        if (nodeId) {
+          setNodeAttrById(nodeId, NODE_ATTRIBUTES.INDEX, idx);
+        }
+      });
+
+      sourceSiblings.forEach((item, idx) => {
+        const nodeId = getNodeAttrById(item[NODE_ATTRIBUTES.UUID], NODE_ATTRIBUTES.UUID) || item[NODE_ATTRIBUTES.UUID];
+        if (nodeId) {
+          setNodeAttrById(nodeId, NODE_ATTRIBUTES.INDEX, idx);
+        }
+      });
     }
-
-    // 插入节点
-    targetSlibings.splice(targetNodeIndex, 0, sourceNodeData);
-
-    // 更新所有兄弟节点的 INDEX
-    targetSlibings.forEach((item, idx) => {
-      const nodeId = getNodeAttrById(item[NODE_ATTRIBUTES.UUID], NODE_ATTRIBUTES.UUID) || item[NODE_ATTRIBUTES.UUID];
-      if (nodeId) {
-        setNodeAttrById(nodeId, NODE_ATTRIBUTES.INDEX, idx);
-      }
-    });
-
-    sourceSiblings.forEach((item, idx) => {
-      const nodeId = getNodeAttrById(item[NODE_ATTRIBUTES.UUID], NODE_ATTRIBUTES.UUID) || item[NODE_ATTRIBUTES.UUID];
-      if (nodeId) {
-        setNodeAttrById(nodeId, NODE_ATTRIBUTES.INDEX, idx);
-      }
-    });
 
     // 触发更新
     ctx.emit(EVENTS.NODE_DRAG_SORT, {
@@ -253,14 +255,17 @@ export default (props: TreePropTypes, ctx, root?, flatData?) => {
       targetNode: targetNodeData,
       sourceIndex: sourceNodeIndex,
       targetIndex: targetNodeIndex,
+      sourceSiblings,
       targetSlibings,
+      data: flatData.data,
+      type: 'sort',
     });
   };
 
   const dragAsChildNode = (sourceNodeId: string, targetNodeId: string) => {
     const sourceNodeData = getSourceNodeByUID(sourceNodeId);
     const targetNodeData = getSourceNodeByUID(targetNodeId);
-
+    const sourceNodeIndex = getNodeAttrById(sourceNodeId, NODE_ATTRIBUTES.INDEX);
     let parentNode = null;
     if (isRootNode(sourceNodeId)) {
       parentNode = props.data;
@@ -268,16 +273,31 @@ export default (props: TreePropTypes, ctx, root?, flatData?) => {
       const sourceNodeParentId = getNodeParentIdById(sourceNodeId);
       if (sourceNodeParentId !== undefined && sourceNodeParentId !== null) {
         parentNode = getSourceNodeByUID(sourceNodeParentId);
-        const sourceNodeIndex = getNodeAttrById(sourceNodeId, NODE_ATTRIBUTES.INDEX);
-        parentNode?.[props.children].splice(sourceNodeIndex, 1);
+
+        if (props.dragUpdate === 'update-prop-data') {
+          parentNode?.[props.children].splice(sourceNodeIndex, 1);
+        }
       }
     }
 
-    if (!targetNodeData[props.children]) {
-      targetNodeData[props.children] = [];
+    if (props.dragUpdate === 'update-prop-data') {
+      if (!targetNodeData[props.children]) {
+        targetNodeData[props.children] = [];
+      }
+
+      (targetNodeData[props.children] as TreeNode[]).unshift(sourceNodeData);
     }
 
-    (targetNodeData[props.children] as TreeNode[]).unshift(sourceNodeData);
+    // 触发更新
+    ctx.emit(EVENTS.NODE_DRAG_SORT, {
+      sourceNode: sourceNodeData,
+      targetNode: targetNodeData,
+      sourceNodeIndex,
+      sourceSiblings: parentNode?.[props.children],
+      targetSlibings: targetNodeData[props.children],
+      data: flatData.data,
+      type: 'insert',
+    });
   };
 
   const handleTreeNodeDragLeave = (e: DragEvent) => {
